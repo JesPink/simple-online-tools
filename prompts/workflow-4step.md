@@ -65,6 +65,15 @@ I am working on the project defined in our `PROJECT_RULES.md`. You MUST adhere t
 3. Search your CSS for hex colors (#) - replace with CSS variables
 4. Verify every div class exists in foundation system
 
+**🚨 CRITICAL: USE SCAFFOLDING SYSTEM INSTEAD**
+
+**Instead of manually creating tools, use:**
+```bash
+npm run create-tool -- --name="Tool Name" --type=simple --category=text-and-writing
+```
+
+**ONLY use manual creation if scaffolding system is unavailable.**
+
 **BEFORE PROVIDING YOUR ANSWER, PERFORM THIS SELF-VALIDATION:**
 
 **Validation Checklist - Answer YES/NO to each:**
@@ -76,6 +85,8 @@ I am working on the project defined in our `PROJECT_RULES.md`. You MUST adhere t
 6. Does my JavaScript export both render() and init()? YES/NO
 7. Is my meta title under 60 characters? YES/NO
 8. Will this work on 375px mobile width? YES/NO
+9. **NEW**: Would `npm run validate:strict` pass? YES/NO
+10. **NEW**: Is this tool scaffolded (not manually created)? YES/NO
 
 **If ANY answer is NO, fix the issue before providing your response.**
 

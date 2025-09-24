@@ -6,6 +6,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.join(__dirname, '..');
 
+// Check for strict mode
+const isStrictMode = process.argv.includes('--strict');
+
 const VALIDATION_RULES = {
   // HTML Structure Rules
   requiredClasses: [
@@ -180,12 +183,25 @@ export function validateAllTools() {
   
   if (totalFailed > 0) {
     console.log('\n🔧 Fix the errors above before building.');
+    // In strict mode, exit with error even for warnings
+    if (isStrictMode) {
+      console.log('🚫 STRICT MODE: Build blocked due to validation failures.');
+      process.exit(1);
+    }
     // Only exit if running directly (not from npm build process)
     if (process.argv[1].includes('validate-foundation.js')) {
       process.exit(1);
     }
+  } else if (isStrictMode && Object.values(allResults).some(r => r.warnings.length > 0)) {
+    const totalWarnings = Object.values(allResults).reduce((sum, r) => sum + r.warnings.length, 0);
+    console.log(`\n⚠️  STRICT MODE: ${totalWarnings} warnings found.`);
+    console.log('🚫 In strict mode, warnings are treated as errors. Fix all issues before proceeding.');
+    process.exit(1);
   } else {
     console.log('\n🎉 All tools passed foundation validation!');
+    if (isStrictMode) {
+      console.log('✅ STRICT MODE: Perfect compliance achieved!');
+    }
   }
   
   return allResults;

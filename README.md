@@ -1,4 +1,11 @@
-# Simple Online Tools - Production Deployment Guide
+# Simple Online Tools - Production Platform
+
+## 🚨 **CRITICAL: NEVER CREATE TOOLS MANUALLY**
+
+**⛔ MANDATORY RULE: All new tools MUST be created using the official scaffolding system.**
+
+❌ **FORBIDDEN**: Manual tool creation, copying existing tools, or custom file creation  
+✅ **REQUIRED**: Use `npm run create-tool` with foundation-compliant templates
 
 ## Overview
 This repository contains the complete Simple Online Tools platform, ready for deployment on Cloudflare Pages with Workers integration. All foundation compliance issues have been resolved and the platform is production-ready.
@@ -28,7 +35,60 @@ This repository contains the complete Simple Online Tools platform, ready for de
 2. **Add your domain:** `simpleonlinetool.com`
 3. **DNS will auto-configure** (domain already managed by Cloudflare)
 
-## 🔧 Local Development
+## �️ **TOOL DEVELOPMENT - MANDATORY PROCESS**
+
+### ✅ Step 1: Create New Tool (REQUIRED METHOD)
+
+**Use the official scaffolding system:**
+```bash
+# Example: Create a simple text analysis tool
+npm run create-tool -- --name="URL Encoder" --type=simple --category=utilities-and-conversion
+
+# Example: Create a complex file processing tool  
+npm run create-tool -- --name="PDF Merger" --type=complex --category=files-and-docs
+```
+
+**Available Categories:**
+- `text-and-writing` - Text processing, writing aids
+- `productivity-and-business` - Business tools, calculators
+- `files-and-docs` - File manipulation, document tools
+- `seo-and-marketing` - SEO analysis, marketing tools
+- `utilities-and-conversion` - Converters, utilities
+
+**Tool Types:**
+- `simple` - Client-side only (recommended for most tools)
+- `complex` - Requires server-side processing (Workers)
+
+### ✅ Step 2: Customize Your Tool
+
+After scaffolding, customize these files:
+1. **`src/tools/[tool-slug]/index.js`** - Tool logic and functionality
+2. **`src/tools/[tool-slug]/style.css`** - Tool-specific styling (foundation-compliant)
+3. **Update SEO content** in the render() function
+
+### ✅ Step 3: Validate Before Commit
+
+**MANDATORY validation before any commit:**
+```bash
+# Strict validation (treats warnings as errors)
+npm run validate:strict
+
+# Standard validation  
+npm run validate
+
+# Build test
+npm run build
+```
+
+### ❌ **VIOLATIONS THAT WILL BLOCK DEPLOYMENT:**
+
+1. **H1 tags in render() functions** - app.js generates H1 automatically
+2. **Wrong button classes** - Must use `class="btn btn-primary"` not `class="btn-primary"`
+3. **Hardcoded CSS values** - Must use CSS variables like `var(--primary-color)`
+4. **Missing foundation structure** - Must use `.tool-container`, `.tool-interface`, etc.
+5. **Manual tool creation** - All tools must be scaffolded with `npm run create-tool`
+
+## �🔧 Local Development
 
 ### Setup
 ```bash
@@ -36,9 +96,16 @@ npm install
 npm run dev
 ```
 
-### Build for Production
+### Build for Production  
 ```bash
 npm run build
+```
+
+### Validation Commands
+```bash
+npm run validate        # Standard validation
+npm run validate:strict # Strict mode (no warnings allowed)
+npm run pre-commit      # Pre-commit validation check
 ```
 
 ## 📊 Analytics Integration

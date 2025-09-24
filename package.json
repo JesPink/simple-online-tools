@@ -10,6 +10,10 @@
     "build:watch": "npm run validate && node esbuild.config.js --watch",
     "validate": "node scripts/validate-foundation.js",
     "validate:tool": "node scripts/validate-foundation.js",
+    "validate:strict": "node scripts/validate-foundation.js --strict",
+    "create-tool": "node scripts/scaffold-tool.js",
+    "setup-hooks": "node scripts/setup-hooks.js",
+    "pre-commit": "npm run validate:strict",
     "serve": "live-server dist --port=3000 --no-browser --wait=500"
   },
   "keywords": [
