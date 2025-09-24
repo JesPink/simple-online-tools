@@ -515,7 +515,7 @@ export async function init() {
           <title>${currentScaledData.title} - Recipe</title>
           <style>
             body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-            h1 { color: #333; border-bottom: 2px solid #eee; }
+            h2 { color: #333; border-bottom: 2px solid #eee; }
             .serving-info { background: #f5f5f5; padding: 10px; margin: 10px 0; }
             ul { list-style-type: none; padding: 0; }
             li { padding: 5px 0; border-bottom: 1px solid #eee; }
@@ -523,12 +523,11 @@ export async function init() {
           </style>
         </head>
         <body>
-          <h1>${currentScaledData.title}</h1>
+          <h2>${currentScaledData.title}</h2>
           <div class="serving-info">
             <strong>Serves:</strong> ${currentScaledData.targetServings}
-
           </div>
-          <h2>Ingredients:</h2>
+          <h3>Ingredients:</h3>
           <ul>
             ${currentScaledData.ingredients.map(ing => `<li>${ing.displayLine}</li>`).join('')}
           </ul>

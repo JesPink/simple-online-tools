@@ -8,47 +8,53 @@
 export function render() {
   return `
     <div class="word-counter-tool">
-      <div class="input-section">
-        <label for="text-input" class="input-label">
-          Enter or paste your text below:
-        </label>
-        <textarea 
-          id="text-input" 
-          class="text-input" 
-          placeholder="Type or paste your text here to get instant word and character counts..."
-          rows="12"
-        ></textarea>
-      </div>
-      
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-number" id="word-count">0</div>
-          <div class="stat-label">Words</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-number" id="char-count">0</div>
-          <div class="stat-label">Characters</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-number" id="char-count-no-spaces">0</div>
-          <div class="stat-label">Characters (no spaces)</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-number" id="sentence-count">0</div>
-          <div class="stat-label">Sentences</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-number" id="paragraph-count">0</div>
-          <div class="stat-label">Paragraphs</div>
-        </div>
-        
-        <div class="stat-card">
-          <div class="stat-number" id="unique-words">0</div>
-          <div class="stat-label">Unique Words</div>
+      <div class="tool-container">
+        <div class="tool-interface">
+          <div class="tool-main">
+            <div class="form-section">
+              <h3>Enter Your Text</h3>
+              <div class="form-group">
+                <label for="text-input">Text to analyze:</label>
+                <textarea 
+                  id="text-input" 
+                  placeholder="Type or paste your text here to get instant word and character counts..."
+                  rows="12"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="tool-results">
+            <h3>Text Statistics</h3>
+            <div class="results-content">
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <div class="stat-number" id="word-count">0</div>
+                  <div class="stat-label">Words</div>
+                </div>
+                
+                <div class="stat-card">
+                  <div class="stat-number" id="char-count">0</div>
+                  <div class="stat-label">Characters</div>
+                </div>
+                
+                <div class="stat-card">
+                  <div class="stat-number" id="char-count-no-spaces">0</div>
+                  <div class="stat-label">Characters (no spaces)</div>
+                </div>
+                
+                <div class="stat-card">
+                  <div class="stat-number" id="sentence-count">0</div>
+                  <div class="stat-label">Sentences</div>
+                </div>
+                
+                <div class="stat-card">
+                  <div class="stat-number" id="paragraph-count">0</div>
+                  <div class="stat-label">Paragraphs</div>
+                </div>
+                
+                <div class="stat-card">
+                  <div class="stat-number" id="unique-words">0</div>
+                  <div class="stat-label">Unique Words</div>
         </div>
         
         <div class="stat-card">

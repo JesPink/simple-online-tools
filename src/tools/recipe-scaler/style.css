@@ -127,38 +127,14 @@
   text-align: center;
 }
 
-/* Mobile-first responsive adjustments */
-@media (max-width: 600px) {
-  .recipe-scaler-tool .servings-row {
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
-  }
-  
-  .recipe-scaler-tool .scaling-info {
-    flex-direction: column;
-    text-align: center;
-  }
-  
-  .recipe-scaler-tool .result-actions {
-    flex-direction: column;
-  }
-  
-  .recipe-scaler-tool .result-actions .btn {
-    width: 100%;
-  }
-  
-  .recipe-scaler-tool .serving-info {
-    flex-direction: column;
-    gap: var(--space-2);
-  }
+/* Mobile-first responsive adjustments - Foundation handles breakpoints */
+.recipe-scaler-tool .servings-row {
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
 }
 
-@media (max-width: 480px) {
-  .recipe-scaler-tool .scaling-info {
-    padding: var(--space-2);
-  }
-  
-  .recipe-scaler-tool .scaled-recipe {
-    padding: var(--space-3);
+@media (min-width: 600px) {
+  .recipe-scaler-tool .servings-row {
+    grid-template-columns: 1fr 1fr;
   }
 }

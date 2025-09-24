@@ -1,46 +1,56 @@
 export function render() {
   return `
-    <div class="case-converter-container">      
-      <div class="case-converter-tool">
-        <div class="input-section">
-          <label for="case-input">Enter your text to convert:</label>
-          <textarea 
-            id="case-input" 
-            placeholder="Type or paste your text here..."
-            rows="8"
-          ></textarea>
-          <div class="char-count">
-            <span id="char-count">0</span> characters
+    <div class="case-converter-tool">
+      <div class="tool-container">
+        <div class="tool-interface">
+          <div class="tool-main">
+            <div class="form-section">
+              <h3>Enter Your Text</h3>
+              <div class="form-group">
+                <label for="case-input">Text to convert:</label>
+                <textarea 
+                  id="case-input" 
+                  placeholder="Type or paste your text here..."
+                  rows="8"
+                ></textarea>
+                <div class="char-count">
+                  <span id="char-count">0</span> characters
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Conversion Options:</label>
+                <div class="option-buttons">
+                  <button class="btn btn-primary case-btn active" data-case="sentence">Sentence case</button>
+                  <button class="btn btn-secondary case-btn" data-case="lower">lowercase</button>
+                  <button class="btn btn-secondary case-btn" data-case="upper">UPPERCASE</button>
+                  <button class="btn btn-secondary case-btn" data-case="title">Title Case</button>
+                  <button class="btn btn-secondary case-btn" data-case="inverted">iNVERTED cASE</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tool-results">
+            <h3>Converted Text</h3>
+            <div class="results-content">
+              <div class="form-group">
+                <label for="case-output">Result:</label>
+                <textarea 
+                  id="case-output" 
+                  readonly
+                  placeholder="Your converted text will appear here..."
+                  rows="8"
+                ></textarea>
+              </div>
+              <div class="form-actions">
+                <button id="copy-btn" class="btn btn-primary">
+                  <span class="copy-text">Copy to Clipboard</span>
+                  <span class="copy-success" style="display: none;">Copied!</span>
+                </button>
+                <button id="clear-btn" class="btn btn-secondary">Clear All</button>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div class="conversion-options">
-          <div class="option-buttons">
-            <button class="case-btn active" data-case="sentence">Sentence case</button>
-            <button class="case-btn" data-case="lower">lowercase</button>
-            <button class="case-btn" data-case="upper">UPPERCASE</button>
-            <button class="case-btn" data-case="title">Title Case</button>
-            <button class="case-btn" data-case="inverted">iNVERTED cASE</button>
-          </div>
-        </div>
-
-        <div class="output-section">
-          <label for="case-output">Converted text:</label>
-          <textarea 
-            id="case-output" 
-            readonly
-            placeholder="Your converted text will appear here..."
-            rows="8"
-          ></textarea>
-          <div class="output-actions">
-            <button id="copy-btn" class="copy-btn">
-              <span class="copy-text">Copy to Clipboard</span>
-              <span class="copy-success" style="display: none;">Copied!</span>
-            </button>
-            <button id="clear-btn" class="clear-btn">Clear All</button>
-          </div>
-        </div>
-      </div>
 
       <div class="seo-content">
         <h2>Understanding the Case Converter</h2>
