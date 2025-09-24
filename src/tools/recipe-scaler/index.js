@@ -514,12 +514,12 @@ export async function init() {
         <head>
           <title>${currentScaledData.title} - Recipe</title>
           <style>
-            body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-            h2 { color: #333; border-bottom: 2px solid #eee; }
-            .serving-info { background: #f5f5f5; padding: 10px; margin: 10px 0; }
+            body { font-family: Arial, sans-serif; max-width: 40em; margin: 0 auto; padding: 1.25em; }
+            h2 { border-bottom: 2px solid lightgray; padding-bottom: 0.5em; }
+            .serving-info { background: whitesmoke; padding: 0.625em; margin: 0.625em 0; border-radius: 0.25em; }
             ul { list-style-type: none; padding: 0; }
-            li { padding: 5px 0; border-bottom: 1px solid #eee; }
-            .footer { margin-top: 30px; font-size: 12px; color: #666; }
+            li { padding: 0.3125em 0; border-bottom: 1px solid lightgray; }
+            .footer { margin-top: 1.875em; font-size: 0.75em; color: gray; }
           </style>
         </head>
         <body>
