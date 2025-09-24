@@ -1,0 +1,206 @@
+/* Meeting Cost Calculator - Uses Foundation Classes */
+
+.meeting-cost-calculator-tool .placeholder-text {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-8);
+}
+
+/* Participants List */
+.meeting-cost-calculator-tool .participant-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+}
+
+.meeting-cost-calculator-tool .participant-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.meeting-cost-calculator-tool .participant-name {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.meeting-cost-calculator-tool .participant-rate {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.meeting-cost-calculator-tool .remove-btn {
+  font-size: var(--font-size-sm);
+  padding: var(--space-1) var(--space-2);
+}
+
+/* Meeting Controls */
+.meeting-cost-calculator-tool .meeting-controls {
+  margin-top: var(--space-6);
+  text-align: center;
+}
+
+.meeting-cost-calculator-tool .timer-display {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+.meeting-cost-calculator-tool .timer-time {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  font-family: 'Courier New', monospace;
+  margin-bottom: var(--space-2);
+}
+
+.meeting-cost-calculator-tool .timer-cost {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+/* Results Styling */
+.meeting-cost-calculator-tool .cost-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.meeting-cost-calculator-tool .cost-stat {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.meeting-cost-calculator-tool .cost-stat.primary {
+  border-color: var(--primary-color);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.meeting-cost-calculator-tool .stat-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-1);
+}
+
+.meeting-cost-calculator-tool .stat-value {
+  color: var(--text-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+.meeting-cost-calculator-tool .cost-stat.primary .stat-value {
+  color: var(--primary-color);
+  font-size: var(--font-size-2xl);
+}
+
+/* Projections */
+.meeting-cost-calculator-tool .projections h4 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+  text-align: center;
+}
+
+.meeting-cost-calculator-tool .projection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-2);
+}
+
+.meeting-cost-calculator-tool .projection-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+}
+
+.meeting-cost-calculator-tool .projection-item span:first-child {
+  color: var(--text-secondary);
+}
+
+.meeting-cost-calculator-tool .projection-item span:last-child {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* FAQ Styling */
+.meeting-cost-calculator-tool .faq-section {
+  margin-top: var(--space-6);
+}
+
+.meeting-cost-calculator-tool .faq-item {
+  margin-bottom: var(--space-6);
+}
+
+.meeting-cost-calculator-tool .faq-item h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-lg);
+}
+
+.meeting-cost-calculator-tool .faq-item p {
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .meeting-cost-calculator-tool .participant-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  
+  .meeting-cost-calculator-tool .participant-info {
+    width: 100%;
+  }
+  
+  .meeting-cost-calculator-tool .remove-btn {
+    align-self: flex-end;
+  }
+  
+  .meeting-cost-calculator-tool .timer-time {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .meeting-cost-calculator-tool .timer-cost {
+    font-size: var(--font-size-xl);
+  }
+  
+  .meeting-cost-calculator-tool .cost-breakdown {
+    grid-template-columns: 1fr;
+  }
+  
+  .meeting-cost-calculator-tool .projection-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .meeting-cost-calculator-tool .timer-display {
+    padding: var(--space-4);
+  }
+  
+  .meeting-cost-calculator-tool .timer-time {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .meeting-cost-calculator-tool .timer-cost {
+    font-size: var(--font-size-lg);
+  }
+}

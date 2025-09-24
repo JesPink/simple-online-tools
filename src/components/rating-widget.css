@@ -1,0 +1,174 @@
+/**
+ * Rating Widget Component Styles
+ * 
+ * Scoped styles for the rating widget component following PROJECT_RULES.md isolation principles.
+ * These styles are component-specific and won't conflict with tool-specific styles.
+ */
+
+/* Rating Widget Container */
+.rating-widget {
+  background: var(--surface-color, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: var(--border-radius, 8px);
+  padding: var(--space-6, 24px);
+  margin: var(--space-6, 24px) 0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.rating-widget:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Rating Header */
+.rating-header {
+  text-align: center;
+  margin-bottom: var(--space-4, 16px);
+}
+
+.rating-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary, #111827);
+  margin: 0 0 var(--space-2, 8px) 0;
+}
+
+.rating-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #6b7280);
+  margin: 0;
+}
+
+/* Star Rating */
+.star-rating {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2, 8px);
+  margin-bottom: var(--space-4, 16px);
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2, 8px);
+  border-radius: var(--border-radius, 8px);
+  transition: all 0.2s ease;
+  position: relative;
+  min-height: 44px; /* Mobile-first: 44px minimum touch target */
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.star-btn:hover {
+  background-color: var(--surface-secondary, #f9fafb);
+  transform: scale(1.1);
+}
+
+.star-btn:focus {
+  outline: 2px solid var(--primary-color, #3b82f6);
+  outline-offset: 2px;
+}
+
+.star-btn:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.7 !important;
+}
+
+.star-btn:disabled:hover {
+  background: none !important;
+  transform: none !important;
+}
+
+.star-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--border-color, #d1d5db);
+  transition: all 0.2s ease;
+}
+
+/* Rating Feedback */
+.rating-feedback {
+  text-align: center;
+  padding: var(--space-4, 16px);
+  background-color: var(--success-light, #f0fdf4);
+  border: 1px solid var(--success-border, #bbf7d0);
+  border-radius: var(--border-radius, 8px);
+  margin-bottom: var(--space-4, 16px);
+}
+
+.feedback-message {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--success-dark, #166534);
+  margin: 0 0 var(--space-1, 4px) 0;
+}
+
+.feedback-subtitle {
+  font-size: 0.875rem;
+  color: var(--success-medium, #16a34a);
+  margin: 0;
+}
+
+/* Rating Stats */
+.rating-stats {
+  text-align: center;
+}
+
+.rating-count {
+  font-size: 0.75rem;
+  color: var(--text-tertiary, #9ca3af);
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .rating-widget {
+    margin: var(--space-4, 16px) 0;
+    padding: var(--space-4, 16px);
+  }
+  
+  .star-rating {
+    gap: var(--space-1, 4px);
+  }
+  
+  .star-btn {
+    padding: var(--space-1, 4px);
+  }
+  
+  .star-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .rating-header h3 {
+    font-size: 1.125rem;
+  }
+}
+
+/* Dark Mode Support (if implemented in the future) */
+@media (prefers-color-scheme: dark) {
+  .rating-widget {
+    background: var(--surface-dark, #1f2937);
+    border-color: var(--border-dark, #374151);
+  }
+  
+  .rating-header h3 {
+    color: var(--text-primary-dark, #f9fafb);
+  }
+  
+  .rating-subtitle {
+    color: var(--text-secondary-dark, #d1d5db);
+  }
+  
+  .star-btn:hover {
+    background-color: var(--surface-secondary-dark, #374151);
+  }
+  
+  .rating-feedback {
+    background-color: var(--success-light-dark, #064e3b);
+    border-color: var(--success-border-dark, #065f46);
+  }
+}

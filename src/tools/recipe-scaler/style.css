@@ -1,0 +1,164 @@
+/* Recipe Scaler - Uses Foundation Classes */
+
+.recipe-scaler-tool .servings-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.recipe-scaler-tool .scaling-info {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.recipe-scaler-tool .scale-factor {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--primary-color);
+}
+
+.recipe-scaler-tool .rounding-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.recipe-scaler-tool .rounding-controls input[type="checkbox"] {
+  margin-right: var(--space-1);
+}
+
+.recipe-scaler-tool .scaled-recipe {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  min-height: 200px;
+}
+
+.recipe-scaler-tool .recipe-placeholder {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+}
+
+.recipe-scaler-tool .recipe-header {
+  margin-bottom: var(--space-4);
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: var(--space-3);
+}
+
+.recipe-scaler-tool .recipe-header h4 {
+  margin: 0 0 var(--space-2) 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.recipe-scaler-tool .serving-info {
+  display: flex;
+  gap: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.recipe-scaler-tool .ingredients-list h5 {
+  margin: 0 0 var(--space-3) 0;
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.recipe-scaler-tool .ingredients-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recipe-scaler-tool .ingredients-list li {
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  line-height: var(--line-height-relaxed);
+}
+
+.recipe-scaler-tool .ingredients-list li:last-child {
+  border-bottom: none;
+}
+
+.recipe-scaler-tool .ingredients-list li:before {
+  content: "•";
+  color: var(--primary-color);
+  font-weight: var(--font-weight-bold);
+  margin-right: var(--space-2);
+}
+
+.recipe-scaler-tool .result-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.recipe-scaler-tool .error-message {
+  color: var(--error-color);
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-4);
+}
+
+.recipe-scaler-tool textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: monospace;
+  line-height: var(--line-height-relaxed);
+}
+
+.recipe-scaler-tool input[type="number"] {
+  text-align: center;
+}
+
+/* Mobile-first responsive adjustments */
+@media (max-width: 600px) {
+  .recipe-scaler-tool .servings-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  
+  .recipe-scaler-tool .scaling-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .recipe-scaler-tool .result-actions {
+    flex-direction: column;
+  }
+  
+  .recipe-scaler-tool .result-actions .btn {
+    width: 100%;
+  }
+  
+  .recipe-scaler-tool .serving-info {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}
+
+@media (max-width: 480px) {
+  .recipe-scaler-tool .scaling-info {
+    padding: var(--space-2);
+  }
+  
+  .recipe-scaler-tool .scaled-recipe {
+    padding: var(--space-3);
+  }
+}

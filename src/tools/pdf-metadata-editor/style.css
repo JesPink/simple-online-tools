@@ -1,0 +1,265 @@
+/* PDF Metadata Editor - Uses Foundation Classes */
+
+.pdf-metadata-editor-tool .placeholder-text {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-8);
+}
+
+.pdf-metadata-editor-tool .error-message {
+  color: var(--error-color);
+  text-align: center;
+  padding: var(--space-4);
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: var(--radius-md);
+}
+
+.pdf-metadata-editor-tool .success-message {
+  color: var(--success-color);
+  text-align: center;
+  padding: var(--space-4);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  border-radius: var(--radius-md);
+}
+
+.pdf-metadata-editor-tool .info-message {
+  color: var(--primary-color);
+  text-align: center;
+  padding: var(--space-4);
+  background: rgba(37, 99, 235, 0.1);
+  border: 1px solid var(--primary-color);
+  border-radius: var(--radius-md);
+}
+
+/* Upload Area */
+.pdf-metadata-editor-tool .upload-area {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background: var(--bg-secondary);
+}
+
+.pdf-metadata-editor-tool .upload-area:hover {
+  border-color: var(--primary-color);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.pdf-metadata-editor-tool .upload-area.drag-over {
+  border-color: var(--primary-color);
+  background: rgba(37, 99, 235, 0.1);
+  transform: scale(1.02);
+}
+
+.pdf-metadata-editor-tool .upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.pdf-metadata-editor-tool .upload-icon {
+  font-size: var(--font-size-4xl);
+  opacity: 0.7;
+}
+
+.pdf-metadata-editor-tool .upload-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.pdf-metadata-editor-tool .upload-text strong {
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+}
+
+.pdf-metadata-editor-tool .upload-text span {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.pdf-metadata-editor-tool .upload-info {
+  margin-top: var(--space-4);
+  padding: var(--space-3);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--primary-color);
+}
+
+.pdf-metadata-editor-tool .upload-info p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* Metadata Display */
+.pdf-metadata-editor-tool .metadata-grid {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.pdf-metadata-editor-tool .metadata-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--space-3);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  gap: var(--space-3);
+}
+
+.pdf-metadata-editor-tool .metadata-label {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.pdf-metadata-editor-tool .metadata-value {
+  color: var(--text-secondary);
+  word-break: break-word;
+  text-align: right;
+}
+
+/* Analysis Results */
+.pdf-metadata-editor-tool .analysis-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.pdf-metadata-editor-tool .analysis-stat {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.pdf-metadata-editor-tool .stat-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-1);
+}
+
+.pdf-metadata-editor-tool .stat-value {
+  color: var(--text-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+.pdf-metadata-editor-tool .stat-value.risk-none {
+  color: var(--success-color);
+}
+
+.pdf-metadata-editor-tool .stat-value.risk-low {
+  color: var(--warning-color);
+}
+
+.pdf-metadata-editor-tool .stat-value.risk-medium {
+  color: var(--warning-color);
+}
+
+.pdf-metadata-editor-tool .stat-value.risk-high {
+  color: var(--error-color);
+}
+
+.pdf-metadata-editor-tool .privacy-assessment {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.pdf-metadata-editor-tool .privacy-assessment h4 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-lg);
+}
+
+.pdf-metadata-editor-tool .privacy-assessment p {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+  line-height: var(--line-height-relaxed);
+}
+
+.pdf-metadata-editor-tool .privacy-assessment p:last-child {
+  margin-bottom: 0;
+}
+
+/* FAQ Styling */
+.pdf-metadata-editor-tool .faq-section {
+  margin-top: var(--space-6);
+}
+
+.pdf-metadata-editor-tool .faq-item {
+  margin-bottom: var(--space-6);
+}
+
+.pdf-metadata-editor-tool .faq-item h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-lg);
+}
+
+.pdf-metadata-editor-tool .faq-item p {
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .pdf-metadata-editor-tool .upload-area {
+    padding: var(--space-6);
+  }
+  
+  .pdf-metadata-editor-tool .upload-icon {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .pdf-metadata-editor-tool .metadata-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  
+  .pdf-metadata-editor-tool .metadata-label {
+    min-width: auto;
+  }
+  
+  .pdf-metadata-editor-tool .metadata-value {
+    text-align: left;
+  }
+  
+  .pdf-metadata-editor-tool .analysis-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .pdf-metadata-editor-tool .upload-area {
+    padding: var(--space-4);
+  }
+  
+  .pdf-metadata-editor-tool .upload-text strong {
+    font-size: var(--font-size-base);
+  }
+  
+  .pdf-metadata-editor-tool .form-actions {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  
+  .pdf-metadata-editor-tool .form-actions .btn {
+    width: 100%;
+  }
+}

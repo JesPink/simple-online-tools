@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><!--SEO_TITLE--></title>
+    <meta name="description" content="<!--SEO_DESCRIPTION-->">
+    <meta name="keywords" content="<!--SEO_KEYWORDS-->">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="<!--SEO_TITLE-->">
+    <meta property="og:description" content="<!--SEO_DESCRIPTION-->">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<!--OG_URL-->">
+    <meta property="og:image" content="<!--OG_IMAGE-->">
+    <meta property="og:site_name" content="Simple Online Tools">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@simpleonlinetools">
+    <meta name="twitter:creator" content="@simpleonlinetools">
+    <meta name="twitter:title" content="<!--SEO_TITLE-->">
+    <meta name="twitter:description" content="<!--SEO_DESCRIPTION-->">
+    <meta name="twitter:image" content="<!--TWITTER_IMAGE-->">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google Analytics (Production Only) -->
+    <!--GOOGLE_ANALYTICS_START-->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-69YB2G5L5P"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-69YB2G5L5P');
+    </script>
+    <!--GOOGLE_ANALYTICS_END-->
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/layout.css">
+    <link rel="stylesheet" href="/components/rating-widget.css">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/app.js" as="script" crossorigin>
+    
+    <!--SCHEMA_MARKUP-->
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="/" class="brand-link">
+                    <h1>Simple Online Tools</h1>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/category/text-and-writing" class="nav-link">Text & Writing</a>
+                <a href="/category/productivity-and-business" class="nav-link">Productivity & Business</a>
+                <a href="/category/files-and-docs" class="nav-link">Files & Docs</a>
+                <a href="/category/seo-and-marketing" class="nav-link">SEO & Marketing</a>
+                <a href="/category/utilities-and-conversion" class="nav-link">Utilities & Conversion</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="tool-container">
+        <div class="container">
+            <div class="tool-content">
+                <!-- Tool content will be dynamically injected here by app.js -->
+                <div id="loading" class="loading-indicator">
+                    <p>Loading tool...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Simple Online Tools</h3>
+                    <p>High-performance, no-sign-up online tools for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="/category/text-and-writing">Text & Writing</a></li>
+                        <li><a href="/category/productivity-and-business">Productivity & Business</a></li>
+                        <li><a href="/category/files-and-docs">Files & Docs</a></li>
+                        <li><a href="/category/seo-and-marketing">SEO & Marketing</a></li>
+                        <li><a href="/category/utilities-and-conversion">Utilities & Conversion</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <ul class="footer-links">
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Simple Online Tools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Main Application Script -->
+    <script type="module" src="/app.js"></script>
+</body>
+</html>

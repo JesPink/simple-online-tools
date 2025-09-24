@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Simple Online Tools</title>
+    <meta name="description" content="Contact Simple Online Tools. Get support, report issues, or share feedback about our free online tools platform.">
+    <meta name="keywords" content="contact us, support, feedback, simple online tools, help">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Contact Us - Simple Online Tools">
+    <meta property="og:description" content="Contact Simple Online Tools. Get support, report issues, or share feedback about our free online tools platform.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://simpleonlinetool.com/contact">
+    <meta property="og:image" content="https://simpleonlinetool.com/images/contact-preview.jpg">
+    <meta property="og:site_name" content="Simple Online Tools">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@simpleonlinetools">
+    <meta name="twitter:creator" content="@simpleonlinetools">
+    <meta name="twitter:title" content="Contact Us - Simple Online Tools">
+    <meta name="twitter:description" content="Contact Simple Online Tools. Get support, report issues, or share feedback about our free online tools platform.">
+    <meta name="twitter:image" content="https://simpleonlinetool.com/images/contact-preview.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/layout.css">
+    <link rel="canonical" href="https://simpleonlinetool.com/contact">
+    
+    <style>
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--space-6) var(--space-4);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-8);
+            margin-top: var(--space-6);
+        }
+        
+        @media (min-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .contact-form {
+            background: var(--bg-secondary);
+            padding: var(--space-6);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+        }
+        
+        .contact-info {
+            padding: var(--space-6);
+        }
+        
+        .contact-form h2,
+        .contact-info h2 {
+            color: var(--text-primary);
+            margin-bottom: var(--space-4);
+            font-size: var(--font-size-xl);
+        }
+        
+        .form-group {
+            margin-bottom: var(--space-4);
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: var(--space-2);
+            font-weight: var(--font-weight-medium);
+            color: var(--text-primary);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: var(--space-3);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: var(--space-3) var(--space-6);
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            border: none;
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+        
+        .btn:disabled {
+            background: var(--text-tertiary);
+            cursor: not-allowed;
+        }
+        
+        .info-item {
+            margin-bottom: var(--space-4);
+            padding: var(--space-4);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .info-item h3 {
+            margin: 0 0 var(--space-2) 0;
+            color: var(--text-primary);
+            font-size: var(--font-size-lg);
+        }
+        
+        .info-item p {
+            margin: 0;
+            color: var(--text-secondary);
+            line-height: var(--line-height-relaxed);
+        }
+        
+        .info-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .info-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .status-message {
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-4);
+            display: none;
+        }
+        
+        .status-message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .status-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        .faq-section {
+            margin-top: var(--space-8);
+            padding-top: var(--space-8);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .faq-item {
+            margin-bottom: var(--space-6);
+        }
+        
+        .faq-item h3 {
+            color: var(--text-primary);
+            margin-bottom: var(--space-2);
+            font-size: var(--font-size-lg);
+        }
+        
+        .faq-item p {
+            color: var(--text-secondary);
+            line-height: var(--line-height-relaxed);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header">
+        <nav class="nav-container">
+            <div class="nav-brand">
+                <a href="/" class="brand-link">
+                    <h1>Simple Online Tools</h1>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/category/text-and-writing" class="nav-link">Text & Writing</a>
+                <a href="/category/productivity-and-business" class="nav-link">Productivity & Business</a>
+                <a href="/category/files-and-docs" class="nav-link">Files & Docs</a>
+                <a href="/category/seo-and-marketing" class="nav-link">SEO & Marketing</a>
+                <a href="/category/utilities-and-conversion" class="nav-link">Utilities & Conversion</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="contact-container">
+            <nav class="breadcrumbs">
+                <a href="/">Home</a>
+                <span class="breadcrumb-separator">›</span>
+                <span class="breadcrumb-current">Contact Us</span>
+            </nav>
+            
+            <div class="page-header">
+                <h1>Contact Us</h1>
+                <p class="page-description">Get in touch with the Simple Online Tools team</p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-form">
+                    <h2>Send us a Message</h2>
+                    <div id="status-message" class="status-message"></div>
+                    
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name (Optional)</label>
+                            <input type="text" id="name" name="name" placeholder="Your name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required placeholder="your@email.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Select a topic...</option>
+                                <option value="bug-report">Bug Report</option>
+                                <option value="feature-request">Feature Request</option>
+                                <option value="general-feedback">General Feedback</option>
+                                <option value="technical-support">Technical Support</option>
+                                <option value="privacy-question">Privacy Question</option>
+                                <option value="business-inquiry">Business Inquiry</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" required placeholder="Please describe your question, issue, or feedback in detail..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn" id="submit-btn">Send Message</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <h2>Get in Touch</h2>
+                    
+                    <div class="info-item">
+                        <h3>📧 Email Support</h3>
+                        <p>For all inquiries, support, and feedback:<br>
+                        <a href="mailto:simpleonlinetool.com@gmail.com">simpleonlinetool.com@gmail.com</a></p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <h3>⚡ Response Time</h3>
+                        <p>We typically respond within 24-48 hours during business days. For urgent technical issues, please include "URGENT" in your subject line.</p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <h3>🛠️ Technical Support</h3>
+                        <p>Having trouble with a tool? Please include:
+                        <br>• Which tool you're using
+                        <br>• Your browser and operating system
+                        <br>• Steps to reproduce the issue</p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <h3>💡 Feature Requests</h3>
+                        <p>Have an idea for a new tool or improvement? We'd love to hear it! Describe your use case and how it would help you.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-section">
+                <h2>Frequently Asked Questions</h2>
+                
+                <div class="faq-item">
+                    <h3>Do I need to create an account to use the tools?</h3>
+                    <p>No! All our tools are completely free and require no sign-up or account creation. Just visit the tool page and start using it immediately.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3>Is my data safe when using your tools?</h3>
+                    <p>Yes. Most of our tools process your data entirely within your browser - it never leaves your device. For tools that require server processing, we don't store your data and follow strict privacy practices. Read our <a href="/privacy">Privacy Policy</a> for details.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3>Can I use these tools for commercial purposes?</h3>
+                    <p>Absolutely! Our tools are free for both personal and commercial use. There are no licensing restrictions or hidden fees.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3>Why did you create Simple Online Tools?</h3>
+                    <p>We believe everyone should have access to high-quality, fast, and privacy-focused online tools without the hassle of sign-ups, ads, or complex interfaces. Our mission is to provide simple, effective tools that just work.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h3>How can I request a new tool?</h3>
+                    <p>Use the contact form above with "Feature Request" as the subject, or email us directly. We prioritize tools that would be most helpful to our users.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Simple Online Tools</h3>
+                    <p>High-performance, no-sign-up online tools for everyone.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Categories</h4>
+                    <ul class="footer-links">
+                        <li><a href="/category/text-and-writing">Text & Writing</a></li>
+                        <li><a href="/category/productivity-and-business">Productivity & Business</a></li>
+                        <li><a href="/category/files-and-docs">Files & Docs</a></li>
+                        <li><a href="/category/seo-and-marketing">SEO & Marketing</a></li>
+                        <li><a href="/category/utilities-and-conversion">Utilities & Conversion</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <ul class="footer-links">
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms of Service</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Simple Online Tools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const statusMessage = document.getElementById('status-message');
+            const form = e.target;
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            
+            // Get form data
+            const formData = {
+                name: form.name.value,
+                email: form.email.value,
+                subject: form.subject.value,
+                message: form.message.value
+            };
+            
+            // Simulate form submission (replace with actual submission logic)
+            setTimeout(() => {
+                // For now, create a mailto link as fallback
+                const mailtoSubject = encodeURIComponent(`[${formData.subject}] Contact Form Submission`);
+                const mailtoBody = encodeURIComponent(
+                    `Name: ${formData.name}\n` +
+                    `Email: ${formData.email}\n` +
+                    `Subject: ${formData.subject}\n\n` +
+                    `Message:\n${formData.message}`
+                );
+                
+                const mailtoLink = `mailto:simpleonlinetool.com@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`;
+                
+                // Open mailto link
+                window.location.href = mailtoLink;
+                
+                // Show success message
+                statusMessage.textContent = 'Your email client should now open. If it doesn\'t, please email us directly at simpleonlinetool.com@gmail.com';
+                statusMessage.className = 'status-message success';
+                statusMessage.style.display = 'block';
+                
+                // Reset form
+                form.reset();
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,667 @@
+/* 
+ * Invoice Generator Tool - Scoped Styles
+ * 
+ * All styles are scoped to .invoice-generator-tool to avoid conflicts
+ * with other tools and global styles.
+ */
+
+/* Invoice Generator Tool - Uses Foundation Classes */
+
+/* Tool-specific form container override */
+.invoice-generator-tool .tool-main {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Tool-specific form section adjustments */
+.invoice-generator-tool .form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: var(--space-6);
+}
+
+/* Form Controls - Mobile-First */
+.invoice-generator-tool .form-group {
+  margin-bottom: var(--space-4);
+}
+
+.invoice-generator-tool .form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.invoice-generator-tool label {
+  display: block;
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.invoice-generator-tool input,
+.invoice-generator-tool textarea,
+.invoice-generator-tool select {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-3);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-sans);
+  font-size: 1rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  background-color: var(--bg-primary);
+}
+
+.invoice-generator-tool input:focus,
+.invoice-generator-tool textarea:focus,
+.invoice-generator-tool select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.invoice-generator-tool textarea {
+  resize: vertical;
+  font-family: var(--font-family-sans);
+}
+
+/* Items Section - Mobile-First */
+.invoice-generator-tool .item-row {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+  position: relative;
+}
+
+.invoice-generator-tool .item-controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+.invoice-generator-tool .remove-item-btn {
+  background: var(--error-color);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--radius-md);
+  min-width: 44px; /* Mobile-first: 44px minimum touch target */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  transition: background-color var(--transition-fast);
+}
+
+.invoice-generator-tool .remove-item-btn:hover {
+  background: var(--error-color-dark);
+}
+
+/* Button Container - Mobile-First */
+.invoice-generator-tool .form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-color);
+}
+
+.invoice-generator-tool .btn-icon {
+  font-size: var(--font-size-lg);
+}
+
+/* Invoice Preview specific styles */
+
+.invoice-generator-tool .preview-header {
+  background: var(--primary-color);
+  color: var(--text-white);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.invoice-generator-tool .preview-header h3 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.invoice-generator-tool .preview-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.invoice-generator-tool .zoom-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--radius-md);
+  min-width: 44px; /* Mobile-first: 44px minimum touch target */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  transition: background-color var(--transition-fast);
+}
+
+.invoice-generator-tool .zoom-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.invoice-generator-tool #zoom-level {
+  color: var(--text-white);
+  font-weight: var(--font-weight-medium);
+  min-width: 50px;
+  text-align: center;
+}
+
+.invoice-generator-tool .invoice-preview-container {
+  padding: var(--space-4);
+  max-height: 70vh;
+  overflow: auto;
+  background: #f5f5f5;
+}
+
+/* Invoice Document Styles */
+.invoice-generator-tool .invoice-preview {
+  transform-origin: top left;
+  transition: transform var(--transition-normal);
+  width: fit-content;
+  min-width: 100%;
+}
+
+.invoice-generator-tool .invoice-document {
+  background: white;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-family: var(--font-family-sans);
+  line-height: var(--line-height-normal);
+  width: 100%;
+  max-width: 100%;
+  min-width: 320px;
+}
+
+.invoice-generator-tool .invoice-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 3px solid var(--primary-color);
+}
+
+.invoice-generator-tool .invoice-title {
+  font-size: 1.8rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  letter-spacing: 1px;
+  margin-bottom: var(--space-4);
+}
+
+.invoice-generator-tool .invoice-meta {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.invoice-generator-tool .invoice-number {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.invoice-generator-tool .invoice-dates div {
+  margin-bottom: var(--space-1);
+}
+
+.invoice-generator-tool .invoice-parties {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+.invoice-generator-tool .party-label {
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-lg);
+}
+
+.invoice-generator-tool .company-name {
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-2);
+}
+
+.invoice-generator-tool .address {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+  line-height: var(--line-height-relaxed);
+}
+
+.invoice-generator-tool .contact {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-1);
+}
+
+/* Items Table - Mobile-First Responsive Design */
+.invoice-generator-tool .invoice-items {
+  margin-bottom: var(--space-8);
+}
+
+/* Mobile-First: Responsive table container */
+.invoice-generator-tool .table-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  position: relative;
+  background: white;
+}
+
+.invoice-generator-tool .items-table {
+  border-collapse: collapse;
+  background: white;
+  margin: 0;
+  width: 100%;
+  min-width: 400px;
+}
+
+/* Mobile-First: Percentage-based column widths */
+.invoice-generator-tool .items-table th:nth-child(1),
+.invoice-generator-tool .items-table td:nth-child(1) {
+  width: 50%; /* Description column */
+}
+
+.invoice-generator-tool .items-table th:nth-child(2),
+.invoice-generator-tool .items-table td:nth-child(2) {
+  width: 15%; /* Quantity column */
+}
+
+.invoice-generator-tool .items-table th:nth-child(3),
+.invoice-generator-tool .items-table td:nth-child(3) {
+  width: 20%; /* Rate column */
+}
+
+.invoice-generator-tool .items-table th:nth-child(4),
+.invoice-generator-tool .items-table td:nth-child(4) {
+  width: 15%; /* Amount column */
+}
+
+/* Mobile-First: Smaller padding and font sizes */
+.invoice-generator-tool .items-table th {
+  background: var(--primary-color);
+  color: var(--text-white);
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  border: none;
+  white-space: nowrap; /* Prevent text wrapping in headers */
+  position: relative;
+}
+
+.invoice-generator-tool .items-table th:last-child,
+.invoice-generator-tool .items-table td:last-child {
+  text-align: right;
+}
+
+.invoice-generator-tool .items-table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  vertical-align: top;
+}
+
+.invoice-generator-tool .items-table tr:nth-child(even) {
+  background: var(--bg-secondary);
+}
+
+/* Description column: Allow wrapping but maintain width */
+.invoice-generator-tool .items-table td:nth-child(1) {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-weight: var(--font-weight-medium);
+}
+
+/* Quantity, Rate, Amount columns: No wrapping, right align numbers */
+.invoice-generator-tool .items-table td:nth-child(2),
+.invoice-generator-tool .items-table td:nth-child(3),
+.invoice-generator-tool .items-table td:nth-child(4) {
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* Enhanced Desktop: Larger padding and text */
+@media (min-width: 768px) {
+  .invoice-generator-tool .items-table th {
+    padding: var(--space-4);
+    font-size: var(--font-size-base);
+  }
+  
+  .invoice-generator-tool .items-table td {
+    padding: var(--space-4);
+    font-size: var(--font-size-base);
+  }
+  
+  .invoice-generator-tool .item-desc {
+    max-width: none; /* Remove width restriction on desktop */
+  }
+}
+
+/* Large Desktop: Remove horizontal scroll constraint */
+@media (min-width: 1024px) {
+  .invoice-generator-tool .items-table {
+    min-width: auto; /* Allow natural table width */
+  }
+}
+
+/* Totals Section - Mobile-First */
+.invoice-generator-tool .invoice-totals {
+  display: flex;
+  justify-content: stretch;
+  margin-bottom: var(--space-6);
+}
+
+.invoice-generator-tool .totals-section {
+  width: 100%;
+}
+
+.invoice-generator-tool .total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.invoice-generator-tool .total-final {
+  border-bottom: 3px double var(--primary-color);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  color: var(--primary-color);
+  margin-top: var(--space-2);
+}
+
+.invoice-generator-tool .total-label {
+  color: var(--text-secondary);
+}
+
+.invoice-generator-tool .total-value {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.invoice-generator-tool .total-final .total-value {
+  color: var(--primary-color);
+}
+
+/* Notes Section */
+.invoice-generator-tool .invoice-notes {
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-color);
+}
+
+.invoice-generator-tool .notes-label {
+  font-weight: var(--font-weight-bold);
+  color: var(--primary-color);
+  margin-bottom: var(--space-3);
+}
+
+.invoice-generator-tool .notes-content {
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+/* SEO Content */
+.invoice-generator-tool .seo-content {
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--border-color);
+}
+
+.invoice-generator-tool .seo-content h2 {
+  font-size: var(--font-size-2xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--primary-color);
+  font-weight: var(--font-weight-bold);
+}
+
+.invoice-generator-tool .seo-content h3 {
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  margin-top: var(--space-6);
+  font-weight: var(--font-weight-semibold);
+}
+
+.invoice-generator-tool .seo-content p {
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-base);
+}
+
+.invoice-generator-tool .instruction-list {
+  margin: var(--space-4) 0;
+  padding-left: var(--space-6);
+}
+
+.invoice-generator-tool .instruction-list li {
+  margin-bottom: var(--space-3);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+.invoice-generator-tool .instruction-list strong {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.invoice-generator-tool .faq-item {
+  margin-bottom: var(--space-6);
+  padding: var(--space-6);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary-color);
+}
+
+.invoice-generator-tool .faq-item h3 {
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+  margin-top: 0;
+  font-weight: var(--font-weight-semibold);
+}
+
+.invoice-generator-tool .faq-item p {
+  margin-bottom: 0;
+  color: var(--text-secondary);
+}
+
+/* Mobile-First Responsive Breakpoints */
+
+/* Base mobile styles already defined above */
+
+/* Tablet: 768px+ */
+@media (min-width: 768px) {
+  .invoice-generator-tool .tool-interface {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  
+  /* Make form section full width on desktop */
+  .invoice-generator-tool .tool-main {
+    grid-column: 1 / -1; /* Span full width */
+  }
+  
+  .invoice-generator-tool .tool-results {
+    grid-column: 1 / -1; /* Span full width */
+  }
+  
+  .invoice-generator-tool .form-row {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .invoice-generator-tool .item-controls {
+    grid-template-columns: 2fr 80px 100px 120px 44px;
+    align-items: end;
+  }
+  
+
+  
+  .invoice-generator-tool .form-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .invoice-generator-tool .invoice-parties {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+  
+  .invoice-generator-tool .invoice-header {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .invoice-generator-tool .invoice-title {
+    margin-bottom: 0;
+    font-size: 2.2rem;
+  }
+  
+  .invoice-generator-tool .invoice-meta {
+    text-align: right;
+    margin-top: 0;
+  }
+  
+  .invoice-generator-tool .invoice-totals {
+    justify-content: flex-end;
+  }
+  
+  .invoice-generator-tool .totals-section {
+    width: auto;
+    min-width: 300px;
+  }
+  
+  .invoice-generator-tool .invoice-document {
+    padding: var(--space-6);
+  }
+  
+  .invoice-generator-tool .items-table th {
+    padding: var(--space-4);
+    font-size: var(--font-size-base);
+  }
+  
+  .invoice-generator-tool .items-table td {
+    padding: var(--space-4);
+    font-size: var(--font-size-base);
+  }
+}
+
+/* Desktop: 1024px+ */
+@media (min-width: 1024px) {
+  .invoice-generator-tool .invoice-preview-container {
+    max-height: 80vh;
+  }
+  
+  .invoice-generator-tool .invoice-document {
+    padding: var(--space-8);
+  }
+  
+  .invoice-generator-tool .items-table {
+    min-width: auto;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .invoice-generator-tool .invoice-form-section,
+  .invoice-generator-tool .preview-header,
+  .invoice-generator-tool .seo-content {
+    display: none !important;
+  }
+  
+  .invoice-generator-tool .invoice-layout {
+    display: block;
+  }
+  
+  .invoice-generator-tool .invoice-preview-container {
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    background: white;
+  }
+  
+  .invoice-generator-tool .invoice-document {
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Loading State */
+.invoice-generator-tool .loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Focus States for Accessibility */
+.invoice-generator-tool .zoom-btn:focus,
+.invoice-generator-tool .remove-item-btn:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Accessibility Helpers */
+.invoice-generator-tool .required {
+  color: var(--error-color, #e74c3c);
+  font-weight: bold;
+}
+
+.invoice-generator-tool .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Disabled button state */
+.invoice-generator-tool button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Smooth Transitions */
+.invoice-generator-tool * {
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
