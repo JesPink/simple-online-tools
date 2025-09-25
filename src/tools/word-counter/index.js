@@ -264,16 +264,13 @@ export function render() {
         <section class="content-section">
           <h2>Word Counter and Your Workflow</h2>
           <p>
-            Our word counter integrates perfectly into any writing workflow, whether you're crafting academic papers, creating blog content, or managing social media posts. Combine it with other essential tools from our platform:
+            Our word counter integrates perfectly into any writing workflow, whether you're crafting academic papers, creating blog content, or managing social media posts. The tool provides instant feedback that helps you meet specific requirements and optimize your content for different platforms.
           </p>
-          <ul>
-            <li><strong><a href="/tools/case-converter/">Case Converter</a></strong> - Transform text case for consistent formatting</li>
-            <li><strong><a href="/tools/passive-voice-detector/">Passive Voice Detector</a></strong> - Improve writing clarity and engagement</li>
-            <li><strong><a href="/tools/meta-description-generator/">Meta Description Generator</a></strong> - Create SEO-optimized descriptions within character limits</li>
-          </ul>
           <p>
-            <strong>Explore our complete collection of text analysis tools</strong> to streamline 
-            your writing workflow and create better content faster.
+            Whether you're a student working on assignments with strict word limits, a content creator optimizing for SEO, or a social media manager crafting platform-specific posts, our word counter delivers the precise metrics you need. The real-time analysis ensures you stay within guidelines while maintaining the quality and impact of your message.
+          </p>
+          <p>
+            <strong>Streamline your writing process</strong> with accurate word counting that works entirely in your browser, keeping your content private and secure while providing instant results.
           </p>
         </section>
       </div>
