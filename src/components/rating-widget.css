@@ -97,6 +97,7 @@
   border: 1px solid var(--success-border, #bbf7d0);
   border-radius: var(--border-radius, 8px);
   margin-bottom: var(--space-4, 16px);
+  transition: all 0.3s ease;
 }
 
 .feedback-message {
@@ -110,6 +111,24 @@
   font-size: 0.875rem;
   color: var(--success-medium, #16a34a);
   margin: 0;
+}
+
+/* Color Variables for Different Message States */
+:root {
+  --success-light: #f0fdf4;
+  --success-border: #bbf7d0;
+  --success-dark: #166534;
+  --success-medium: #16a34a;
+  
+  --info-light: #eff6ff;
+  --info-border: #bfdbfe;
+  --info-dark: #1e40af;
+  --info-medium: #3b82f6;
+  
+  --error-light: #fef2f2;
+  --error-border: #fecaca;
+  --error-dark: #dc2626;
+  --error-medium: #ef4444;
 }
 
 /* Rating Stats */

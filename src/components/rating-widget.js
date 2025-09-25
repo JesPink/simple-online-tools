@@ -66,6 +66,15 @@ export function init(toolSlug) {
   let selectedRating = 0;
   let isRated = false;
 
+  // Check if user has already voted for this tool
+  const voteKey = `voted_${toolSlug}`;
+  if (localStorage.getItem(voteKey) === 'true') {
+    // User has already voted - disable widget and show message
+    disableWidget();
+    showAlreadyVotedMessage();
+    return;
+  }
+
   // Add hover effects and click handlers
   starButtons.forEach((button, index) => {
     const starIndex = index + 1;
@@ -120,7 +129,7 @@ export function init(toolSlug) {
    * @param {string} toolSlug - The tool being rated
    * @param {number} rating - The selected rating (1-5)
    */
-  function submitRating(toolSlug, rating) {
+  async function submitRating(toolSlug, rating) {
     // Mark as rated to prevent multiple submissions
     isRated = true;
     
@@ -128,28 +137,12 @@ export function init(toolSlug) {
     highlightStars(rating);
     
     // Disable all star buttons
-    starButtons.forEach(button => {
-      button.disabled = true;
-      button.style.cursor = 'not-allowed';
-      button.style.opacity = '0.7';
-    });
+    disableWidget();
     
     // Show thank you message
-    ratingFeedback.style.display = 'block';
-    
-    // Add a subtle animation
-    ratingFeedback.style.opacity = '0';
-    ratingFeedback.style.transform = 'translateY(10px)';
-    ratingFeedback.style.transition = 'all 0.3s ease';
-    
-    setTimeout(() => {
-      ratingFeedback.style.opacity = '1';
-      ratingFeedback.style.transform = 'translateY(0)';
-    }, 100);
+    showThankYouMessage();
 
-    // TODO: Implement Cloudflare Worker call
-    // This would send the rating to a backend service for persistence and analytics
-    /*
+    // Submit rating to Cloudflare Worker
     try {
       const response = await fetch('/api/rate-tool', {
         method: 'POST',
@@ -158,32 +151,37 @@ export function init(toolSlug) {
         },
         body: JSON.stringify({
           toolSlug: toolSlug,
-          rating: rating,
-          timestamp: new Date().toISOString(),
-          userAgent: navigator.userAgent,
-          referrer: document.referrer || 'direct'
+          rating: rating
         })
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.details || `HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
       console.log('Rating submitted successfully:', result);
       
-      // Optionally update UI with aggregate rating data
-      if (result.averageRating && result.totalRatings) {
-        updateRatingStats(result.averageRating, result.totalRatings);
+      // Store vote in localStorage to prevent multiple votes
+      const voteKey = `voted_${toolSlug}`;
+      localStorage.setItem(voteKey, 'true');
+      
+      // Update UI with aggregate rating data if available
+      if (result.data && result.data.averageRating && result.data.totalRatings) {
+        updateRatingStats(result.data.averageRating, result.data.totalRatings);
       }
       
     } catch (error) {
       console.error('Failed to submit rating:', error);
-      // Could show an error message to user or retry mechanism
+      
+      // Show error message to user
+      showErrorMessage(error.message);
+      
+      // Re-enable widget on error so user can try again
+      enableWidget();
+      isRated = false;
     }
-    */
-
-    console.log(`Rating submitted for ${toolSlug}: ${rating} stars`);
   }
 
   /**
@@ -196,6 +194,97 @@ export function init(toolSlug) {
     if (ratingStats) {
       ratingStats.textContent = `${averageRating.toFixed(1)} stars (${totalRatings} ratings)`;
     }
+  }
+
+  /**
+   * Disables the rating widget
+   */
+  function disableWidget() {
+    starButtons.forEach(button => {
+      button.disabled = true;
+      button.style.cursor = 'not-allowed';
+      button.style.opacity = '0.7';
+    });
+  }
+
+  /**
+   * Enables the rating widget
+   */
+  function enableWidget() {
+    starButtons.forEach(button => {
+      button.disabled = false;
+      button.style.cursor = 'pointer';
+      button.style.opacity = '1';
+    });
+    isRated = false;
+  }
+
+  /**
+   * Shows the thank you message with animation
+   */
+  function showThankYouMessage() {
+    const feedbackMessage = ratingFeedback.querySelector('.feedback-message');
+    const feedbackSubtitle = ratingFeedback.querySelector('.feedback-subtitle');
+    
+    feedbackMessage.textContent = 'Thank you for your feedback!';
+    feedbackSubtitle.textContent = 'Your rating helps us make better tools.';
+    
+    ratingFeedback.style.display = 'block';
+    ratingFeedback.style.backgroundColor = 'var(--success-light, #f0fdf4)';
+    ratingFeedback.style.borderColor = 'var(--success-border, #bbf7d0)';
+    
+    // Add animation
+    ratingFeedback.style.opacity = '0';
+    ratingFeedback.style.transform = 'translateY(10px)';
+    ratingFeedback.style.transition = 'all 0.3s ease';
+    
+    setTimeout(() => {
+      ratingFeedback.style.opacity = '1';
+      ratingFeedback.style.transform = 'translateY(0)';
+    }, 100);
+  }
+
+  /**
+   * Shows message when user has already voted
+   */
+  function showAlreadyVotedMessage() {
+    const feedbackMessage = ratingFeedback.querySelector('.feedback-message');
+    const feedbackSubtitle = ratingFeedback.querySelector('.feedback-subtitle');
+    
+    feedbackMessage.textContent = "You've already rated this tool";
+    feedbackSubtitle.textContent = 'Thank you for your previous feedback!';
+    
+    ratingFeedback.style.display = 'block';
+    ratingFeedback.style.backgroundColor = 'var(--info-light, #eff6ff)';
+    ratingFeedback.style.borderColor = 'var(--info-border, #bfdbfe)';
+    ratingFeedback.style.opacity = '1';
+    ratingFeedback.style.transform = 'translateY(0)';
+  }
+
+  /**
+   * Shows error message when rating submission fails
+   * @param {string} errorMessage - The error message to display
+   */
+  function showErrorMessage(errorMessage) {
+    const feedbackMessage = ratingFeedback.querySelector('.feedback-message');
+    const feedbackSubtitle = ratingFeedback.querySelector('.feedback-subtitle');
+    
+    feedbackMessage.textContent = 'Rating submission failed';
+    feedbackSubtitle.textContent = errorMessage || 'Please try again later.';
+    
+    ratingFeedback.style.display = 'block';
+    ratingFeedback.style.backgroundColor = 'var(--error-light, #fef2f2)';
+    ratingFeedback.style.borderColor = 'var(--error-border, #fecaca)';
+    
+    // Add animation
+    ratingFeedback.style.opacity = '0';
+    ratingFeedback.style.transform = 'translateY(10px)';
+    ratingFeedback.style.transition = 'all 0.3s ease';
+    
+    setTimeout(() => {
+      ratingFeedback.style.opacity = '1';
+      ratingFeedback.style.transform = 'translateY(0)';
+    }, 100);
   }
 
   // Initialize with no rating selected
