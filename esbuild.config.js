@@ -52,6 +52,27 @@ async function buildSite() {
     fs.writeFileSync(path.join('dist', 'index.html'), homepageHtml);
     console.log('✅ Generated homepage: dist/index.html');
 
+    // Generate static pages (About, Privacy, Terms, Contact) with clean URLs
+    const staticPages = [
+      { name: 'about', title: 'About Us - Simple Online Tools' },
+      { name: 'privacy', title: 'Privacy Policy - Simple Online Tools' },
+      { name: 'terms', title: 'Terms of Service - Simple Online Tools' },
+      { name: 'contact', title: 'Contact - Simple Online Tools' }
+    ];
+
+    for (const staticPage of staticPages) {
+      const staticPagePath = path.join('src', `${staticPage.name}.html`);
+      if (fs.existsSync(staticPagePath)) {
+        // Create directory for clean URL structure
+        const pageDir = path.join('dist', staticPage.name);
+        fs.mkdirSync(pageDir, { recursive: true });
+        
+        // Copy the static page content to /pagename/index.html for clean URLs
+        fs.copyFileSync(staticPagePath, path.join(pageDir, 'index.html'));
+        console.log(`✅ Generated static page: ${staticPage.name}/index.html`);
+      }
+    }
+
     // Create category directory structure
     fs.mkdirSync('dist/category', { recursive: true });
 
@@ -337,6 +358,7 @@ async function buildSite() {
 function generateSitemap(toolRegistry) {
   const baseUrl = 'https://simpleonlinetool.com';
   const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+  const staticPages = ['about', 'privacy', 'terms', 'contact'];
   
   let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -348,6 +370,19 @@ function generateSitemap(toolRegistry) {
     <priority>1.0</priority>
   </url>
 `;
+
+  // Add static pages to sitemap
+  sitemapContent += `  <!-- Static Pages -->
+`;
+  for (const page of staticPages) {
+    sitemapContent += `  <url>
+    <loc>${baseUrl}/${page}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+`;
+  }
 
   // Add category pages to sitemap
   const categories = [...new Set(toolRegistry.map(tool => tool.primaryCategory))];
@@ -381,7 +416,7 @@ function generateSitemap(toolRegistry) {
   // Write sitemap.xml to dist directory
   const sitemapPath = path.join('dist', 'sitemap.xml');
   fs.writeFileSync(sitemapPath, sitemapContent);
-  console.log('✅ Generated sitemap.xml with', toolRegistry.length + categories.length + 1, 'URLs');
+  console.log('✅ Generated sitemap.xml with', toolRegistry.length + categories.length + staticPages.length + 1, 'URLs');
 }
 
 function generateRobotsTxt() {

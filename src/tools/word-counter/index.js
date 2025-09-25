@@ -262,28 +262,15 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h2>Related Tools</h2>
+          <h2>Word Counter and Your Workflow</h2>
           <p>
-            Enhance your text analysis and content creation with these complementary tools:
+            Our word counter integrates perfectly into any writing workflow, whether you're crafting academic papers, creating blog content, or managing social media posts. Combine it with other essential tools from our platform:
           </p>
-          <div class="related-tools">
-            <div class="related-tool">
-              <h3>Character Counter</h3>
-              <p>Count characters with precision for social media posts and meta descriptions.</p>
-            </div>
-            <div class="related-tool">
-              <h3>Text Formatter</h3>
-              <p>Clean up and format your text with our advanced text processing tools.</p>
-            </div>
-            <div class="related-tool">
-              <h3>Readability Checker</h3>
-              <p>Analyze your text's readability score and improve content accessibility.</p>
-            </div>
-            <div class="related-tool">
-              <h3>Duplicate Word Finder</h3>
-              <p>Identify and remove duplicate words to improve your writing quality.</p>
-            </div>
-          </div>
+          <ul>
+            <li><strong><a href="/tools/case-converter/">Case Converter</a></strong> - Transform text case for consistent formatting</li>
+            <li><strong><a href="/tools/passive-voice-detector/">Passive Voice Detector</a></strong> - Improve writing clarity and engagement</li>
+            <li><strong><a href="/tools/meta-description-generator/">Meta Description Generator</a></strong> - Create SEO-optimized descriptions within character limits</li>
+          </ul>
           <p>
             <strong>Explore our complete collection of text analysis tools</strong> to streamline 
             your writing workflow and create better content faster.
