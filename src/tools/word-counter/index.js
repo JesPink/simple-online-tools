@@ -12,7 +12,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h3>Enter Your Text</h3>
+              <h2>Enter Your Text</h2>
               <div class="form-group">
                 <label for="text-input">Text to analyze:</label>
                 <textarea 
@@ -24,7 +24,7 @@ export function render() {
             </div>
           </div>
           <div class="tool-results">
-            <h3>Text Statistics</h3>
+            <h2>Text Statistics</h2>
             <div class="results-content">
               <div class="stats-grid">
                 <div class="stat-card">
@@ -74,7 +74,7 @@ export function render() {
       
       <div class="seo-content">
         <section class="content-section">
-          <h2>What is the Word Counter Tool?</h2>
+          <h3>What is the Word Counter Tool?</h3>
           <p>
             Our free online word counter is a comprehensive text analysis tool that instantly calculates 
             the number of words, characters (with and without spaces), sentences, paragraphs, and <strong>unique words</strong> in any text. Whether you're a 
@@ -91,7 +91,7 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h2>How to Use the Word Counter</h2>
+          <h3>How to Use the Word Counter</h3>
           <p>Using our word counter tool is simple and straightforward:</p>
           <ol class="instruction-list">
             <li><strong>Paste or Type Text:</strong> Simply paste your content into the text area above, or start typing directly. The tool begins analyzing your text immediately.</li>
@@ -108,7 +108,7 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h2>What is a Unique Words Counter?</h2>
+          <h3>What is a Unique Words Counter?</h3>
           <p>
             A <strong>unique words counter</strong> goes beyond basic word count by calculating the number of distinct words in your text. This metric, also known as "lexical density," is vital for writers, students, and SEO specialists. It helps you:
           </p>
@@ -123,14 +123,14 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h2>Why is Word Count Important?</h2>
+          <h3>Why is Word Count Important?</h3>
           <p>
             Word count plays a crucial role in various forms of writing and communication. Understanding 
             and managing word count helps ensure your message is delivered effectively while meeting 
             specific requirements and constraints.
           </p>
           
-          <h3>Academic and Professional Writing</h3>
+          <h4>Academic and Professional Writing</h4>
           <p>
             In academic settings, essays, research papers, and dissertations often have strict word 
             count requirements. Staying within these limits demonstrates your ability to communicate 
@@ -138,7 +138,7 @@ export function render() {
             frequently have word count specifications that must be met for publication or submission.
           </p>
 
-          <h3>Content Marketing and SEO</h3>
+          <h4>Content Marketing and SEO</h4>
           <p>
             For digital marketing, word count significantly impacts SEO performance. Search engines 
             favor comprehensive content, with studies showing that pages with 1,500-2,500 words 
@@ -146,7 +146,7 @@ export function render() {
             all benefit from strategic word count optimization to improve visibility and engagement.
           </p>
 
-          <h3>Social Media Optimization</h3>
+          <h4>Social Media Optimization</h4>
           <p>
             Different social media platforms have varying character and word limits. Twitter posts 
             are limited to 280 characters, while LinkedIn posts perform best between 150-300 words. 
@@ -156,30 +156,30 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h2>Word Counter Use Cases</h2>
+          <h3>Word Counter Use Cases</h3>
           
-          <h3>Academic Writing</h3>
+          <h4>Academic Writing</h4>
           <p>
             Students and researchers use word counters for essays, dissertations, and research papers. 
             Meeting exact word count requirements is essential for academic success, and our tool helps 
             ensure compliance with assignment guidelines while maintaining content quality.
           </p>
 
-          <h3>Professional Content Creation</h3>
+          <h4>Professional Content Creation</h4>
           <p>
             Content creators, journalists, and copywriters rely on word counts for article length, 
             blog post optimization, and meeting editorial requirements. Publishers often specify 
             exact word ranges for different types of content, making accurate counting essential.
           </p>
 
-          <h3>Social Media Management</h3>
+          <h4>Social Media Management</h4>
           <p>
             Social media managers use word and character counters to optimize posts for different 
             platforms. Each social network has optimal lengths for maximum engagement, and our tool 
             helps create perfectly sized content for Twitter, Facebook, LinkedIn, and Instagram.
           </p>
 
-          <h3>SEO and Web Content</h3>
+          <h4>SEO and Web Content</h4>
           <p>
             SEO professionals and web developers use word counters to optimize page content length 
             for search engine rankings. Meta descriptions, title tags, and body content all have 
@@ -188,24 +188,24 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h2>Frequently Asked Questions</h2>
+          <h3>Frequently Asked Questions</h3>
           
           <div class="faq-item">
-            <h3>How do I count unique words in my text?</h3>
+            <h4>How do I count unique words in my text?</h4>
             <p>
               Our tool automatically calculates the number of unique words for you. Simply paste your text into the input box, and look for the "Unique Words" metric in the results. Our <strong>unique words counter</strong> algorithm processes the text instantly, giving you a count of all distinct terms.
             </p>
           </div>
           
           <div class="faq-item">
-            <h3>Can I use this as a website word count checker?</h3>
+            <h4>Can I use this as a website word count checker?</h4>
             <p>
               Absolutely. While this tool requires you to paste text manually, it functions perfectly as a <strong>website word count checker</strong>. Simply copy the text from any webpage (Ctrl+A, Ctrl+C) and paste it into the box above. You'll instantly get the word count, character count, and other vital metrics for any web content.
             </p>
           </div>
           
           <div class="faq-item">
-            <h3>What is the maximum text length this tool can handle?</h3>
+            <h4>What is the maximum text length this tool can handle?</h4>
             <p>
               Our word counter can handle extremely large documents with hundreds of thousands of words. 
               The tool is optimized for performance and will continue to provide accurate counts even 
@@ -214,7 +214,7 @@ export function render() {
           </div>
 
           <div class="faq-item">
-            <h3>How accurate is the word and character counting?</h3>
+            <h4>How accurate is the word and character counting?</h4>
             <p>
               Our counting algorithm is highly accurate and follows standard text processing rules. 
               Words are counted by splitting text on whitespace and punctuation, while characters 
@@ -224,7 +224,7 @@ export function render() {
           </div>
 
           <div class="faq-item">
-            <h3>Does this tool work without an internet connection?</h3>
+            <h4>Does this tool work without an internet connection?</h4>
             <p>
               Yes! Once the page loads, our word counter works entirely offline. All processing 
               happens in your browser, so you can count words even without internet access. This 
@@ -233,7 +233,7 @@ export function render() {
           </div>
 
           <div class="faq-item">
-            <h3>Is my text data secure and private?</h3>
+            <h4>Is my text data secure and private?</h4>
             <p>
               Absolutely. Your text is processed entirely within your browser and never sent to 
               our servers or any third parties. We don't store, save, or analyze your content in 
@@ -242,7 +242,7 @@ export function render() {
           </div>
 
           <div class="faq-item">
-            <h3>Can I use this tool for languages other than English?</h3>
+            <h4>Can I use this tool for languages other than English?</h4>
             <p>
               Yes, our word counter supports all languages and character sets, including Chinese, 
               Japanese, Arabic, Russian, and many others. The tool correctly handles different 
@@ -251,7 +251,7 @@ export function render() {
           </div>
 
           <div class="faq-item">
-            <h3>How is reading time calculated?</h3>
+            <h4>How is reading time calculated?</h4>
             <p>
               Reading time is estimated based on the average adult reading speed of 225 words per 
               minute. This is a widely accepted standard for silent reading of normal text. The 
@@ -262,7 +262,7 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h2>Word Counter and Your Workflow</h2>
+          <h3>Word Counter and Your Workflow</h3>
           <p>
             Our word counter integrates perfectly into any writing workflow, whether you're crafting academic papers, creating blog content, or managing social media posts. The tool provides instant feedback that helps you meet specific requirements and optimize your content for different platforms.
           </p>

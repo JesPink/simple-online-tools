@@ -1,7 +1,9 @@
 /**
  * Invoice Generator Tool
  * 
- * A comprehensive invoice generation tool that allows users to create
+ * A comprehensive invoice generation tool that al            <div class="form-section">
+              <h2>Items</h2>
+              <div class="items-container">s users to create
  * professional invoices with real-time preview and PDF download capability.
  */
 
@@ -14,7 +16,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h3>From (Your Details)</h3>
+              <h2>From (Your Details)</h2>
               <div class="form-group">
                 <label for="from-company">Company/Name <span aria-label="required" class="required">*</span></label>
                 <input type="text" id="from-company" placeholder="Your Company Name" aria-required="true" />
@@ -36,7 +38,7 @@ export function render() {
             </div>
 
             <div class="form-section">
-              <h3>To (Client Details)</h3>
+              <h2>To (Client Details)</h2>
               <div class="form-group">
                 <label for="to-company">Company/Name <span aria-label="required" class="required">*</span></label>
                 <input type="text" id="to-company" placeholder="Client Company Name" aria-required="true" />
@@ -58,7 +60,7 @@ export function render() {
             </div>
 
             <div class="form-section">
-              <h3>Invoice Details</h3>
+              <h2>Invoice Details</h2>
               <div class="form-row">
                 <div class="form-group">
                   <label for="invoice-number">Invoice Number</label>
@@ -86,7 +88,7 @@ export function render() {
             </div>
 
             <div class="form-section">
-              <h3>Items</h3>
+              <h2>Items</h2>
               <div id="items-container">
                 <!-- Items will be dynamically added here -->
               </div>
@@ -94,7 +96,7 @@ export function render() {
             </div>
 
             <div class="form-section">
-              <h3>Additional Settings</h3>
+              <h2>Additional Settings</h2>
               <div class="form-row">
                 <div class="form-group">
                   <label for="tax-rate">Tax Rate (%)</label>
@@ -144,7 +146,7 @@ export function render() {
         
         <!-- SEO Content Section -->
         <div class="seo-content">
-        <h2>Understanding the Invoice Generator</h2>
+        <h3>Understanding the Invoice Generator</h3>
         <p>
           Our free <strong>invoice generator</strong> is a comprehensive online tool designed to help freelancers, small businesses, and entrepreneurs create professional invoices quickly and efficiently. This powerful invoice maker eliminates the need for expensive software or complex templates, providing everything you need to generate polished, payment-ready invoices in minutes.
         </p>
@@ -152,7 +154,7 @@ export function render() {
           With real-time preview functionality and instant PDF download capabilities, our invoice generator streamlines your billing process while maintaining the professional appearance that builds trust with clients. The tool operates entirely in your browser, ensuring your sensitive business information remains secure and private throughout the invoice creation process.
         </p>
 
-        <h2>How to Use Our Invoice Generator</h2>
+        <h3>How to Use Our Invoice Generator</h3>
         <p>Creating professional invoices with our <strong>invoice generator</strong> is straightforward and intuitive:</p>
         <ol class="instruction-list">
           <li><strong>Enter Your Business Details:</strong> Fill in your company name, address, email, and phone number in the "From" section to establish your professional identity.</li>
@@ -166,7 +168,7 @@ export function render() {
           The invoice generator automatically calculates totals, applies taxes and discounts, and formats everything according to professional invoicing standards, saving you time while ensuring accuracy and compliance.
         </p>
 
-        <h2>Online Invoice Generator for Modern Businesses</h2>
+        <h3>Online Invoice Generator for Modern Businesses</h3>
         <p>
           Our <strong>online invoice generator</strong> represents the modern solution to traditional invoicing challenges. Unlike desktop software that requires installation and updates, this web-based tool provides instant access from any device with an internet connection, making it perfect for remote work, client meetings, and on-the-go business operations.
         </p>
@@ -177,7 +179,7 @@ export function render() {
           Security and privacy are paramount in our <strong>online invoice generator</strong>. All processing happens locally in your browser, meaning your sensitive business and client information never leaves your device. This approach provides the convenience of online access while maintaining the security of offline processing, giving you the best of both worlds for your invoicing needs.
         </p>
 
-        <h2>Best Free Invoice Generator Features</h2>
+        <h3>Best Free Invoice Generator Features</h3>
         <p>
           What makes our tool the <strong>best free invoice generator</strong> available online? Our comprehensive feature set rivals expensive paid alternatives while remaining completely free to use. The tool includes professional invoice templates, automatic calculations, real-time preview, PDF generation, and customizable fields for various business types.
         </p>
@@ -188,7 +190,7 @@ export function render() {
           The <strong>best free invoice generator</strong> should also be user-friendly and efficient. Our intuitive interface reduces the learning curve, while smart features like automatic date filling, currency selection, and dynamic item management streamline the invoice creation process. Performance optimizations ensure smooth operation even with complex invoices containing numerous line items and detailed calculations.
         </p>
 
-        <h2>Professional Invoice Templates and Customization</h2>
+        <h3>Professional Invoice Templates and Customization</h3>
         <p>
           Our invoice generator utilizes professionally designed <strong>invoice templates</strong> that create polished, business-ready documents every time. These templates follow industry best practices for layout, typography, and information hierarchy, ensuring your invoices look professional and are easy to read and process.
         </p>
@@ -199,51 +201,51 @@ export function render() {
           Customization options within our <strong>professional invoice</strong> templates include currency selection, tax rate configuration, discount application, and flexible note sections. These features allow you to adapt the invoice format to your specific business needs, industry requirements, and client preferences while maintaining the professional appearance that facilitates prompt payment.
         </p>
 
-        <h2>Frequently Asked Questions</h2>
+        <h3>Frequently Asked Questions</h3>
         
         <div class="faq-item">
-          <h3>Is this invoice generator completely free to use?</h3>
+          <h4>Is this invoice generator completely free to use?</h4>
           <p>
             Yes, our <strong>invoice generator</strong> is completely free with no hidden costs, usage limits, or watermarks. You can create unlimited invoices, download PDFs, and access all features without any payment or subscription requirements.
           </p>
         </div>
         
         <div class="faq-item">
-          <h3>Can I customize the invoice template and add my logo?</h3>
+          <h4>Can I customize the invoice template and add my logo?</h4>
           <p>
             Currently, our invoice generator focuses on clean, professional text-based invoices. While logo upload isn't available in this version, the professional formatting and comprehensive customization options ensure your invoices maintain a polished, business-ready appearance.
           </p>
         </div>
         
         <div class="faq-item">
-          <h3>Is my business and client information secure?</h3>
+          <h4>Is my business and client information secure?</h4>
           <p>
             Absolutely. All invoice generation happens entirely in your browser - no data is sent to our servers. Your business information, client details, and invoice content remain completely private and secure throughout the entire process.
           </p>
         </div>
 
         <div class="faq-item">
-          <h3>Can I save my invoice data for future use?</h3>
+          <h4>Can I save my invoice data for future use?</h4>
           <p>
             The tool saves your form data locally in your browser, so your information will be retained when you return to create new invoices. However, we recommend downloading and saving your completed invoices as PDFs for your records.
           </p>
         </div>
 
         <div class="faq-item">
-          <h3>What file format does the invoice generator export?</h3>
+          <h4>What file format does the invoice generator export?</h4>
           <p>
             The invoice generator exports professional PDF files that are compatible with all devices and can be easily emailed to clients, printed for records, or stored in your accounting system.
           </p>
         </div>
 
         <div class="faq-item">
-          <h3>Can I handle multiple currencies and tax rates?</h3>
+          <h4>Can I handle multiple currencies and tax rates?</h4>
           <p>
             Yes, the tool supports multiple major currencies (USD, EUR, GBP, CAD, AUD) and allows you to set custom tax rates as percentages. This makes it suitable for international businesses and various tax jurisdictions.
           </p>
         </div>
 
-        <h2>Invoice Generator and Your Business Workflow</h2>
+        <h3>Invoice Generator and Your Business Workflow</h3>
         <p>
           Our <strong>invoice generator</strong> integrates seamlessly into any business workflow, from freelance services to product sales. The tool's efficiency and professional output help maintain consistent billing practices that improve cash flow and client relationships.
         </p>

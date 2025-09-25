@@ -37,7 +37,7 @@ async function buildSite() {
       throw new Error('index.html template not found in src/');
     }
 
-    const templateHtml = fs.readFileSync(templatePath, 'utf8');
+    const templateHtml = inlineCriticalCSS(fs.readFileSync(templatePath, 'utf8'));
 
     // Generate homepage (index.html)
     const homepageHtml = templateHtml
@@ -423,12 +423,9 @@ function generateRobotsTxt() {
   const robotsContent = `User-agent: *
 Allow: /
 
-# Sitemap
 Sitemap: https://simpleonlinetool.com/sitemap.xml
 
-# Crawl-delay
-Crawl-delay: 1
-`;
+Crawl-delay: 1`;
 
   const robotsPath = path.join('dist', 'robots.txt');
   fs.writeFileSync(robotsPath, robotsContent);
@@ -538,4 +535,29 @@ if (isWatchMode) {
 } else {
   // Run single build
   buildSite();
+}
+
+// Function to inline critical CSS
+function inlineCriticalCSS(html) {
+  try {
+    // Read critical CSS files
+    const baseCss = fs.readFileSync('src/styles/base.css', 'utf8');
+    const layoutCss = fs.readFileSync('src/styles/layout.css', 'utf8');
+    
+    // Combine critical CSS
+    const criticalCSS = baseCss + '\n' + layoutCss;
+    
+    // Remove existing CSS link tags for critical files
+    html = html.replace(/<link rel="stylesheet" href="\/styles\/base\.css">\s*/g, '');
+    html = html.replace(/<link rel="stylesheet" href="\/styles\/layout\.css">\s*/g, '');
+    
+    // Inline critical CSS before closing </head>
+    const inlinedCSS = `    <style>\n${criticalCSS}\n    </style>\n    `;
+    html = html.replace('</head>', `${inlinedCSS}</head>`);
+    
+    return html;
+  } catch (error) {
+    console.warn('⚠️ Failed to inline critical CSS:', error.message);
+    return html;
+  }
 }

@@ -41,10 +41,12 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/layout.css">
-    <link rel="stylesheet" href="/components/rating-widget.css">
+    <link rel="stylesheet" href="/components/rating-widget.css" media="print" onload="this.media='all'; this.onload=null;">
+    <noscript><link rel="stylesheet" href="/components/rating-widget.css"></noscript>
     
     <!-- Preload critical resources -->
     <link rel="preload" href="/app.js" as="script" crossorigin>
+    <link rel="preload" href="/components/rating-widget.css" as="style" crossorigin>
     
     <!--SCHEMA_MARKUP-->
 </head>

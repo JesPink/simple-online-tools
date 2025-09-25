@@ -5,7 +5,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h3>Meeting Participants</h3>
+              <h2>Meeting Participants</h2>
               <div class="form-group">
                 <label for="participant-name">Participant Name</label>
                 <input type="text" id="participant-name" placeholder="e.g., John Smith, Marketing Manager" />
@@ -20,7 +20,7 @@ export function render() {
             </div>
 
             <div class="form-section" id="participants-section" style="display: none;">
-              <h3>Current Participants</h3>
+              <h2>Current Participants</h2>
               <div id="participants-list"></div>
               <div class="meeting-controls">
                 <div class="timer-display">
@@ -37,7 +37,7 @@ export function render() {
           </div>
           
           <div class="tool-results">
-            <h3>Meeting Cost Analysis</h3>
+            <h2>Meeting Cost Analysis</h2>
             <div class="results-content">
               <div id="results-container">
                 <p class="placeholder-text">Add participants and start the meeting timer to see real-time cost analysis.</p>
@@ -47,12 +47,12 @@ export function render() {
         </div>
         
         <div class="seo-content">
-          <h2>Understanding the Meeting Cost Calculator</h2>
+          <h3>Understanding the Meeting Cost Calculator</h3>
           <p>A <strong>meeting cost calculator</strong> is an essential business productivity tool that reveals the true financial impact of your meetings by calculating real-time costs based on participant salaries and meeting duration. In today's business environment where the average knowledge worker spends 37% of their time in meetings, understanding the actual dollar cost of each meeting has become crucial for optimizing productivity and making informed decisions about meeting necessity and duration.</p>
           
           <p>Our meeting cost calculator transforms abstract time into concrete financial data, helping teams and managers visualize exactly how much each minute costs when multiple professionals gather. Whether you're running a quick 15-minute standup or a lengthy strategic planning session, this tool provides immediate visibility into the accumulating expense, creating natural motivation for more focused and efficient discussions.</p>
 
-          <h2>How to Use Our Meeting Cost Calculator</h2>
+          <h3>How to Use Our Meeting Cost Calculator</h3>
           <p>Using our meeting cost calculator is straightforward and takes just minutes to set up, but provides valuable insights throughout your meeting duration:</p>
           
           <p><strong>Step 1: Add Meeting Participants</strong><br>
@@ -70,38 +70,38 @@ export function render() {
           <p><strong>Step 5: Analyze Meeting Efficiency</strong><br>
           Use the pause and reset functions to break down costs by agenda items or meeting segments, helping you identify which portions of meetings provide the most value relative to their cost.</p>
 
-          <h2>Meeting Cost Counter: Real-Time Financial Awareness</h2>
+          <h3>Meeting Cost Counter: Real-Time Financial Awareness</h3>
           <p>A meeting cost counter serves as more than just a calculation tool—it's a behavioral change catalyst that transforms how teams approach meeting planning and execution. By providing immediate visual feedback on accumulating costs, the counter creates natural pressure to stay on topic, reduce tangential discussions, and respect scheduled time limits.</p>
           
           <p>The psychological impact of seeing dollars tick upward every second cannot be understated. Teams report that simply having a visible meeting cost counter running during their sessions leads to more focused conversations, quicker decision-making, and increased respect for everyone's time. This real-time awareness helps justify the business case for shorter meetings and more selective participant lists.</p>
           
           <p>Modern businesses are increasingly adopting meeting cost counters as part of their efficiency initiatives, with some companies requiring cost calculations for any meeting involving more than three people or lasting longer than 30 minutes. This data-driven approach to meeting management helps organizations make informed decisions about which meetings truly justify their financial investment.</p>
 
-          <h2>Meeting Time Cost Calculator for Strategic Planning</h2>
+          <h3>Meeting Time Cost Calculator for Strategic Planning</h3>
           <p>A meeting time cost calculator becomes particularly valuable for strategic planning sessions, where senior executives and department heads often gather for extended periods. These high-level meetings can easily accumulate costs of hundreds or thousands of dollars per hour, making it crucial to ensure every minute delivers proportional value to the organization.</p>
           
           <p>By using a meeting time cost calculator during planning sessions, organizations can make data-informed decisions about meeting frequency, duration, and participant inclusion. The calculator helps answer critical questions: Is this two-hour session worth $2,400 in combined salaries? Would splitting this into smaller, focused sessions be more cost-effective? Are all invited participants essential, or could some receive updates through other channels?</p>
           
           <p>The strategic value extends beyond individual meetings to overall meeting culture transformation. Teams that regularly use meeting time cost calculators report developing better meeting hygiene, including more thorough agenda preparation, stricter time management, and increased focus on actionable outcomes rather than status updates or lengthy discussions that could happen asynchronously.</p>
 
-          <h2>Meeting Cost Calculator Timer: Optimizing Business Efficiency</h2>
+          <h3>Meeting Cost Calculator Timer: Optimizing Business Efficiency</h3>
           <p>The meeting cost calculator timer function provides granular insights into how meeting time translates to business expenses, enabling organizations to optimize their collaborative processes. Unlike simple timers that only track duration, a cost-integrated timer creates immediate awareness of financial implications, encouraging more disciplined meeting management.</p>
           
           <p>Professional teams use meeting cost calculator timers to establish meeting budgets, much like project budgets. Before scheduling a meeting, they estimate the total cost based on required participants and planned duration, then use the timer to stay within budget. This approach treats meeting time as the valuable business resource it truly is, leading to more strategic decisions about when meetings are necessary versus when alternatives like shared documents or asynchronous communication might suffice.</p>
           
           <p>The timer's pause and segment features allow for detailed analysis of meeting efficiency. Teams can track which agenda items consume the most time relative to their importance, identify recurring time drains, and develop strategies for more efficient future meetings. This data-driven approach to meeting optimization can result in significant productivity gains and cost savings across the organization.</p>
 
-          <h2>Meeting Cost Tracker: Long-Term Meeting ROI Analysis</h2>
+          <h3>Meeting Cost Tracker: Long-Term Meeting ROI Analysis</h3>
           <p>A comprehensive meeting cost tracker extends beyond individual session calculations to provide insights into long-term meeting patterns and return on investment. By tracking costs across multiple meetings, teams can identify trends, optimize recurring meetings, and make strategic decisions about their collaborative processes.</p>
           
           <p>Organizations using meeting cost trackers often discover surprising patterns: certain types of meetings consistently exceed their value threshold, some participants contribute more effectively in smaller groups, or specific meeting formats generate better outcomes per dollar invested. This data enables informed decisions about meeting restructuring, participant optimization, and format changes that can significantly improve overall efficiency.</p>
           
           <p>The tracking capability also supports budget planning and resource allocation decisions. Teams can forecast meeting costs for upcoming projects, compare the efficiency of different collaboration methods, and demonstrate the ROI of investments in meeting efficiency tools or training. This quantitative approach to meeting management aligns with broader business objectives of operational efficiency and cost optimization.</p>
 
-          <h2>Frequently Asked Questions</h2>
+          <h3>Frequently Asked Questions</h3>
           <div class="faq-section">
             <div class="faq-item">
-              <h3>How accurate is the meeting cost calculator in determining real meeting expenses?</h3>
+              <h4>How accurate is the meeting cost calculator in determining real meeting expenses?</h4>
               <p>Our meeting cost calculator provides highly accurate cost estimates based on the hourly rates you input. The calculation includes all participants' combined hourly costs multiplied by meeting duration. However, remember that true meeting costs may include additional factors like opportunity costs, preparation time, and follow-up activities that extend beyond the actual meeting duration.</p>
             </div>
             
@@ -111,22 +111,22 @@ export function render() {
             </div>
             
             <div class="faq-item">
-              <h3>Can I use estimated hourly rates if I don't know exact participant salaries?</h3>
+              <h4>Can I use estimated hourly rates if I don't know exact participant salaries?</h4>
               <p>Yes, estimated rates work well for cost awareness purposes. Use industry salary surveys, role-based estimates, or general ranges (junior: $25-40/hour, mid-level: $40-75/hour, senior: $75-150/hour). The goal is relative cost awareness rather than precise accounting, so reasonable estimates provide valuable insights.</p>
             </div>
             
             <div class="faq-item">
-              <h3>How can I use meeting cost data to improve team productivity?</h3>
+              <h4>How can I use meeting cost data to improve team productivity?</h4>
               <p>Use cost data to set meeting budgets, justify agenda changes, reduce participant lists to essential members only, and demonstrate the value of preparation. Share cost calculations with teams to create collective awareness and motivation for more efficient meetings. Track costs over time to identify improvement opportunities and measure progress.</p>
             </div>
             
             <div class="faq-item">
-              <h3>Does the calculator account for benefits and overhead costs beyond salary?</h3>
+              <h4>Does the calculator account for benefits and overhead costs beyond salary?</h4>
               <p>The basic calculator uses the hourly rates you provide. To account for full employment costs (benefits, overhead, etc.), multiply salary-based hourly rates by 1.25-1.4 when entering them. This adjustment provides a more comprehensive view of true participant costs, including typical benefit and overhead expenses.</p>
             </div>
           </div>
 
-          <h2>Meeting Cost Calculator and Your Business Workflow</h2>
+          <h3>Meeting Cost Calculator and Your Business Workflow</h3>
           <p>Integrating a meeting cost calculator into your business workflow transforms meeting culture from time-focused to value-focused, ensuring every collaborative session delivers appropriate return on investment. This tool works excellently alongside other productivity tools like our <a href="/tools/word-counter/">Word Counter</a> for measuring meeting agenda length and our <a href="/tools/case-converter/">Case Converter</a> for standardizing meeting documentation formats.</p>
           
           <p>The meeting cost calculator serves as a cornerstone tool for organizations committed to operational efficiency and data-driven decision making. By quantifying the true cost of collaboration, it enables more strategic choices about when, how, and with whom to meet, ultimately leading to more productive teams and better business outcomes.</p>
