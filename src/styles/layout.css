@@ -429,6 +429,19 @@ main {
   .related-tool-link {
     padding: var(--space-5);
   }
+  
+  /* Mobile Footer CLS Prevention */
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    text-align: center;
+    height: 220px; /* Fixed height for mobile */
+  }
+  
+  #main-footer {
+    padding: var(--space-8) 0 var(--space-4);
+    height: 280px; /* Fixed height for mobile */
+  }
 }
 
 /* Footer Styles */
@@ -437,9 +450,10 @@ main {
   color: var(--text-white);
   margin-top: auto;
   padding: var(--space-12) 0 var(--space-6);
-  min-height: 320px; /* Increased to prevent layout shift */
+  height: 360px; /* Fixed height instead of min-height to prevent CLS */
   /* CLS Prevention: Fixed positioning and dimensions */
   contain: layout style;
+  overflow: hidden; /* Prevent content overflow causing layout shift */
 }
 
 .footer-container {
@@ -450,9 +464,10 @@ main {
 
 .footer-content {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns to prevent layout shift */
   gap: var(--space-8);
   margin-bottom: var(--space-8);
+  height: 200px; /* Fixed height to prevent CLS */
 }
 
 .footer-section h3,
@@ -597,13 +612,15 @@ main {
   }
   
   .footer-content {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--space-8);
-    text-align: left;
+    grid-template-columns: 1fr; /* Single column on tablet for consistent layout */
+    gap: var(--space-6);
+    text-align: center;
+    height: 280px; /* Fixed height for tablet */
   }
   
   #main-footer {
-    padding: var(--space-12) 0 var(--space-6);
+    padding: var(--space-10) 0 var(--space-4);
+    height: 320px; /* Adjusted height for tablet */
   }
   
   .breadcrumbs {

@@ -7,6 +7,14 @@
     <meta name="description" content="<!--SEO_DESCRIPTION-->">
     <meta name="keywords" content="<!--SEO_KEYWORDS-->">
     
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    
+    <!-- Performance Meta Tags -->
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="<!--SEO_TITLE-->">
     <meta property="og:description" content="<!--SEO_DESCRIPTION-->">
@@ -28,13 +36,32 @@
     
     <!-- Google Analytics (Production Only) -->
     <!--GOOGLE_ANALYTICS_START-->
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-69YB2G5L5P"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-69YB2G5L5P');
+    <!-- Deferred Google Analytics for performance -->
+    <script defer>
+      // Load Google Analytics after page interaction or after 3 seconds
+      let gaLoaded = false;
+      function loadGA() {
+        if (gaLoaded) return;
+        gaLoaded = true;
+        
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-69YB2G5L5P';
+        document.head.appendChild(script);
+        
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-69YB2G5L5P');
+      }
+      
+      // Load on user interaction or after delay
+      ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'].forEach(function(event) {
+        document.addEventListener(event, loadGA, {once: true, passive: true});
+      });
+      
+      // Fallback: load after 3 seconds
+      setTimeout(loadGA, 3000);
     </script>
     <!--GOOGLE_ANALYTICS_END-->
     
@@ -116,7 +143,7 @@
         </div>
     </footer>
 
-    <!-- Main Application Script -->
-    <script type="module" src="/app.js"></script>
+    <!-- Main Application Script - Deferred for Performance -->
+    <script type="module" src="/app.js" defer></script>
 </body>
 </html>
