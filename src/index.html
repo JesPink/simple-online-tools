@@ -68,12 +68,13 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/layout.css">
-    <link rel="stylesheet" href="/components/rating-widget.css" media="print" onload="this.media='all'; this.onload=null;">
-    <noscript><link rel="stylesheet" href="/components/rating-widget.css"></noscript>
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="/app.js" as="script" crossorigin>
-    <link rel="preload" href="/components/rating-widget.css" as="style" crossorigin>
+    <!-- Critical Rating Widget CSS inlined to prevent network chain -->
+    <style>
+      .rating-widget{background:var(--surface-color,#fff);border:1px solid var(--border-color,#e5e7eb);border-radius:var(--border-radius,8px);padding:var(--space-6,24px);margin:var(--space-6,24px) 0;box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);transition:all .2s ease}.star-rating{display:flex;justify-content:center;gap:var(--space-2,8px);margin-bottom:var(--space-4,16px)}.star-btn{background:none;border:none;cursor:pointer;padding:var(--space-2,8px);border-radius:var(--border-radius,8px);transition:all .2s ease;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center}.star-icon{width:32px;height:32px;color:var(--border-color,#d1d5db);transition:all .2s ease}.rating-feedback{text-align:center;padding:var(--space-4,16px);background-color:var(--success-light,#f0fdf4);border:1px solid var(--success-border,#bbf7d0);border-radius:var(--border-radius,8px);margin-bottom:var(--space-4,16px)}
+    </style>
+    
+    <!-- Optimized for minimal critical path -->
     
     <!--SCHEMA_MARKUP-->
 </head>
@@ -143,7 +144,15 @@
         </div>
     </footer>
 
-    <!-- Main Application Script - Deferred for Performance -->
-    <script type="module" src="/app.js" defer></script>
+    <!-- Main Application Script - Optimized Loading -->
+    <script>
+      // Load app.js after page is interactive
+      document.addEventListener('DOMContentLoaded', () => {
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = '/app.js';
+        document.head.appendChild(script);
+      });
+    </script>
 </body>
 </html>

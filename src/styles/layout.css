@@ -435,12 +435,10 @@ main {
     grid-template-columns: 1fr;
     gap: var(--space-4);
     text-align: center;
-    height: 220px; /* Fixed height for mobile */
   }
   
   #main-footer {
     padding: var(--space-8) 0 var(--space-4);
-    height: 280px; /* Fixed height for mobile */
   }
 }
 
@@ -450,10 +448,10 @@ main {
   color: var(--text-white);
   margin-top: auto;
   padding: var(--space-12) 0 var(--space-6);
-  height: 360px; /* Fixed height instead of min-height to prevent CLS */
-  /* CLS Prevention: Fixed positioning and dimensions */
-  contain: layout style;
-  overflow: hidden; /* Prevent content overflow causing layout shift */
+  /* CLS Prevention: Use transform instead of height changes */
+  contain: layout style paint;
+  will-change: transform; /* GPU acceleration */
+  transform: translateZ(0); /* Force GPU layer */
 }
 
 .footer-container {
@@ -467,7 +465,7 @@ main {
   grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns to prevent layout shift */
   gap: var(--space-8);
   margin-bottom: var(--space-8);
-  height: 200px; /* Fixed height to prevent CLS */
+  contain: layout; /* Prevent layout thrashing */
 }
 
 .footer-section h3,
@@ -475,6 +473,7 @@ main {
   color: var(--text-white);
   margin-bottom: var(--space-4);
   font-weight: var(--font-weight-semibold);
+  contain: layout; /* Prevent reflow during rendering */
 }
 
 .footer-section h3 {
@@ -612,15 +611,13 @@ main {
   }
   
   .footer-content {
-    grid-template-columns: 1fr; /* Single column on tablet for consistent layout */
+    grid-template-columns: repeat(2, 1fr); /* Two columns on tablet */
     gap: var(--space-6);
     text-align: center;
-    height: 280px; /* Fixed height for tablet */
   }
   
   #main-footer {
     padding: var(--space-10) 0 var(--space-4);
-    height: 320px; /* Adjusted height for tablet */
   }
   
   .breadcrumbs {
