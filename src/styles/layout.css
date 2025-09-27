@@ -430,30 +430,19 @@ main {
     padding: var(--space-5);
   }
   
-  /* Mobile Footer CLS Prevention */
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-    text-align: center;
-  }
-  
-  #main-footer {
-    padding: var(--space-8) 0 var(--space-4);
-  }
+  /* REMOVED: Duplicate mobile footer rules - handled in main mobile section */
 }
 
-/* Footer Styles - CLS Prevention with Reserved Space */
+/* Footer Styles - Enhanced CLS Prevention */
 #main-footer {
   background-color: var(--bg-dark);
   color: var(--text-white);
   margin-top: auto;
   /* CRITICAL: Reserve exact footer height to prevent CLS */
-  min-height: 280px; /* Desktop footer height */
+  min-height: 320px; /* Increased for stable desktop height */
   padding: var(--space-12) 0 var(--space-6);
-  /* Advanced CLS Prevention */
-  contain: strict; /* Strictest containment for zero layout impact */
-  content-visibility: auto; /* Optimize rendering */
-  transform: translateZ(0); /* Force GPU layer */
+  /* IMPROVED: Safe containment only for layout */
+  contain: layout; /* Only layout containment - safe and effective */
 }
 
 .footer-container {
@@ -464,14 +453,14 @@ main {
 
 .footer-content {
   display: grid;
-  /* CRITICAL: Explicit grid template prevents CLS on all screen sizes */
-  grid-template-columns: 1fr 1fr 1fr; /* Explicit 3 columns, never collapses */
+  /* IMPROVED: Stable grid with minmax for better CLS prevention */
+  grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr) minmax(250px, 1fr) minmax(250px, 1fr);
   gap: var(--space-8);
   margin-bottom: var(--space-8);
-  /* Advanced containment for zero layout impact */
-  contain: strict;
+  /* IMPROVED: Explicit rows prevent layout shifts */
+  grid-auto-rows: min-content;
   /* Reserve minimum height to prevent text reflow CLS */
-  min-height: 160px; /* Reserve space for 3-column content */
+  min-height: 180px; /* Slightly increased for stability */
 }
 
 .footer-section h3,
@@ -564,21 +553,21 @@ main {
   padding: var(--space-6);
 }
 
-.footer-content {
-  grid-template-columns: 1fr; /* Single column on mobile */
-  gap: var(--space-6);
-  text-align: center;
-  /* CRITICAL: Reserve mobile footer height to prevent CLS */
-  min-height: 420px; /* Mobile single-column content height */
-}
-
-#main-footer {
-  padding: var(--space-8) 0 var(--space-4);
-  /* CRITICAL: Reserve mobile footer total height */
-  min-height: 500px; /* Total mobile footer height including padding */
-}
-
-.breadcrumbs {
+  .footer-content {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: var(--space-6);
+    text-align: center;
+    /* CRITICAL: Explicit rows for stable mobile layout */
+    grid-template-rows: auto auto auto auto; /* Explicit rows prevent shifts */
+    /* CRITICAL: Reserve mobile footer height to prevent CLS */
+    min-height: 400px; /* Optimized mobile single-column content height */
+  }
+  
+  #main-footer {
+    padding: var(--space-8) 0 var(--space-4);
+    /* CRITICAL: Reserve mobile footer total height */
+    min-height: 480px; /* Optimized total mobile footer height */
+  }.breadcrumbs {
   flex-wrap: wrap;
   gap: var(--space-1);
 }
@@ -624,6 +613,9 @@ main {
     grid-template-columns: repeat(2, 1fr); /* Two columns on tablet */
     gap: var(--space-6);
     text-align: center;
+    /* IMPROVED: Explicit rows for tablet layout stability */
+    grid-template-rows: auto auto; /* Two rows for 2x2 grid */
+    min-height: 200px; /* Reserve tablet height */
   }
   
   #main-footer {
@@ -640,6 +632,20 @@ main {
   .category-tools {
     grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   }
+  
+  /* IMPROVED: Stable desktop footer with explicit 4-column layout */
+  .footer-content {
+    grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr) minmax(250px, 1fr) minmax(250px, 1fr);
+    gap: var(--space-8);
+    text-align: left; /* Better UX for desktop */
+    grid-template-rows: auto; /* Single row for desktop */
+    min-height: 180px; /* Reserve desktop height */
+  }
+  
+  #main-footer {
+    padding: var(--space-12) 0 var(--space-6);
+    min-height: 320px; /* Stable desktop footer height */
+  }
 }
 
 /* MANDATORY Tool Foundation Classes */
@@ -651,7 +657,7 @@ main {
   margin-bottom: var(--space-8);
   box-shadow: var(--shadow-sm);
   min-height: 400px; /* Prevent CLS during tool loading */
-  contain: layout style; /* Performance optimization */
+  contain: layout; /* IMPROVED: Safe layout containment only */
 }
 
 .tool-main {
