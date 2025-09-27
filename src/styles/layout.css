@@ -437,7 +437,9 @@ main {
   color: var(--text-white);
   margin-top: auto;
   padding: var(--space-12) 0 var(--space-6);
-  min-height: 300px; /* Prevent layout shift */
+  min-height: 320px; /* Increased to prevent layout shift */
+  /* CLS Prevention: Fixed positioning and dimensions */
+  contain: layout style;
 }
 
 .footer-container {
@@ -624,6 +626,8 @@ main {
   padding: var(--space-6);
   margin-bottom: var(--space-8);
   box-shadow: var(--shadow-sm);
+  min-height: 400px; /* Prevent CLS during tool loading */
+  contain: layout style; /* Performance optimization */
 }
 
 .tool-main {

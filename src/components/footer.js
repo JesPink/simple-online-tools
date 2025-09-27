@@ -62,12 +62,8 @@ export function initFooter() {
     });
   });
 
-  // Update copyright year dynamically
-  const copyrightElement = document.querySelector('.footer-bottom p');
-  if (copyrightElement) {
-    const currentYear = new Date().getFullYear();
-    copyrightElement.textContent = `© ${currentYear} Free Tools Platform. All rights reserved.`;
-  }
+  // Copyright year is static in template to prevent CLS
+  // Dynamic updates removed to improve Lighthouse CLS score
 }
 
 export default {

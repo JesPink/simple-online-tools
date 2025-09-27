@@ -261,6 +261,9 @@ async function buildSite() {
 
       // Tool foundation compliance is validated by npm run validate before this build process
 
+      // Apply tool-specific critical CSS inlining for performance optimization
+      toolHtml = inlineCriticalCSS(toolHtml, tool.slug);
+
       // Create clean URL structure: /tools/tool-slug/ (instead of /tools/tool-slug.html)
       const toolDir = path.join('dist', 'tools', tool.slug);
       fs.mkdirSync(toolDir, { recursive: true });
@@ -537,15 +540,30 @@ if (isWatchMode) {
   buildSite();
 }
 
-// Function to inline critical CSS
-function inlineCriticalCSS(html) {
+// Function to inline critical CSS (enhanced for performance)
+function inlineCriticalCSS(html, toolSlug = null) {
   try {
     // Read critical CSS files
     const baseCss = fs.readFileSync('src/styles/base.css', 'utf8');
     const layoutCss = fs.readFileSync('src/styles/layout.css', 'utf8');
     
     // Combine critical CSS
-    const criticalCSS = baseCss + '\n' + layoutCss;
+    let criticalCSS = baseCss + '\n' + layoutCss;
+    
+    // For tool pages, inline critical tool-specific CSS to prevent render-blocking
+    if (toolSlug) {
+      const toolCssPath = `src/tools/${toolSlug}/style.css`;
+      if (fs.existsSync(toolCssPath)) {
+        const toolCss = fs.readFileSync(toolCssPath, 'utf8');
+        
+        // Extract only critical tool CSS (above-the-fold styles)
+        const criticalToolCSS = extractCriticalToolCSS(toolCss, toolSlug);
+        criticalCSS += '\n' + criticalToolCSS;
+        
+        // Remove tool CSS link to prevent render-blocking
+        html = html.replace(new RegExp(`<link rel="stylesheet" href="/tools/${toolSlug}/style\\.css">\\s*`, 'g'), '');
+      }
+    }
     
     // Remove existing CSS link tags for critical files
     html = html.replace(/<link rel="stylesheet" href="\/styles\/base\.css">\s*/g, '');
@@ -560,4 +578,57 @@ function inlineCriticalCSS(html) {
     console.warn('⚠️ Failed to inline critical CSS:', error.message);
     return html;
   }
+}
+
+// Extract critical (above-the-fold) CSS from tool styles
+function extractCriticalToolCSS(toolCSS, toolSlug) {
+  // Extract only the most critical styles for initial render
+  const criticalSelectors = [
+    `.${toolSlug}-tool`,
+    '.tool-container',
+    '.tool-interface', 
+    '.tool-main',
+    '.form-section',
+    '.form-group',
+    '.btn',
+    'input',
+    'textarea',
+    '.stats-grid',
+    '.stat-card',
+    '.stat-number',
+    '.stat-label'
+  ];
+  
+  let criticalCSS = '';
+  
+  // Extract base tool styles and form elements (critical for first paint)
+  const lines = toolCSS.split('\n');
+  let currentRule = '';
+  let inCriticalRule = false;
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    // Check if this line starts a new CSS rule
+    if (line.includes('{') && !line.trim().startsWith('/*')) {
+      // Check if this is a critical selector
+      inCriticalRule = criticalSelectors.some(selector => 
+        line.includes(selector) && 
+        !line.includes('@media') && 
+        !line.includes('@keyframes')
+      );
+      currentRule = line;
+    } else if (line.includes('}')) {
+      currentRule += '\n' + line;
+      if (inCriticalRule) {
+        criticalCSS += currentRule + '\n';
+      }
+      currentRule = '';
+      inCriticalRule = false;
+    } else if (inCriticalRule || currentRule) {
+      currentRule += '\n' + line;
+    }
+  }
+  
+  return criticalCSS;
 }

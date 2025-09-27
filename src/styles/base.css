@@ -381,8 +381,10 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-16);
+  padding: var(--space-8);
   color: var(--text-muted);
+  min-height: 200px; /* Prevents CLS by reserving space */
+  contain: layout style; /* Improve rendering performance */
 }
 
 .error-message {
