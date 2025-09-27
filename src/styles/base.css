@@ -46,9 +46,12 @@
   --border-color-dark: var(--gray-300);
   --border-color-light: var(--gray-100);
   
-  /* Typography */
+  /* Typography - CLS Prevention */
   --font-family-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Monaco, monospace;
+  
+  /* CRITICAL: Font loading optimization for CLS prevention */
+  font-display: swap; /* Prevent invisible text during font load */
   
   /* Font Sizes */
   --font-size-xs: 0.75rem;    /* 12px */
@@ -115,13 +118,20 @@
   --z-tooltip: 1070;
 }
 
-/* CSS Reset and Base Styles */
+/* CSS Reset and Base Styles - CLS Prevention */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* CRITICAL: Prevent any unexpected layout shifts */
+img, video, iframe {
+  height: auto;
+  max-width: 100%;
+  display: block;
 }
 
 html {

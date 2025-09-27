@@ -443,6 +443,9 @@ main {
   padding: var(--space-12) 0 var(--space-6);
   /* IMPROVED: Safe containment only for layout */
   contain: layout; /* Only layout containment - safe and effective */
+  /* CRITICAL: Force immediate layout calculation */
+  visibility: visible;
+  opacity: 1;
 }
 
 .footer-container {
@@ -453,8 +456,8 @@ main {
 
 .footer-content {
   display: grid;
-  /* IMPROVED: Stable grid with minmax for better CLS prevention */
-  grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr) minmax(250px, 1fr) minmax(250px, 1fr);
+  /* CRITICAL FIX: Only 3 sections in HTML, not 4 - this was causing the grid collapse! */
+  grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr) minmax(250px, 1fr);
   gap: var(--space-8);
   margin-bottom: var(--space-8);
   /* IMPROVED: Explicit rows prevent layout shifts */
@@ -558,7 +561,7 @@ main {
     gap: var(--space-6);
     text-align: center;
     /* CRITICAL: Explicit rows for stable mobile layout */
-    grid-template-rows: auto auto auto auto; /* Explicit rows prevent shifts */
+    grid-template-rows: auto auto auto; /* 3 sections = 3 rows */
     /* CRITICAL: Reserve mobile footer height to prevent CLS */
     min-height: 400px; /* Optimized mobile single-column content height */
   }
@@ -633,9 +636,9 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   }
   
-  /* IMPROVED: Stable desktop footer with explicit 4-column layout */
+  /* IMPROVED: Stable desktop footer with explicit 3-column layout */
   .footer-content {
-    grid-template-columns: minmax(250px, 1fr) minmax(250px, 1fr) minmax(250px, 1fr) minmax(250px, 1fr);
+    grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr) minmax(280px, 1fr);
     gap: var(--space-8);
     text-align: left; /* Better UX for desktop */
     grid-template-rows: auto; /* Single row for desktop */

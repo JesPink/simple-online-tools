@@ -358,7 +358,12 @@ export async function init() {
   }
   
   function animateNumber(element, newValue) {
-    const currentValue = parseInt(element.textContent.replace(/,/g, '')) || 0;
+    // PERFORMANCE FIX: Cache current value to avoid forced reflow
+    if (!element._cachedValue) {
+      element._cachedValue = parseInt(element.textContent.replace(/,/g, '')) || 0;
+    }
+    
+    const currentValue = element._cachedValue;
     const steps = Math.abs(newValue - currentValue);
     
     if (steps === 0) return;
@@ -367,6 +372,7 @@ export async function init() {
     // This prevents performance issues with large text input
     if (steps > 100) {
       element.textContent = newValue.toLocaleString();
+      element._cachedValue = newValue;
       return;
     }
     
@@ -381,6 +387,7 @@ export async function init() {
       
       if (current === newValue) {
         clearInterval(timer);
+        element._cachedValue = newValue;
       }
     }, stepDuration);
   }
