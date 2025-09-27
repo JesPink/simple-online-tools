@@ -144,15 +144,7 @@
         </div>
     </footer>
 
-    <!-- Main Application Script - Optimized Loading -->
-    <script>
-      // Load app.js after page is interactive
-      document.addEventListener('DOMContentLoaded', () => {
-        const script = document.createElement('script');
-        script.type = 'module';
-        script.src = '/app.js';
-        document.head.appendChild(script);
-      });
-    </script>
+    <!-- Main Application Script - Direct Load -->
+    <script type="module" src="/app.js"></script>
 </body>
 </html>
