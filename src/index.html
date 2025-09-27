@@ -11,6 +11,11 @@
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     
+    <!-- CRITICAL: Break network dependency chain by preloading key resources -->
+    <link rel="preload" href="/app.js" as="script" crossorigin>
+    <link rel="preload" href="/tool-registry.json" as="fetch" crossorigin>
+    <!--TOOL_PRELOAD-->
+    
     <!-- Performance Meta Tags -->
     <meta name="robots" content="index, follow">
     <meta http-equiv="x-ua-compatible" content="ie=edge">

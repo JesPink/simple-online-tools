@@ -442,15 +442,17 @@ main {
   }
 }
 
-/* Footer Styles */
+/* Footer Styles - CLS Prevention with Reserved Space */
 #main-footer {
   background-color: var(--bg-dark);
   color: var(--text-white);
   margin-top: auto;
+  /* CRITICAL: Reserve exact footer height to prevent CLS */
+  min-height: 280px; /* Desktop footer height */
   padding: var(--space-12) 0 var(--space-6);
-  /* CLS Prevention: Use transform instead of height changes */
-  contain: layout style paint;
-  will-change: transform; /* GPU acceleration */
+  /* Advanced CLS Prevention */
+  contain: strict; /* Strictest containment for zero layout impact */
+  content-visibility: auto; /* Optimize rendering */
   transform: translateZ(0); /* Force GPU layer */
 }
 
@@ -462,10 +464,14 @@ main {
 
 .footer-content {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Fixed 3 columns to prevent layout shift */
+  /* CRITICAL: Explicit grid template prevents CLS on all screen sizes */
+  grid-template-columns: 1fr 1fr 1fr; /* Explicit 3 columns, never collapses */
   gap: var(--space-8);
   margin-bottom: var(--space-8);
-  contain: layout; /* Prevent layout thrashing */
+  /* Advanced containment for zero layout impact */
+  contain: strict;
+  /* Reserve minimum height to prevent text reflow CLS */
+  min-height: 160px; /* Reserve space for 3-column content */
 }
 
 .footer-section h3,
@@ -559,13 +565,17 @@ main {
 }
 
 .footer-content {
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr; /* Single column on mobile */
   gap: var(--space-6);
   text-align: center;
+  /* CRITICAL: Reserve mobile footer height to prevent CLS */
+  min-height: 420px; /* Mobile single-column content height */
 }
 
 #main-footer {
   padding: var(--space-8) 0 var(--space-4);
+  /* CRITICAL: Reserve mobile footer total height */
+  min-height: 500px; /* Total mobile footer height including padding */
 }
 
 .breadcrumbs {
