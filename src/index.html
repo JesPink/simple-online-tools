@@ -15,6 +15,10 @@
     <link rel="preload" href="/app.js" as="script" crossorigin>
     <link rel="preload" href="/tool-registry.json" as="fetch" crossorigin>
     
+    <!-- LCP OPTIMIZATION: Preload critical CSS for faster rendering -->
+    <link rel="preload" href="/styles/base.css" as="style">
+    <link rel="preload" href="/styles/layout.css" as="style">
+    
     <!--TOOL_PRELOAD-->
     
     <!-- Performance Meta Tags -->
@@ -74,9 +78,9 @@
     -->
     <!--GOOGLE_ANALYTICS_END-->
     
-    <!-- CSS -->
-    <link rel="stylesheet" href="/styles/base.css">
-    <link rel="stylesheet" href="/styles/layout.css">
+    <!-- CSS with LCP optimization -->
+    <link rel="stylesheet" href="/styles/base.css" fetchpriority="high">
+    <link rel="stylesheet" href="/styles/layout.css" fetchpriority="high">
     
     <!-- Critical Rating Widget CSS inlined to prevent network chain -->
     <style>

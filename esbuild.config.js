@@ -142,6 +142,13 @@ async function buildSite() {
         toolHtml = toolHtml.replace('</head>', `    ${cssLinkTag}\n</head>`);
       }
 
+      // LCP OPTIMIZATION: Preload tool-specific JavaScript for faster interaction
+      const toolJsPath = path.join('src', 'tools', tool.slug, 'index.js');
+      if (fs.existsSync(toolJsPath)) {
+        const jsPreloadTag = `<link rel="preload" href="/tools/${tool.slug}/index.js" as="script" crossorigin>`;
+        toolHtml = toolHtml.replace('<!--TOOL_PRELOAD-->', jsPreloadTag);
+      }
+
       // Create enhanced JSON-LD schema markup for WebApplication and HowTo guide
       const webApplicationSchema = {
         "@context": "https://schema.org",
