@@ -1,4 +1,4 @@
-/* Passive Voice Detector - Uses Foundation Classes */
+/* Enhanced Passive Voice Detector - Advanced Pattern Detection System */
 
 /* Tool-specific styles only - foundation classes handle layout */
 .passive-voice-detector-tool .form-actions {
@@ -8,7 +8,7 @@
   margin-top: var(--space-4);
 }
 
-/* Statistics display */
+/* Enhanced statistics display with confidence metrics */
 .passive-voice-detector-tool .stats-container {
   display: grid;
   grid-template-columns: 1fr;
@@ -66,17 +66,43 @@
   border-radius: var(--radius-md);
 }
 
+/* Confidence-based highlighting system for enhanced accuracy */
 .passive-voice-detector-tool .passive-sentence {
-  background: #fff3cd;
-  border-bottom: 2px solid #ffc107;
-  padding: 2px 4px;
+  padding: 3px 6px;
   border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background-color var(--transition-fast);
+  margin: 0 2px;
+  cursor: help;
+  transition: all var(--transition-fast);
+  border-left: 3px solid;
+  position: relative;
+}
+
+.passive-voice-detector-tool .passive-sentence.high-confidence {
+  background: rgba(220, 53, 69, 0.15);
+  border-left-color: #dc3545;
+  color: #721c24;
+}
+
+.passive-voice-detector-tool .passive-sentence.medium-confidence {
+  background: rgba(255, 193, 7, 0.15);
+  border-left-color: #ffc107;
+  color: #664d03;
+}
+
+.passive-voice-detector-tool .passive-sentence.low-confidence {
+  background: rgba(108, 117, 125, 0.15);
+  border-left-color: #6c757d;
+  color: #495057;
 }
 
 .passive-voice-detector-tool .passive-sentence:hover {
-  background: #ffe69c;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.passive-voice-detector-tool .active-sentence {
+  color: var(--text-primary);
+  margin: 0 1px;
 }
 
 .passive-voice-detector-tool .no-text {
@@ -105,11 +131,63 @@
   gap: var(--space-4);
 }
 
+/* Enhanced suggestion system with confidence indicators */
 .passive-voice-detector-tool .suggestion-item {
   background: var(--bg-secondary);
   border-radius: var(--radius-md);
   padding: var(--space-4);
-  border-left: 4px solid var(--warning-color, #ffc107);
+  margin-bottom: var(--space-3);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid;
+  position: relative;
+}
+
+.passive-voice-detector-tool .suggestion-item[data-confidence] {
+  border-left-color: #6c757d; /* Default low confidence */
+}
+
+/* Dynamic confidence coloring via JavaScript classes */
+.passive-voice-detector-tool .suggestion-item.high-confidence {
+  border-left-color: #dc3545;
+  background: rgba(220, 53, 69, 0.02);
+}
+
+.passive-voice-detector-tool .suggestion-item.medium-confidence {
+  border-left-color: #ffc107;
+  background: rgba(255, 193, 7, 0.02);
+}
+
+.passive-voice-detector-tool .suggestion-item.low-confidence {
+  border-left-color: #6c757d;
+  background: rgba(108, 117, 125, 0.02);
+}
+
+.passive-voice-detector-tool .suggestion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.passive-voice-detector-tool .confidence-badge {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(108, 117, 125, 0.1);
+  color: var(--text-secondary);
+}
+
+.passive-voice-detector-tool .pattern-info {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
+  background: var(--bg-primary);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
 }
 
 .passive-voice-detector-tool .original-sentence {
@@ -117,12 +195,23 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--text-primary);
+  line-height: var(--line-height-relaxed);
+}
+
+.passive-voice-detector-tool .original-sentence code {
+  background: var(--bg-primary);
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  color: var(--primary-color);
+  border: 1px solid var(--border-color);
 }
 
 .passive-voice-detector-tool .suggestion-text {
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
-  line-height: var(--line-height-normal);
+  line-height: var(--line-height-relaxed);
+  font-style: italic;
 }
 
 .passive-voice-detector-tool .no-suggestions {
