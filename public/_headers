@@ -29,9 +29,11 @@
 /tools/*/index.html
   Cache-Control: public, max-age=300, must-revalidate
 
-# Special files
+# Special files - Override Cloudflare managed content
 /robots.txt
   Cache-Control: public, max-age=86400
+  Content-Type: text/plain
+  X-Robots-Tag: noindex
 
 /sitemap.xml
   Cache-Control: public, max-age=86400

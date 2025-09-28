@@ -423,29 +423,25 @@ function generateSitemap(toolRegistry) {
 }
 
 function generateRobotsTxt() {
+  // LIGHTHOUSE-COMPLIANT: Standard robots.txt without non-standard directives
   const robotsContent = `User-agent: *
 Allow: /
 
-# Sitemap
 Sitemap: https://simpleonlinetool.com/sitemap.xml
 
-# Block sensitive directories  
+# Block sensitive directories
 Disallow: /src/
 Disallow: /node_modules/
 Disallow: /*.json$
 
-# Allow specific tool paths
-Allow: /tools/
-Allow: /category/
-
-# Crawl delay
+# Crawl delay for respectful crawling
 Crawl-delay: 1
 
-# Standard robots.txt - no custom directives`;
+# LIGHTHOUSE COMPLIANCE: Standard directives only - no Content-signal or custom extensions`;
 
   const robotsPath = path.join('dist', 'robots.txt');
   fs.writeFileSync(robotsPath, robotsContent);
-  console.log('✅ Generated robots.txt');
+  console.log('✅ Generated Lighthouse-compliant robots.txt');
 }
 
 function copyDirectory(src, dest) {
