@@ -304,6 +304,12 @@ main {
   transform: translateX(4px);
 }
 
+/* CRITICAL CLS FIX: Reserve space for entire tool container to prevent footer shift */
+#tool-container {
+  /* CRITICAL: Reserve minimum total height to prevent footer CLS during dynamic content injection */
+  min-height: 900px; /* Accounts for breadcrumbs + header + tool content + rating widget */
+}
+
 /* Tool Content Area - OPTIMIZED CLS FIX */
 .tool-content {
   background: var(--bg-primary);
@@ -586,6 +592,11 @@ main {
   grid-template-columns: 1fr;
   gap: var(--space-4);
 }
+
+  #tool-container {
+    /* CRITICAL: Mobile height adjustment for CLS prevention */
+    min-height: 800px; /* Slightly less on mobile due to single column layout */
+  }
 
 .tool-content {
   padding: var(--space-6);
