@@ -18,9 +18,9 @@
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Cache tool JavaScript files for 1 year
+# Cache tool JavaScript files for shorter period to allow updates
 /tools/*/index.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=3600, must-revalidate
 
 # HTML files - short cache with revalidation
 /*.html
