@@ -195,9 +195,17 @@ export async function init() {
   // Handle case button clicks
   caseButtons.forEach(button => {
     button.addEventListener('click', () => {
-      // Update active button
-      caseButtons.forEach(btn => btn.classList.remove('active'));
+      // CRITICAL FIX: Remove active class and reset button styles
+      caseButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+      });
+      
+      // Add active state to clicked button
       button.classList.add('active');
+      button.classList.remove('btn-secondary');
+      button.classList.add('btn-primary');
       
       // Update current case type
       currentCaseType = button.dataset.case;

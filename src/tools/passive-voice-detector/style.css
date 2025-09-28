@@ -163,6 +163,19 @@
   }
 }
 
+/* Mobile-first fixes - ensure all elements show */
+.passive-voice-detector-tool .tool-results {
+  /* CRITICAL: Force results to show on mobile */
+  display: block !important;
+  width: 100%;
+}
+
+.passive-voice-detector-tool .stats-container {
+  /* CRITICAL: Mobile visibility fix */
+  display: grid !important;
+  width: 100%;
+}
+
 /* Desktop responsive - 1024px+ */
 @media (min-width: 1024px) {
   .passive-voice-detector-tool .tool-interface {

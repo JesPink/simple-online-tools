@@ -141,7 +141,7 @@ export async function init() {
   const modalVerbs = ['will', 'would', 'shall', 'should', 'can', 'could', 'may', 'might', 'must'];
   const auxiliaryVerbs = ['have', 'has', 'had'];
   
-  // Common past participles (both regular and irregular)
+  // Enhanced past participles list - includes words from your test case
   const pastParticiples = [
     // Irregular past participles
     'written', 'spoken', 'broken', 'chosen', 'driven', 'eaten', 'fallen',
@@ -152,9 +152,11 @@ export async function init() {
     'bound', 'wound', 'ground', 'told', 'sold', 'held', 'felt', 'dealt',
     'meant', 'sent', 'spent', 'bent', 'lent', 'burnt', 'learnt', 'made',
     'paid', 'said', 'laid', 'read', 'heard', 'understood', 'misunderstood',
-    'lost', 'cost', 'cut', 'put', 'shut', 'hit', 'let', 'set', 'bet',
+    'lost', 'cost', 'cut', 'put', 'shut', 'hit', 'let', 'set', 'bet',  
     'hurt', 'split', 'quit', 'spread', 'shed', 'wed', 'fed', 'led', 'bled',
-    // Common regular past participles
+    // CRITICAL: Add missing past participles for test case
+    'woven', 'discovered', 'drawn', 'grown', 'blown', 'flown', 'sown', 'mown',
+    // Common regular past participles  
     'asked', 'worked', 'played', 'moved', 'lived', 'loved', 'liked', 'used',
     'wanted', 'needed', 'called', 'tried', 'opened', 'closed', 'created',
     'developed', 'produced', 'provided', 'required', 'allowed', 'followed',
@@ -162,7 +164,8 @@ export async function init() {
     'published', 'established', 'completed', 'designed', 'implemented',
     'analyzed', 'discussed', 'examined', 'studied', 'researched', 'tested',
     'approved', 'rejected', 'accepted', 'denied', 'cancelled', 'delayed',
-    'scheduled', 'organized', 'planned', 'managed', 'controlled', 'handled'
+    'scheduled', 'organized', 'planned', 'managed', 'controlled', 'handled',
+    'prepared', 'expected', 'received', 'delivered', 'collected', 'selected'
   ];
 
   // Enhanced passive voice detection
@@ -189,52 +192,97 @@ export async function init() {
     return results;
   }
   
-  // Analyze a single sentence for passive voice
+  // Enhanced passive voice detection with improved algorithm
   function analyzeForPassiveVoice(sentence) {
-    const words = sentence.toLowerCase().split(/\s+/);
+    const originalSentence = sentence;
+    const words = sentence.toLowerCase().replace(/[.,!?;:]/g, '').split(/\s+/);
     let isPassive = false;
     let passiveMatch = null;
     let passiveType = null;
     
-    for (let i = 0; i < words.length - 1; i++) {
+    // Check for various passive voice patterns
+    for (let i = 0; i < words.length; i++) {
       const currentWord = words[i];
-      const nextWord = words[i + 1];
-      const nextTwoWords = i < words.length - 2 ? words[i + 2] : '';
       
       // Pattern 1: be verb + past participle
-      if (beVerbs.includes(currentWord) && pastParticiples.includes(nextWord)) {
-        isPassive = true;
-        passiveMatch = `${currentWord} ${nextWord}`;
-        passiveType = 'be_passive';
-        break;
+      if (beVerbs.includes(currentWord)) {
+        for (let j = i + 1; j < Math.min(i + 4, words.length); j++) {
+          const potentialParticiple = words[j];
+          
+          // Skip common non-participle words
+          if (['to', 'the', 'a', 'an', 'very', 'quite', 'rather', 'extremely'].includes(potentialParticiple)) {
+            continue;
+          }
+          
+          // Check for past participles (ends with -ed, -en, -n, or irregular forms)
+          if (isPastParticiple(potentialParticiple)) {
+            isPassive = true;
+            passiveMatch = `${currentWord} ${potentialParticiple}`;
+            passiveType = 'be_passive';
+            break;
+          }
+        }
+        if (isPassive) break;
       }
       
       // Pattern 2: modal + be + past participle
-      if (modalVerbs.includes(currentWord) && nextWord === 'be' && pastParticiples.includes(nextTwoWords)) {
-        isPassive = true;
-        passiveMatch = `${currentWord} be ${nextTwoWords}`;
-        passiveType = 'modal_passive';
-        break;
+      if (modalVerbs.includes(currentWord) && i < words.length - 2) {
+        if (words[i + 1] === 'be' && isPastParticiple(words[i + 2])) {
+          isPassive = true;
+          passiveMatch = `${currentWord} be ${words[i + 2]}`;
+          passiveType = 'modal_passive';
+          break;
+        }
       }
       
-      // Pattern 3: have/has/had + been + past participle
-      if (auxiliaryVerbs.includes(currentWord) && nextWord === 'been' && pastParticiples.includes(nextTwoWords)) {
-        isPassive = true;
-        passiveMatch = `${currentWord} been ${nextTwoWords}`;
-        passiveType = 'perfect_passive';
-        break;
+      // Pattern 3: have/has/had + been + past participle  
+      if (auxiliaryVerbs.includes(currentWord) && i < words.length - 2) {
+        if (words[i + 1] === 'been' && isPastParticiple(words[i + 2])) {
+          isPassive = true;
+          passiveMatch = `${currentWord} been ${words[i + 2]}`;
+          passiveType = 'perfect_passive';
+          break;
+        }
       }
       
       // Pattern 4: get + past participle (informal passive)
-      if (['get', 'gets', 'got', 'getting'].includes(currentWord) && pastParticiples.includes(nextWord)) {
-        isPassive = true;
-        passiveMatch = `${currentWord} ${nextWord}`;
-        passiveType = 'get_passive';
-        break;
+      if (['get', 'gets', 'got', 'getting'].includes(currentWord) && i < words.length - 1) {
+        if (isPastParticiple(words[i + 1])) {
+          isPassive = true;
+          passiveMatch = `${currentWord} ${words[i + 1]}`;
+          passiveType = 'get_passive';
+          break;
+        }
       }
     }
     
     return { isPassive, passiveMatch, passiveType };
+  }
+  
+  // Enhanced past participle detection
+  function isPastParticiple(word) {
+    // Check if word is in our known past participles list
+    if (pastParticiples.includes(word)) {
+      return true;
+    }
+    
+    // Check for regular past participles (ends with -ed)
+    if (word.endsWith('ed') && word.length > 3) {
+      return true;
+    }
+    
+    // Check for other common past participle endings
+    if (word.endsWith('en') && word.length > 3) {
+      return true;
+    }
+    
+    if (word.endsWith('n') && word.length > 2) {
+      // Common -n endings for past participles
+      const commonNEndings = ['own', 'awn', 'ern', 'orn', 'urn'];
+      return commonNEndings.some(ending => word.endsWith(ending));
+    }
+    
+    return false;
   }
 
   // Generate active voice suggestions based on passive type
