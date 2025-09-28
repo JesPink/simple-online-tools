@@ -14,6 +14,10 @@
     <!-- CRITICAL: Break network dependency chain by preloading key resources -->
     <link rel="preload" href="/app.js" as="script" crossorigin>
     <link rel="preload" href="/tool-registry.json" as="fetch" crossorigin>
+    
+    <!-- CLS FIX: Preload system fonts to prevent font-related layout shifts -->
+    <link rel="preload" href="data:font/woff2;base64," as="font" type="font/woff2" crossorigin>
+    
     <!--TOOL_PRELOAD-->
     
     <!-- Performance Meta Tags -->
@@ -41,7 +45,9 @@
     
     <!-- Google Analytics (Production Only) -->
     <!--GOOGLE_ANALYTICS_START-->
-    <!-- Deferred Google Analytics for performance -->
+    <!-- CLS FIX: Disabled late-loading analytics that might cause layout shifts -->
+    <!-- ORIGINAL ISSUE: Script loading after 3 seconds could inject DOM elements -->
+    <!--
     <script defer>
       // Load Google Analytics after page interaction or after 3 seconds
       let gaLoaded = false;
@@ -68,6 +74,7 @@
       // Fallback: load after 3 seconds
       setTimeout(loadGA, 3000);
     </script>
+    -->
     <!--GOOGLE_ANALYTICS_END-->
     
     <!-- CSS -->
