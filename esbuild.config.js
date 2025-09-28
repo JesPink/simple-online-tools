@@ -426,9 +426,22 @@ function generateRobotsTxt() {
   const robotsContent = `User-agent: *
 Allow: /
 
+# Sitemap
 Sitemap: https://simpleonlinetool.com/sitemap.xml
 
-Crawl-delay: 1`;
+# Block sensitive directories  
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: /*.json$
+
+# Allow specific tool paths
+Allow: /tools/
+Allow: /category/
+
+# Crawl delay
+Crawl-delay: 1
+
+# Standard robots.txt - no custom directives`;
 
   const robotsPath = path.join('dist', 'robots.txt');
   fs.writeFileSync(robotsPath, robotsContent);

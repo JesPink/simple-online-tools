@@ -304,7 +304,7 @@ main {
   transform: translateX(4px);
 }
 
-/* Tool Content Area - CRITICAL CLS FIX */
+/* Tool Content Area - OPTIMIZED CLS FIX */
 .tool-content {
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
@@ -312,17 +312,41 @@ main {
   box-shadow: var(--shadow-sm);
   padding: var(--space-8);
   margin-bottom: var(--space-8);
-  /* CRITICAL: Reserve exact space for dynamic content to prevent CLS */
-  min-height: 800px; /* Reserve space for breadcrumbs + header + tool + rating + related */
+  /* OPTIMIZED: Smart height reservation that doesn't hurt Speed Index */
+  min-height: 400px; /* Reduced from 800px - still prevents major CLS */
 }
 
-/* Loading indicator that will be replaced */
+/* Loading indicator with skeleton-like appearance */
 .loading-indicator {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  text-align: center;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 400px;
+  padding: var(--space-8);
+}
+
+/* Create skeleton placeholders to fill space visually */
+.loading-indicator::before {
+  content: '';
+  height: 60px;
+  background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+  border-radius: var(--radius-md);
+  animation: skeleton-loading 1.5s infinite;
+}
+
+.loading-indicator::after {
+  content: '';
+  height: 200px;
+  background: linear-gradient(90deg, var(--gray-200) 25%, var(--gray-100) 50%, var(--gray-200) 75%);
+  border-radius: var(--radius-md);
+  animation: skeleton-loading 1.5s infinite;
+  animation-delay: 0.2s;
+}
+
+@keyframes skeleton-loading {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
 /* Related Tools Section */
