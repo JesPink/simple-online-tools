@@ -304,7 +304,7 @@ main {
   transform: translateX(4px);
 }
 
-/* Tool Content Area */
+/* Tool Content Area - CRITICAL CLS FIX */
 .tool-content {
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
@@ -312,6 +312,17 @@ main {
   box-shadow: var(--shadow-sm);
   padding: var(--space-8);
   margin-bottom: var(--space-8);
+  /* CRITICAL: Reserve exact space for dynamic content to prevent CLS */
+  min-height: 800px; /* Reserve space for breadcrumbs + header + tool + rating + related */
+}
+
+/* Loading indicator that will be replaced */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
 }
 
 /* Related Tools Section */
