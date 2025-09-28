@@ -434,6 +434,37 @@ Disallow: /src/
 Disallow: /node_modules/
 Disallow: /*.json$
 
+# Block AI training bots (standard approach)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
 # Crawl delay for respectful crawling
 Crawl-delay: 1
 
@@ -441,7 +472,7 @@ Crawl-delay: 1
 
   const robotsPath = path.join('dist', 'robots.txt');
   fs.writeFileSync(robotsPath, robotsContent);
-  console.log('✅ Generated Lighthouse-compliant robots.txt');
+  console.log('✅ Generated comprehensive Lighthouse-compliant robots.txt');
 }
 
 function copyDirectory(src, dest) {
