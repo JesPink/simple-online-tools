@@ -7,7 +7,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h2>Text Analysis</h2>
+              <h3>Text Analysis</h3>
               <div class="form-group">
                 <label for="text-input">Enter your text below:</label>
                 <textarea 
@@ -41,12 +41,12 @@ export function render() {
             </div>
             
             <div class="output-container">
-              <h2 class="output-title">Analysis Results</h2>
+              <h3 class="output-title">Analysis Results</h3>
               <div id="highlighted-text" class="highlighted-output"></div>
             </div>
             
             <div id="suggestions-container" class="suggestions-container">
-              <h2 class="suggestions-title">Active Voice Suggestions</h2>
+              <h3 class="suggestions-title">Active Voice Suggestions</h3>
               <div id="suggestions-list" class="suggestions-list"></div>
             </div>
           </div>
@@ -136,11 +136,6 @@ export async function init() {
 
   let debounceTimer;
 
-  // Enhanced passive voice detection patterns
-  const beVerbs = ['am', 'is', 'are', 'was', 'were', 'being', 'been'];
-  const modalVerbs = ['will', 'would', 'shall', 'should', 'can', 'could', 'may', 'might', 'must'];
-  const auxiliaryVerbs = ['have', 'has', 'had'];
-  
   // COMPREHENSIVE PASSIVE VOICE DETECTION SYSTEM
   // Enhanced pattern-based detector with 85-90% accuracy target
   

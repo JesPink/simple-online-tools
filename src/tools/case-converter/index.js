@@ -5,7 +5,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h2>Enter Your Text</h2>
+              <h3>Enter Your Text</h3>
               <div class="form-group">
                 <label for="case-input">Text to convert:</label>
                 <textarea 
@@ -20,7 +20,7 @@ export function render() {
               <div class="form-group">
                 <label>Conversion Options:</label>
                 <div class="option-buttons">
-                  <button class="btn btn-primary case-btn active" data-case="sentence">Sentence case</button>
+                  <button class="btn btn-secondary case-btn active" data-case="sentence">Sentence case</button>
                   <button class="btn btn-secondary case-btn" data-case="lower">lowercase</button>
                   <button class="btn btn-secondary case-btn" data-case="upper">UPPERCASE</button>
                   <button class="btn btn-secondary case-btn" data-case="title">Title Case</button>
@@ -30,7 +30,7 @@ export function render() {
             </div>
           </div>
           <div class="tool-results">
-            <h2>Converted Text</h2>
+            <h3>Converted Text</h3>
             <div class="results-content">
               <div class="form-group">
                 <label for="case-output">Result:</label>
