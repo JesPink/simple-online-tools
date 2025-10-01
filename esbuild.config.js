@@ -6,6 +6,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Normalize paths to use forward slashes consistently (platform-agnostic)
+function normalizePath(filePath) {
+  return filePath.replace(/\\/g, '/');
+}
+
 async function buildSite() {
   try {
     console.log('🚀 Building Free Tools Platform...');
@@ -99,7 +104,9 @@ async function buildSite() {
       fs.mkdirSync(categoryDir, { recursive: true });
       const categoryPath = path.join(categoryDir, 'index.html');
       fs.writeFileSync(categoryPath, categoryHtml);
-      console.log(`✅ Generated category page: ${categoryPath}`);
+      // Normalize path for consistent output (convert backslashes to forward slashes)
+      const normalizedCategoryPath = categoryPath.replace(/\\/g, '/');
+      console.log(`✅ Generated category page: ${normalizedCategoryPath}`);
     }
 
     // Generate individual tool pages with clean URLs
@@ -276,7 +283,9 @@ async function buildSite() {
       fs.mkdirSync(toolDir, { recursive: true });
       const toolPath = path.join(toolDir, 'index.html');
       fs.writeFileSync(toolPath, toolHtml);
-      console.log(`✅ Generated tool page: ${toolPath} (clean URL: /tools/${tool.slug}/)`);
+      // Normalize path for consistent output (convert backslashes to forward slashes)
+      const normalizedToolPath = toolPath.replace(/\\/g, '/');
+      console.log(`✅ Generated tool page: ${normalizedToolPath} (clean URL: /tools/${tool.slug}/)`);
     }
 
     // Bundle CSS
