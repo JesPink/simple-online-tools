@@ -494,7 +494,8 @@ export async function init() {
     }
     
     // Final confidence threshold (only report if confident enough)
-    if (result.confidence < 0.4) {
+    // Reduced threshold from 0.4 to 0.25 to catch valid passive constructions
+    if (result.confidence < 0.25) {
       return { isPassive: false, passiveMatch: null, passiveType: null, confidence: 0 };
     }
     
