@@ -5,9 +5,9 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h2>Meeting Participants</h2>
+              <h2>Meeting Setup</h2>
               <div class="form-group">
-                <label for="currency-select">Currency</label>
+                <label for="currency-select">Currency (applies to all participants)</label>
                 <select id="currency-select">
                   <option value="USD">USD ($) - US Dollar</option>
                   <option value="EUR">EUR (€) - Euro</option>
@@ -22,7 +22,10 @@ export function render() {
                   <option value="INR">INR (₹) - Indian Rupee</option>
                   <option value="BRL">BRL (R$) - Brazilian Real</option>
                 </select>
+                <small class="currency-help">Note: All participant rates will be displayed in the selected currency</small>
               </div>
+              
+              <h3>Add Participants</h3>
               <div class="form-group">
                 <label for="participant-name">Participant Name</label>
                 <input type="text" id="participant-name" placeholder="e.g., John Smith, Marketing Manager" />

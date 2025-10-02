@@ -252,6 +252,35 @@
   }
 }
 
+/* CRITICAL: Force tool-results to always show */
+.passive-voice-detector-tool .tool-results {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
+  position: relative !important;
+}
+
+/* CRITICAL: Force stats container to always show */
+.passive-voice-detector-tool .stats-container {
+  display: grid !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* CRITICAL: Force output container to always show */
+.passive-voice-detector-tool .output-container {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
 /* MOBILE CRITICAL FIXES - Ensure all sections show */
 @media (max-width: 767px) {
   .passive-voice-detector-tool .tool-results,
@@ -263,6 +292,9 @@
     width: 100% !important;
     max-width: 100% !important;
     overflow: visible !important;
+    position: relative !important;
+    z-index: auto !important;
+    transform: none !important;
   }
   
   .passive-voice-detector-tool .stats-container {
@@ -270,6 +302,8 @@
     grid-template-columns: 1fr !important;
     width: 100% !important;
     max-width: 100% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
   
   .passive-voice-detector-tool .output-title,
@@ -277,6 +311,7 @@
     display: block !important;
     visibility: visible !important;
     font-size: var(--font-size-lg) !important;
+    opacity: 1 !important;
   }
   
   .passive-voice-detector-tool .highlighted-output,
@@ -284,20 +319,8 @@
     display: block !important;
     visibility: visible !important;
     width: 100% !important;
+    opacity: 1 !important;
   }
-}
-
-/* Mobile-first fixes - ensure all elements show */
-.passive-voice-detector-tool .tool-results {
-  /* CRITICAL: Force results to show on mobile */
-  display: block !important;
-  width: 100%;
-}
-
-.passive-voice-detector-tool .stats-container {
-  /* CRITICAL: Mobile visibility fix */
-  display: grid !important;
-  width: 100%;
 }
 
 /* Desktop responsive - 1024px+ */

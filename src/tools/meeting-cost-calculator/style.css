@@ -1,5 +1,14 @@
 /* Meeting Cost Calculator - Uses Foundation Classes */
 
+/* Currency help text */
+.meeting-cost-calculator-tool .currency-help {
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-style: italic;
+  display: block;
+  margin-top: var(--space-1);
+}
+
 .meeting-cost-calculator-tool .placeholder-text {
   color: var(--text-secondary);
   font-style: italic;
