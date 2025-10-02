@@ -188,7 +188,7 @@ export async function init() {
     const randomVerb = getRandomItem(verbs);
     const randomAdjective = getRandomItem(adjectives);
     
-    return formula
+    const result = formula
       .replace('{audience}', inputs.audience)
       .replace('{problem}', inputs.problem)
       .replace('{product}', inputs.product)
@@ -196,6 +196,14 @@ export async function init() {
       .replace('{benefit}', inputs.benefit)
       .replace('{verb}', randomVerb)
       .replace('{adjective}', randomAdjective);
+    
+    // Ensure the result starts with a capital letter
+    return capitalizeFirstLetter(result);
+  }
+
+  function capitalizeFirstLetter(str) {
+    if (!str) return str;
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   function copyToClipboard(text, button) {

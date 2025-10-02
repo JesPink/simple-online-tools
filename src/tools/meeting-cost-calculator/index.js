@@ -7,11 +7,28 @@ export function render() {
             <div class="form-section">
               <h2>Meeting Participants</h2>
               <div class="form-group">
+                <label for="currency-select">Currency</label>
+                <select id="currency-select">
+                  <option value="USD">USD ($) - US Dollar</option>
+                  <option value="EUR">EUR (€) - Euro</option>
+                  <option value="GBP">GBP (£) - British Pound</option>
+                  <option value="JPY">JPY (¥) - Japanese Yen</option>
+                  <option value="CAD">CAD (C$) - Canadian Dollar</option>
+                  <option value="AUD">AUD (A$) - Australian Dollar</option>
+                  <option value="CHF">CHF (CHF) - Swiss Franc</option>
+                  <option value="CNY">CNY (¥) - Chinese Yuan</option>
+                  <option value="SEK">SEK (kr) - Swedish Krona</option>
+                  <option value="NOK">NOK (kr) - Norwegian Krone</option>
+                  <option value="INR">INR (₹) - Indian Rupee</option>
+                  <option value="BRL">BRL (R$) - Brazilian Real</option>
+                </select>
+              </div>
+              <div class="form-group">
                 <label for="participant-name">Participant Name</label>
                 <input type="text" id="participant-name" placeholder="e.g., John Smith, Marketing Manager" />
               </div>
               <div class="form-group">
-                <label for="hourly-rate">Hourly Rate ($)</label>
+                <label for="hourly-rate">Hourly Rate</label>
                 <input type="number" id="hourly-rate" placeholder="e.g., 50" min="0" step="0.01" />
               </div>
               <div class="form-actions">
@@ -169,9 +186,10 @@ export async function init() {
   }
 
   function formatCurrency(amount) {
+    const selectedCurrency = document.getElementById('currency-select')?.value || 'USD';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: selectedCurrency,
       minimumFractionDigits: 2
     }).format(amount);
   }
@@ -377,6 +395,16 @@ export async function init() {
 
   // Event listeners
   addParticipantBtn.addEventListener('click', addParticipant);
+  
+  // Currency change handler
+  const currencySelect = document.getElementById('currency-select');
+  currencySelect.addEventListener('change', () => {
+    // Update display for all existing participants and calculations
+    updateParticipantsList();
+    if (isRunning || isPaused) {
+      updateResults();
+    }
+  });
   
   // Enter key support for form fields
   participantNameInput.addEventListener('keypress', (e) => {

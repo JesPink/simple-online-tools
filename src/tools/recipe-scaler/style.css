@@ -127,6 +127,67 @@
   text-align: center;
 }
 
+/* MOBILE CRITICAL FIXES - Layout and Alignment */
+@media (max-width: 767px) {
+  .recipe-scaler-tool .servings-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  
+  .recipe-scaler-tool .form-group {
+    width: 100%;
+  }
+  
+  .recipe-scaler-tool .scaling-info {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: var(--space-3);
+  }
+  
+  .recipe-scaler-tool .serving-info {
+    flex-direction: column;
+    gap: var(--space-2);
+    text-align: center;
+  }
+  
+  .recipe-scaler-tool .result-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .recipe-scaler-tool .result-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .recipe-scaler-tool .rounding-controls {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .recipe-scaler-tool .scale-factor {
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Fix input alignment on mobile */
+  .recipe-scaler-tool input[type="number"] {
+    width: 100%;
+    text-align: center;
+    min-height: 44px;
+  }
+  
+  /* Ensure proper spacing between sections */
+  .recipe-scaler-tool .form-section {
+    margin-bottom: var(--space-6);
+  }
+  
+  .recipe-scaler-tool .ingredients-list {
+    margin-top: var(--space-4);
+  }
+}
+
 /* Mobile-first responsive adjustments - Foundation handles breakpoints */
 .recipe-scaler-tool .servings-row {
   grid-template-columns: 1fr;
