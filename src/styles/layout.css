@@ -706,7 +706,7 @@ main {
   margin-bottom: var(--space-8);
   box-shadow: var(--shadow-sm);
   min-height: 400px; /* Prevent CLS during tool loading */
-  contain: layout; /* IMPROVED: Safe layout containment only */
+  /* REMOVED: contain: layout - causing mobile rendering issues */
 }
 
 .tool-main {
