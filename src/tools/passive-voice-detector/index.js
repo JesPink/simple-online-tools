@@ -8,7 +8,7 @@ export function render() {
           <div class="tool-grid">
             <div class="tool-main">
               <div class="form-section">
-                <h3>Text Analysis</h3>
+                <div class="section-title">Text Analysis</div>
                 <div class="form-group">
                   <label for="text-input">Enter your text below:</label>
                   <textarea 
@@ -54,12 +54,12 @@ export function render() {
         </div>
       
       <div class="seo-content">
-      <h3>Understanding the Passive Voice Detector</h3>
+      <h2>Understanding the Passive Voice Detector</h2>
       <p>Our <strong>passive voice detector</strong> is a powerful writing analysis tool designed to help you identify and eliminate passive voice constructions in your text. Passive voice can make your writing sound weak, unclear, or impersonal, while active voice creates more engaging, direct, and persuasive content. This tool instantly scans your text and highlights passive sentences, providing you with actionable insights to improve your writing quality.</p>
       
       <p>Whether you're a student working on essays, a professional crafting business communications, or a content creator optimizing for SEO, this passive voice checker helps you write with greater clarity and impact. The tool analyzes sentence structure, identifies passive constructions, and suggests active voice alternatives that make your writing more compelling.</p>
       
-      <h3>How to Use Our Passive Voice Detector</h3>
+      <h2>How to Use Our Passive Voice Detector</h2>
       <p>Using our passive voice detector is straightforward and requires no technical expertise. Follow these simple steps to analyze and improve your writing:</p>
       
       <ol>
@@ -72,7 +72,7 @@ export function render() {
       
       <p>The analysis is instant and works entirely in your browser, ensuring your content remains private and secure. You can analyze unlimited text without any registration or signup requirements.</p>
       
-      <h3>Mastering the Passive Sentence Detector</h3>
+      <h2>Mastering the Passive Sentence Detector</h2>
       <p>Understanding how our <strong>passive sentence detector</strong> works helps you become a better writer. The tool uses advanced algorithms to identify several types of passive voice constructions commonly found in English writing.</p>
       
       <p>Passive voice typically follows the pattern "subject + be verb + past participle," such as "The report was written by John" instead of "John wrote the report." Our detector identifies these patterns by analyzing:</p>
@@ -86,7 +86,7 @@ export function render() {
       
       <p>The detector also considers context to avoid false positives, distinguishing between passive voice and other grammatical constructions that might appear similar.</p>
       
-      <h3>Benefits of Our Passive Voice Detector Free Tool</h3>
+      <h2>Benefits of Our Passive Voice Detector Free Tool</h2>
       <p>Our <strong>passive voice detector free</strong> tool offers numerous advantages for writers, students, and professionals seeking to improve their communication skills. Unlike expensive grammar software, this tool provides comprehensive passive voice analysis at no cost.</p>
       
       <p>Key benefits include instant feedback on your writing quality, specific suggestions for improvement, and educational insights that help you recognize passive voice patterns independently. The tool supports unlimited text analysis, making it perfect for long documents, multiple drafts, or frequent writing tasks.</p>
@@ -95,7 +95,7 @@ export function render() {
       
       <p>The tool also serves as an educational resource, helping users understand the difference between active and passive voice through practical examples and suggestions. This knowledge transfers to future writing, gradually improving overall communication skills.</p>
       
-      <h3>Frequently Asked Questions</h3>
+      <h2>Frequently Asked Questions</h2>
       
       <h4>What is passive voice and why should I avoid it?</h4>
       <p>Passive voice occurs when the subject of a sentence receives the action rather than performing it. For example, "The ball was thrown by Sarah" (passive) versus "Sarah threw the ball" (active). While passive voice isn't grammatically incorrect, it can make writing less engaging and harder to follow. Our passive voice detector helps you identify these constructions so you can choose when to use active voice for clearer communication.</p>
@@ -112,7 +112,7 @@ export function render() {
       <h4>Does passive voice affect SEO rankings?</h4>
       <p>While passive voice doesn't directly impact SEO rankings, it can affect user engagement metrics that search engines consider. Active voice generally creates more readable, engaging content that keeps visitors on your page longer and encourages sharing, indirectly benefiting your SEO performance.</p>
       
-      <h3>Passive Voice Detector and Your Writing Workflow</h3>
+      <h2>Passive Voice Detector and Your Writing Workflow</h2>
       <p>Integrating our passive voice detector into your regular writing workflow can dramatically improve your content quality and reader engagement. Use this tool as a final editing step before publishing blog posts, articles, or important communications.</p>
       
       <p>Consider pairing this passive voice checker with other writing tools on our platform, such as our <strong>word counter</strong> for tracking document length and <strong>readability analyzer</strong> for comprehensive content optimization. Together, these tools create a complete writing enhancement suite that helps you produce professional, engaging content every time.</p>

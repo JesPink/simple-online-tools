@@ -48,6 +48,14 @@ main {
   color: var(--primary-color);
 }
 
+/* Brand logo styling (non-semantic branding element) */
+.brand-logo {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  color: var(--primary-color);
+}
+
 .nav-menu {
   display: flex;
   align-items: center;
@@ -104,6 +112,10 @@ main {
   }
   
   .nav-brand h1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .brand-logo {
     font-size: var(--font-size-2xl);
   }
 }
@@ -745,6 +757,16 @@ main {
 .form-section h3 {
   color: var(--text-primary);
   font-size: var(--font-size-lg);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+/* Section titles (non-semantic headers for UI sections) */
+.section-title {
+  color: var(--text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
   margin-bottom: var(--space-4);
   padding-bottom: var(--space-2);
   border-bottom: 2px solid var(--primary-color);

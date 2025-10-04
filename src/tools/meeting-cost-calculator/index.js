@@ -5,7 +5,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h2>Meeting Setup</h2>
+              <div class="section-title">Meeting Setup</div>
               <div class="form-group">
                 <label for="currency-select">Currency (applies to all participants)</label>
                 <select id="currency-select">
@@ -25,7 +25,7 @@ export function render() {
                 <small class="currency-help">Note: All participant rates will be displayed in the selected currency</small>
               </div>
               
-              <h3>Add Participants</h3>
+              <div class="section-title">Add Participants</div>
               <div class="form-group">
                 <label for="participant-name">Participant Name</label>
                 <input type="text" id="participant-name" placeholder="e.g., John Smith, Marketing Manager" />
@@ -40,7 +40,7 @@ export function render() {
             </div>
 
             <div class="form-section" id="participants-section" style="display: none;">
-              <h2>Current Participants</h2>
+              <div class="section-title">Current Participants</div>
               <div id="participants-list"></div>
               <div class="meeting-controls">
                 <div class="timer-display">
@@ -57,7 +57,7 @@ export function render() {
           </div>
           
           <div class="tool-results">
-            <h2>Meeting Cost Analysis</h2>
+            <div class="section-title">Meeting Cost Analysis</div>
             <div class="results-content">
               <div id="results-container">
                 <p class="placeholder-text">Add participants and start the meeting timer to see real-time cost analysis.</p>
@@ -67,12 +67,12 @@ export function render() {
         </div>
         
         <div class="seo-content">
-          <h3>Understanding the Meeting Cost Calculator</h3>
+          <div class="section-title">Understanding the Meeting Cost Calculator</div>
           <p>A <strong>meeting cost calculator</strong> is an essential business productivity tool that reveals the true financial impact of your meetings by calculating real-time costs based on participant salaries and meeting duration. In today's business environment where the average knowledge worker spends 37% of their time in meetings, understanding the actual dollar cost of each meeting has become crucial for optimizing productivity and making informed decisions about meeting necessity and duration.</p>
           
           <p>Our meeting cost calculator transforms abstract time into concrete financial data, helping teams and managers visualize exactly how much each minute costs when multiple professionals gather. Whether you're running a quick 15-minute standup or a lengthy strategic planning session, this tool provides immediate visibility into the accumulating expense, creating natural motivation for more focused and efficient discussions.</p>
 
-          <h3>How to Use Our Meeting Cost Calculator</h3>
+          <div class="section-title">How to Use Our Meeting Cost Calculator</div>
           <p>Using our meeting cost calculator is straightforward and takes just minutes to set up, but provides valuable insights throughout your meeting duration:</p>
           
           <p><strong>Step 1: Add Meeting Participants</strong><br>
@@ -111,14 +111,14 @@ export function render() {
           
           <p>The timer's pause and segment features allow for detailed analysis of meeting efficiency. Teams can track which agenda items consume the most time relative to their importance, identify recurring time drains, and develop strategies for more efficient future meetings. This data-driven approach to meeting optimization can result in significant productivity gains and cost savings across the organization.</p>
 
-          <h3>Meeting Cost Tracker: Long-Term Meeting ROI Analysis</h3>
+          <div class="section-title">Meeting Cost Tracker: Long-Term Meeting ROI Analysis</div>
           <p>A comprehensive meeting cost tracker extends beyond individual session calculations to provide insights into long-term meeting patterns and return on investment. By tracking costs across multiple meetings, teams can identify trends, optimize recurring meetings, and make strategic decisions about their collaborative processes.</p>
           
           <p>Organizations using meeting cost trackers often discover surprising patterns: certain types of meetings consistently exceed their value threshold, some participants contribute more effectively in smaller groups, or specific meeting formats generate better outcomes per dollar invested. This data enables informed decisions about meeting restructuring, participant optimization, and format changes that can significantly improve overall efficiency.</p>
           
           <p>The tracking capability also supports budget planning and resource allocation decisions. Teams can forecast meeting costs for upcoming projects, compare the efficiency of different collaboration methods, and demonstrate the ROI of investments in meeting efficiency tools or training. This quantitative approach to meeting management aligns with broader business objectives of operational efficiency and cost optimization.</p>
 
-          <h3>Frequently Asked Questions</h3>
+          <div class="section-title">Frequently Asked Questions</div>
           <div class="faq-section">
             <div class="faq-item">
               <h4>How accurate is the meeting cost calculator in determining real meeting expenses?</h4>

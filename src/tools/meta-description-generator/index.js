@@ -5,7 +5,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h2>Generate Your Meta Description</h2>
+              <div class="section-title">Generate Your Meta Description</div>
               <div class="form-group">
                 <label for="page-title">Page Title</label>
                 <input type="text" id="page-title" placeholder="Enter your page title..." aria-describedby="page-title-help" />
@@ -39,7 +39,7 @@ export function render() {
             </div>
           </div>
           <div class="tool-results">
-            <h2>Generated Meta Description</h2>
+            <div class="section-title">Generated Meta Description</div>
             <div class="results-content">
               <div id="meta-preview" class="meta-preview">
                 <div class="preview-placeholder">
@@ -58,12 +58,12 @@ export function render() {
           </div>
         </div>
         <div class="seo-content">
-          <h3>Understanding the Meta Description Generator</h3>
+          <h2>Understanding the Meta Description Generator</h2>
           <p>A meta description generator is an essential SEO tool that helps you create compelling, optimized meta descriptions for your web pages. These short snippets of text appear beneath your page title in search engine results and play a crucial role in attracting clicks from potential visitors. Our free meta description generator streamlines the process of crafting perfect meta descriptions that balance SEO optimization with user engagement, ensuring your pages stand out in crowded search results.</p>
 
           <p>Meta descriptions serve as your page's elevator pitch to search engine users. While they don't directly impact rankings, they significantly influence click-through rates, which can indirectly boost your SEO performance. A well-crafted meta description can be the difference between a user clicking on your result or choosing a competitor's page instead.</p>
 
-          <h3>How to Use Our Meta Description Generator</h3>
+          <h2>How to Use Our Meta Description Generator</h2>
           <p>Creating effective meta descriptions with our tool is straightforward and takes just a few simple steps:</p>
 
           <ol>
@@ -75,21 +75,21 @@ export function render() {
           <li><strong>Copy and Implement:</strong> Use the copy button to easily transfer your optimized meta description to your website's HTML or CMS.</li>
           </ol>
 
-          <h3>What is a Meta Description Creator and Why You Need One</h3>
+          <h2>What is a Meta Description Creator and Why You Need One</h2>
           <p>A meta description creator is a specialized tool designed to help website owners, marketers, and SEO professionals craft compelling meta descriptions efficiently. Unlike manually writing descriptions, a meta description creator ensures consistency, optimal length, and keyword integration across all your web pages.</p>
 
           <p>The challenge with writing meta descriptions manually is maintaining the perfect balance between SEO optimization and user appeal while staying within the 120-160 character limit. Our meta description creator solves this by providing templates, character counting, and tone variations that align with best practices and search engine guidelines.</p>
 
           <p>Professional marketers and content creators rely on meta description creators to scale their SEO efforts. Instead of spending hours crafting individual descriptions, you can generate multiple variations quickly, test different approaches, and maintain consistent messaging across your entire website.</p>
 
-          <h3>SEO Description Generator: Boosting Your Click-Through Rates</h3>
+          <h2>SEO Description Generator: Boosting Your Click-Through Rates</h2>
           <p>An SEO description generator focuses specifically on creating meta descriptions that drive organic traffic and improve search engine visibility. Our SEO description generator incorporates proven marketing psychology principles and SEO best practices to maximize your pages' click-through potential.</p>
 
           <p>The key advantage of using an SEO description generator is its ability to create descriptions that appeal to both search engines and human users. It ensures proper keyword placement, maintains optimal character counts, and incorporates compelling calls-to-action that encourage clicks.</p>
 
           <p>Search engines like Google use meta descriptions as snippets in search results about 70% of the time. When your meta description is well-optimized and engaging, it can significantly increase your organic click-through rates, leading to more website traffic and potential conversions.</p>
 
-          <h3>Best Practices for Meta Description Optimization</h3>
+          <h2>Best Practices for Meta Description Optimization</h2>
           <p>Creating effective meta descriptions requires understanding both technical SEO requirements and user psychology. Here are essential best practices to follow:</p>
 
           <p><strong>Character Count Optimization:</strong> Keep your meta descriptions between 120-160 characters. Descriptions shorter than 120 characters may appear incomplete, while those longer than 160 characters risk being truncated in search results.</p>
@@ -100,7 +100,7 @@ export function render() {
 
           <p><strong>Unique Descriptions:</strong> Each page on your website should have a unique meta description that accurately reflects its specific content. Duplicate meta descriptions can confuse search engines and users alike.</p>
 
-          <h3>Advanced Meta Description Strategies</h3>
+          <h2>Advanced Meta Description Strategies</h2>
           <p>Beyond basic optimization, advanced meta description strategies can give you a competitive edge in search results. Consider implementing these techniques using our meta description writer:</p>
 
           <p><strong>Emotional Triggers:</strong> Incorporate emotional words that resonate with your target audience. Words like "essential," "proven," "exclusive," or "breakthrough" can increase click-through rates when used appropriately.</p>
@@ -109,7 +109,7 @@ export function render() {
 
           <p><strong>Problem-Solution Format:</strong> Structure your meta description to first identify a problem your audience faces, then position your content as the solution. This approach directly addresses user intent and search queries.</p>
 
-          <h3>Frequently Asked Questions</h3>
+          <h2>Frequently Asked Questions</h2>
 
           <h4>What makes a good meta description for SEO?</h4>
           <p>A good meta description for SEO is 120-160 characters long, includes your target keyword naturally, provides a clear value proposition, and includes a compelling call-to-action. It should accurately represent your page content while enticing users to click through from search results.</p>
@@ -123,10 +123,10 @@ export function render() {
           <h4>How often should I update my meta descriptions?</h4>
           <p>Review and update your meta descriptions regularly, especially when you refresh page content, target new keywords, or notice declining click-through rates. A good practice is to audit meta descriptions quarterly as part of your overall SEO maintenance.</p>
 
-          <h3>Do meta descriptions directly affect search engine rankings?</h3>
+          <h2>Do meta descriptions directly affect search engine rankings?</h2>
           <p>While meta descriptions don't directly influence search engine rankings, they significantly impact click-through rates, which can indirectly affect your SEO performance. Higher click-through rates signal to search engines that your content is relevant and valuable to users.</p>
 
-          <h3>Meta Description Generator and Your SEO Workflow</h3>
+          <h2>Meta Description Generator and Your SEO Workflow</h2>
           <p>Integrating our meta description generator into your SEO workflow can dramatically improve your efficiency and results. By automating the creation of optimized meta descriptions, you can focus more time on creating quality content and implementing other SEO strategies.</p>
 
           <p>The tool works perfectly alongside other SEO resources like our Word Counter for content optimization and Case Converter for proper text formatting. Together, these tools form a comprehensive suite that supports every aspect of your content marketing and SEO efforts.</p>

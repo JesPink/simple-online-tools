@@ -12,7 +12,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h2>Enter Your Text</h2>
+              <div class="section-title">Enter Your Text</div>
               <div class="form-group">
                 <label for="text-input">Text to analyze:</label>
                 <textarea 
@@ -24,7 +24,7 @@ export function render() {
             </div>
           </div>
           <div class="tool-results">
-            <h2>Text Statistics</h2>
+            <div class="section-title">Text Statistics</div>
             <div class="results-content">
               <div class="stats-grid">
                 <div class="stat-card">
@@ -74,7 +74,7 @@ export function render() {
       
       <div class="seo-content">
         <section class="content-section">
-          <h3>What is the Word Counter Tool?</h3>
+          <h2>What is the Word Counter Tool?</h2>
           <p>
             Our free online word counter is a comprehensive text analysis tool that instantly calculates 
             the number of words, characters (with and without spaces), sentences, paragraphs, and <strong>unique words</strong> in any text. Whether you're a 
@@ -91,7 +91,7 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h3>How to Use the Word Counter</h3>
+          <h2>How to Use the Word Counter</h2>
           <p>Using our word counter tool is simple and straightforward:</p>
           <ol class="instruction-list">
             <li><strong>Paste or Type Text:</strong> Simply paste your content into the text area above, or start typing directly. The tool begins analyzing your text immediately.</li>
@@ -108,7 +108,7 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h3>What is a Unique Words Counter?</h3>
+          <h2>What is a Unique Words Counter?</h2>
           <p>
             A <strong>unique words counter</strong> goes beyond basic word count by calculating the number of distinct words in your text. This metric, also known as "lexical density," is vital for writers, students, and SEO specialists. It helps you:
           </p>
@@ -123,7 +123,7 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h3>Why is Word Count Important?</h3>
+          <h2>Why is Word Count Important?</h2>
           <p>
             Word count plays a crucial role in various forms of writing and communication. Understanding 
             and managing word count helps ensure your message is delivered effectively while meeting 
@@ -156,7 +156,7 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h3>Word Counter Use Cases</h3>
+          <h2>Word Counter Use Cases</h2>
           
           <h4>Academic Writing</h4>
           <p>
@@ -188,7 +188,7 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h3>Frequently Asked Questions</h3>
+          <h2>Frequently Asked Questions</h2>
           
           <div class="faq-item">
             <h4>How do I count unique words in my text?</h4>
@@ -262,7 +262,7 @@ export function render() {
         </section>
 
         <section class="content-section">
-          <h3>Word Counter and Your Workflow</h3>
+          <div class="section-title">Word Counter and Your Workflow</div>
           <p>
             Our word counter integrates perfectly into any writing workflow, whether you're crafting academic papers, creating blog content, or managing social media posts. The tool provides instant feedback that helps you meet specific requirements and optimize your content for different platforms.
           </p>

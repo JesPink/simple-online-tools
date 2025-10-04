@@ -5,7 +5,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h2>Business Information</h2>
+              <div class="section-title">Business Information</div>
               <div class="form-group">
                 <label for="target-audience">Target Audience <span class="help-text">(Who you serve)</span></label>
                 <input type="text" id="target-audience" placeholder="e.g., small business owners, marketers, students" />
@@ -50,7 +50,7 @@ export function render() {
         </div>
         
         <div class="seo-content">
-          <h3>Understanding the Value Proposition Generator</h3>
+          <h2>Understanding the Value Proposition Generator</h2>
 
           <p>A <strong>value proposition generator</strong> is an essential business messaging tool that helps entrepreneurs, marketers, and business professionals create compelling statements that clearly communicate what makes their product or service unique. In today's competitive marketplace, having a clear and persuasive value proposition can be the difference between capturing your audience's attention and losing them to competitors.</p>
 
@@ -58,7 +58,7 @@ export function render() {
 
           <p>The tool combines established marketing methodologies with user-friendly interfaces, making professional-quality value proposition development accessible to businesses of all sizes. From solo entrepreneurs to enterprise teams, anyone can use this generator to transform complex product features into clear, customer-focused benefits.</p>
 
-          <h3>How to Use Our Value Proposition Generator</h3>
+          <h2>How to Use Our Value Proposition Generator</h2>
 
           <p>Creating an effective value proposition with our generator is straightforward and takes just minutes to complete. Follow these simple steps to develop compelling business messaging:</p>
 
@@ -77,7 +77,7 @@ export function render() {
           <p><strong>Step 5: Generate and Refine</strong><br>
           Click generate to create multiple variations of your value proposition. Review, edit, and test different versions to find the most compelling message for your audience.</p>
 
-          <h3>Value Proposition Maker: Your Strategic Messaging Partner</h3>
+          <h2>Value Proposition Maker: Your Strategic Messaging Partner</h2>
 
           <p>A <strong>value proposition maker</strong> serves as your strategic partner in developing clear, compelling business messaging that cuts through market noise. Unlike generic marketing tools, a specialized value proposition maker focuses specifically on the art and science of communicating unique value.</p>
 
@@ -87,7 +87,7 @@ export function render() {
 
           <p>Professional marketers rely on value proposition makers because they streamline the creative process while ensuring all essential elements are included. Rather than starting from a blank page, you begin with proven structures that have helped thousands of businesses communicate their value more effectively.</p>
 
-          <h3>Crafting Powerful Messages with a Value Statement Generator</h3>
+          <h2>Crafting Powerful Messages with a Value Statement Generator</h2>
 
           <p>A <strong>value statement generator</strong> takes the guesswork out of creating persuasive business communications by providing structured approaches to message development. These tools recognize that effective value statements must be both emotionally compelling and logically sound.</p>
 
@@ -97,7 +97,7 @@ export function render() {
 
           <p>By using a value statement generator, you ensure consistency across all your marketing materials while maintaining the flexibility to customize messages for different channels and customer segments. This approach builds stronger brand recognition and more effective customer communication.</p>
 
-          <h3>Unique Value Proposition Generator: Stand Out From the Competition</h3>
+          <h2>Unique Value Proposition Generator: Stand Out From the Competition</h2>
 
           <p>A <strong>unique value proposition generator</strong> specifically focuses on helping businesses identify and articulate what makes them genuinely different from competitors. In saturated markets, having a unique angle isn't just helpful—it's essential for survival and growth.</p>
 
@@ -107,7 +107,7 @@ export function render() {
 
           <p>Beyond differentiation, unique value proposition generators help quantify your advantages. Whether it's faster delivery, lower costs, superior results, or better service, they help you present your uniqueness in concrete, measurable terms that customers can easily understand and remember.</p>
 
-          <h3>Frequently Asked Questions</h3>
+          <h2>Frequently Asked Questions</h2>
 
           <p><strong>What makes a good value proposition, and how can a value proposition generator help?</strong><br>
           A good value proposition clearly states who you serve, what problem you solve, and why you're the best choice. A value proposition generator helps by providing proven frameworks, ensuring you include all essential elements, and offering multiple variations to test and refine.</p>
@@ -124,7 +124,7 @@ export function render() {
           <p><strong>What's the difference between a value proposition and a mission statement?</strong><br>
           A value proposition focuses on customer benefits and addresses "why should I buy from you?" A mission statement describes your company's purpose and addresses "why do we exist?" Value propositions are customer-focused and sales-oriented, while mission statements are company-focused and purpose-driven.</p>
 
-          <h3>Value Proposition Generator and Your Business Workflow</h3>
+          <h2>Value Proposition Generator and Your Business Workflow</h2>
 
           <p>Integrating a value proposition generator into your business workflow creates a foundation for all your marketing and sales efforts. Once you've developed your core value proposition, it becomes the north star for website copy, sales presentations, advertising campaigns, and customer communications.</p>
 

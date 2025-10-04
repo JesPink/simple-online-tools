@@ -5,7 +5,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h2>Recipe Details</h2>
+              <div class="section-title">Recipe Details</div>
               <div class="form-group">
                 <label for="recipe-title">Recipe Title</label>
                 <input type="text" id="recipe-title" placeholder="Enter recipe name..." />
@@ -31,7 +31,7 @@ export function render() {
             </div>
           </div>
           <div class="tool-results">
-            <h2>Scaled Recipe</h2>
+            <div class="section-title">Scaled Recipe</div>
             <div class="results-content">
               <div id="scaling-info" class="scaling-info">
                 <div class="scale-factor">Scale Factor: <span id="scale-factor-display">2.0x</span></div>
@@ -56,12 +56,12 @@ export function render() {
           </div>
         </div>
         <div class="seo-content">
-          <h3>Understanding the Recipe Scaler</h3>
+          <h2>Understanding the Recipe Scaler</h2>
           <p>A recipe scaler is an essential kitchen tool that automatically adjusts ingredient quantities when you need to cook for more or fewer people than the original recipe serves. Our free online recipe scaler eliminates the guesswork and mathematical errors that often occur when manually calculating ingredient proportions, ensuring your scaled recipes maintain the perfect balance of flavors and textures every time.</p>
 
           <p>Whether you're cooking for a large family gathering or scaling down a recipe for a quiet dinner for two, a recipe scaler handles all the complex calculations instantly. The tool preserves ingredient ratios, converts between measurement units, and even handles fractional quantities with precision, making recipe adaptation effortless for home cooks and professional chefs alike.</p>
 
-          <h3>How to Use Our Recipe Scaler</h3>
+          <h2>How to Use Our Recipe Scaler</h2>
           <p>Converting recipe quantities with our tool is simple and intuitive. Follow these step-by-step instructions to scale any recipe perfectly:</p>
 
           <ol>
@@ -75,21 +75,21 @@ export function render() {
 
           <p>The tool automatically handles unit conversions, fraction calculations, and maintains the mathematical precision needed for successful cooking results.</p>
 
-          <h3>Recipe Scaler Online: The Digital Kitchen Assistant</h3>
+          <h2>Recipe Scaler Online: The Digital Kitchen Assistant</h2>
           <p>An online recipe scaler offers significant advantages over manual calculation methods or basic smartphone calculators. Our recipe scaler online provides advanced features like intelligent ingredient parsing, unit conversion between metric and imperial measurements, and fraction handling that traditional calculators simply cannot match.</p>
 
           <p>The digital format means you can access your recipe scaler online from any device, whether you're shopping for ingredients on your phone or cooking from your tablet in the kitchen. The tool saves time during meal planning and reduces food waste by ensuring you buy exactly the right quantities for your target serving size.</p>
 
           <p>Professional bakers and cooking enthusiasts particularly appreciate the precision of our recipe scaler online because it maintains the critical ratios needed for successful baking, where even small measurement errors can affect the final result.</p>
 
-          <h3>Scaling Down Recipes: Perfect Portions for Smaller Groups</h3>
+          <h2>Scaling Down Recipes: Perfect Portions for Smaller Groups</h2>
           <p>Scaling down recipes presents unique challenges that our tool addresses expertly. When you're scaling down recipes from family-size portions to single servings or couple-sized meals, precise calculation becomes even more critical because smaller measurement errors have proportionally larger impacts on the final dish.</p>
 
           <p>Our recipe scaler excels at scaling down recipes by handling fractional measurements that are difficult to measure manually. For example, when scaling down recipes that call for 3 eggs to serve 2 people instead of 8, the tool calculates the exact fractional equivalent and suggests practical measuring alternatives.</p>
 
           <p>The tool also considers the practical limitations of scaling down recipes, such as minimum effective quantities for spices and seasonings, helping you avoid dishes that are under-seasoned due to mathematical scaling alone.</p>
 
-          <h3>Advanced Recipe Scaling Techniques</h3>
+          <h2>Advanced Recipe Scaling Techniques</h2>
           <p>Beyond basic multiplication and division, effective recipe scaling requires understanding how different ingredients behave at various quantities. Our recipe scaler incorporates culinary science principles to ensure your scaled recipes produce optimal results.</p>
 
           <p><strong>Liquid Ingredient Scaling:</strong> The tool maintains proper hydration ratios in baked goods and ensures sauces and dressings retain their intended consistency when scaled up or down.</p>
@@ -98,14 +98,14 @@ export function render() {
 
           <p><strong>Cooking Time Considerations:</strong> Though our tool focuses on ingredient quantities, understanding that cooking times don't always scale proportionally is crucial for recipe success.</p>
 
-          <h3>Unit Conversion and Measurement Precision</h3>
+          <h2>Unit Conversion and Measurement Precision</h2>
           <p>Professional cooking relies on accurate measurements, and our recipe scaler includes comprehensive unit conversion capabilities. The tool seamlessly converts between cups and milliliters, ounces and grams, tablespoons and teaspoons, ensuring you can work with any recipe regardless of its original measurement system.</p>
 
           <p>The measurement converter functionality is particularly valuable for international recipes or when working with ingredients measured in unfamiliar units. Rather than consulting separate conversion charts, our integrated system handles all conversions automatically while maintaining the mathematical precision required for consistent cooking results.</p>
 
           <p>For bakers who prefer weight-based measurements for accuracy, the tool converts volume measurements to weight equivalents where appropriate, supporting the precision that professional baking demands.</p>
 
-          <h3>Frequently Asked Questions</h3>
+          <h2>Frequently Asked Questions</h2>
 
           <h4>How accurate is the recipe scaler for complex recipes?</h4>
           <p>Our recipe scaler maintains mathematical precision for all ingredient calculations, but some complex recipes may require additional adjustments for seasoning and cooking techniques. The tool provides a solid foundation that works excellently for most recipes, with 95% accuracy for standard cooking and baking applications.</p>
@@ -122,7 +122,7 @@ export function render() {
           <h4>Can I save or export my scaled recipes?</h4>
           <p>Yes, our recipe scaler offers multiple export options including copy-to-clipboard for easy sharing, printable format for kitchen reference, and JSON export for digital recipe management systems. This makes it easy to save and organize your perfectly scaled recipes.</p>
 
-          <h3>Recipe Scaler and Your Cooking Workflow</h3>
+          <h2>Recipe Scaler and Your Cooking Workflow</h2>
           <p>Integrating our recipe scaler into your cooking routine transforms meal planning from a source of mathematical stress into a streamlined, confident process. The tool pairs perfectly with other kitchen utilities like our Word Counter for recipe description optimization and Case Converter for consistent recipe formatting across your digital cookbook.</p>
 
           <p>Professional chefs use recipe scaling tools to maintain consistency across different service sizes, while home cooks appreciate the confidence that comes from knowing their ingredient ratios are mathematically perfect. Start using our free recipe scaler today to eliminate cooking calculation errors and enjoy consistently delicious results, whether you're cooking for one or feeding a crowd.</p>
@@ -523,11 +523,11 @@ export async function init() {
           </style>
         </head>
         <body>
-          <h3>${currentScaledData.title}</h3>
+          <div class="section-title">${currentScaledData.title}</div>
           <div class="serving-info">
             <strong>Serves:</strong> ${currentScaledData.targetServings}
           </div>
-          <h3>Ingredients:</h3>
+          <div class="section-title">Ingredients:</div>
           <ul>
             ${currentScaledData.ingredients.map(ing => `<li>${ing.displayLine}</li>`).join('')}
           </ul>

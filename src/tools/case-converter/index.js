@@ -5,7 +5,7 @@ export function render() {
         <div class="tool-interface">
           <div class="tool-main">
             <div class="form-section">
-              <h3>Enter Your Text</h3>
+              <div class="section-title">Enter Your Text</div>
               <div class="form-group">
                 <label for="case-input">Text to convert:</label>
                 <textarea 
@@ -30,7 +30,7 @@ export function render() {
             </div>
           </div>
           <div class="tool-results">
-            <h3>Converted Text</h3>
+            <div class="section-title">Converted Text</div>
             <div class="results-content">
               <div class="form-group">
                 <label for="case-output">Result:</label>
@@ -53,12 +53,12 @@ export function render() {
         </div>
 
       <div class="seo-content">
-        <h3>Understanding the Case Converter</h3>
+        <h2>Understanding the Case Converter</h2>
         <p>Our <strong>case converter</strong> is a powerful, free online tool designed to instantly transform text between different case formats. Whether you're a developer cleaning up code, a writer formatting content, or a student working on assignments, this case converter streamlines your workflow by providing five essential text transformation options in one convenient interface.</p>
         
         <p>The tool operates entirely in your browser, ensuring your text remains private and secure. With real-time conversion capabilities and support for large text inputs, our case converter handles everything from single words to entire documents with remarkable speed and accuracy.</p>
 
-        <h3>How to Use Our Case Converter</h3>
+        <h2>How to Use Our Case Converter</h2>
         <p>Using our case converter is straightforward and intuitive:</p>
         <ul>
           <li><strong>Step 1:</strong> Paste or type your text into the input area above</li>
@@ -70,42 +70,42 @@ export function render() {
         
         <p>The tool automatically updates as you type, making it perfect for real-time text formatting. For optimal performance with large documents, the converter includes smart debouncing to ensure smooth operation even with extensive text inputs.</p>
 
-        <h3>Convert Capital Letters to Lowercase Made Simple</h3>
+        <h2>Convert Capital Letters to Lowercase Made Simple</h2>
         <p>One of the most common text formatting needs is to <strong>convert capital letters to lowercase</strong>. This functionality proves invaluable when dealing with text that's been accidentally typed in all caps, imported data with inconsistent formatting, or legacy content that needs standardization.</p>
         
         <p>Our lowercase conversion feature intelligently processes your text, transforming every uppercase letter to its lowercase equivalent while preserving numbers, punctuation, and special characters. This is particularly useful for developers working with case-sensitive programming languages, content creators preparing social media posts, or anyone needing to ensure consistent text formatting across documents.</p>
         
         <p>The <strong>all caps to lowercase</strong> transformation is instant and handles Unicode characters properly, making it suitable for international content and multilingual text processing. Whether you're converting a single sentence or an entire document, the tool maintains formatting integrity while delivering accurate results.</p>
 
-        <h3>Upper Case Converter for Professional Formatting</h3>
+        <h2>Upper Case Converter for Professional Formatting</h2>
         <p>The <strong>upper case converter</strong> functionality transforms all alphabetic characters in your text to their capitalized equivalents. This feature is essential for creating headings, emphasis text, or meeting specific formatting requirements in professional documents.</p>
         
         <p>Converting text to uppercase is commonly needed for acronyms, titles, headers, and emphasis in various contexts. Our tool ensures consistent capitalization across your entire text input, making it perfect for creating standardized documentation, formatting legal documents, or preparing content that requires specific capitalization conventions.</p>
         
         <p>The uppercase conversion maintains the integrity of numbers, punctuation marks, and special symbols while transforming only the alphabetic characters. This precision makes it ideal for technical documentation, business communications, and any scenario where professional text formatting is crucial.</p>
 
-        <h3>Lower Case Converter for Streamlined Text</h3>
+        <h2>Lower Case Converter for Streamlined Text</h2>
         <p>Our <strong>lower case converter</strong> provides a clean, efficient way to transform any text into uniform lowercase formatting. This conversion type is particularly valuable for developers working with URLs, file names, or database entries where consistent lowercase formatting is required.</p>
         
         <p>The lowercase conversion feature handles complex text inputs gracefully, preserving the original spacing and punctuation while transforming only the alphabetic characters. This makes it perfect for preparing text for case-sensitive systems, creating SEO-friendly URLs, or standardizing data entries across different platforms.</p>
         
         <p>Beyond technical applications, the <strong>caps to lowercase converter</strong> helps with everyday text formatting needs, such as correcting accidentally capitalized text, preparing content for specific style guides, or ensuring consistency in written communications.</p>
 
-        <h3>Sentence Case Converter for Natural Reading</h3>
+        <h2>Sentence Case Converter for Natural Reading</h2>
         <p>The <strong>sentence case converter</strong> intelligently capitalizes the first letter of each sentence while converting the remaining text to lowercase. This creates natural, readable text that follows standard grammatical conventions for most written content.</p>
         
         <p>Our sentence case algorithm recognizes common sentence endings (periods, exclamation marks, question marks) and properly capitalizes the subsequent word, creating properly formatted text that's ideal for articles, emails, and general writing. This feature is particularly useful when working with text that has inconsistent capitalization or when converting all-caps content to a more readable format.</p>
         
         <p>The sentence case conversion respects abbreviations and handles edge cases intelligently, ensuring that your converted text maintains professional quality and readability standards expected in formal and informal writing contexts.</p>
 
-        <h3>Change Text to Uppercase for Maximum Impact</h3>
+        <h2>Change Text to Uppercase for Maximum Impact</h2>
         <p>When you need to <strong>change text to uppercase</strong> for emphasis, headers, or specific formatting requirements, our converter delivers instant results with precision. The uppercase transformation is perfect for creating attention-grabbing headlines, formatting legal documents, or meeting specific style guide requirements.</p>
         
         <p>The tool's uppercase conversion handles international characters, accented letters, and special Unicode symbols correctly, ensuring that your text maintains its meaning and readability across different languages and character sets. This comprehensive approach makes it suitable for global content creation and multilingual text processing.</p>
         
         <p>Whether you're preparing marketing materials, formatting technical documentation, or creating content that requires specific capitalization standards, the <strong>upper to lower case converter</strong> and its reverse functionality provide the flexibility needed for professional text formatting.</p>
 
-        <h3>Frequently Asked Questions</h3>
+        <div class="section-title">Frequently Asked Questions</div>
         
         <h4>What types of case conversion does this case converter support?</h4>
         <p>Our case converter supports five essential conversion types: sentence case (first letter capitalized), lowercase (all letters small), uppercase (all letters capitalized), title case (first letter of each word capitalized), and inverted case (alternates between upper and lowercase).</p>
@@ -122,7 +122,7 @@ export function render() {
         <h4>Can I use this tool offline?</h4>
         <p>Once the page loads, the case converter works completely offline since all processing happens in your browser. No internet connection is required for text conversion operations.</p>
 
-        <h3>Case Converter and Your Workflow</h3>
+        <h2>Case Converter and Your Workflow</h2>
         <p>Our case converter integrates seamlessly into any text processing workflow, providing instant formatting solutions for writers, developers, students, and professionals. The tool's versatility makes it an essential utility for anyone working with text formatting requirements.</p>
         
         <p>Combine this case converter with other text tools like our <strong>word counter</strong> for comprehensive text analysis, or use it alongside formatting tools to create perfectly structured content. The case converter's efficiency and accuracy make it a valuable addition to any digital toolkit focused on text transformation and content creation.</p>
