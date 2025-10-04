@@ -1,28 +1,27 @@
-# Cloudflare Pages Headers Configuration - DEVELOPMENT-FRIENDLY CACHING
+# Cloudflare Pages Headers Configuration - CACHE BUSTING OPTIMIZED
 
-# DEVELOPMENT MODE: CSS files - short cache during active development
+# 🚀 HASHED ASSETS: Aggressive caching for content-hashed files (cache busting)
+/app.*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/styles/*.*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/tools/*/index.*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+# 📁 NON-HASHED ASSETS: Short cache for files without content hashing
 /tools/*/style.css
   Cache-Control: public, max-age=3600, must-revalidate
 
-/styles/*
-  Cache-Control: public, max-age=3600, must-revalidate
-
-# DEVELOPMENT MODE: Main app JS - short cache for rapid updates
-/app.js
-  Cache-Control: public, max-age=3600, must-revalidate
-
-# STATIC ASSETS: Keep long cache for truly static content
+# 🖼️ STATIC ASSETS: Long cache for truly static content
 /images/*
   Cache-Control: public, max-age=31536000, immutable
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-# ACTIVE DEVELOPMENT: Tool JavaScript - very short cache for instant updates
-/tools/*/index.js
-  Cache-Control: public, max-age=300, must-revalidate
-
-# DYNAMIC CONTENT: HTML files - very short cache for content updates
+# 📄 HTML CONTENT: Short cache to allow quick content updates
 /*.html
   Cache-Control: public, max-age=300, must-revalidate
 

@@ -13,7 +13,7 @@ function normalizePath(filePath) {
 
 async function buildSite() {
   try {
-    console.log('🚀 Building Free Tools Platform...');
+    console.log('🚀 Building Free Tools Platform with Cache Busting...');
 
     // Clean dist directory
     if (fs.existsSync('dist')) {
@@ -36,26 +36,15 @@ async function buildSite() {
     const toolRegistry = JSON.parse(fs.readFileSync(toolRegistryPath, 'utf8'));
     console.log(`📚 Found ${toolRegistry.length} tools in registry`);
 
-    // Read template HTML
+    // Initialize hash tracking for asset references
+    let assetHashes = new Map();
+
+    // Read template HTML early (will be updated with hashes later)
     const templatePath = path.join('src', 'index.html');
     if (!fs.existsSync(templatePath)) {
       throw new Error('index.html template not found in src/');
     }
-
-    const templateHtml = inlineCriticalCSS(fs.readFileSync(templatePath, 'utf8'));
-
-    // Generate homepage (index.html)
-    const homepageHtml = templateHtml
-      .replace(/<!--SEO_TITLE-->/g, 'Simple Online Tools - No Sign-up Required')
-      .replace(/<!--SEO_DESCRIPTION-->/g, 'Discover our collection of simple online tools for text processing, calculations, conversions, and more. Fast, secure, and no registration needed.')
-      .replace(/<!--SEO_KEYWORDS-->/g, 'simple online tools, free tools, text tools, calculators, converters')
-      .replace(/<!--OG_URL-->/g, 'https://simpleonlinetool.com/')
-      .replace(/<!--OG_IMAGE-->/g, 'https://simpleonlinetool.com/images/homepage-preview.jpg')
-      .replace(/<!--TWITTER_IMAGE-->/g, 'https://simpleonlinetool.com/images/homepage-preview.jpg')
-      .replace('<body>', '<body data-tool-slug="">');
-
-    fs.writeFileSync(path.join('dist', 'index.html'), homepageHtml);
-    console.log('✅ Generated homepage: dist/index.html');
+    let baseTemplateHtml = fs.readFileSync(templatePath, 'utf8');
 
     // Generate static pages (About, Privacy, Terms, Contact) with clean URLs
     const staticPages = [
@@ -81,7 +70,7 @@ async function buildSite() {
     // Create category directory structure
     fs.mkdirSync('dist/category', { recursive: true });
 
-    // Generate category pages using directory-based routing
+    // Generate category pages using directory-based routing (using base template for now)
     const categories = [...new Set(toolRegistry.map(tool => tool.primaryCategory))];
     for (const category of categories) {
       const categoryTools = toolRegistry.filter(tool => tool.primaryCategory === category);
@@ -90,7 +79,7 @@ async function buildSite() {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
       
-      const categoryHtml = templateHtml
+      const categoryHtml = baseTemplateHtml
         .replace(/<!--SEO_TITLE-->/g, `${categoryName} - Free Online Tools`)
         .replace(/<!--SEO_DESCRIPTION-->/g, `Discover our collection of ${categoryName.toLowerCase()} tools. Free, fast, and no sign-up required.`)
         .replace(/<!--SEO_KEYWORDS-->/g, `${categoryName.toLowerCase()}, free tools, online tools, ${category}`)
@@ -109,14 +98,14 @@ async function buildSite() {
       console.log(`✅ Generated category page: ${normalizedCategoryPath}`);
     }
 
-    // Generate individual tool pages with clean URLs
+    // Generate individual tool pages with clean URLs (using base template for now)
     for (const tool of toolRegistry) {
       // Use enhanced SEO metadata if available
       const metaTitle = tool.seo?.metaTitle || tool.title;
       const metaDescription = tool.seo?.metaDescription || tool.description;
       const metaKeywords = tool.keywords;
 
-      let toolHtml = templateHtml
+      let toolHtml = baseTemplateHtml
         .replace(/<!--SEO_TITLE-->/g, metaTitle)
         .replace(/<!--SEO_DESCRIPTION-->/g, metaDescription)
         .replace(/<!--SEO_KEYWORDS-->/g, metaKeywords)
@@ -142,17 +131,24 @@ async function buildSite() {
         toolHtml = toolHtml.replace('</head>', `${additionalMeta}</head>`);
       }
 
-      // Inject tool-specific CSS if it exists
+      // Update tool-specific asset references with hashes
+      toolHtml = updateToolAssetReferences(toolHtml, tool.slug, assetHashes);
+
+      // Inject tool-specific CSS if it exists (non-bundled CSS files don't get hashed)
       const toolStylePath = path.join('src', 'tools', tool.slug, 'style.css');
       if (fs.existsSync(toolStylePath)) {
         const cssLinkTag = `<link rel="stylesheet" href="/tools/${tool.slug}/style.css">`;
         toolHtml = toolHtml.replace('</head>', `    ${cssLinkTag}\n</head>`);
       }
 
-      // LCP OPTIMIZATION: Preload tool-specific JavaScript for faster interaction
+      // LCP OPTIMIZATION: Preload tool-specific JavaScript (use hashed version if available)
       const toolJsPath = path.join('src', 'tools', tool.slug, 'index.js');
       if (fs.existsSync(toolJsPath)) {
-        const jsPreloadTag = `<link rel="preload" href="/tools/${tool.slug}/index.js" as="script" crossorigin>`;
+        let preloadPath = `/tools/${tool.slug}/index.js`;
+        if (assetHashes.has(tool.slug)) {
+          preloadPath = assetHashes.get(tool.slug).replace('dist/', '/');
+        }
+        const jsPreloadTag = `<link rel="preload" href="${preloadPath}" as="script" crossorigin>`;
         toolHtml = toolHtml.replace('<!--TOOL_PRELOAD-->', jsPreloadTag);
       }
 
@@ -288,8 +284,8 @@ async function buildSite() {
       console.log(`✅ Generated tool page: ${normalizedToolPath} (clean URL: /tools/${tool.slug}/)`);
     }
 
-    // Bundle CSS
-    await esbuild.build({
+    // Bundle CSS with content hashing for cache busting
+    const cssResult = await esbuild.build({
       entryPoints: [
         'src/styles/base.css',
         'src/styles/layout.css'
@@ -297,50 +293,113 @@ async function buildSite() {
       bundle: true,
       outdir: 'dist/styles',
       minify: process.env.NODE_ENV === 'production',
-      sourcemap: process.env.NODE_ENV !== 'production'
+      sourcemap: process.env.NODE_ENV !== 'production',
+      entryNames: '[name].[hash]', // Content-based hashing
+      metafile: true,
+      write: true
     });
-    console.log('✅ Bundled CSS files');
+    
+    // Extract CSS hash information for HTML updates
+    const cssHashes = new Map();
+    Object.entries(cssResult.metafile.outputs).forEach(([path, info]) => {
+      const normalizedPath = normalizePath(path);
+      const filename = path.split('/').pop();
+      const baseName = filename.split('.')[0];
+      cssHashes.set(baseName, normalizedPath);
+    });
+    
+    console.log('✅ Bundled CSS files with content hashing');
 
-    // Bundle main app.js
-    await esbuild.build({
+    // Bundle main app.js with content hashing
+    const appResult = await esbuild.build({
       entryPoints: ['src/app.js'],
       bundle: true,
       format: 'esm',
       outdir: 'dist',
       minify: process.env.NODE_ENV === 'production',
       sourcemap: process.env.NODE_ENV !== 'production',
-      splitting: true
+      splitting: true,
+      entryNames: '[name].[hash]', // Content-based hashing
+      chunkNames: '[name].[hash]', // Hash shared chunks too
+      metafile: true,
+      write: true
+    });
+    
+    // Extract JS hash information for HTML updates
+    const jsHashes = new Map();
+    Object.entries(appResult.metafile.outputs).forEach(([path, info]) => {
+      const normalizedPath = normalizePath(path);
+      const filename = path.split('/').pop();
+      const baseName = filename.split('.')[0];
+      jsHashes.set(baseName, normalizedPath);
     });
 
-    // Bundle individual tool modules that have imports
+    // Bundle individual tool modules that have imports with content hashing
+    const toolHashes = new Map();
     for (const tool of toolRegistry) {
       const toolJsPath = path.join('src', 'tools', tool.slug, 'index.js');
       if (fs.existsSync(toolJsPath)) {
         // Check if the tool has imports (indicates it needs bundling)
         const toolContent = fs.readFileSync(toolJsPath, 'utf8');
         if (toolContent.includes('import ') && toolContent.includes('from ')) {
-          // This tool has imports - bundle it
+          // This tool has imports - bundle it with content hashing
           const toolDistDir = path.join('dist', 'tools', tool.slug);
           fs.mkdirSync(toolDistDir, { recursive: true });
           
-          await esbuild.build({
+          const toolResult = await esbuild.build({
             entryPoints: [toolJsPath],
             bundle: true,
             format: 'esm',
-            outfile: path.join(toolDistDir, 'index.js'),
+            outdir: toolDistDir,
             minify: process.env.NODE_ENV === 'production',
             sourcemap: process.env.NODE_ENV !== 'production',
             external: [], // Bundle all dependencies
+            entryNames: 'index.[hash]', // Content-based hashing for tools
+            metafile: true,
+            write: true,
             define: {
               'global': 'globalThis' // Fix for pdf-lib Node.js compatibility in browser
             }
           });
-          console.log(`✅ Bundled tool: ${tool.slug} (with dependencies)`);
+          
+          // Extract tool hash information
+          Object.entries(toolResult.metafile.outputs).forEach(([path, info]) => {
+            const normalizedPath = normalizePath(path);
+            if (normalizedPath.includes(`/${tool.slug}/`)) {
+              toolHashes.set(tool.slug, normalizedPath);
+            }
+          });
+          
+          console.log(`✅ Bundled tool: ${tool.slug} (with content hashing)`);
         }
       }
     }
     
-    console.log('✅ Bundled JavaScript files');
+    // Merge all asset hashes for template replacement
+    assetHashes = new Map([...cssHashes, ...jsHashes, ...toolHashes]);
+    
+    console.log('✅ Bundled JavaScript files with content hashing');
+    
+    // Update all generated HTML files with hashed asset references
+    updateGeneratedFilesWithHashes(assetHashes);
+    
+    console.log('✅ Updated all HTML files with hashed asset references');
+
+    // Generate homepage with hashed assets
+    let templateHtml = updateAssetReferences(baseTemplateHtml, assetHashes);
+    templateHtml = inlineCriticalCSS(templateHtml);
+
+    const homepageHtml = templateHtml
+      .replace(/<!--SEO_TITLE-->/g, 'Simple Online Tools - No Sign-up Required')
+      .replace(/<!--SEO_DESCRIPTION-->/g, 'Discover our collection of simple online tools for text processing, calculations, conversions, and more. Fast, secure, and no registration needed.')
+      .replace(/<!--SEO_KEYWORDS-->/g, 'simple online tools, free tools, text tools, calculators, converters')
+      .replace(/<!--OG_URL-->/g, 'https://simpleonlinetool.com/')
+      .replace(/<!--OG_IMAGE-->/g, 'https://simpleonlinetool.com/images/homepage-preview.jpg')
+      .replace(/<!--TWITTER_IMAGE-->/g, 'https://simpleonlinetool.com/images/homepage-preview.jpg')
+      .replace('<body>', '<body data-tool-slug="">');
+
+    fs.writeFileSync(path.join('dist', 'index.html'), homepageHtml);
+    console.log('✅ Generated homepage with hashed assets: dist/index.html');
 
     // Copy component files
     if (fs.existsSync('src/components')) {
@@ -354,9 +413,18 @@ async function buildSite() {
       console.log('✅ Copied tool files');
     }
 
-    // Copy tool registry to dist for client-side access
-    fs.copyFileSync('src/tool-registry.json', 'dist/tool-registry.json');
-    console.log('✅ Copied tool registry');
+    // Update tool registry with hashed asset paths and copy to dist
+    const updatedRegistry = toolRegistry.map(tool => {
+      const updatedTool = { ...tool };
+      // Update jsPath if tool was bundled with hash
+      if (assetHashes.has(tool.slug)) {
+        updatedTool.jsPath = assetHashes.get(tool.slug).replace('dist/', './');
+      }
+      return updatedTool;
+    });
+    
+    fs.writeFileSync('dist/tool-registry.json', JSON.stringify(updatedRegistry, null, 2));
+    console.log('✅ Generated tool registry with hashed asset paths');
 
     // Generate sitemap.xml
     generateSitemap(toolRegistry);
@@ -364,9 +432,18 @@ async function buildSite() {
     // Generate or update robots.txt
     generateRobotsTxt();
 
-    console.log('🎉 Build completed successfully!');
+    console.log('🎉 Build completed successfully with cache busting!');
     console.log('📁 Output directory: ./dist/');
+    console.log('🔄 Cache busting assets generated:', assetHashes.size);
     console.log('🌐 You can now serve the dist/ folder with any static hosting service');
+    
+    // Log cache busting information for debugging
+    if (assetHashes.size > 0) {
+      console.log('\n📋 Cache Busting Summary:');
+      for (const [name, path] of assetHashes.entries()) {
+        console.log(`  ${name}: ${path.replace('dist/', '/')}`);
+      }
+    }
 
   } catch (error) {
     console.error('❌ Build failed:', error.message);
@@ -594,6 +671,72 @@ if (isWatchMode) {
 } else {
   // Run single build
   buildSite();
+}
+
+// Function to update asset references with hashed versions
+function updateAssetReferences(html, assetHashes) {
+  let updatedHtml = html;
+  
+  // Update main app.js reference
+  if (assetHashes.has('app')) {
+    const hashedPath = assetHashes.get('app').replace('dist/', '/');
+    updatedHtml = updatedHtml.replace('/app.js', hashedPath);
+  }
+  
+  // Update CSS references
+  if (assetHashes.has('base')) {
+    const hashedPath = assetHashes.get('base').replace('dist/', '/');
+    updatedHtml = updatedHtml.replace('/styles/base.css', hashedPath);
+  }
+  
+  if (assetHashes.has('layout')) {
+    const hashedPath = assetHashes.get('layout').replace('dist/', '/');
+    updatedHtml = updatedHtml.replace('/styles/layout.css', hashedPath);
+  }
+  
+  return updatedHtml;
+}
+
+// Function to update tool-specific asset references
+function updateToolAssetReferences(html, toolSlug, assetHashes) {
+  let updatedHtml = html;
+  
+  // Update tool-specific JS reference if it was bundled with hash
+  if (assetHashes.has(toolSlug)) {
+    const hashedPath = assetHashes.get(toolSlug).replace('dist/', '/');
+    const originalPath = `/tools/${toolSlug}/index.js`;
+    updatedHtml = updatedHtml.replace(originalPath, hashedPath);
+  }
+  
+  return updatedHtml;
+}
+
+// Function to update all generated HTML files with hashed asset references
+function updateGeneratedFilesWithHashes(assetHashes) {
+  // Update category pages
+  const categoryDirs = fs.readdirSync('dist/category');
+  for (const categoryDir of categoryDirs) {
+    const categoryPath = path.join('dist', 'category', categoryDir, 'index.html');
+    if (fs.existsSync(categoryPath)) {
+      let categoryHtml = fs.readFileSync(categoryPath, 'utf8');
+      categoryHtml = updateAssetReferences(categoryHtml, assetHashes);
+      categoryHtml = inlineCriticalCSS(categoryHtml);
+      fs.writeFileSync(categoryPath, categoryHtml);
+    }
+  }
+  
+  // Update tool pages
+  const toolDirs = fs.readdirSync('dist/tools');
+  for (const toolDir of toolDirs) {
+    const toolPath = path.join('dist', 'tools', toolDir, 'index.html');
+    if (fs.existsSync(toolPath)) {
+      let toolHtml = fs.readFileSync(toolPath, 'utf8');
+      toolHtml = updateAssetReferences(toolHtml, assetHashes);
+      toolHtml = updateToolAssetReferences(toolHtml, toolDir, assetHashes);
+      toolHtml = inlineCriticalCSS(toolHtml, toolDir);
+      fs.writeFileSync(toolPath, toolHtml);
+    }
+  }
 }
 
 // Function to inline critical CSS (enhanced for performance)
