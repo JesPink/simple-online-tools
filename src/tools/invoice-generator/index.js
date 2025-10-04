@@ -811,6 +811,11 @@ export async function init() {
     }
   }
 
+  // Initialize with mobile-optimized zoom
+  if (window.innerWidth <= 767) {
+    currentZoom = 80; // Default to 80% on mobile as user requested
+  }
+  
   // Initialize preview
   updatePreview();
   updateZoom();
