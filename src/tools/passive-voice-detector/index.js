@@ -5,26 +5,27 @@ export function render() {
     <div class="passive-voice-detector-tool">
       <div class="tool-container">
         <div class="tool-interface">
-          <div class="tool-main">
-            <div class="form-section">
-              <h3>Text Analysis</h3>
-              <div class="form-group">
-                <label for="text-input">Enter your text below:</label>
-                <textarea 
-                  id="text-input" 
-                  class="form-control" 
-                  placeholder="Paste or type your text here to detect passive voice..."
-                  rows="8"
-                ></textarea>
-              </div>
-              <div class="form-actions">
-                <button id="analyze-btn" class="btn btn-primary">Analyze Text</button>
-                <button id="clear-btn" class="btn btn-secondary">Clear</button>
+          <div class="tool-grid">
+            <div class="tool-main">
+              <div class="form-section">
+                <h3>Text Analysis</h3>
+                <div class="form-group">
+                  <label for="text-input">Enter your text below:</label>
+                  <textarea 
+                    id="text-input" 
+                    class="form-control" 
+                    placeholder="Paste or type your text here to detect passive voice..."
+                    rows="8"
+                  ></textarea>
+                </div>
+                <div class="form-actions">
+                  <button id="analyze-btn" class="btn btn-primary">Analyze Text</button>
+                  <button id="clear-btn" class="btn btn-secondary">Clear</button>
+                </div>
               </div>
             </div>
-          </div>
-          
-          <div class="tool-results">
+            
+            <div class="tool-results">
             <div class="stats-container">
               <div class="stat-item">
                 <span class="stat-label">Total Sentences:</span>
@@ -117,6 +118,8 @@ export function render() {
       <p>Consider pairing this passive voice checker with other writing tools on our platform, such as our <strong>word counter</strong> for tracking document length and <strong>readability analyzer</strong> for comprehensive content optimization. Together, these tools create a complete writing enhancement suite that helps you produce professional, engaging content every time.</p>
       
         <p>Remember that while active voice is generally preferred, passive voice has its place in certain contexts, such as when the actor is unknown or when you want to emphasize the action rather than the actor. Our tool helps you make informed decisions about voice usage rather than blindly eliminating all passive constructions.</p>
+        </div>
+          </div>
         </div>
       </div>
     </div>

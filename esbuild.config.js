@@ -98,12 +98,15 @@ async function buildSite() {
       console.log(`✅ Generated category page: ${normalizedCategoryPath}`);
     }
 
-    // Generate individual tool pages with clean URLs (using base template for now)
+    // Generate individual tool pages with SEO content extraction
     for (const tool of toolRegistry) {
       // Use enhanced SEO metadata if available
       const metaTitle = tool.seo?.metaTitle || tool.title;
       const metaDescription = tool.seo?.metaDescription || tool.description;
       const metaKeywords = tool.keywords;
+
+      // Extract SEO content from tool's render() function
+      const toolSeoContent = extractSeoContentFromTool(tool.slug);
 
       let toolHtml = baseTemplateHtml
         .replace(/<!--SEO_TITLE-->/g, metaTitle)
@@ -139,6 +142,14 @@ async function buildSite() {
       if (fs.existsSync(toolStylePath)) {
         const cssLinkTag = `<link rel="stylesheet" href="/tools/${tool.slug}/style.css">`;
         toolHtml = toolHtml.replace('</head>', `    ${cssLinkTag}\n</head>`);
+      }
+
+      // Inject static SEO content for search engine crawling
+      if (toolSeoContent) {
+        toolHtml = toolHtml.replace('<!--STATIC_SEO_CONTENT-->', toolSeoContent);
+        console.log(`✅ Injected SEO content for ${tool.slug}`);
+      } else {
+        toolHtml = toolHtml.replace('<!--STATIC_SEO_CONTENT-->', '');
       }
 
       // LCP OPTIMIZATION: Preload tool-specific JavaScript (use hashed version if available)
@@ -830,4 +841,38 @@ function extractCriticalToolCSS(toolCSS, toolSlug) {
   }
   
   return criticalCSS;
+}
+
+// Extract SEO content from tool's render() function during build
+function extractSeoContentFromTool(toolSlug) {
+  try {
+    const toolJsPath = path.join('src', 'tools', toolSlug, 'index.js');
+    if (!fs.existsSync(toolJsPath)) {
+      console.warn(`⚠️ Tool file not found: ${toolJsPath}`);
+      return '';
+    }
+    
+    const toolContent = fs.readFileSync(toolJsPath, 'utf8');
+    
+    // Extract content between .seo-content div tags from the render() function
+    const seoContentMatch = toolContent.match(/<div class="seo-content">([\s\S]*?)<\/div>/);
+    
+    if (seoContentMatch && seoContentMatch[1]) {
+      // Clean up the extracted content - remove excessive whitespace and template literals formatting
+      let seoContent = seoContentMatch[1]
+        .replace(/^\s*\n/gm, '') // Remove empty lines at start
+        .replace(/\n\s*$/gm, '') // Remove empty lines at end
+        .replace(/^\s{6,}/gm, '        ') // Normalize indentation to 8 spaces
+        .trim();
+      
+      console.log(`✅ Extracted SEO content for ${toolSlug}: ${seoContent.length} characters`);
+      return seoContent;
+    } else {
+      console.warn(`⚠️ No SEO content found in ${toolSlug} render() function`);
+      return '';
+    }
+  } catch (error) {
+    console.error(`❌ Error extracting SEO content for ${toolSlug}:`, error.message);
+    return '';
+  }
 }
