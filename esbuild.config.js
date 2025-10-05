@@ -775,9 +775,9 @@ function inlineCriticalCSS(html, toolSlug = null) {
       }
     }
     
-    // Remove existing CSS link tags for critical files
-    html = html.replace(/<link rel="stylesheet" href="\/styles\/base\.css">\s*/g, '');
-    html = html.replace(/<link rel="stylesheet" href="\/styles\/layout\.css">\s*/g, '');
+    // Remove existing CSS link tags for critical files (support both original and hashed versions)
+    html = html.replace(/<link rel="stylesheet" href="\/styles\/base[^"]*\.css"[^>]*>\s*/g, '');
+    html = html.replace(/<link rel="stylesheet" href="\/styles\/layout[^"]*\.css"[^>]*>\s*/g, '');
     
     // Inline critical CSS before closing </head>
     const inlinedCSS = `    <style>\n${criticalCSS}\n    </style>\n    `;
@@ -844,6 +844,44 @@ function extractCriticalToolCSS(toolCSS, toolSlug) {
 }
 
 // Extract SEO content from tool's render() function during build
+// Helper function to extract content from nested divs properly
+function extractNestedDivContent(content, className) {
+  const openTag = `<div class="${className}">`;
+  const openTagIndex = content.indexOf(openTag);
+  
+  if (openTagIndex === -1) {
+    return null;
+  }
+  
+  let divCount = 0;
+  let contentStart = openTagIndex + openTag.length;
+  let currentIndex = contentStart;
+  
+  // Track opening and closing div tags to find the correct matching closing tag
+  while (currentIndex < content.length) {
+    const nextOpenDiv = content.indexOf('<div', currentIndex);
+    const nextCloseDiv = content.indexOf('</div>', currentIndex);
+    
+    if (nextCloseDiv === -1) break;
+    
+    if (nextOpenDiv !== -1 && nextOpenDiv < nextCloseDiv) {
+      // Found opening div before closing div
+      divCount++;
+      currentIndex = nextOpenDiv + 4; // Move past '<div'
+    } else {
+      // Found closing div
+      if (divCount === 0) {
+        // This is our matching closing tag
+        return content.substring(contentStart, nextCloseDiv).trim();
+      }
+      divCount--;
+      currentIndex = nextCloseDiv + 6; // Move past '</div>'
+    }
+  }
+  
+  return null;
+}
+
 function extractSeoContentFromTool(toolSlug) {
   try {
     const toolJsPath = path.join('src', 'tools', toolSlug, 'index.js');
@@ -855,11 +893,12 @@ function extractSeoContentFromTool(toolSlug) {
     const toolContent = fs.readFileSync(toolJsPath, 'utf8');
     
     // Extract content between .seo-content div tags from the render() function
-    const seoContentMatch = toolContent.match(/<div class="seo-content">([\s\S]*?)<\/div>/);
+    // Use a more sophisticated approach to handle nested divs properly
+    const seoContentMatch = extractNestedDivContent(toolContent, 'seo-content');
     
-    if (seoContentMatch && seoContentMatch[1]) {
+    if (seoContentMatch) {
       // Clean up the extracted content - remove excessive whitespace and template literals formatting
-      let seoContent = seoContentMatch[1]
+      let seoContent = seoContentMatch
         .replace(/^\s*\n/gm, '') // Remove empty lines at start
         .replace(/\n\s*$/gm, '') // Remove empty lines at end
         .replace(/^\s{6,}/gm, '        ') // Normalize indentation to 8 spaces

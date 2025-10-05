@@ -309,11 +309,10 @@
     box-sizing: border-box;
   }
   
-  /* DEFAULT 80% ZOOM ON MOBILE */
+  /* MOBILE: Allow dynamic zoom control - don't force 80% */
   .invoice-generator-tool .invoice-preview {
-    transform: scale(0.8) !important;
-    transform-origin: top left !important;
-    width: 125%; /* Compensate for 80% scale: 100% / 0.8 = 125% */
+    /* Let JavaScript handle zoom transforms */
+    min-width: 280px; /* Ensure minimum readable size */
   }
   
   .invoice-generator-tool .invoice-document {
@@ -628,13 +627,26 @@
     align-items: start;
   }
   
-  /* Make form section full width on desktop */
+  /* Desktop: Form takes left column, preview takes right column */
   .invoice-generator-tool .tool-main {
-    grid-column: 1 / -1; /* Span full width */
+    grid-column: 1; /* Left column */
+    max-height: none; /* Remove mobile height limit */
   }
   
   .invoice-generator-tool .tool-results {
-    grid-column: 1 / -1; /* Span full width */
+    grid-column: 2; /* Right column */
+  }
+  
+  /* Desktop: Larger preview container */
+  .invoice-generator-tool .invoice-preview-container {
+    max-height: 75vh; /* Larger on desktop */
+    padding: var(--space-4);
+  }
+  
+  /* Desktop: Reset zoom-related mobile fixes */
+  .invoice-generator-tool .invoice-preview {
+    min-width: auto; /* Remove mobile min-width */
+    width: fit-content; /* Natural width on desktop */
   }
   
   .invoice-generator-tool .form-row {

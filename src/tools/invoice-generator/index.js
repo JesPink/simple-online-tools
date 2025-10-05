@@ -601,9 +601,21 @@ export async function init() {
   function updateZoom() {
     const previewElement = document.querySelector('.invoice-preview');
     if (previewElement) {
-      previewElement.style.transform = `scale(${currentZoom / 100})`;
+      // On mobile, don't let zoom go above 100% to prevent overflow
+      const isMobile = window.innerWidth <= 767;
+      const effectiveZoom = isMobile && currentZoom > 100 ? 100 : currentZoom;
+      
+      previewElement.style.transform = `scale(${effectiveZoom / 100})`;
       previewElement.style.transformOrigin = 'top left';
       zoomLevel.textContent = `${currentZoom}%`;
+      
+      // Adjust container width compensation for zoom levels
+      if (isMobile) {
+        const compensationFactor = 100 / effectiveZoom;
+        previewElement.style.width = `${compensationFactor}%`;
+      } else {
+        previewElement.style.width = 'fit-content';
+      }
     }
   }
 
@@ -811,9 +823,11 @@ export async function init() {
     }
   }
 
-  // Initialize with mobile-optimized zoom
+  // Initialize with responsive zoom settings  
   if (window.innerWidth <= 767) {
-    currentZoom = 80; // Default to 80% on mobile as user requested
+    currentZoom = 80; // Default to 80% on mobile
+  } else {
+    currentZoom = 100; // Full size on desktop
   }
   
   // Initialize preview
