@@ -363,31 +363,6 @@
     font-size: var(--font-size-base);
     margin: 0;
   }
-  
-  /* CRITICAL: Ensure SEO content shows on mobile */
-  .invoice-generator-tool .seo-content {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: var(--space-4);
-    box-sizing: border-box;
-    margin-top: var(--space-8) !important;
-    border-top: 2px solid var(--border-color) !important;
-    background: var(--bg-primary) !important;
-    position: relative !important;
-    z-index: 10 !important;
-  }
-  
-  /* Ensure SEO content headings are visible */
-  .invoice-generator-tool .seo-content h2,
-  .invoice-generator-tool .seo-content h3,
-  .invoice-generator-tool .seo-content p {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
 }
 
 .invoice-generator-tool .items-table {
@@ -729,8 +704,7 @@
 /* Print Styles */
 @media print {
   .invoice-generator-tool .invoice-form-section,
-  .invoice-generator-tool .preview-header,
-  .invoice-generator-tool .seo-content {
+  .invoice-generator-tool .preview-header {
     display: none !important;
   }
   
