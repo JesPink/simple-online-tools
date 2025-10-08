@@ -37,9 +37,181 @@ class ToolsApp {
       // Hide loading indicator
       this.hideLoading();
       
+      // Initialize performance optimizations
+      this.initPerformanceOptimizations();
+      
     } catch (error) {
       console.error('Failed to initialize app:', error);
       this.showError('Failed to load the application. Please refresh the page.');
+    }
+  }
+
+  /**
+   * Initialize performance optimizations
+   * - Lazy loading for images
+   * - Preload hints for likely navigation
+   * - Resource cleanup
+   */
+  initPerformanceOptimizations() {
+    // Setup lazy loading for images
+    this.setupLazyLoading();
+    
+    // Setup prefetch for likely tool navigation
+    this.setupPrefetchHints();
+    
+    // Monitor performance metrics
+    this.monitorPerformance();
+  }
+
+  /**
+   * Setup lazy loading for images using Intersection Observer
+   * Images should use data-src attribute instead of src
+   */
+  setupLazyLoading() {
+    if (!('IntersectionObserver' in window)) {
+      // Fallback for older browsers - load all images immediately
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        img.src = img.dataset.src;
+        if (img.dataset.srcset) {
+          img.srcset = img.dataset.srcset;
+        }
+      });
+      return;
+    }
+
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          
+          // Load the image
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+          }
+          if (img.dataset.srcset) {
+            img.srcset = img.dataset.srcset;
+          }
+          
+          // Add loaded class for fade-in effect
+          img.classList.add('lazy-loaded');
+          
+          // Stop observing this image
+          observer.unobserve(img);
+        }
+      });
+    }, {
+      rootMargin: '50px', // Start loading 50px before entering viewport
+      threshold: 0.01
+    });
+
+    // Observe all images with data-src
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      imageObserver.observe(img);
+    });
+
+    // Store observer for cleanup
+    this.imageObserver = imageObserver;
+  }
+
+  /**
+   * Setup prefetch hints for likely tool navigation
+   * Prefetches tool modules when user hovers over tool links
+   */
+  setupPrefetchHints() {
+    const toolLinks = document.querySelectorAll('.tool-link, .related-tool-link');
+    
+    toolLinks.forEach(link => {
+      let prefetchTimer;
+      
+      // Prefetch on hover (desktop)
+      link.addEventListener('mouseenter', () => {
+        prefetchTimer = setTimeout(() => {
+          this.prefetchTool(link);
+        }, 300); // Wait 300ms to avoid prefetching during quick scrolls
+      }, { passive: true });
+      
+      link.addEventListener('mouseleave', () => {
+        clearTimeout(prefetchTimer);
+      }, { passive: true });
+      
+      // Prefetch on touch start (mobile) with longer delay
+      link.addEventListener('touchstart', () => {
+        prefetchTimer = setTimeout(() => {
+          this.prefetchTool(link);
+        }, 500);
+      }, { passive: true });
+    });
+  }
+
+  /**
+   * Prefetch a tool's module for faster loading
+   */
+  async prefetchTool(link) {
+    const href = link.getAttribute('href');
+    if (!href) return;
+    
+    // Extract tool slug from href
+    const match = href.match(/\/tools\/([^\/]+)/);
+    if (!match) return;
+    
+    const slug = match[1];
+    const toolConfig = this.toolRegistry.find(tool => tool.slug === slug);
+    
+    if (!toolConfig) return;
+    
+    // Prefetch using link rel="prefetch"
+    const prefetchLink = document.createElement('link');
+    prefetchLink.rel = 'prefetch';
+    prefetchLink.href = toolConfig.jsPath;
+    prefetchLink.as = 'script';
+    
+    // Check if already prefetched
+    if (!document.querySelector(`link[href="${toolConfig.jsPath}"]`)) {
+      document.head.appendChild(prefetchLink);
+      console.log(`Prefetched: ${toolConfig.title}`);
+    }
+  }
+
+  /**
+   * Monitor performance metrics using Performance Observer
+   */
+  monitorPerformance() {
+    if (!('PerformanceObserver' in window)) return;
+
+    try {
+      // Monitor Largest Contentful Paint (LCP)
+      const lcpObserver = new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        
+        // Log LCP for monitoring (can be sent to analytics)
+        console.log('LCP:', lastEntry.renderTime || lastEntry.loadTime);
+      });
+      lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+
+      // Monitor First Input Delay (FID)
+      const fidObserver = new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        entries.forEach(entry => {
+          console.log('FID:', entry.processingStart - entry.startTime);
+        });
+      });
+      fidObserver.observe({ entryTypes: ['first-input'] });
+
+      // Monitor Cumulative Layout Shift (CLS)
+      let clsScore = 0;
+      const clsObserver = new PerformanceObserver((entryList) => {
+        for (const entry of entryList.getEntries()) {
+          if (!entry.hadRecentInput) {
+            clsScore += entry.value;
+          }
+        }
+        console.log('CLS:', clsScore);
+      });
+      clsObserver.observe({ entryTypes: ['layout-shift'] });
+
+    } catch (error) {
+      console.warn('Performance monitoring not available:', error);
     }
   }
 

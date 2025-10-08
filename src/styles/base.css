@@ -134,6 +134,22 @@ img, video, iframe {
   display: block;
 }
 
+/* Lazy loading images - Performance optimization */
+img[data-src] {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+img.lazy-loaded {
+  opacity: 1;
+}
+
+/* Prevent layout shift for lazy images - reserve space */
+img[data-src]:not([width]):not([height]) {
+  min-height: 200px;
+  background: var(--bg-muted);
+}
+
 html {
   font-size: 16px;
   line-height: var(--line-height-normal);
