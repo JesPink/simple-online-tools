@@ -1,5 +1,17 @@
 /* Value Proposition Generator - Uses Foundation Classes */
 
+/* Mobile-First: Ensure proper spacing and layout */
+.value-proposition-generator-tool {
+  width: 100%;
+  max-width: 100%;
+}
+
+.value-proposition-generator-tool .tool-container,
+.value-proposition-generator-tool .tool-interface {
+  width: 100%;
+  max-width: 100%;
+}
+
 .value-proposition-generator-tool .placeholder-text {
   color: var(--text-secondary);
   font-style: italic;
@@ -16,18 +28,58 @@
   border-radius: var(--radius-md);
 }
 
-/* Form enhancements */
+/* Form enhancements - Mobile-optimized labels */
+.value-proposition-generator-tool label {
+  display: block;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-2);
+}
+
 .value-proposition-generator-tool .help-text {
   color: var(--text-secondary);
   font-size: var(--font-size-sm);
   font-weight: normal;
+  display: inline;
+  word-wrap: break-word;
 }
 
 .value-proposition-generator-tool .example-text {
   color: var(--text-secondary);
   font-size: var(--font-size-sm);
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
   font-style: italic;
+  line-height: var(--line-height-relaxed);
+  word-wrap: break-word;
+}
+
+/* Form sections spacing */
+.value-proposition-generator-tool .form-section {
+  margin-bottom: var(--space-6);
+}
+
+.value-proposition-generator-tool .section-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.value-proposition-generator-tool .form-group {
+  margin-bottom: var(--space-5);
+}
+
+.value-proposition-generator-tool .form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-color);
 }
 
 /* Results styling */
@@ -102,31 +154,138 @@
   font-weight: normal;
 }
 
-/* Mobile optimization */
+/* Mobile optimization - Enhanced for better readability */
 @media (max-width: 768px) {
+  /* Ensure full-width containers */
+  .value-proposition-generator-tool .tool-container,
+  .value-proposition-generator-tool .tool-interface,
+  .value-proposition-generator-tool .tool-main,
+  .value-proposition-generator-tool .tool-results {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+  
+  /* Better label wrapping on mobile */
+  .value-proposition-generator-tool label {
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    padding-right: 0;
+  }
+  
+  .value-proposition-generator-tool .help-text {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: 0.85rem;
+  }
+  
+  /* Input fields optimization */
+  .value-proposition-generator-tool input,
+  .value-proposition-generator-tool textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Form actions full width */
+  .value-proposition-generator-tool .form-actions {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  
+  .value-proposition-generator-tool .form-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Results optimization */
   .value-proposition-generator-tool .result-item {
     flex-direction: column;
     align-items: stretch;
+    padding: var(--space-3);
   }
   
   .value-proposition-generator-tool .result-number {
     align-self: flex-start;
   }
   
+  .value-proposition-generator-tool .result-text {
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
   .value-proposition-generator-tool .result-actions {
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     margin-top: var(--space-3);
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  
+  .value-proposition-generator-tool .copy-btn {
+    font-size: var(--font-size-xs);
+    padding: var(--space-2);
+    flex: 1;
+    min-width: 80px;
   }
   
   .value-proposition-generator-tool .results-actions {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+  
+  .value-proposition-generator-tool .results-actions .btn {
+    width: 100%;
+  }
+  
+  /* Section spacing */
+  .value-proposition-generator-tool .form-section {
+    margin-bottom: var(--space-6);
+  }
+  
+  .value-proposition-generator-tool .section-title {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-3);
   }
 }
 
+/* Extra small screens - Better readability */
 @media (max-width: 480px) {
+  .value-proposition-generator-tool {
+    padding: 0;
+  }
+  
+  .value-proposition-generator-tool .tool-container {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+  
+  .value-proposition-generator-tool label {
+    font-size: 0.9rem;
+  }
+  
+  .value-proposition-generator-tool .help-text {
+    font-size: 0.8rem;
+  }
+  
+  .value-proposition-generator-tool .example-text {
+    font-size: 0.8rem;
+  }
+  
   .value-proposition-generator-tool .result-text {
-    font-size: var(--font-size-base);
+    font-size: 0.95rem;
+  }
+  
+  .value-proposition-generator-tool .section-title {
+    font-size: 1rem;
+  }
+  
+  /* Tighter spacing on very small screens */
+  .value-proposition-generator-tool .form-group {
+    margin-bottom: var(--space-4);
   }
 }
