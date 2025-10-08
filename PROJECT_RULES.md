@@ -235,7 +235,7 @@ I need to add a new tool called [Tool Name] of type [simple OR complex].
   - NEVER create custom .btn-primary or duplicate foundation classes
   - ONLY tool-specific styling in .[tool-slug]-tool scope
   - USE CSS variables: var(--primary-color), var(--space-4), var(--font-size-lg)
-  - NO custom responsive code - foundation handles breakpoints
+  - Tools MUST implement their own responsive layouts (foundation provides container styling only)
 
 * **Validation Requirements**:
   - Must work on 375px width without horizontal scroll
@@ -405,7 +405,7 @@ All tools and components must follow mobile-first design principles to ensure op
 
 ### Implementation Guidelines
 
-All mobile-first implementation details are covered by the Foundation Compliance System (Section 10). The foundation classes automatically handle responsive design, touch targets, and fluid layouts.
+All mobile-first implementation details are covered by the Foundation Compliance System (Section 10). The foundation classes provide design system consistency (colors, spacing, typography, components). **Tools must implement their own responsive layouts** when requiring 2-column designs, as foundation provides container styling only.
 
 ## 10. Foundation Compliance System
 
@@ -417,6 +417,34 @@ The platform uses a **two-tier CSS architecture**:
 
 1. **Foundation Layer** (`base.css` + `layout.css`): Provides core design system, components, and responsive utilities
 2. **Tool Layer** (`[tool-slug]/style.css`): Contains ONLY tool-specific styles that cannot be achieved with foundation classes
+
+#### What Foundation Provides
+
+**✅ Foundation Handles:**
+- Design tokens (colors, spacing, typography via CSS variables)
+- Base component styling (buttons, forms, inputs)
+- Container structure (max-width, centering, padding)
+- Mobile-first base styles (touch targets, readable text)
+
+**❌ Foundation Does NOT Handle:**
+- 2-column responsive layouts (tools must implement)
+- Tool-specific grid/flex layouts
+- Custom visualization layouts
+- Complex responsive behaviors
+
+#### What Tools Must Implement
+
+Tools requiring **2-column layouts** must implement their own responsive CSS:
+```css
+/* Example: 2-column layout for desktop */
+@media (min-width: 768px) {
+  .tool-slug-tool .tool-interface {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+}
+```
 
 ### Mandatory HTML Structure
 
@@ -464,13 +492,14 @@ The platform uses a **two-tier CSS architecture**:
 #### Layout Classes (Mandatory Usage)
 ```css
 .tool-container          /* Main wrapper - handles max-width, centering */
-.tool-interface          /* Primary tool interaction area */
+.tool-interface          /* Primary tool interaction area (container only, NO layout behavior) */
 .tool-main              /* Input/control section */
 .tool-results           /* Output/results section */
-.tool-grid              /* Two-column responsive grid */
 .form-section           /* Form grouping with styled headers */
 .seo-content           /* SEO content wrapper */
 ```
+
+**IMPORTANT**: `.tool-interface` provides only container styling (padding, background). It does NOT provide responsive grid/flex layout. Tools requiring 2-column layouts must implement their own responsive CSS.
 
 #### Component Classes (Mandatory Usage)
 ```css
@@ -525,6 +554,15 @@ var(--shadow-sm) through var(--shadow-xl)
   background: var(--warning-color);
   border-radius: var(--radius-md);
 }
+
+/* Responsive layouts for 2-column designs */
+@media (min-width: 768px) {
+  .tool-slug-tool .tool-interface {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+}
 ```
 
 #### ❌ FORBIDDEN in Tool CSS Files
@@ -534,14 +572,13 @@ var(--shadow-sm) through var(--shadow-xl)
 .my-container { }       /* Use .tool-container instead */
 .form-input { }         /* Use .form-control instead */
 
-/* NEVER hardcode responsive breakpoints */
-@media (max-width: 768px) { } /* Foundation handles responsive */
-
 /* NEVER hardcode design tokens */
 color: #007bff;         /* Use var(--primary-color) */
 padding: 16px;          /* Use var(--space-4) */
 font-size: 18px;        /* Use var(--font-size-lg) */
 ```
+
+**Note**: Responsive breakpoints ARE allowed when implementing 2-column layouts, as foundation provides only container styling.
 
 ### Tool Development Workflow
 
@@ -594,6 +631,15 @@ Only add tool-specific CSS for elements that CANNOT be achieved with foundation 
   background: rgba(255, 255, 0, 0.3);
   border-bottom: 2px solid var(--warning-color);
 }
+
+/* GOOD: Responsive 2-column layout */
+@media (min-width: 768px) {
+  .my-tool-tool .tool-interface {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+}
 ```
 
 ### Foundation Validation Rules
@@ -607,8 +653,8 @@ The build process automatically validates foundation compliance:
 
 #### Forbidden Patterns Check
 - ❌ Custom button classes (`.custom-btn-*`)
-- ❌ Hardcoded breakpoints in tool CSS
 - ❌ Duplicate foundation functionality
+- ❌ Hardcoded colors, spacing, or typography values
 
 #### Mobile-First Validation
 - ✅ Must work at 375px width without horizontal scroll
@@ -621,13 +667,15 @@ The build process automatically validates foundation compliance:
 - **Faster Development**: Use pre-built, tested components
 - **Consistency**: Automatic visual consistency across all tools
 - **Maintenance**: Single source of truth for design updates
-- **Mobile-First**: Built-in responsive behavior
+- **Design Tokens**: CSS variables eliminate hardcoded values
 
 #### For Users
 - **Familiar Interface**: Consistent experience across tools
-- **Mobile Optimized**: Always works on mobile devices
+- **Mobile Optimized**: Tools work on mobile devices
 - **Performance**: Minimal CSS, faster loading
 - **Accessibility**: Built-in focus states and keyboard navigation
+
+**Note**: Tools must implement their own responsive layouts for 2-column designs, as foundation provides container styling only.
 
 ### Common Foundation Violations and Fixes
 
@@ -658,15 +706,22 @@ The build process automatically validates foundation compliance:
 
 #### Violation: Hardcoded Responsive Design
 ```css
-/* ❌ WRONG */
+/* ❌ WRONG - Hardcoding values */
 @media (max-width: 768px) {
-  .tool-grid {
-    grid-template-columns: 1fr;
+  .tool-layout {
+    padding: 16px;
+    background: #f0f0f0;
   }
 }
 
-/* ✅ CORRECT */
-/* Foundation .tool-grid handles responsive automatically */
+/* ✅ CORRECT - Use CSS variables and mobile-first approach */
+@media (min-width: 768px) {
+  .tool-slug-tool .tool-interface {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+}
 ```
 
 ### Foundation Extension Guidelines
@@ -731,17 +786,24 @@ If you need functionality not covered by foundation classes:
 /* HTML: <button class="btn btn-primary">Text</button> */
 ```
 
-**Mistake 3: Hardcoded Responsive Design**
+**Mistake 3: Hardcoded Values in Responsive Design**
 ```css
-/* ❌ WRONG - Custom breakpoints */
+/* ❌ WRONG - Hardcoded colors and spacing */
 @media (max-width: 768px) {
   .tool-layout {
-    flex-direction: column;
+    padding: 16px;
+    background: #f0f0f0;
   }
 }
 
-/* ✅ CORRECT - Foundation handles it */
-/* Use .tool-interface which is responsive by default */
+/* ✅ CORRECT - Use CSS variables */
+@media (min-width: 768px) {
+  .tool-slug-tool .tool-interface {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+}
 ```
 
 #### Missing Foundation Classes Checklist
