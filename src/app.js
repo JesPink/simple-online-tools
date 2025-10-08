@@ -340,6 +340,25 @@ class ToolsApp {
 // Initialize the app when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   new ToolsApp();
+  
+  // Smart sticky header - reduce size on scroll (mobile optimization)
+  let lastScrollTop = 0;
+  const header = document.getElementById('main-header');
+  
+  if (header) {
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // Add 'scrolled' class when scrolling down past 50px
+      if (scrollTop > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      
+      lastScrollTop = scrollTop;
+    }, { passive: true }); // Passive for better scroll performance
+  }
 });
 
 // Export for potential testing or debugging

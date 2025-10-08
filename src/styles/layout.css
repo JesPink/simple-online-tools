@@ -25,6 +25,23 @@ main {
   top: 0;
   z-index: var(--z-sticky);
   box-shadow: var(--shadow-sm);
+  transition: padding var(--transition-normal);
+}
+
+/* Compact header on mobile when scrolled */
+#main-header.scrolled {
+  padding: var(--space-2) 0;
+}
+
+@media (max-width: 767px) {
+  #main-header.scrolled .nav-brand h1 {
+    font-size: var(--font-size-lg);
+    transition: font-size var(--transition-fast);
+  }
+  
+  #main-header.scrolled .nav-container {
+    padding: var(--space-2) var(--space-3);
+  }
 }
 
 .nav-container {
@@ -128,6 +145,27 @@ main {
   margin-bottom: var(--space-6);
   font-size: var(--font-size-sm);
   color: var(--text-muted);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--space-4);
+}
+
+/* Mobile: Smaller padding */
+@media (max-width: 767px) {
+  .breadcrumbs {
+    padding: 0 var(--space-3);
+    font-size: var(--font-size-xs);
+    margin-bottom: var(--space-4);
+  }
+}
+
+/* Desktop: Better spacing */
+@media (min-width: 768px) {
+  .breadcrumbs {
+    padding: 0 var(--space-6);
+    margin-bottom: var(--space-8);
+  }
 }
 
 .breadcrumbs a {
@@ -155,6 +193,38 @@ main {
   margin-bottom: var(--space-10);
   padding-bottom: var(--space-8);
   border-bottom: 1px solid var(--border-color);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+/* Mobile: Compact header */
+@media (max-width: 767px) {
+  .tool-header {
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+  
+  .tool-header h1 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-3);
+  }
+  
+  .tool-description {
+    font-size: var(--font-size-base);
+  }
+}
+
+/* Desktop: Spacious header */
+@media (min-width: 768px) {
+  .tool-header {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
 }
 
 .tool-header h1 {
@@ -710,6 +780,28 @@ main {
 }
 
 /* MANDATORY Tool Foundation Classes */
+
+/* Tool Container - Centered max-width wrapper for better desktop appearance */
+.tool-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+/* Mobile: Full width with minimal padding */
+@media (max-width: 767px) {
+  .tool-container {
+    padding: 0 var(--space-3);
+  }
+}
+
+/* Desktop: Better spacing */
+@media (min-width: 768px) {
+  .tool-container {
+    padding: 0 var(--space-6);
+  }
+}
+
 .tool-interface {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);

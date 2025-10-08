@@ -11,7 +11,7 @@ export function createHeader() {
       <nav class="nav-container">
         <div class="nav-brand">
           <a href="/" class="brand-link">
-            <h1>Free Tools</h1>
+            <h1>Simple Online Tool</h1>
           </a>
         </div>
         <div class="nav-menu">
