@@ -691,18 +691,18 @@ function updateAssetReferences(html, assetHashes) {
   // Update main app.js reference
   if (assetHashes.has('app')) {
     const hashedPath = assetHashes.get('app').replace('dist/', '/');
-    updatedHtml = updatedHtml.replace('/app.js', hashedPath);
+    updatedHtml = updatedHtml.replaceAll('/app.js', hashedPath);
   }
   
   // Update CSS references
   if (assetHashes.has('base')) {
     const hashedPath = assetHashes.get('base').replace('dist/', '/');
-    updatedHtml = updatedHtml.replace('/styles/base.css', hashedPath);
+    updatedHtml = updatedHtml.replaceAll('/styles/base.css', hashedPath);
   }
   
   if (assetHashes.has('layout')) {
     const hashedPath = assetHashes.get('layout').replace('dist/', '/');
-    updatedHtml = updatedHtml.replace('/styles/layout.css', hashedPath);
+    updatedHtml = updatedHtml.replaceAll('/styles/layout.css', hashedPath);
   }
   
   return updatedHtml;

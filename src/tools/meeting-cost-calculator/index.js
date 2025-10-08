@@ -90,35 +90,35 @@ export function render() {
           <p><strong>Step 5: Analyze Meeting Efficiency</strong><br>
           Use the pause and reset functions to break down costs by agenda items or meeting segments, helping you identify which portions of meetings provide the most value relative to their cost.</p>
 
-          <h3>Meeting Cost Counter: Real-Time Financial Awareness</h3>
+          <h2>Meeting Cost Counter: Real-Time Financial Awareness</h2>
           <p>A meeting cost counter serves as more than just a calculation tool—it's a behavioral change catalyst that transforms how teams approach meeting planning and execution. By providing immediate visual feedback on accumulating costs, the counter creates natural pressure to stay on topic, reduce tangential discussions, and respect scheduled time limits.</p>
           
           <p>The psychological impact of seeing dollars tick upward every second cannot be understated. Teams report that simply having a visible meeting cost counter running during their sessions leads to more focused conversations, quicker decision-making, and increased respect for everyone's time. This real-time awareness helps justify the business case for shorter meetings and more selective participant lists.</p>
           
           <p>Modern businesses are increasingly adopting meeting cost counters as part of their efficiency initiatives, with some companies requiring cost calculations for any meeting involving more than three people or lasting longer than 30 minutes. This data-driven approach to meeting management helps organizations make informed decisions about which meetings truly justify their financial investment.</p>
 
-          <h3>Meeting Time Cost Calculator for Strategic Planning</h3>
+          <h2>Meeting Time Cost Calculator for Strategic Planning</h2>
           <p>A meeting time cost calculator becomes particularly valuable for strategic planning sessions, where senior executives and department heads often gather for extended periods. These high-level meetings can easily accumulate costs of hundreds or thousands of dollars per hour, making it crucial to ensure every minute delivers proportional value to the organization.</p>
           
           <p>By using a meeting time cost calculator during planning sessions, organizations can make data-informed decisions about meeting frequency, duration, and participant inclusion. The calculator helps answer critical questions: Is this two-hour session worth $2,400 in combined salaries? Would splitting this into smaller, focused sessions be more cost-effective? Are all invited participants essential, or could some receive updates through other channels?</p>
           
           <p>The strategic value extends beyond individual meetings to overall meeting culture transformation. Teams that regularly use meeting time cost calculators report developing better meeting hygiene, including more thorough agenda preparation, stricter time management, and increased focus on actionable outcomes rather than status updates or lengthy discussions that could happen asynchronously.</p>
 
-          <h3>Meeting Cost Calculator Timer: Optimizing Business Efficiency</h3>
+          <h2>Meeting Cost Calculator Timer: Optimizing Business Efficiency</h2>
           <p>The meeting cost calculator timer function provides granular insights into how meeting time translates to business expenses, enabling organizations to optimize their collaborative processes. Unlike simple timers that only track duration, a cost-integrated timer creates immediate awareness of financial implications, encouraging more disciplined meeting management.</p>
           
           <p>Professional teams use meeting cost calculator timers to establish meeting budgets, much like project budgets. Before scheduling a meeting, they estimate the total cost based on required participants and planned duration, then use the timer to stay within budget. This approach treats meeting time as the valuable business resource it truly is, leading to more strategic decisions about when meetings are necessary versus when alternatives like shared documents or asynchronous communication might suffice.</p>
           
           <p>The timer's pause and segment features allow for detailed analysis of meeting efficiency. Teams can track which agenda items consume the most time relative to their importance, identify recurring time drains, and develop strategies for more efficient future meetings. This data-driven approach to meeting optimization can result in significant productivity gains and cost savings across the organization.</p>
 
-          <div class="section-title">Meeting Cost Tracker: Long-Term Meeting ROI Analysis</div>
+          <h2>Meeting Cost Tracker: Long-Term Meeting ROI Analysis</h2>
           <p>A comprehensive meeting cost tracker extends beyond individual session calculations to provide insights into long-term meeting patterns and return on investment. By tracking costs across multiple meetings, teams can identify trends, optimize recurring meetings, and make strategic decisions about their collaborative processes.</p>
           
           <p>Organizations using meeting cost trackers often discover surprising patterns: certain types of meetings consistently exceed their value threshold, some participants contribute more effectively in smaller groups, or specific meeting formats generate better outcomes per dollar invested. This data enables informed decisions about meeting restructuring, participant optimization, and format changes that can significantly improve overall efficiency.</p>
           
           <p>The tracking capability also supports budget planning and resource allocation decisions. Teams can forecast meeting costs for upcoming projects, compare the efficiency of different collaboration methods, and demonstrate the ROI of investments in meeting efficiency tools or training. This quantitative approach to meeting management aligns with broader business objectives of operational efficiency and cost optimization.</p>
 
-          <div class="section-title">Frequently Asked Questions</div>
+          <h2>Frequently Asked Questions</h2>
           <div class="faq-section">
             <div class="faq-item">
               <h4>How accurate is the meeting cost calculator in determining real meeting expenses?</h4>
@@ -126,7 +126,7 @@ export function render() {
             </div>
             
             <div class="faq-item">
-              <h3>What's the ideal meeting cost threshold for different types of business meetings?</h3>
+              <h4>What's the ideal meeting cost threshold for different types of business meetings?</h4>
               <p>Meeting cost thresholds vary by organization size and industry, but general guidelines suggest keeping routine meetings under $200, strategic planning sessions justified up to $1,000+ per hour, and decision-making meetings evaluated based on the financial impact of delayed decisions. The key is ensuring meeting outcomes justify the calculated investment.</p>
             </div>
             
@@ -146,7 +146,7 @@ export function render() {
             </div>
           </div>
 
-          <h3>Meeting Cost Calculator and Your Business Workflow</h3>
+          <h2>Meeting Cost Calculator and Your Business Workflow</h2>
           <p>Integrating a meeting cost calculator into your business workflow transforms meeting culture from time-focused to value-focused, ensuring every collaborative session delivers appropriate return on investment. This tool works excellently alongside other productivity tools like our <a href="/tools/word-counter/">Word Counter</a> for measuring meeting agenda length and our <a href="/tools/case-converter/">Case Converter</a> for standardizing meeting documentation formats.</p>
           
           <p>The meeting cost calculator serves as a cornerstone tool for organizations committed to operational efficiency and data-driven decision making. By quantifying the true cost of collaboration, it enables more strategic choices about when, how, and with whom to meet, ultimately leading to more productive teams and better business outcomes.</p>

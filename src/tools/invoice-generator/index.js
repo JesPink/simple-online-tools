@@ -124,7 +124,6 @@ export function render() {
               </button>
               <small id="clear-help" class="sr-only">Reset all form fields to start fresh</small>
             </div>
-          </div>
         </div>
 
         <!-- Invoice Preview Section -->
@@ -132,9 +131,9 @@ export function render() {
           <div class="preview-header">
             <div class="section-title">Invoice Preview</div>
             <div class="preview-actions">
-              <button id="zoom-out-btn" class="zoom-btn">-</button>
+              <button id="zoom-out-btn" class="btn zoom-btn">-</button>
               <span id="zoom-level">100%</span>
-              <button id="zoom-in-btn" class="zoom-btn">+</button>
+              <button id="zoom-in-btn" class="btn zoom-btn">+</button>
             </div>
           </div>
           <div class="invoice-preview-container">
@@ -143,9 +142,9 @@ export function render() {
             </div>
           </div>
         </div>
-        
-        <!-- SEO Content Section -->
-        <div class="seo-content">
+
+      <!-- SEO Content Section -->
+      <div class="seo-content">
         <h2>Understanding the Invoice Generator</h2>
         <p>
           Our free <strong>invoice generator</strong> is a comprehensive online tool designed to help freelancers, small businesses, and entrepreneurs create professional invoices quickly and efficiently. This powerful invoice maker eliminates the need for expensive software or complex templates, providing everything you need to generate polished, payment-ready invoices in minutes.
@@ -253,7 +252,9 @@ export function render() {
           Combine this invoice generator with our other business tools like the <strong>word counter</strong> for crafting precise service descriptions, or use text formatting tools to ensure your invoice notes and terms are clear and professional. The streamlined invoice creation process lets you focus on growing your business rather than managing administrative tasks.
         </p>
       </div>
+      </div>
     </div>
+  </div>
   `;
 }
 
@@ -391,7 +392,7 @@ export async function init() {
             <label>Amount</label>
             <input type="text" class="item-amount" readonly />
           </div>
-          <button type="button" class="remove-item-btn" title="Remove item">×</button>
+          <button type="button" class="btn remove-item-btn" title="Remove item">×</button>
         </div>
       </div>
     `;

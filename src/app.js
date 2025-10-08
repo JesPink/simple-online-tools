@@ -89,20 +89,16 @@ class ToolsApp {
       const relatedToolsHTML = this.createRelatedToolsSection(toolConfig);
       
       toolContainer.innerHTML = `
-        <div class="container">
-          ${breadcrumbs}
-          <div class="tool-header">
-            <h1>${toolConfig.title}</h1>
-            <p class="tool-description">${toolConfig.description}</p>
-          </div>
-          <div class="tool-content">
-            ${toolHTML}
-          </div>
-          <div id="rating-widget-container">
-            ${ratingWidgetHTML}
-          </div>
-          ${relatedToolsHTML}
+        ${breadcrumbs}
+        <div class="tool-header">
+          <h1>${toolConfig.title}</h1>
+          <p class="tool-description">${toolConfig.description}</p>
         </div>
+        ${toolHTML}
+        <div id="rating-widget-container">
+          ${ratingWidgetHTML}
+        </div>
+        ${relatedToolsHTML}
       `;
 
       // Initialize the tool's functionality

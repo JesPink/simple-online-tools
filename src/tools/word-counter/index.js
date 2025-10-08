@@ -274,6 +274,10 @@ export function render() {
           </p>
         </section>
       </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   `;
 }
