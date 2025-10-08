@@ -305,23 +305,27 @@
 
 /* MOBILE CRITICAL FIXES - Optimize for mobile viewing */
 @media (max-width: 767px) {
-  /* CRITICAL: Prevent horizontal overflow */
-  .invoice-generator-tool .tool-interface {
+  /* CRITICAL: Prevent horizontal overflow with maximum specificity */
+  .invoice-generator-tool .tool-container .tool-interface {
     display: flex !important;
     flex-direction: column !important;
     gap: var(--space-6) !important;
+    padding: var(--space-4) !important;
   }
   
-  .invoice-generator-tool .tool-main {
-    order: 1; /* Form comes first on mobile */
+  .invoice-generator-tool .tool-container .tool-interface .tool-main {
+    order: 1 !important; /* Form comes first on mobile */
     width: 100% !important;
+    max-width: 100% !important;
     max-height: none !important; /* No height limit on mobile */
     overflow: visible !important;
   }
   
-  .invoice-generator-tool .tool-results {
-    order: 2; /* Preview comes after form on mobile */
+  .invoice-generator-tool .tool-container .tool-interface .tool-results {
+    order: 2 !important; /* Preview comes after form on mobile */
     width: 100% !important;
+    max-width: 100% !important;
+    position: relative !important; /* Not sticky on mobile */
   }
   
   .invoice-generator-tool .tool-container,
@@ -329,6 +333,7 @@
   .invoice-generator-tool .tool-results {
     max-width: 100vw !important;
     overflow-x: hidden !important;
+    box-sizing: border-box !important;
   }
   
   /* Mobile form spacing */
@@ -638,27 +643,34 @@
 
 /* Base mobile styles already defined above */
 
-/* Tablet: 768px+ */
+/* Tablet: 768px+ - DESKTOP 2-COLUMN LAYOUT */
 @media (min-width: 768px) {
-  /* CRITICAL: 2-column layout for desktop */
-  .invoice-generator-tool .tool-interface {
+  /* CRITICAL: Force 2-column layout for desktop - Maximum specificity */
+  .invoice-generator-tool .tool-container .tool-interface {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
     gap: var(--space-8) !important;
     align-items: start !important;
+    grid-template-rows: auto !important;
   }
   
   /* Desktop: Form takes left column, preview takes right column */
-  .invoice-generator-tool .tool-main {
-    grid-column: 1 !important; /* Left column */
+  .invoice-generator-tool .tool-container .tool-interface .tool-main {
+    grid-column: 1 / 2 !important; /* Explicit left column */
+    grid-row: 1 !important;
     max-height: 80vh !important; /* Scrollable form on desktop */
     overflow-y: auto !important;
+    order: initial !important; /* Reset any order property */
   }
   
-  .invoice-generator-tool .tool-results {
-    grid-column: 2 !important; /* Right column */
+  .invoice-generator-tool .tool-container .tool-interface .tool-results {
+    grid-column: 2 / 3 !important; /* Explicit right column */
+    grid-row: 1 !important;
     position: sticky !important;
     top: var(--space-4) !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    order: initial !important; /* Reset any order property */
   }
   
   /* Desktop: Larger preview container */
