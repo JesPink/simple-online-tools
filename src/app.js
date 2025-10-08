@@ -361,5 +361,200 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// ========================================
+// UTILITY FUNCTIONS FOR TOOL DEVELOPERS
+// ========================================
+
+/**
+ * Toast Notification System
+ * Usage: showToast('success', 'File saved successfully!');
+ */
+window.showToast = function(type, message, actionText = null, actionCallback = null) {
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  
+  const icons = {
+    error: '⚠️',
+    success: '✅',
+    info: 'ℹ️',
+    warning: '⚡'
+  };
+  
+  const icon = icons[type] || icons.info;
+  
+  toast.innerHTML = `
+    <div class="toast-content">
+      <span class="toast-icon">${icon}</span>
+      <p class="toast-message">${message}</p>
+      ${actionText ? `<button class="toast-action">${actionText}</button>` : ''}
+    </div>
+  `;
+  
+  document.body.appendChild(toast);
+  
+  if (actionCallback && actionText) {
+    toast.querySelector('.toast-action').addEventListener('click', () => {
+      actionCallback();
+      toast.remove();
+    });
+  }
+  
+  // Auto-remove after 5 seconds
+  setTimeout(() => {
+    toast.classList.add('toast-exit');
+    setTimeout(() => toast.remove(), 300);
+  }, 5000);
+  
+  return toast;
+};
+
+/**
+ * Loading State Helper for Buttons
+ * Usage: 
+ *   showLoading(button, 'Processing...');
+ *   // do work
+ *   hideLoading(button);
+ */
+window.showLoading = function(buttonEl, message = 'Processing...') {
+  if (!buttonEl) return;
+  buttonEl.disabled = true;
+  buttonEl.dataset.originalText = buttonEl.textContent;
+  buttonEl.innerHTML = `<span class="spinner"></span> ${message}`;
+};
+
+window.hideLoading = function(buttonEl) {
+  if (!buttonEl) return;
+  buttonEl.disabled = false;
+  buttonEl.textContent = buttonEl.dataset.originalText || 'Submit';
+  delete buttonEl.dataset.originalText;
+};
+
+/**
+ * Debounce Helper
+ * Usage: const debouncedFn = debounce(myFunction, 300);
+ */
+window.debounce = function(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
+/**
+ * Character Counter for Text Inputs
+ * Usage: addCharCounter('my-textarea-id', 1000);
+ */
+window.addCharCounter = function(elementId, maxLength = null) {
+  const element = document.getElementById(elementId);
+  if (!element) {
+    console.warn(`Element with id "${elementId}" not found`);
+    return;
+  }
+  
+  const counter = document.createElement('div');
+  counter.className = 'char-counter';
+  counter.style.cssText = `
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-top: var(--space-1);
+    text-align: right;
+  `;
+  
+  function updateCounter() {
+    const count = element.value.length;
+    counter.textContent = maxLength 
+      ? `${count} / ${maxLength} characters`
+      : `${count} characters`;
+    
+    if (maxLength && count > maxLength) {
+      counter.style.color = 'var(--error-color)';
+      counter.style.fontWeight = 'var(--font-weight-medium)';
+    } else {
+      counter.style.color = 'var(--text-secondary)';
+      counter.style.fontWeight = 'var(--font-weight-normal)';
+    }
+  }
+  
+  element.parentNode.insertBefore(counter, element.nextSibling);
+  element.addEventListener('input', updateCounter);
+  updateCounter();
+  
+  return counter;
+};
+
+/**
+ * Fetch with Timeout
+ * Usage: const response = await fetchWithTimeout('/api/endpoint', { method: 'POST' }, 10000);
+ */
+window.fetchWithTimeout = async function(url, options = {}, timeout = 10000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    return response;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    
+    if (error.name === 'AbortError') {
+      throw new Error('Request timeout - please check your connection and try again');
+    }
+    
+    throw error;
+  }
+};
+
+/**
+ * Announce to Screen Readers (Accessibility)
+ * Usage: announceToScreenReader('Form submitted successfully');
+ */
+window.announceToScreenReader = function(message) {
+  let liveRegion = document.getElementById('screen-reader-announcements');
+  
+  if (!liveRegion) {
+    liveRegion = document.createElement('div');
+    liveRegion.id = 'screen-reader-announcements';
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.setAttribute('aria-atomic', 'true');
+    liveRegion.style.cssText = `
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    `;
+    document.body.appendChild(liveRegion);
+  }
+  
+  liveRegion.textContent = message;
+  setTimeout(() => { liveRegion.textContent = ''; }, 1000);
+};
+
+/**
+ * Online/Offline Detection
+ */
+window.addEventListener('online', () => {
+  showToast('success', 'Back online! You can continue using the tools.');
+});
+
+window.addEventListener('offline', () => {
+  showToast('warning', 'You are offline. Some features may not work.', 'Dismiss');
+});
+
 // Export for potential testing or debugging
 window.ToolsApp = ToolsApp;

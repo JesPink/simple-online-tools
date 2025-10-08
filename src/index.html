@@ -84,6 +84,27 @@
     
     <!-- Critical Rating Widget CSS inlined to prevent network chain -->
     <style>
+      /* Skip to content link for accessibility */
+      .skip-to-content {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: var(--primary-color);
+        color: white;
+        padding: var(--space-2) var(--space-4);
+        text-decoration: none;
+        z-index: 1000;
+        transition: top 0.2s;
+        font-weight: 600;
+      }
+      
+      .skip-to-content:focus {
+        top: 0;
+        outline: 2px solid var(--primary-dark);
+        outline-offset: 2px;
+      }
+      
+      /* Rating widget styles */
       .rating-widget{background:var(--surface-color,#fff);border:1px solid var(--border-color,#e5e7eb);border-radius:var(--border-radius,8px);padding:var(--space-6,24px);margin:var(--space-6,24px) 0;box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06);transition:all .2s ease}.star-rating{display:flex;justify-content:center;gap:var(--space-2,8px);margin-bottom:var(--space-4,16px)}.star-btn{background:none;border:none;cursor:pointer;padding:var(--space-2,8px);border-radius:var(--border-radius,8px);transition:all .2s ease;min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center}.star-icon{width:32px;height:32px;color:var(--border-color,#d1d5db);transition:all .2s ease}.rating-feedback{text-align:center;padding:var(--space-4,16px);background-color:var(--success-light,#f0fdf4);border:1px solid var(--success-border,#bbf7d0);border-radius:var(--border-radius,8px);margin-bottom:var(--space-4,16px)}
     </style>
     
@@ -92,6 +113,9 @@
     <!--SCHEMA_MARKUP-->
 </head>
 <body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#tool-container" class="skip-to-content">Skip to main content</a>
+    
     <!-- Header -->
     <header id="main-header">
         <nav class="nav-container">

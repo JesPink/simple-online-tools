@@ -11,7 +11,7 @@ export function createFooter() {
       <div class="footer-container">
         <div class="footer-content">
           <div class="footer-section">
-            <h3>Free Tools Platform</h3>
+            <h3>Simple Online Tool</h3>
             <p>High-performance, no-sign-up online tools for everyone. Fast, secure, and completely free to use.</p>
           </div>
           <div class="footer-section">
@@ -43,7 +43,7 @@ export function createFooter() {
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; ${new Date().getFullYear()} Free Tools Platform. All rights reserved.</p>
+          <p>&copy; ${new Date().getFullYear()} Simple Online Tool. All rights reserved.</p>
         </div>
       </div>
     </footer>
