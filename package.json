@@ -14,7 +14,16 @@
     "create-tool": "node scripts/scaffold-tool.js",
     "setup-hooks": "node scripts/setup-hooks.js",
     "pre-commit": "npm run validate:strict",
-    "serve": "live-server dist --port=3000 --no-browser --wait=500"
+    "serve": "live-server dist --port=3000 --no-browser --wait=500",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:foundation": "playwright test tests/foundation.spec.js",
+    "test:tools": "playwright test tests/tools.spec.js",
+    "test:mobile": "playwright test --project='Mobile Chrome'",
+    "test:desktop": "playwright test --project='Desktop Chrome'",
+    "test:report": "playwright show-report test-results/html-report"
   },
   "keywords": [
     "tools",
@@ -32,6 +41,7 @@
     "pdf-lib": "^1.17.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.0",
     "concurrently": "^8.2.2",
     "live-server": "^1.2.2"
   }
