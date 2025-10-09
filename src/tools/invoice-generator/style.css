@@ -686,6 +686,15 @@
     width: 100% !important; /* Take full column width */
   }
   
+  /* Desktop: SEO content takes full width below the 2-column layout */
+  .invoice-generator-tool .tool-container .seo-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    grid-column: 1 / -1 !important; /* Span all columns if in grid context */
+  }
+  
   /* Desktop: Full width preview container */
   .invoice-generator-tool .tool-results .invoice-preview-container {
     max-height: 75vh; /* Larger on desktop */
