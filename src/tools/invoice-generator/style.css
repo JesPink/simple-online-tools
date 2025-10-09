@@ -500,7 +500,7 @@
 }
 
 /* Enhanced Desktop: Larger padding and text */
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .invoice-generator-tool .items-table th {
     padding: var(--space-4);
     font-size: var(--font-size-base);
@@ -652,8 +652,8 @@
 
 /* Base mobile styles already defined above */
 
-/* Tablet: 768px+ - DESKTOP 2-COLUMN LAYOUT */
-@media (min-width: 768px) {
+/* Desktop ONLY: 1024px+ - DESKTOP 2-COLUMN LAYOUT */
+@media (min-width: 1024px) {
   /* CRITICAL: Force 2-column layout for desktop ONLY - Maximum specificity */
   .invoice-generator-tool .tool-container .tool-interface {
     display: grid !important;
