@@ -311,8 +311,8 @@
   padding: var(--space-4) !important;
 }
 
-/* MOBILE CRITICAL FIXES - Optimize for mobile viewing */
-@media (max-width: 767px) {
+/* MOBILE CRITICAL FIXES - Optimize for mobile viewing (up to 1023px) */
+@media (max-width: 1023px) {
   /* Ensure mobile layout is maintained */
   .invoice-generator-tool .tool-container .tool-interface {
     display: flex !important;
