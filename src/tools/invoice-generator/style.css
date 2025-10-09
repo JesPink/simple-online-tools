@@ -304,11 +304,22 @@
 }
 
 /* BASE LAYOUT - Mobile-First Single Column (Default) */
+/* Control order of tool-interface and seo-content */
+.invoice-generator-tool .tool-container {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
 .invoice-generator-tool .tool-container .tool-interface {
   display: flex !important;
   flex-direction: column !important;
   gap: var(--space-6) !important;
   padding: var(--space-4) !important;
+  order: 1 !important; /* Tool comes first */
+}
+
+.invoice-generator-tool .tool-container .seo-content {
+  order: 2 !important; /* SEO content comes after tool */
 }
 
 /* MOBILE CRITICAL FIXES - Optimize for mobile viewing (up to 1023px) */
