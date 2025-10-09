@@ -766,9 +766,10 @@ function inlineCriticalCSS(html, toolSlug = null) {
       if (fs.existsSync(toolCssPath)) {
         const toolCss = fs.readFileSync(toolCssPath, 'utf8');
         
-        // Extract only critical tool CSS (above-the-fold styles)
-        const criticalToolCSS = extractCriticalToolCSS(toolCss, toolSlug);
-        criticalCSS += '\n' + criticalToolCSS;
+        // CRITICAL FIX: Include entire tool CSS to preserve media queries
+        // Previous extractCriticalToolCSS was stripping @media wrappers while keeping their contents,
+        // causing desktop 2-column grid to apply on mobile devices
+        criticalCSS += '\n' + toolCss;
         
         // Remove tool CSS link to prevent render-blocking
         html = html.replace(new RegExp(`<link rel="stylesheet" href="/tools/${toolSlug}/style\\.css">\\s*`, 'g'), '');
