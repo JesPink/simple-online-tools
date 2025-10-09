@@ -780,6 +780,10 @@ function inlineCriticalCSS(html, toolSlug = null) {
     html = html.replace(/<link rel="stylesheet" href="\/styles\/base[^"]*\.css"[^>]*>\s*/g, '');
     html = html.replace(/<link rel="stylesheet" href="\/styles\/layout[^"]*\.css"[^>]*>\s*/g, '');
     
+    // CRITICAL FIX: Remove any existing inlined CSS before adding new one
+    // This prevents CSS duplication when inlineCriticalCSS is called multiple times
+    html = html.replace(/<style>[\s\S]*?<\/style>\s*/g, '');
+    
     // Inline critical CSS before closing </head>
     const inlinedCSS = `    <style>\n${criticalCSS}\n    </style>\n    `;
     html = html.replace('</head>', `${inlinedCSS}</head>`);
