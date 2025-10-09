@@ -303,15 +303,20 @@
   max-width: 100vw; /* Prevent viewport overflow */
 }
 
+/* BASE LAYOUT - Mobile-First Single Column (Default) */
+.invoice-generator-tool .tool-container .tool-interface {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--space-6) !important;
+  padding: var(--space-4) !important;
+}
+
 /* MOBILE CRITICAL FIXES - Optimize for mobile viewing */
 @media (max-width: 767px) {
-  /* CRITICAL: Force single column stacked layout on mobile with maximum specificity */
+  /* Ensure mobile layout is maintained */
   .invoice-generator-tool .tool-container .tool-interface {
     display: flex !important;
     flex-direction: column !important;
-    gap: var(--space-6) !important;
-    padding: var(--space-4) !important;
-    grid-template-columns: 1fr !important; /* Override any grid */
   }
   
   .invoice-generator-tool .tool-container .tool-interface .tool-main {
@@ -649,13 +654,14 @@
 
 /* Tablet: 768px+ - DESKTOP 2-COLUMN LAYOUT */
 @media (min-width: 768px) {
-  /* CRITICAL: Force 2-column layout for desktop - Maximum specificity */
+  /* CRITICAL: Force 2-column layout for desktop ONLY - Maximum specificity */
   .invoice-generator-tool .tool-container .tool-interface {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
     gap: var(--space-8) !important;
     align-items: start !important;
     grid-template-rows: auto !important;
+    flex-direction: initial !important; /* Override mobile flex-direction */
   }
   
   /* Desktop: Form takes left column */
