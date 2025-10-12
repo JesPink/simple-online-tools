@@ -527,56 +527,39 @@ function generateSitemap(toolRegistry) {
 }
 
 function generateRobotsTxt() {
-  // LIGHTHOUSE-COMPLIANT: Standard robots.txt without non-standard directives
-  const robotsContent = `User-agent: *
-Allow: /
-
+  // SEO-OPTIMIZED: Validator-friendly robots.txt per official standards
+  // Reference: https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt
+  const robotsContent = `# Sitemap location (best practice: at top)
 Sitemap: https://simpleonlinetool.com/sitemap.xml
 
-# Block sensitive directories
+# Block AI training crawlers and scrapers
+User-agent: GPTBot
+User-agent: CCBot
+User-agent: Google-Extended
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: Amazonbot
+User-agent: Applebot-Extended
+User-agent: Bytespider
+User-agent: meta-externalagent
+User-agent: anthropic-ai
+User-agent: cohere-ai
+User-agent: Omgilibot
+User-agent: FacebookBot
+User-agent: Diffbot
+Disallow: /
+
+# Default rules for all other crawlers (Google, Bing, etc.)
+User-agent: *
+Allow: /
 Disallow: /src/
 Disallow: /node_modules/
-Disallow: /*.json$
-
-# Block AI training bots (standard approach)
-User-agent: GPTBot
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: Google-Extended
-Disallow: /
-
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: ClaudeBot
-Disallow: /
-
-User-agent: Claude-Web
-Disallow: /
-
-User-agent: Amazonbot
-Disallow: /
-
-User-agent: Applebot-Extended
-Disallow: /
-
-User-agent: Bytespider
-Disallow: /
-
-User-agent: meta-externalagent
-Disallow: /
-
-# Crawl delay for respectful crawling
-Crawl-delay: 1
-
-# LIGHTHOUSE COMPLIANCE: Standard directives only - no Content-signal or custom extensions`;
+Disallow: /*.json$`;
 
   const robotsPath = path.join('dist', 'robots.txt');
   fs.writeFileSync(robotsPath, robotsContent);
-  console.log('✅ Generated comprehensive Lighthouse-compliant robots.txt');
+  console.log('✅ Generated SEO-optimized validator-friendly robots.txt');
 }
 
 function copyDirectory(src, dest) {
