@@ -112,6 +112,8 @@ async function buildSite() {
         .replace(/<!--SEO_TITLE-->/g, metaTitle)
         .replace(/<!--SEO_DESCRIPTION-->/g, metaDescription)
         .replace(/<!--SEO_KEYWORDS-->/g, metaKeywords)
+        .replace(/<!--SEO_H1_TITLE-->/g, tool.title) // For server-side H1
+        .replace(/<!--SEO_H1_DESCRIPTION-->/g, tool.description) // For server-side description
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/tools/${tool.slug}/`)
         .replace(/<!--OG_IMAGE-->/g, `https://simpleonlinetool.com/images/${tool.slug}-preview.jpg`)
         .replace(/<!--TWITTER_IMAGE-->/g, `https://simpleonlinetool.com/images/${tool.slug}-preview.jpg`)
@@ -763,12 +765,20 @@ function inlineCriticalCSS(html, toolSlug = null) {
     html = html.replace(/<link rel="stylesheet" href="\/styles\/base[^"]*\.css"[^>]*>\s*/g, '');
     html = html.replace(/<link rel="stylesheet" href="\/styles\/layout[^"]*\.css"[^>]*>\s*/g, '');
     
+    // CRITICAL FIX: Extract rating widget CSS before removing style tags
+    // This preserves the critical rating widget styles that must load immediately
+    const ratingWidgetCSSMatch = html.match(/\/\* Rating widget styles[\s\S]*?@media \(max-width:640px\)\{[\s\S]*?\}/);
+    const ratingWidgetCSS = ratingWidgetCSSMatch ? ratingWidgetCSSMatch[0] : '';
+    
     // CRITICAL FIX: Remove any existing inlined CSS before adding new one
     // This prevents CSS duplication when inlineCriticalCSS is called multiple times
     html = html.replace(/<style>[\s\S]*?<\/style>\s*/g, '');
     
+    // Combine critical CSS with rating widget CSS
+    const combinedCSS = criticalCSS + (ratingWidgetCSS ? '\n\n/* Rating Widget Critical CSS */\n' + ratingWidgetCSS : '');
+    
     // Inline critical CSS before closing </head>
-    const inlinedCSS = `    <style>\n${criticalCSS}\n    </style>\n    `;
+    const inlinedCSS = `    <style>\n${combinedCSS}\n    </style>\n    `;
     html = html.replace('</head>', `${inlinedCSS}</head>`);
     
     return html;
