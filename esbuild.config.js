@@ -61,8 +61,14 @@ async function buildSite() {
         const pageDir = path.join('dist', staticPage.name);
         fs.mkdirSync(pageDir, { recursive: true });
         
-        // Copy the static page content to /pagename/index.html for clean URLs
-        fs.copyFileSync(staticPagePath, path.join(pageDir, 'index.html'));
+        // Read the static page content
+        let staticPageHtml = fs.readFileSync(staticPagePath, 'utf8');
+        
+        // Update CSS references with hashed versions (will be updated after bundling)
+        // For now, just copy - will be updated in updateGeneratedFilesWithHashes
+        
+        // Write to /pagename/index.html for clean URLs
+        fs.writeFileSync(path.join(pageDir, 'index.html'), staticPageHtml);
         console.log(`✅ Generated static page: ${staticPage.name}/index.html`);
       }
     }
@@ -718,6 +724,18 @@ function updateToolAssetReferences(html, toolSlug, assetHashes) {
 
 // Function to update all generated HTML files with hashed asset references
 function updateGeneratedFilesWithHashes(assetHashes) {
+  // Update static pages
+  const staticPages = ['about', 'privacy', 'terms', 'contact'];
+  for (const pageName of staticPages) {
+    const pagePath = path.join('dist', pageName, 'index.html');
+    if (fs.existsSync(pagePath)) {
+      let pageHtml = fs.readFileSync(pagePath, 'utf8');
+      pageHtml = updateAssetReferences(pageHtml, assetHashes);
+      fs.writeFileSync(pagePath, pageHtml);
+      console.log(`✅ Updated static page with hashed assets: ${pageName}/index.html`);
+    }
+  }
+  
   // Update category pages
   const categoryDirs = fs.readdirSync('dist/category');
   for (const categoryDir of categoryDirs) {
