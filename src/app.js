@@ -273,6 +273,12 @@ class ToolsApp {
         ${relatedToolsHTML}
       `;
 
+      // Hide the static SEO content since the tool's render() includes it
+      const staticSeoContent = document.getElementById('static-seo-content');
+      if (staticSeoContent) {
+        staticSeoContent.style.display = 'none';
+      }
+
       // Initialize the tool's functionality
       await toolModule.init();
       

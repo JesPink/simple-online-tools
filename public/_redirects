@@ -1,0 +1,30 @@
+# Redirect URLs without trailing slashes to with trailing slashes for clean URLs
+/tools/word-counter /tools/word-counter/ 301
+/tools/case-converter /tools/case-converter/ 301
+/tools/invoice-generator /tools/invoice-generator/ 301
+/tools/passive-voice-detector /tools/passive-voice-detector/ 301
+/tools/value-proposition-generator /tools/value-proposition-generator/ 301
+/tools/meeting-cost-calculator /tools/meeting-cost-calculator/ 301
+/tools/pdf-metadata-editor /tools/pdf-metadata-editor/ 301
+/tools/meta-description-generator /tools/meta-description-generator/ 301
+/tools/recipe-scaler /tools/recipe-scaler/ 301
+
+# Category redirects
+/category/text-and-writing /category/text-and-writing/ 301
+/category/productivity-and-business /category/productivity-and-business/ 301
+/category/files-and-docs /category/files-and-docs/ 301
+/category/seo-and-marketing /category/seo-and-marketing/ 301
+/category/utilities-and-conversion /category/utilities-and-conversion/ 301
+
+# Static page redirects
+/about /about/ 301
+/privacy /privacy/ 301
+/terms /terms/ 301
+/contact /contact/ 301
+
+# Force HTTPS
+http://simpleonlinetool.com/* https://simpleonlinetool.com/:splat 301!
+
+# 404 handling - redirect to homepage
+/tools/text-formatter/ / 301
+/tools/character-counter/ / 301
