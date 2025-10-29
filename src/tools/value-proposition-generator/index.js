@@ -109,20 +109,20 @@ export function render() {
 
           <h2>Frequently Asked Questions</h2>
 
-          <p><strong>What makes a good value proposition, and how can a value proposition generator help?</strong><br>
-          A good value proposition clearly states who you serve, what problem you solve, and why you're the best choice. A value proposition generator helps by providing proven frameworks, ensuring you include all essential elements, and offering multiple variations to test and refine.</p>
+          <h4>What makes a good value proposition, and how can a value proposition generator help?</h4>
+          <p>A good value proposition clearly states who you serve, what problem you solve, and why you're the best choice. A value proposition generator helps by providing proven frameworks, ensuring you include all essential elements, and offering multiple variations to test and refine.</p>
 
-          <p><strong>How long should my value proposition be?</strong><br>
-          The most effective value propositions are typically one to two sentences long—concise enough to be memorable but comprehensive enough to communicate your unique value. They should be readable in under 10 seconds and immediately clear to your target audience.</p>
+          <h4>How long should my value proposition be?</h4>
+          <p>The most effective value propositions are typically one to two sentences long—concise enough to be memorable but comprehensive enough to communicate your unique value. They should be readable in under 10 seconds and immediately clear to your target audience.</p>
 
-          <p><strong>Can I use the same value proposition for different marketing channels?</strong><br>
-          While your core value proposition should remain consistent, you may need slight variations for different channels. Social media posts might require shorter versions, while website headers can accommodate more detailed statements. The key is maintaining your central message while adapting the format.</p>
+          <h4>Can I use the same value proposition for different marketing channels?</h4>
+          <p>While your core value proposition should remain consistent, you may need slight variations for different channels. Social media posts might require shorter versions, while website headers can accommodate more detailed statements. The key is maintaining your central message while adapting the format.</p>
 
-          <p><strong>How often should I update my value proposition?</strong><br>
-          Review your value proposition quarterly and update it when you launch new products, enter new markets, or receive customer feedback indicating your current message isn't resonating. Market conditions and competitive landscapes change, so your messaging should evolve accordingly.</p>
+          <h4>How often should I update my value proposition?</h4>
+          <p>Review your value proposition quarterly and update it when you launch new products, enter new markets, or receive customer feedback indicating your current message isn't resonating. Market conditions and competitive landscapes change, so your messaging should evolve accordingly.</p>
 
-          <p><strong>What's the difference between a value proposition and a mission statement?</strong><br>
-          A value proposition focuses on customer benefits and addresses "why should I buy from you?" A mission statement describes your company's purpose and addresses "why do we exist?" Value propositions are customer-focused and sales-oriented, while mission statements are company-focused and purpose-driven.</p>
+          <h4>What's the difference between a value proposition and a mission statement?</h4>
+          <p>A value proposition focuses on customer benefits and addresses "why should I buy from you?" A mission statement describes your company's purpose and addresses "why do we exist?" Value propositions are customer-focused and sales-oriented, while mission statements are company-focused and purpose-driven.</p>
 
           <h2>Value Proposition Generator and Your Business Workflow</h2>
 

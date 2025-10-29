@@ -119,32 +119,21 @@ export function render() {
           <p>The tracking capability also supports budget planning and resource allocation decisions. Teams can forecast meeting costs for upcoming projects, compare the efficiency of different collaboration methods, and demonstrate the ROI of investments in meeting efficiency tools or training. This quantitative approach to meeting management aligns with broader business objectives of operational efficiency and cost optimization.</p>
 
           <h2>Frequently Asked Questions</h2>
-          <div class="faq-section">
-            <div class="faq-item">
-              <h4>How accurate is the meeting cost calculator in determining real meeting expenses?</h4>
-              <p>Our meeting cost calculator provides highly accurate cost estimates based on the hourly rates you input. The calculation includes all participants' combined hourly costs multiplied by meeting duration. However, remember that true meeting costs may include additional factors like opportunity costs, preparation time, and follow-up activities that extend beyond the actual meeting duration.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h4>What's the ideal meeting cost threshold for different types of business meetings?</h4>
-              <p>Meeting cost thresholds vary by organization size and industry, but general guidelines suggest keeping routine meetings under $200, strategic planning sessions justified up to $1,000+ per hour, and decision-making meetings evaluated based on the financial impact of delayed decisions. The key is ensuring meeting outcomes justify the calculated investment.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h4>Can I use estimated hourly rates if I don't know exact participant salaries?</h4>
-              <p>Yes, estimated rates work well for cost awareness purposes. Use industry salary surveys, role-based estimates, or general ranges (junior: $25-40/hour, mid-level: $40-75/hour, senior: $75-150/hour). The goal is relative cost awareness rather than precise accounting, so reasonable estimates provide valuable insights.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h4>How can I use meeting cost data to improve team productivity?</h4>
-              <p>Use cost data to set meeting budgets, justify agenda changes, reduce participant lists to essential members only, and demonstrate the value of preparation. Share cost calculations with teams to create collective awareness and motivation for more efficient meetings. Track costs over time to identify improvement opportunities and measure progress.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h4>Does the calculator account for benefits and overhead costs beyond salary?</h4>
-              <p>The basic calculator uses the hourly rates you provide. To account for full employment costs (benefits, overhead, etc.), multiply salary-based hourly rates by 1.25-1.4 when entering them. This adjustment provides a more comprehensive view of true participant costs, including typical benefit and overhead expenses.</p>
-            </div>
-          </div>
+          
+          <h4>How accurate is the meeting cost calculator in determining real meeting expenses?</h4>
+          <p>Our meeting cost calculator provides highly accurate cost estimates based on the hourly rates you input. The calculation includes all participants' combined hourly costs multiplied by meeting duration. However, remember that true meeting costs may include additional factors like opportunity costs, preparation time, and follow-up activities that extend beyond the actual meeting duration.</p>
+          
+          <h4>What's the ideal meeting cost threshold for different types of business meetings?</h4>
+          <p>Meeting cost thresholds vary by organization size and industry, but general guidelines suggest keeping routine meetings under $200, strategic planning sessions justified up to $1,000+ per hour, and decision-making meetings evaluated based on the financial impact of delayed decisions. The key is ensuring meeting outcomes justify the calculated investment.</p>
+          
+          <h4>Can I use estimated hourly rates if I don't know exact participant salaries?</h4>
+          <p>Yes, estimated rates work well for cost awareness purposes. Use industry salary surveys, role-based estimates, or general ranges (junior: $25-40/hour, mid-level: $40-75/hour, senior: $75-150/hour). The goal is relative cost awareness rather than precise accounting, so reasonable estimates provide valuable insights.</p>
+          
+          <h4>How can I use meeting cost data to improve team productivity?</h4>
+          <p>Use cost data to set meeting budgets, justify agenda changes, reduce participant lists to essential members only, and demonstrate the value of preparation. Share cost calculations with teams to create collective awareness and motivation for more efficient meetings. Track costs over time to identify improvement opportunities and measure progress.</p>
+          
+          <h4>Does the calculator account for benefits and overhead costs beyond salary?</h4>
+          <p>The basic calculator uses the hourly rates you provide. To account for full employment costs (benefits, overhead, etc.), multiply salary-based hourly rates by 1.25-1.4 when entering them. This adjustment provides a more comprehensive view of true participant costs, including typical benefit and overhead expenses.</p>
 
           <h2>Meeting Cost Calculator and Your Business Workflow</h2>
           <p>Integrating a meeting cost calculator into your business workflow transforms meeting culture from time-focused to value-focused, ensuring every collaborative session delivers appropriate return on investment. This tool works excellently alongside other productivity tools like our <a href="/tools/word-counter/">Word Counter</a> for measuring meeting agenda length and our <a href="/tools/case-converter/">Case Converter</a> for standardizing meeting documentation formats.</p>

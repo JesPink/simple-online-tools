@@ -105,7 +105,7 @@ export function render() {
         
         <p>Whether you're preparing marketing materials, formatting technical documentation, or creating content that requires specific capitalization standards, the <strong>upper to lower case converter</strong> and its reverse functionality provide the flexibility needed for professional text formatting.</p>
 
-        <div class="section-title">Frequently Asked Questions</div>
+        <h2>Frequently Asked Questions</h2>
         
         <h4>What types of case conversion does this case converter support?</h4>
         <p>Our case converter supports five essential conversion types: sentence case (first letter capitalized), lowercase (all letters small), uppercase (all letters capitalized), title case (first letter of each word capitalized), and inverted case (alternates between upper and lowercase).</p>

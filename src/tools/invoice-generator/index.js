@@ -202,47 +202,23 @@ export function render() {
 
         <h2>Frequently Asked Questions</h2>
         
-        <div class="faq-item">
-          <h4>Is this invoice generator completely free to use?</h4>
-          <p>
-            Yes, our <strong>invoice generator</strong> is completely free with no hidden costs, usage limits, or watermarks. You can create unlimited invoices, download PDFs, and access all features without any payment or subscription requirements.
-          </p>
-        </div>
+        <h4>Is this invoice generator completely free to use?</h4>
+        <p>Yes, our <strong>invoice generator</strong> is completely free with no hidden costs, usage limits, or watermarks. You can create unlimited invoices, download PDFs, and access all features without any payment or subscription requirements.</p>
         
-        <div class="faq-item">
-          <h4>Can I customize the invoice template and add my logo?</h4>
-          <p>
-            Currently, our invoice generator focuses on clean, professional text-based invoices. While logo upload isn't available in this version, the professional formatting and comprehensive customization options ensure your invoices maintain a polished, business-ready appearance.
-          </p>
-        </div>
+        <h4>Can I customize the invoice template and add my logo?</h4>
+        <p>Currently, our invoice generator focuses on clean, professional text-based invoices. While logo upload isn't available in this version, the professional formatting and comprehensive customization options ensure your invoices maintain a polished, business-ready appearance.</p>
         
-        <div class="faq-item">
-          <h4>Is my business and client information secure?</h4>
-          <p>
-            Absolutely. All invoice generation happens entirely in your browser - no data is sent to our servers. Your business information, client details, and invoice content remain completely private and secure throughout the entire process.
-          </p>
-        </div>
+        <h4>Is my business and client information secure?</h4>
+        <p>Absolutely. All invoice generation happens entirely in your browser - no data is sent to our servers. Your business information, client details, and invoice content remain completely private and secure throughout the entire process.</p>
 
-        <div class="faq-item">
-          <h4>Can I save my invoice data for future use?</h4>
-          <p>
-            The tool saves your form data locally in your browser, so your information will be retained when you return to create new invoices. However, we recommend downloading and saving your completed invoices as PDFs for your records.
-          </p>
-        </div>
+        <h4>Can I save my invoice data for future use?</h4>
+        <p>The tool saves your form data locally in your browser, so your information will be retained when you return to create new invoices. However, we recommend downloading and saving your completed invoices as PDFs for your records.</p>
 
-        <div class="faq-item">
-          <h4>What file format does the invoice generator export?</h4>
-          <p>
-            The invoice generator exports professional PDF files that are compatible with all devices and can be easily emailed to clients, printed for records, or stored in your accounting system.
-          </p>
-        </div>
+        <h4>What file format does the invoice generator export?</h4>
+        <p>The invoice generator exports professional PDF files that are compatible with all devices and can be easily emailed to clients, printed for records, or stored in your accounting system.</p>
 
-        <div class="faq-item">
-          <h4>Can I handle multiple currencies and tax rates?</h4>
-          <p>
-            Yes, the tool supports multiple major currencies (USD, EUR, GBP, CAD, AUD) and allows you to set custom tax rates as percentages. This makes it suitable for international businesses and various tax jurisdictions.
-          </p>
-        </div>
+        <h4>Can I handle multiple currencies and tax rates?</h4>
+        <p>Yes, the tool supports multiple major currencies (USD, EUR, GBP, CAD, AUD) and allows you to set custom tax rates as percentages. This makes it suitable for international businesses and various tax jurisdictions.</p>
 
         <h2>Invoice Generator and Your Business Workflow</h2>
         <p>

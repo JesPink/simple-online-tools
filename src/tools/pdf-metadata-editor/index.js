@@ -124,34 +124,23 @@ export function render() {
           <p>Advanced users leverage metadata modification as part of comprehensive document security protocols. This includes standardizing creation dates to remove timing information, anonymizing author fields, removing software version details that might reveal system vulnerabilities, and eliminating internal file paths that could expose organizational structures or naming conventions.</p>
 
           <h2>Frequently Asked Questions</h2>
-          <div class="faq-section">
-            <div class="faq-item">
-              <h4>Is it safe to use an online PDF metadata editor with sensitive documents?</h4>
-              <p>Our PDF metadata editor operates entirely within your browser using client-side processing, meaning your files never leave your device or get uploaded to any server. This makes it completely safe for sensitive documents, as no external parties can access your files or their metadata.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h4>What types of metadata can be found in PDF files?</h4>
-              <p>PDF files can contain extensive metadata including author names, document title and subject, creation and modification dates, creator application details, keywords, internal file paths, user comments, revision history, printing information, and sometimes even GPS coordinates or camera information if the PDF was created from photos.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h3>Will removing metadata affect the PDF's content or formatting?</h3>
-              <p>No, removing or editing PDF metadata only affects the hidden information properties and does not change the visible content, formatting, images, or layout of your document. The PDF will look and function exactly the same, just without the embedded metadata.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h4>Can I batch process multiple PDFs to remove metadata?</h4>
-              <p>Currently, our tool processes one PDF at a time to ensure optimal performance and privacy. For batch processing needs, you can use the tool multiple times, with each file being processed securely within your browser without any server uploads.</p>
-            </div>
-            
-            <div class="faq-item">
-              <h4>Why is PDF metadata removal important for privacy?</h4>
-              <p>PDF metadata can reveal sensitive information about the document creator, their computer system, internal organizational structures, creation processes, and revision history. Removing this metadata before sharing documents prevents accidental disclosure of confidential information and protects personal and organizational privacy.</p>
-            </div>
-          </div>
+          
+          <h4>Is it safe to use an online PDF metadata editor with sensitive documents?</h4>
+          <p>Our PDF metadata editor operates entirely within your browser using client-side processing, meaning your files never leave your device or get uploaded to any server. This makes it completely safe for sensitive documents, as no external parties can access your files or their metadata.</p>
+          
+          <h4>What types of metadata can be found in PDF files?</h4>
+          <p>PDF files can contain extensive metadata including author names, document title and subject, creation and modification dates, creator application details, keywords, internal file paths, user comments, revision history, printing information, and sometimes even GPS coordinates or camera information if the PDF was created from photos.</p>
+          
+          <h4>Will removing metadata affect the PDF's content or formatting?</h4>
+          <p>No, removing or editing PDF metadata only affects the hidden information properties and does not change the visible content, formatting, images, or layout of your document. The PDF will look and function exactly the same, just without the embedded metadata.</p>
+          
+          <h4>Can I batch process multiple PDFs to remove metadata?</h4>
+          <p>Currently, our tool processes one PDF at a time to ensure optimal performance and privacy. For batch processing needs, you can use the tool multiple times, with each file being processed securely within your browser without any server uploads.</p>
+          
+          <h4>Why is PDF metadata removal important for privacy?</h4>
+          <p>PDF metadata can reveal sensitive information about the document creator, their computer system, internal organizational structures, creation processes, and revision history. Removing this metadata before sharing documents prevents accidental disclosure of confidential information and protects personal and organizational privacy.</p>
 
-          <div class="section-title">PDF Metadata Editor and Your Document Workflow</div>
+          <h2>PDF Metadata Editor and Your Document Workflow</h2>
           <p>Integrating a PDF metadata editor into your document workflow enhances both security and professionalism in your digital communications. This tool complements other document processing utilities like our <a href="/tools/word-counter/">Word Counter</a> for analyzing document length and our <a href="/tools/case-converter/">Case Converter</a> for standardizing text formatting within your documents.</p>
           
           <p>Whether you're a legal professional preparing court documents, a journalist protecting source confidentiality, or a business professional maintaining organizational privacy standards, a reliable PDF metadata editor provides the control and transparency needed for secure document management in today's digital environment.</p>

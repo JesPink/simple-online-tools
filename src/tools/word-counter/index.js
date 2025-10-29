@@ -187,92 +187,36 @@ export function render() {
           </p>
         </section>
 
-        <section class="content-section">
-          <h2>Frequently Asked Questions</h2>
-          
-          <div class="faq-item">
-            <h4>How do I count unique words in my text?</h4>
-            <p>
-              Our tool automatically calculates the number of unique words for you. Simply paste your text into the input box, and look for the "Unique Words" metric in the results. Our <strong>unique words counter</strong> algorithm processes the text instantly, giving you a count of all distinct terms.
-            </p>
-          </div>
-          
-          <div class="faq-item">
-            <h4>Can I use this as a website word count checker?</h4>
-            <p>
-              Absolutely. While this tool requires you to paste text manually, it functions perfectly as a <strong>website word count checker</strong>. Simply copy the text from any webpage (Ctrl+A, Ctrl+C) and paste it into the box above. You'll instantly get the word count, character count, and other vital metrics for any web content.
-            </p>
-          </div>
-          
-          <div class="faq-item">
-            <h4>What is the maximum text length this tool can handle?</h4>
-            <p>
-              Our word counter can handle extremely large documents with hundreds of thousands of words. 
-              The tool is optimized for performance and will continue to provide accurate counts even 
-              with lengthy manuscripts, books, or research papers.
-            </p>
-          </div>
+        <h2>Frequently Asked Questions</h2>
+        
+        <h4>How do I count unique words in my text?</h4>
+        <p>Our tool automatically calculates the number of unique words for you. Simply paste your text into the input box, and look for the "Unique Words" metric in the results. Our <strong>unique words counter</strong> algorithm processes the text instantly, giving you a count of all distinct terms.</p>
+        
+        <h4>Can I use this as a website word count checker?</h4>
+        <p>Absolutely. While this tool requires you to paste text manually, it functions perfectly as a <strong>website word count checker</strong>. Simply copy the text from any webpage (Ctrl+A, Ctrl+C) and paste it into the box above. You'll instantly get the word count, character count, and other vital metrics for any web content.</p>
+        
+        <h4>What is the maximum text length this tool can handle?</h4>
+        <p>Our word counter can handle extremely large documents with hundreds of thousands of words. The tool is optimized for performance and will continue to provide accurate counts even with lengthy manuscripts, books, or research papers.</p>
 
-          <div class="faq-item">
-            <h4>How accurate is the word and character counting?</h4>
-            <p>
-              Our counting algorithm is highly accurate and follows standard text processing rules. 
-              Words are counted by splitting text on whitespace and punctuation, while characters 
-              include all visible text, spaces, and punctuation marks. The tool provides both 
-              character counts with and without spaces for maximum flexibility.
-            </p>
-          </div>
+        <h4>How accurate is the word and character counting?</h4>
+        <p>Our counting algorithm is highly accurate and follows standard text processing rules. Words are counted by splitting text on whitespace and punctuation, while characters include all visible text, spaces, and punctuation marks. The tool provides both character counts with and without spaces for maximum flexibility.</p>
 
-          <div class="faq-item">
-            <h4>Does this tool work without an internet connection?</h4>
-            <p>
-              Yes! Once the page loads, our word counter works entirely offline. All processing 
-              happens in your browser, so you can count words even without internet access. This 
-              also means your text never leaves your device, ensuring complete privacy.
-            </p>
-          </div>
+        <h4>Does this tool work without an internet connection?</h4>
+        <p>Yes! Once the page loads, our word counter works entirely offline. All processing happens in your browser, so you can count words even without internet access. This also means your text never leaves your device, ensuring complete privacy.</p>
 
-          <div class="faq-item">
-            <h4>Is my text data secure and private?</h4>
-            <p>
-              Absolutely. Your text is processed entirely within your browser and never sent to 
-              our servers or any third parties. We don't store, save, or analyze your content in 
-              any way. When you close the page, your text is completely removed from memory.
-            </p>
-          </div>
+        <h4>Is my text data secure and private?</h4>
+        <p>Absolutely. Your text is processed entirely within your browser and never sent to our servers or any third parties. We don't store, save, or analyze your content in any way. When you close the page, your text is completely removed from memory.</p>
 
-          <div class="faq-item">
-            <h4>Can I use this tool for languages other than English?</h4>
-            <p>
-              Yes, our word counter supports all languages and character sets, including Chinese, 
-              Japanese, Arabic, Russian, and many others. The tool correctly handles different 
-              writing systems and provides accurate counts regardless of the language used.
-            </p>
-          </div>
+        <h4>Can I use this tool for languages other than English?</h4>
+        <p>Yes, our word counter supports all languages and character sets, including Chinese, Japanese, Arabic, Russian, and many others. The tool correctly handles different writing systems and provides accurate counts regardless of the language used.</p>
 
-          <div class="faq-item">
-            <h4>How is reading time calculated?</h4>
-            <p>
-              Reading time is estimated based on the average adult reading speed of 225 words per 
-              minute. This is a widely accepted standard for silent reading of normal text. The 
-              calculation helps content creators estimate how long it will take readers to consume 
-              their content.
-            </p>
-          </div>
-        </section>
+        <h4>How is reading time calculated?</h4>
+        <p>Reading time is estimated based on the average adult reading speed of 225 words per minute. This is a widely accepted standard for silent reading of normal text. The calculation helps content creators estimate how long it will take readers to consume their content.</p>
 
-        <section class="content-section">
-          <div class="section-title">Word Counter and Your Workflow</div>
-          <p>
-            Our word counter integrates perfectly into any writing workflow, whether you're crafting academic papers, creating blog content, or managing social media posts. The tool provides instant feedback that helps you meet specific requirements and optimize your content for different platforms.
-          </p>
-          <p>
-            Whether you're a student working on assignments with strict word limits, a content creator optimizing for SEO, or a social media manager crafting platform-specific posts, our word counter delivers the precise metrics you need. The real-time analysis ensures you stay within guidelines while maintaining the quality and impact of your message.
-          </p>
-          <p>
-            <strong>Streamline your writing process</strong> with accurate word counting that works entirely in your browser, keeping your content private and secure while providing instant results.
-          </p>
-        </section>
+        <h2>Word Counter and Your Workflow</h2>
+        <p>Our word counter integrates perfectly into any writing workflow, whether you're crafting academic papers, creating blog content, or managing social media posts. The tool provides instant feedback that helps you meet specific requirements and optimize your content for different platforms.</p>
+        <p>Whether you're a student working on assignments with strict word limits, a content creator optimizing for SEO, or a social media manager crafting platform-specific posts, our word counter delivers the precise metrics you need. The real-time analysis ensures you stay within guidelines while maintaining the quality and impact of your message.</p>
+        <p><strong>Streamline your writing process</strong> with accurate word counting that works entirely in your browser, keeping your content private and secure while providing instant results.</p>
       </div>
             </div>
           </div>
