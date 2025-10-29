@@ -273,11 +273,20 @@ async function buildSite() {
         ]
       };
 
-      // Create the comprehensive schema markup script tags
-      const schemaMarkup = `
+      // Extract FAQ schema from tool SEO content
+      const faqSchema = extractFAQSchema(toolSeoContent, tool.slug);
+
+      // Create the comprehensive schema markup script tags (including FAQ if found)
+      let schemaMarkup = `
     <script type="application/ld+json">${JSON.stringify(webApplicationSchema, null, 2)}</script>
     <script type="application/ld+json">${JSON.stringify(howToSchema, null, 2)}</script>
     <script type="application/ld+json">${JSON.stringify(breadcrumbSchema, null, 2)}</script>`;
+      
+      if (faqSchema) {
+        schemaMarkup += `
+    <script type="application/ld+json">${JSON.stringify(faqSchema, null, 2)}</script>`;
+        console.log(`✅ Generated FAQPage schema for ${tool.slug} with ${faqSchema.mainEntity.length} questions`);
+      }
       
       // Inject schema markup using the new placeholder
       toolHtml = toolHtml.replace('<!--SCHEMA_MARKUP-->', schemaMarkup);
@@ -902,6 +911,9 @@ function extractSeoContentFromTool(toolSlug) {
         .replace(/^\s{6,}/gm, '        ') // Normalize indentation to 8 spaces
         .trim();
       
+      // Add intelligent internal linking to related tools
+      seoContent = addInternalLinksToContent(seoContent);
+      
       console.log(`✅ Extracted SEO content for ${toolSlug}: ${seoContent.length} characters`);
       return seoContent;
     } else {
@@ -912,4 +924,81 @@ function extractSeoContentFromTool(toolSlug) {
     console.error(`❌ Error extracting SEO content for ${toolSlug}:`, error.message);
     return '';
   }
+}
+
+// Extract FAQ schema from SEO content
+function extractFAQSchema(seoContent, toolSlug) {
+  if (!seoContent) return null;
+  
+  try {
+    // Parse FAQs from the SEO content (looks for H4 questions and following paragraph answers)
+    const faqRegex = /<h4>(.*?)<\/h4>\s*<p>(.*?)<\/p>/gs;
+    const faqs = [];
+    let match;
+    
+    while ((match = faqRegex.exec(seoContent)) !== null) {
+      const question = match[1].trim().replace(/<[^>]+>/g, ''); // Strip HTML tags
+      const answer = match[2].trim().replace(/<[^>]+>/g, ''); // Strip HTML tags
+      
+      faqs.push({
+        "@type": "Question",
+        "name": question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": answer
+        }
+      });
+    }
+    
+    if (faqs.length === 0) return null;
+    
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqs
+    };
+  } catch (error) {
+    console.warn(`⚠️ Failed to extract FAQ schema for ${toolSlug}:`, error.message);
+    return null;
+  }
+}
+
+// Add intelligent internal links to SEO content
+function addInternalLinksToContent(content) {
+  // Map of tool mentions to their slugs (case-insensitive matching)
+  const toolLinks = {
+    'word counter': '/tools/word-counter/',
+    'case converter': '/tools/case-converter/',
+    'invoice generator': '/tools/invoice-generator/',
+    'passive voice detector': '/tools/passive-voice-detector/',
+    'passive voice checker': '/tools/passive-voice-detector/',
+    'value proposition generator': '/tools/value-proposition-generator/',
+    'meeting cost calculator': '/tools/meeting-cost-calculator/',
+    'pdf metadata editor': '/tools/pdf-metadata-editor/',
+    'meta description generator': '/tools/meta-description-generator/',
+    'recipe scaler': '/tools/recipe-scaler/',
+    'readability analyzer': '/tools/word-counter/', // Placeholder - update when tool exists
+    'grammar checker': '/tools/passive-voice-detector/' // Related tool
+  };
+  
+  // Replace tool mentions with links (only first occurrence to avoid over-linking)
+  for (const [toolName, toolUrl] of Object.entries(toolLinks)) {
+    // Use case-insensitive regex with word boundaries, but only replace first mention
+    const regex = new RegExp(`\\b${toolName}\\b(?![^<]*>|[^<>]*<\/)`, 'i');
+    
+    // Only link if not already within a tag and not the current page title
+    if (regex.test(content)) {
+      content = content.replace(regex, (match) => {
+        // Check if this mention is already linked or in a heading
+        const beforeMatch = content.substring(0, content.indexOf(match));
+        const isInTag = /<[^>]*$/.test(beforeMatch);
+        
+        if (isInTag) return match;
+        
+        return `<a href="${toolUrl}">${match}</a>`;
+      });
+    }
+  }
+  
+  return content;
 }

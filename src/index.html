@@ -162,14 +162,6 @@
     <main id="tool-container">
         <div class="container">
             <div class="tool-content">
-                <!-- SEO FIX: Server-side H1 for crawlers without JavaScript -->
-                <noscript>
-                    <div class="tool-header">
-                        <h1><!--SEO_H1_TITLE--></h1>
-                        <p class="tool-description"><!--SEO_H1_DESCRIPTION--></p>
-                    </div>
-                </noscript>
-                
                 <!-- CRITICAL CLS FIX: Reserve exact space for dynamic content -->
                 <div id="loading" class="loading-indicator">
                     <p>Loading tool...</p>
@@ -178,8 +170,8 @@
         </div>
     </main>
     
-    <!-- Static SEO Content for Search Engines -->
-    <div id="static-seo-content" class="seo-content" style="display: none;">
+    <!-- SEO CRITICAL: Static content visible for search engines and users -->
+    <div id="static-seo-content" class="seo-content">
         <!--STATIC_SEO_CONTENT-->
     </div>
 
