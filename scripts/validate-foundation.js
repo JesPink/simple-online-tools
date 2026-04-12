@@ -212,7 +212,8 @@ const isMainModule = import.meta.url === `file://${process.argv[1]}` ||
                      import.meta.url.includes(process.argv[1]?.replace(/\\/g, '/'));
 
 if (isMainModule) {
-  const toolSlug = process.argv[2];
+  const cliArgs = process.argv.slice(2);
+  const toolSlug = cliArgs.find(arg => !arg.startsWith('--'));
   if (toolSlug) {
     console.log(`Validating single tool: ${toolSlug}\n`);
     const result = validateTool(toolSlug);

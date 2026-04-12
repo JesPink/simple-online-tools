@@ -21,7 +21,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Word Counter Functionality', () => {
   test('should count words in real-time', async ({ page }) => {
-    await page.goto('/tools/word-counter.html');
+    await page.goto('/tools/word-counter/');
     await page.waitForLoadState('networkidle');
     
     const textarea = page.locator('#text-input');
@@ -36,7 +36,7 @@ test.describe('Word Counter Functionality', () => {
   });
   
   test('should calculate character count', async ({ page }) => {
-    await page.goto('/tools/word-counter.html');
+    await page.goto('/tools/word-counter/');
     await page.waitForLoadState('networkidle');
     
     const textarea = page.locator('#text-input');
@@ -51,7 +51,7 @@ test.describe('Word Counter Functionality', () => {
   });
   
   test('should show reading time estimate', async ({ page }) => {
-    await page.goto('/tools/word-counter.html');
+    await page.goto('/tools/word-counter/');
     await page.waitForLoadState('networkidle');
     
     const textarea = page.locator('#text-input');
@@ -71,12 +71,12 @@ test.describe('Word Counter Functionality', () => {
 
 test.describe('Case Converter Functionality', () => {
   test('should convert to uppercase', async ({ page }) => {
-    await page.goto('/tools/case-converter.html');
+    await page.goto('/tools/case-converter/');
     await page.waitForLoadState('networkidle');
     
-    const input = page.locator('#input-text');
+    const input = page.locator('#case-input');
     const uppercaseBtn = page.locator('button[data-case="upper"]');
-    const output = page.locator('#output-text');
+    const output = page.locator('#case-output');
     
     await input.fill('hello world');
     await uppercaseBtn.click();
@@ -87,12 +87,12 @@ test.describe('Case Converter Functionality', () => {
   });
   
   test('should convert to lowercase', async ({ page }) => {
-    await page.goto('/tools/case-converter.html');
+    await page.goto('/tools/case-converter/');
     await page.waitForLoadState('networkidle');
     
-    const input = page.locator('#input-text');
+    const input = page.locator('#case-input');
     const lowercaseBtn = page.locator('button[data-case="lower"]');
-    const output = page.locator('#output-text');
+    const output = page.locator('#case-output');
     
     await input.fill('HELLO WORLD');
     await lowercaseBtn.click();
@@ -103,12 +103,12 @@ test.describe('Case Converter Functionality', () => {
   });
   
   test('should convert to title case', async ({ page }) => {
-    await page.goto('/tools/case-converter.html');
+    await page.goto('/tools/case-converter/');
     await page.waitForLoadState('networkidle');
     
-    const input = page.locator('#input-text');
+    const input = page.locator('#case-input');
     const titleBtn = page.locator('button[data-case="title"]');
-    const output = page.locator('#output-text');
+    const output = page.locator('#case-output');
     
     await input.fill('hello world');
     await titleBtn.click();
@@ -119,7 +119,7 @@ test.describe('Case Converter Functionality', () => {
   });
   
   test('should have copy button', async ({ page }) => {
-    await page.goto('/tools/case-converter.html');
+    await page.goto('/tools/case-converter/');
     await page.waitForLoadState('networkidle');
     
     const copyBtn = page.locator('#copy-btn');
@@ -133,7 +133,7 @@ test.describe('Case Converter Functionality', () => {
 
 test.describe('Invoice Generator Functionality', () => {
   test('should have zoom controls', async ({ page }) => {
-    await page.goto('/tools/invoice-generator.html');
+    await page.goto('/tools/invoice-generator/');
     await page.waitForLoadState('networkidle');
     
     const zoomInBtn = page.locator('#zoom-in-btn');
@@ -144,7 +144,7 @@ test.describe('Invoice Generator Functionality', () => {
   });
   
   test('should have invoice preview element', async ({ page }) => {
-    await page.goto('/tools/invoice-generator.html');
+    await page.goto('/tools/invoice-generator/');
     await page.waitForLoadState('networkidle');
     
     const preview = page.locator('#invoice-preview');
@@ -152,7 +152,7 @@ test.describe('Invoice Generator Functionality', () => {
   });
   
   test('should have form inputs', async ({ page }) => {
-    await page.goto('/tools/invoice-generator.html');
+    await page.goto('/tools/invoice-generator/');
     await page.waitForLoadState('networkidle');
     
     const fromInput = page.locator('input, textarea').first();
@@ -160,10 +160,10 @@ test.describe('Invoice Generator Functionality', () => {
   });
   
   test('should have download PDF button', async ({ page }) => {
-    await page.goto('/tools/invoice-generator.html');
+    await page.goto('/tools/invoice-generator/');
     await page.waitForLoadState('networkidle');
-    
-    const downloadBtn = page.locator('#download-pdf-btn');
+
+    const downloadBtn = page.locator('#generate-pdf-btn, #download-pdf-btn').first();
     await expect(downloadBtn).toBeVisible();
   });
 });
@@ -174,7 +174,7 @@ test.describe('Invoice Generator Functionality', () => {
 
 test.describe('Passive Voice Detector Functionality', () => {
   test('should have analyze button', async ({ page }) => {
-    await page.goto('/tools/passive-voice-detector.html');
+    await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
     
     const analyzeBtn = page.locator('#analyze-btn');
@@ -182,7 +182,7 @@ test.describe('Passive Voice Detector Functionality', () => {
   });
   
   test('should have text input', async ({ page }) => {
-    await page.goto('/tools/passive-voice-detector.html');
+    await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
     
     const textarea = page.locator('#text-input');
@@ -190,7 +190,7 @@ test.describe('Passive Voice Detector Functionality', () => {
   });
   
   test('should have results section', async ({ page }) => {
-    await page.goto('/tools/passive-voice-detector.html');
+    await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
     
     const results = page.locator('.tool-results');
@@ -204,7 +204,7 @@ test.describe('Passive Voice Detector Functionality', () => {
 
 test.describe('Value Proposition Generator Functionality', () => {
   test('should have input fields', async ({ page }) => {
-    await page.goto('/tools/value-proposition-generator.html');
+    await page.goto('/tools/value-proposition-generator/');
     await page.waitForLoadState('networkidle');
     
     const inputs = page.locator('input, textarea');
@@ -213,7 +213,7 @@ test.describe('Value Proposition Generator Functionality', () => {
   });
   
   test('should have generate button', async ({ page }) => {
-    await page.goto('/tools/value-proposition-generator.html');
+    await page.goto('/tools/value-proposition-generator/');
     await page.waitForLoadState('networkidle');
     
     const generateBtn = page.locator('button').first();
@@ -221,7 +221,7 @@ test.describe('Value Proposition Generator Functionality', () => {
   });
   
   test('should have results section', async ({ page }) => {
-    await page.goto('/tools/value-proposition-generator.html');
+    await page.goto('/tools/value-proposition-generator/');
     await page.waitForLoadState('networkidle');
     
     const results = page.locator('.tool-results');
@@ -235,7 +235,7 @@ test.describe('Value Proposition Generator Functionality', () => {
 
 test.describe('Meeting Cost Calculator Functionality', () => {
   test('should have number inputs', async ({ page }) => {
-    await page.goto('/tools/meeting-cost-calculator.html');
+    await page.goto('/tools/meeting-cost-calculator/');
     await page.waitForLoadState('networkidle');
     
     const numberInputs = page.locator('input[type="number"]');
@@ -244,7 +244,7 @@ test.describe('Meeting Cost Calculator Functionality', () => {
   });
   
   test('should have start button', async ({ page }) => {
-    await page.goto('/tools/meeting-cost-calculator.html');
+    await page.goto('/tools/meeting-cost-calculator/');
     await page.waitForLoadState('networkidle');
     
     const buttons = page.locator('button');
@@ -253,7 +253,7 @@ test.describe('Meeting Cost Calculator Functionality', () => {
   });
   
   test('should have results display', async ({ page }) => {
-    await page.goto('/tools/meeting-cost-calculator.html');
+    await page.goto('/tools/meeting-cost-calculator/');
     await page.waitForLoadState('networkidle');
     
     const results = page.locator('.tool-results');
@@ -267,15 +267,18 @@ test.describe('Meeting Cost Calculator Functionality', () => {
 
 test.describe('PDF Metadata Editor Functionality', () => {
   test('should have file upload input', async ({ page }) => {
-    await page.goto('/tools/pdf-metadata-editor.html');
+    await page.goto('/tools/pdf-metadata-editor/');
     await page.waitForLoadState('networkidle');
-    
+
+    const uploadArea = page.locator('#upload-area');
     const fileInput = page.locator('input[type="file"]');
-    await expect(fileInput).toBeVisible();
+
+    await expect(uploadArea).toBeVisible();
+    await expect(fileInput).toHaveCount(1);
   });
   
   test('should have form elements', async ({ page }) => {
-    await page.goto('/tools/pdf-metadata-editor.html');
+    await page.goto('/tools/pdf-metadata-editor/');
     await page.waitForLoadState('networkidle');
     
     const formElements = page.locator('input, textarea, button');
@@ -290,7 +293,7 @@ test.describe('PDF Metadata Editor Functionality', () => {
 
 test.describe('Meta Description Generator Functionality', () => {
   test('should have text input', async ({ page }) => {
-    await page.goto('/tools/meta-description-generator.html');
+    await page.goto('/tools/meta-description-generator/');
     await page.waitForLoadState('networkidle');
     
     const textarea = page.locator('textarea');
@@ -299,7 +302,7 @@ test.describe('Meta Description Generator Functionality', () => {
   });
   
   test('should have generate button', async ({ page }) => {
-    await page.goto('/tools/meta-description-generator.html');
+    await page.goto('/tools/meta-description-generator/');
     await page.waitForLoadState('networkidle');
     
     const generateBtn = page.locator('button').first();
@@ -313,7 +316,7 @@ test.describe('Meta Description Generator Functionality', () => {
 
 test.describe('Recipe Scaler Functionality', () => {
   test('should have servings input', async ({ page }) => {
-    await page.goto('/tools/recipe-scaler.html');
+    await page.goto('/tools/recipe-scaler/');
     await page.waitForLoadState('networkidle');
     
     const inputs = page.locator('input[type="number"]');
@@ -322,7 +325,7 @@ test.describe('Recipe Scaler Functionality', () => {
   });
   
   test('should have ingredient list input', async ({ page }) => {
-    await page.goto('/tools/recipe-scaler.html');
+    await page.goto('/tools/recipe-scaler/');
     await page.waitForLoadState('networkidle');
     
     const textarea = page.locator('textarea');

@@ -13,6 +13,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  outputDir: 'test-results/artifacts',
   
   // Maximum time one test can run (30 seconds)
   timeout: 30 * 1000,
@@ -36,7 +37,6 @@ export default defineConfig({
   
   // Reporter to use
   reporter: [
-    ['html', { outputFolder: 'test-results/html-report' }],
     ['list'],
     ['json', { outputFile: 'test-results/test-results.json' }]
   ],
