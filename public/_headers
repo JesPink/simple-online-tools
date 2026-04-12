@@ -30,11 +30,13 @@
 
 # Special files - Override Cloudflare managed content
 /robots.txt
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=300, must-revalidate
   Content-Type: text/plain
+  X-Robots-Tag: noai, noimageai
 
 /sitemap.xml
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=300, must-revalidate
+  X-Robots-Tag: noai, noimageai
 
 # Security headers for all pages
 /*
