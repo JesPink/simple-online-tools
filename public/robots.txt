@@ -22,6 +22,7 @@ Disallow: /
 # Default rules for all other crawlers (Google, Bing, etc.)
 User-agent: *
 Allow: /
+Allow: /tool-registry.json
 Disallow: /src/
 Disallow: /node_modules/
-Disallow: /*.json$
+Disallow: /private/

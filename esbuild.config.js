@@ -89,9 +89,25 @@ async function buildSite() {
         .replace(/<!--SEO_TITLE-->/g, `${categoryName} - Free Online Tools`)
         .replace(/<!--SEO_DESCRIPTION-->/g, `Discover our collection of ${categoryName.toLowerCase()} tools. Free, fast, and no sign-up required.`)
         .replace(/<!--SEO_KEYWORDS-->/g, `${categoryName.toLowerCase()}, free tools, online tools, ${category}`)
+        .replace(/<!--SEO_H1_TITLE-->/g, `${categoryName} Tools`)
+        .replace(/<!--SEO_H1_DESCRIPTION-->/g, `Browse free ${categoryName.toLowerCase()} tools with clean URLs and instant access.`)
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/category/${category}/`)
         .replace(/<!--OG_IMAGE-->/g, `https://simpleonlinetool.com/images/${category}-preview.jpg`)
         .replace(/<!--TWITTER_IMAGE-->/g, `https://simpleonlinetool.com/images/${category}-preview.jpg`)
+        .replace('<!--SCHEMA_MARKUP-->', `<script type="application/ld+json">${JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": `${categoryName} Tools - Simple Online Tools`,
+          "url": `https://simpleonlinetool.com/category/${category}/`,
+          "description": `Browse free ${categoryName.toLowerCase()} tools.`,
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "Simple Online Tools",
+            "url": "https://simpleonlinetool.com/"
+          }
+        })}</script>`)
+        .replace('<!--CANONICAL_URL-->', `<link rel="canonical" href="https://simpleonlinetool.com/category/${category}/">`)
+        .replace('<!--STATIC_INDEX_CONTENT-->', generateStaticToolListingHtml(toolRegistry, category))
         .replace('<body>', `<body data-category-slug="${category}">`);
 
       // Create category directory and index.html file for clean URLs
@@ -123,6 +139,8 @@ async function buildSite() {
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/tools/${tool.slug}/`)
         .replace(/<!--OG_IMAGE-->/g, `https://simpleonlinetool.com/images/${tool.slug}-preview.jpg`)
         .replace(/<!--TWITTER_IMAGE-->/g, `https://simpleonlinetool.com/images/${tool.slug}-preview.jpg`)
+        .replace('<!--CANONICAL_URL-->', `<link rel="canonical" href="https://simpleonlinetool.com${tool.seo?.canonicalUrl || `/tools/${tool.slug}/`}">`)
+        .replace('<!--STATIC_INDEX_CONTENT-->', '')
         .replace('<body>', `<body data-tool-slug="${tool.slug}">`);
 
       // Add additional SEO meta tags with clean URLs
@@ -421,9 +439,24 @@ async function buildSite() {
       .replace(/<!--SEO_TITLE-->/g, 'Simple Online Tools - No Sign-up Required')
       .replace(/<!--SEO_DESCRIPTION-->/g, 'Discover our collection of simple online tools for text processing, calculations, conversions, and more. Fast, secure, and no registration needed.')
       .replace(/<!--SEO_KEYWORDS-->/g, 'simple online tools, free tools, text tools, calculators, converters')
+      .replace(/<!--SEO_H1_TITLE-->/g, 'Simple Online Tools')
+      .replace(/<!--SEO_H1_DESCRIPTION-->/g, 'Free browser-based tools for writing, productivity, files, and SEO tasks.')
       .replace(/<!--OG_URL-->/g, 'https://simpleonlinetool.com/')
       .replace(/<!--OG_IMAGE-->/g, 'https://simpleonlinetool.com/images/homepage-preview.jpg')
       .replace(/<!--TWITTER_IMAGE-->/g, 'https://simpleonlinetool.com/images/homepage-preview.jpg')
+      .replace('<!--SCHEMA_MARKUP-->', `<script type="application/ld+json">${JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Simple Online Tools",
+        "url": "https://simpleonlinetool.com/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://simpleonlinetool.com/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      })}</script>`)
+      .replace('<!--CANONICAL_URL-->', '<link rel="canonical" href="https://simpleonlinetool.com/">')
+      .replace('<!--STATIC_INDEX_CONTENT-->', generateStaticToolListingHtml(toolRegistry))
       .replace('<body>', '<body data-tool-slug="">');
 
     fs.writeFileSync(path.join('dist', 'index.html'), homepageHtml);
@@ -500,7 +533,7 @@ function generateSitemap(toolRegistry) {
 `;
   for (const page of staticPages) {
     sitemapContent += `  <url>
-    <loc>${baseUrl}/${page}</loc>
+    <loc>${baseUrl}/${page}/</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -513,7 +546,7 @@ function generateSitemap(toolRegistry) {
   for (const category of categories) {
     sitemapContent += `  <!-- Category: ${category} -->
   <url>
-    <loc>${baseUrl}/category/${category}</loc>
+    <loc>${baseUrl}/category/${category}/</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -527,7 +560,7 @@ function generateSitemap(toolRegistry) {
   for (const tool of toolRegistry) {
     const lastModified = tool.seo?.lastModified || currentDate;
     sitemapContent += `  <url>
-    <loc>${baseUrl}/tools/${tool.slug}</loc>
+    <loc>${baseUrl}/tools/${tool.slug}/</loc>
     <lastmod>${lastModified}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -570,13 +603,41 @@ Disallow: /
 # Default rules for all other crawlers (Google, Bing, etc.)
 User-agent: *
 Allow: /
+Allow: /tool-registry.json
 Disallow: /src/
 Disallow: /node_modules/
-Disallow: /*.json$`;
+Disallow: /private/`;
 
   const robotsPath = path.join('dist', 'robots.txt');
   fs.writeFileSync(robotsPath, robotsContent);
   console.log('✅ Generated SEO-optimized validator-friendly robots.txt');
+}
+
+function generateStaticToolListingHtml(toolRegistry, categorySlug = null) {
+  const filteredTools = categorySlug
+    ? toolRegistry.filter((tool) => tool.primaryCategory === categorySlug)
+    : toolRegistry;
+
+  if (!filteredTools.length) {
+    return '';
+  }
+
+  const sectionTitle = categorySlug
+    ? 'Tools In This Category'
+    : 'Browse All Tools';
+
+  const links = filteredTools
+    .map((tool) => `\n            <li><a href="/tools/${tool.slug}/">${tool.title}</a></li>`)
+    .join('');
+
+  return `
+        <section class="container" aria-label="Tool directory">
+          <div class="seo-content">
+            <h2>${sectionTitle}</h2>
+            <ul>${links}
+            </ul>
+          </div>
+        </section>`;
 }
 
 function copyDirectory(src, dest) {

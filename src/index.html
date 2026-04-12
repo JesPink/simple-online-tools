@@ -32,6 +32,9 @@
     <meta property="og:url" content="<!--OG_URL-->">
     <meta property="og:image" content="<!--OG_IMAGE-->">
     <meta property="og:site_name" content="Simple Online Tools">
+
+    <!-- Canonical URL -->
+    <!--CANONICAL_URL-->
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
@@ -161,6 +164,10 @@
     <!-- Main Content Area -->
     <main id="tool-container">
         <div class="container">
+            <div class="tool-header">
+                <h1><!--SEO_H1_TITLE--></h1>
+                <p class="tool-description"><!--SEO_H1_DESCRIPTION--></p>
+            </div>
             <div class="tool-content">
                 <!-- CRITICAL CLS FIX: Reserve exact space for dynamic content -->
                 <div id="loading" class="loading-indicator">
@@ -169,6 +176,9 @@
             </div>
         </div>
     </main>
+
+    <!-- Crawlable static fallback for homepage/category listing pages -->
+    <!--STATIC_INDEX_CONTENT-->
     
     <!-- SEO CRITICAL: Static content visible for search engines and users -->
     <div id="static-seo-content" class="seo-content">
