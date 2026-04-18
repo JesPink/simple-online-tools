@@ -623,15 +623,24 @@ function generateStaticToolListingHtml(toolRegistry, categorySlug = null) {
     ? 'Tools In This Category'
     : 'Browse All Tools';
 
-  const links = filteredTools
-    .map((tool) => `\n            <li><a href="/tools/${tool.slug}/">${tool.title}</a></li>`)
+  const cards = filteredTools
+    .map((tool) => `
+            <li>
+              <a href="/tools/${tool.slug}/">
+                <strong>${tool.title}</strong>
+              </a>
+              ${tool.description ? `<p>${tool.description}</p>` : ''}
+            </li>`)
     .join('');
+
+  const intro = categorySlug ? '' : `
+            <p>Simple Online Tools offers free, browser-based utilities for writing, productivity, file processing, and SEO tasks. No sign-up required. All tools run directly in your browser for fast results.</p>`;
 
   return `
         <section class="container" aria-label="Tool directory">
           <div class="seo-content">
-            <h2>${sectionTitle}</h2>
-            <ul>${links}
+            <h2>${sectionTitle}</h2>${intro}
+            <ul>${cards}
             </ul>
           </div>
         </section>`;
