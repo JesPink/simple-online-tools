@@ -139,16 +139,12 @@ async function buildSite() {
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/tools/${tool.slug}/`)
         .replace(/<!--OG_IMAGE-->/g, `https://simpleonlinetool.com/images/${tool.slug}-preview.jpg`)
         .replace(/<!--TWITTER_IMAGE-->/g, `https://simpleonlinetool.com/images/${tool.slug}-preview.jpg`)
-        .replace('<!--CANONICAL_URL-->', `<link rel="canonical" href="https://simpleonlinetool.com${tool.seo?.canonicalUrl || `/tools/${tool.slug}/`}">`)
+        .replace('<!--CANONICAL_URL-->', (() => { const raw = tool.seo?.canonicalUrl || `/tools/${tool.slug}/`; const url = raw.endsWith('/') ? raw : raw + '/'; return `<link rel="canonical" href="https://simpleonlinetool.com${url}">`; })())
         .replace('<!--STATIC_INDEX_CONTENT-->', '')
         .replace('<body>', `<body data-tool-slug="${tool.slug}">`);
 
-      // Add additional SEO meta tags with clean URLs
+      // Add additional SEO meta tags
       let additionalMeta = '';
-      if (tool.seo?.canonicalUrl) {
-        // Use the clean canonical URL directly
-        additionalMeta += `    <link rel="canonical" href="https://simpleonlinetool.com${tool.seo.canonicalUrl}">\n`;
-      }
       if (tool.seo?.lastModified) {
         additionalMeta += `    <meta name="last-modified" content="${tool.seo.lastModified}">\n`;
       }
