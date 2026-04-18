@@ -604,6 +604,7 @@ Disallow: /
 User-agent: *
 Allow: /
 Allow: /tool-registry.json
+Allow: /*.json$
 Disallow: /src/
 Disallow: /node_modules/
 Disallow: /private/`;

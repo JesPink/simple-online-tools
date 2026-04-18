@@ -53,7 +53,7 @@ export function createRelatedToolsSection(relatedTools) {
   relatedTools.forEach(tool => {
     toolsHTML += `
       <div class="related-tool">
-        <h3><a href="/tools/${tool.slug}.html">${tool.name}</a></h3>
+        <h3><a href="/tools/${tool.slug}/">${tool.name}</a></h3>
         <p>${tool.description}</p>
       </div>
     `;
@@ -80,13 +80,13 @@ export function createBreadcrumbStructuredData(toolName, categoryName, categoryS
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://yoursite.com/"
+        "item": "https://simpleonlinetool.com/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": categoryName,
-        "item": `https://yoursite.com/category/${categorySlug}`
+        "item": `https://simpleonlinetool.com/category/${categorySlug}/`
       },
       {
         "@type": "ListItem",
