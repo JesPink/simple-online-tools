@@ -49,7 +49,7 @@ export function AppShell({ children }: AppShellProps) {
 
     return (
         <div className="min-h-screen text-slate-100">
-            <aside className="fixed inset-y-0 left-0 z-20 w-20 border-r border-white/8 bg-slate-950/80 px-3 py-6 backdrop-blur-xl lg:w-72 lg:px-5">
+            <aside className="fixed inset-y-0 left-0 z-20 hidden w-72 border-r border-white/8 bg-slate-950/80 px-5 py-6 backdrop-blur-xl lg:block">
                 <div className="flex h-full flex-col gap-8">
                     <Link href="/" className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/4 px-3 py-3">
                         <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-400/14 text-cyan-200 shadow-[0_0_40px_-18px_rgba(34,211,238,0.7)]">
@@ -90,15 +90,17 @@ export function AppShell({ children }: AppShellProps) {
                 </div>
             </aside>
 
-            <div className="pl-20 lg:pl-72">
+            <div className="pb-24 lg:pb-0 lg:pl-72">
                 <header className="sticky top-0 z-10 border-b border-white/8 bg-slate-950/65 backdrop-blur-xl">
-                    <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 md:px-8">
-                        <div>
-                            <p className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">Follower workspace</p>
-                            <h1 className="mt-1 text-xl font-semibold tracking-tight text-white">Discover, configure, and monitor copied traders</h1>
+                    <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 md:px-8 md:py-4">
+                        <div className="min-w-0">
+                            <p className="text-[10px] font-semibold tracking-[0.18em] text-slate-500 uppercase md:text-xs">Follower workspace</p>
+                            <h1 className="mt-1 line-clamp-2 text-sm font-semibold tracking-tight text-white sm:text-base md:text-xl">
+                                Discover, configure, and monitor copied traders
+                            </h1>
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex shrink-0 items-center gap-2 md:gap-3">
                             <div className="hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300 md:flex md:items-center md:gap-2">
                                 <Wallet className="size-4 text-cyan-200" />
                                 <span>{formatCompactCurrency(walletBalance)} USDC</span>
@@ -112,7 +114,7 @@ export function AppShell({ children }: AppShellProps) {
                                         setIsNotificationOpen((current) => !current);
                                         markNotificationsRead();
                                     }}
-                                    className="relative rounded-full border border-white/10 bg-white/5 p-3 text-slate-200 transition hover:bg-white/10"
+                                    className="relative rounded-full border border-white/10 bg-white/5 p-2.5 text-slate-200 transition hover:bg-white/10 md:p-3"
                                 >
                                     <Bell className="size-4" />
                                     {unreadCount > 0 ? (
@@ -121,7 +123,7 @@ export function AppShell({ children }: AppShellProps) {
                                 </button>
 
                                 {isNotificationOpen ? (
-                                    <div className="absolute right-0 top-14 w-[22rem] rounded-3xl border border-white/10 bg-slate-950/96 p-3 shadow-2xl shadow-black/50">
+                                    <div className="absolute right-0 top-12 z-30 w-[calc(100vw-2rem)] max-w-[22rem] rounded-3xl border border-white/10 bg-slate-950/96 p-3 shadow-2xl shadow-black/50 md:top-14">
                                         <div className="flex items-center justify-between px-2 py-2">
                                             <p className="text-sm font-semibold text-white">Recent trade copies</p>
                                             <span className="text-xs text-slate-400">{notifications.length} tracked</span>
@@ -170,7 +172,7 @@ export function AppShell({ children }: AppShellProps) {
                                     openWalletOnboarding();
                                 }}
                                 className={[
-                                    "rounded-full px-4 py-2 text-sm font-semibold transition",
+                                    "rounded-full px-3 py-2 text-xs font-semibold transition md:px-4 md:text-sm",
                                     isConnected
                                         ? "border border-emerald-300/20 bg-emerald-400/12 text-emerald-100 hover:bg-emerald-300/18"
                                         : "border border-cyan-300/20 bg-cyan-400/14 text-cyan-100 hover:bg-cyan-300/18",
@@ -184,6 +186,29 @@ export function AppShell({ children }: AppShellProps) {
 
                 <main className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-8 md:px-8">{children}</main>
             </div>
+
+            <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-slate-950/95 px-3 py-2 backdrop-blur-lg lg:hidden">
+                <div className="grid grid-cols-4 gap-2">
+                    {primaryNavigation.map((item) => {
+                        const Icon = iconMap[item.icon];
+                        const active = pathname === item.href;
+
+                        return (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className={[
+                                    "flex flex-col items-center justify-center rounded-xl px-2 py-2 text-[11px] font-medium transition",
+                                    active ? "bg-cyan-400/18 text-cyan-100" : "text-slate-400 hover:bg-white/6 hover:text-white",
+                                ].join(" ")}
+                            >
+                                <Icon className="mb-1 size-4" />
+                                <span className="truncate">{item.label.replace("My ", "")}</span>
+                            </Link>
+                        );
+                    })}
+                </div>
+            </nav>
 
             <CopyConfigModal />
         </div>

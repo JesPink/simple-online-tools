@@ -55,7 +55,7 @@ export function TradeHistoryView() {
                 <span className="pill-chip">Follower-visible mock log</span>
             </div>
 
-            <div className="mt-6 overflow-hidden rounded-3xl border border-white/8">
+            <div className="mt-6 hidden overflow-hidden rounded-3xl border border-white/8 md:block">
                 <table className="min-w-full divide-y divide-white/8 text-left text-sm">
                     <thead className="bg-white/4 text-slate-400">
                         <tr>
@@ -80,6 +80,26 @@ export function TradeHistoryView() {
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            <div className="mt-5 grid gap-3 md:hidden">
+                {filteredTrades.slice(0, 20).map((trade) => (
+                    <article key={trade.id} className="rounded-3xl border border-white/8 bg-white/4 p-4 text-sm">
+                        <div className="flex items-start justify-between gap-3">
+                            <div>
+                                <p className="font-medium text-white">{trade.market}</p>
+                                <p className="mt-1 text-xs text-slate-500">{trade.traderName}</p>
+                            </div>
+                            <span className={trade.side === "YES" ? "text-emerald-200" : "text-rose-200"}>{trade.side}</span>
+                        </div>
+                        <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-slate-400">
+                            <span>Status: {trade.status}</span>
+                            <span>Entry: {trade.entryPrice.toFixed(2)}</span>
+                            <span>Exit: {trade.exitPrice.toFixed(2)}</span>
+                            <span className="text-emerald-200">P&L: {formatCompactCurrency(trade.pnl)} USDC</span>
+                        </div>
+                    </article>
+                ))}
             </div>
         </section>
     );

@@ -135,7 +135,7 @@ export function LeaderboardView() {
                             <Briefcase className="size-3.5" />
                             PolyStrategies
                         </div>
-                        <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-white md:text-6xl">
+                        <h1 className="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-6xl">
                             Copy top strategies on <span className="text-cyan-300">Polymarket</span>
                         </h1>
                         <p className="max-w-2xl text-base leading-8 text-slate-300">
@@ -173,7 +173,7 @@ export function LeaderboardView() {
             </section>
 
             <section className="surface-panel p-4 md:p-5">
-                <div className="flex flex-wrap gap-2">
+                <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     {categoryTabs.map((tab) => (
                         <button
                             key={tab.label}
@@ -192,7 +192,7 @@ export function LeaderboardView() {
                     ))}
                 </div>
 
-                <div className="mt-4 grid gap-3 lg:grid-cols-[1.2fr_0.65fr_0.65fr_auto]">
+                <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-[1.2fr_0.65fr_0.65fr_auto]">
                     <label className="flex h-12 items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/50 px-4 text-sm text-slate-300">
                         <Search className="size-4 text-slate-500" />
                         <input
