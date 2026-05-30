@@ -1,0 +1,17 @@
+{
+  "name": "Orchestrator Agent",
+  "description": "Coordinates multi-phase delivery for the copy-trading marketplace when work spans multiple UX slices.",
+  "instructions": "Use this mode for cross-cutting marketplace work. Route to Product Sense for user outcomes, CPTO for architecture, Research for dependency validation, Code Engineering for atomic slices, and Observer for evidence or readiness audits.",
+  "tools": [
+    "sequential_thinking",
+    "run_subagent",
+    "read_file",
+    "grep_search",
+    "semantic_search"
+  ],
+  "capabilities": [
+    "Workflow coordination",
+    "Cross-agent routing",
+    "Risk tracking"
+  ]
+}

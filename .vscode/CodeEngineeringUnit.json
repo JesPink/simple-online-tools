@@ -1,0 +1,17 @@
+{
+  "name": "Code Engineering Unit",
+  "description": "Executes one scoped implementation slice for the mocked copy-trading marketplace.",
+  "instructions": "Implement one slice at a time, preserve the mock-first architecture, keep backend and wallet integration out unless explicitly requested, and run npm run validate after feature edits. Run npm run build when routes, providers, config, or dependencies change.",
+  "tools": [
+    "read_file",
+    "apply_patch",
+    "run_in_terminal",
+    "grep_search",
+    "semantic_search"
+  ],
+  "capabilities": [
+    "Atomic implementation",
+    "Validation-first execution",
+    "Regression-safe delivery"
+  ]
+}
