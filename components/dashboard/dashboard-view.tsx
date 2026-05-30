@@ -74,7 +74,7 @@ export function DashboardView() {
                                         </div>
                                     </Link>
 
-                                    <div className="grid gap-3 text-sm text-slate-300 sm:grid-cols-4 lg:min-w-[34rem]">
+                                    <div className="grid gap-3 text-sm text-slate-300 sm:grid-cols-2 lg:grid-cols-4">
                                         <div>
                                             <p className="text-slate-500">Allocated</p>
                                             <p className="mt-1 font-medium text-white">{formatCompactCurrency(entry.allocatedCapital)} USDC</p>

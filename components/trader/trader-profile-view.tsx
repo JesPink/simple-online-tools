@@ -47,12 +47,12 @@ export function TraderProfileView({ traderId }: TraderProfileViewProps) {
                         <TraderAvatar name={data.trader.name} size="lg" />
                         <div>
                             <span className="pill-chip">Trader profile</span>
-                            <h1 className="mt-4 text-4xl font-semibold tracking-tight text-white">{data.trader.name}</h1>
+                            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">{data.trader.name}</h1>
                             <p className="mt-2 text-sm text-slate-400">{truncateWallet(data.trader.walletAddress)} • {data.trader.strategy}</p>
                         </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-2">
+                    <div className="grid w-full gap-2 sm:flex sm:w-auto sm:flex-wrap">
                         <button
                             type="button"
                             onClick={() => openCopyConfigurator(traderId, "profile")}
@@ -91,7 +91,7 @@ export function TraderProfileView({ traderId }: TraderProfileViewProps) {
                             ))}
                         </div>
                     </div>
-                    <div className="mt-6 h-80">
+                    <div className="mt-6 h-64 md:h-80">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={data.equityCurve}>
                                 <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
