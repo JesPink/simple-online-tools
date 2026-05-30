@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[52744,["/simple-online-tools/_next/static/chunks/1537~stf_-l0q.js","/simple-online-tools/_next/static/chunks/10gep5wgdbzp_.js","/simple-online-tools/_next/static/chunks/09gsdwmx1fbj0.js","/simple-online-tools/_next/static/chunks/0n4z.7yu76je-.js","/simple-online-tools/_next/static/chunks/0.~lvi49tweht.js","/simple-online-tools/_next/static/chunks/04k~~669t5t.6.js","/simple-online-tools/_next/static/chunks/09ch0s~rnubkd.js"],"TraderProfileView"]
+3:I[97367,["/simple-online-tools/_next/static/chunks/1537~stf_-l0q.js","/simple-online-tools/_next/static/chunks/10gep5wgdbzp_.js","/simple-online-tools/_next/static/chunks/09gsdwmx1fbj0.js","/simple-online-tools/_next/static/chunks/0n4z.7yu76je-.js","/simple-online-tools/_next/static/chunks/0.~lvi49tweht.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"traderId":"trader-58"}],[["$","script","script-0",{"src":"/simple-online-tools/_next/static/chunks/04k~~669t5t.6.js","async":true}],["$","script","script-1",{"src":"/simple-online-tools/_next/static/chunks/09ch0s~rnubkd.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"ch4xa4k9NTHZWGuaCotF0"}
+5:null
