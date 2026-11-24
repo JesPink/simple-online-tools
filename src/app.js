@@ -321,7 +321,7 @@ class ToolsApp {
       homepageHTML += `
         <div class="tool-category">
           <h2 class="category-title">
-            <a href="/category/${category}">${this.formatCategoryName(category)}</a>
+            <a href="/category/${category}/">${this.formatCategoryName(category)}</a>
           </h2>
           <div class="category-tools">
       `;
@@ -432,7 +432,7 @@ class ToolsApp {
       <nav class="breadcrumbs">
         <a href="/">Home</a>
         <span class="breadcrumb-separator">›</span>
-        <a href="/category/${toolConfig.primaryCategory}">${categoryName}</a>
+        <a href="/category/${toolConfig.primaryCategory}/">${categoryName}</a>
         <span class="breadcrumb-separator">›</span>
         <span class="breadcrumb-current">${toolConfig.title}</span>
       </nav>
