@@ -25,7 +25,7 @@ for (const file of htmlFiles) {
   if (/<meta\b[^>]*(?:property=["']og:image["']|name=["']twitter:image["'])[^>]*>/i.test(html) ||
       /https?:\/\/simpleonlinetool\.com\/images\/[^"'\s>]+/i.test(html) ||
       /summary_large_image/i.test(html)) {
-    errors.push(\`\${relative}: generated HTML contains an unresolved social-image reference\`);
+    errors.push(`${relative}: generated HTML contains an unresolved social-image reference`);
   }
 }
 const sitemapPath = path.join(root, 'sitemap.xml');
@@ -37,14 +37,14 @@ else {
   for (const location of locations) {
     const url = new URL(location);
     const pathname = decodeURIComponent(url.pathname);
-    if (pathname !== '/' && !pathname.endsWith('/')) { errors.push(\`Noncanonical sitemap URL: \${location}\`); continue; }
-    const relative = pathname === '/' ? 'index.html' : \`\${pathname.slice(1)}index.html\`;
-    if (!exists(relative)) errors.push(\`Sitemap URL has no generated page: \${location}\`);
+    if (pathname !== '/' && !pathname.endsWith('/')) { errors.push(`Noncanonical sitemap URL: ${location}`); continue; }
+    const relative = pathname === '/' ? 'index.html' : `${pathname.slice(1)}index.html`;
+    if (!exists(relative)) errors.push(`Sitemap URL has no generated page: ${location}`);
   }
 }
 if (errors.length) {
   console.error('❌ Generated-output validation failed:');
-  for (const error of errors) console.error(\`  - \${error}\`);
+  for (const error of errors) console.error(`  - ${error}`);
   process.exit(1);
 }
-console.log(\`✅ Generated-output validation passed (\${htmlFiles.length} HTML pages, 404 page present, sitemap destinations exist).\`);
+console.log(`✅ Generated-output validation passed (${htmlFiles.length} HTML pages, 404 page present, sitemap destinations exist).`);
