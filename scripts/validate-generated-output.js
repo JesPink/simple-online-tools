@@ -34,10 +34,10 @@ if (fs.existsSync(registryPath)) {
       continue;
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
-    const titleMatch = html.match(/<title>([\\s\\S]*?)<\\/title>/i);
-    const descriptionMatch = html.match(/<meta\\s+name=["']description["']\\s+content=["']([^"']*)["']/i);
-    const h2Texts = [...html.matchAll(/<h2\\b[^>]*>([\\s\\S]*?)<\\/h2>/gi)]
-      .map(match => match[1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/\\s+/g, ' ').trim());
+    const titleMatch = html.match(/<title>([\s\S]*?)<\/title>/i);
+    const descriptionMatch = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i);
+    const h2Texts = [...html.matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/gi)]
+      .map(match => match[1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim());
     if (category === 'productivity-and-business' && (!titleMatch || titleMatch[1].length > 60)) {
       errors.push(`${relative}: category title is missing or exceeds 60 characters`);
     }
