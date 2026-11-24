@@ -42,6 +42,9 @@ for (const relativePath of files) {
   const hrefs = /href=["'](\/[^"'?#]*)["']/g;
   for (const match of source.matchAll(hrefs)) {
     const href = match[1];
+    // Template-literal routes are validated separately below; they are not
+    // concrete slugs and must not be compared against the route registry.
+    if (href.includes('${')) continue;
     if (routeWithoutSlash.test(href)) {
       errors.push(`${relativePath}: internal route "${href}" is missing its trailing slash`);
       continue;
@@ -73,9 +76,15 @@ for (const expression of [
 
 const header = fs.readFileSync(path.join(root, 'src/components/header.js'), 'utf8');
 const footer = fs.readFileSync(path.join(root, 'src/components/footer.js'), 'utf8');
-for (const slug of categories) {
-  if (!header.includes(`/category/${slug}/`)) errors.push(`header component missing category route: ${slug}`);
-  if (!footer.includes(`/category/${slug}/`)) errors.push(`footer component missing category route: ${slug}`);
+for (const [name, source] of [['header', header], ['footer', footer]]) {
+  if (!source.includes('href="/category/${slug}/"')) {
+    errors.push(`${name} component is missing the canonical dynamic category-link template`);
+  }
+  for (const slug of categories) {
+    if (!source.includes(`['${slug}',`)) {
+      errors.push(`${name} component is missing category definition: ${slug}`);
+    }
+  }
 }
 for (const page of staticPages) {
   if (!footer.includes(`href="/${page}/"`)) errors.push(`footer component missing canonical page route: ${page}`);
