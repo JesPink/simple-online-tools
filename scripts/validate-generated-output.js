@@ -71,6 +71,22 @@ if (fs.existsSync(registryPath)) {
     }
   }
 }
+// Guard the three tool-page descriptions shortened after the Screaming Frog audit.
+if (fs.existsSync(registryPath)) {
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  for (const slug of ['case-converter', 'pdf-metadata-editor', 'recipe-scaler']) {
+    const relative = `tools/${slug}/index.html`;
+    if (!exists(relative)) {
+      errors.push(`Missing generated tool page: ${relative}`);
+      continue;
+    }
+    const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    const descriptionMatch = html.match(/<meta\\s+name=["']description["']\\s+content=["']([^"']*)["']/i);
+    if (!descriptionMatch || descriptionMatch[1].length > 155) {
+      errors.push(`${relative}: meta description is missing or exceeds 155 characters`);
+    }
+  }
+}
 const htmlFiles = walk(root).filter(file => file.endsWith('.html'));
 for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');
