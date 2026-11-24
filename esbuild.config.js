@@ -597,7 +597,8 @@ Allow: /tool-registry.json
 Allow: /*.json$
 Disallow: /src/
 Disallow: /node_modules/
-Disallow: /private/`;
+Disallow: /private/
+Disallow: /cdn-cgi/`;
 
   const robotsPath = path.join('dist', 'robots.txt');
   fs.writeFileSync(robotsPath, robotsContent);
