@@ -37,7 +37,15 @@ else {
     try {
       const content = getCategorySEO(category);
       const categoryTools = registry.filter(tool => tool.primaryCategory === category);
+      if (content.seoTitle.length > 60) errors.push(`Category ${category} title is longer than 60 characters (${content.seoTitle.length})`);
+      if (content.metaDescription.length > 155) errors.push(`Category ${category} meta description is longer than 155 characters (${content.metaDescription.length})`);
+      if (!content.whatYouCanDoHeading || !content.toolChoiceHeading) errors.push(`Category ${category} is missing descriptive section headings`);
+      if (content.whatYouCanDoHeading === content.toolChoiceHeading) errors.push(`Category ${category} has duplicate section headings`);
+
       for (const tool of categoryTools) {
+        if (tool.seo?.metaDescription && tool.seo.metaDescription.length > 155) {
+          errors.push(`Tool ${tool.slug} meta description is longer than 155 characters (${tool.seo.metaDescription.length})`);
+        }
         if (!content.tools[tool.slug]) errors.push(`Category ${category} is missing a unique description for ${tool.slug}`);
       }
       if (content.related.includes(category)) errors.push(`Category ${category} links to itself`);

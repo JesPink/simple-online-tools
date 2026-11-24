@@ -3,6 +3,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { getCategorySEO } from '../src/category-content.js';
 
 const root = path.resolve('dist');
 const errors = [];
@@ -34,6 +35,16 @@ if (fs.existsSync(registryPath)) {
       continue;
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    const categoryContent = getCategorySEO(category);
+    if (!html.includes(`<title>${categoryContent.seoTitle}</title>`)) {
+      errors.push(`${relative}: generated title does not match category SEO title`);
+    }
+    if (!html.includes(`name="description" content="${categoryContent.metaDescription}"`)) {
+      errors.push(`${relative}: generated meta description does not match category SEO description`);
+    }
+    for (const heading of [categoryContent.whatYouCanDoHeading, categoryContent.toolChoiceHeading]) {
+      if (!html.includes(`<h2>${heading}</h2>`)) errors.push(`${relative}: missing category-specific H2: ${heading}`);
+    }
     const contentMatch = html.match(/<section\b[^>]*class="[^"]*\bcategory-decision-content\b[^"]*"[^>]*>([\s\S]*?)<\/section>/i);
     if (!contentMatch) {
       errors.push(`${relative}: missing category decision content section`);
