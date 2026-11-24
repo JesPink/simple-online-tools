@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run build:watch\" \"npm run serve\"",
-    "build": "npm run validate && node esbuild.config.js",
+    "build": "npm run validate && node esbuild.config.js && npm run validate:output",
     "build:watch": "npm run validate && node esbuild.config.js --watch",
     "validate": "node scripts/validate-foundation.js && node scripts/validate-internal-links.js && node scripts/validate-seo-routing.js",
     "validate:tool": "node scripts/validate-foundation.js",
