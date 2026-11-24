@@ -94,7 +94,7 @@ async function buildSite() {
         "itemListElement": categoryTools.map((tool, index) => ({
           "@type": "ListItem",
           "position": index + 1,
-          "name": tool.title.replace(/\\s*\\|.*$/, ''),
+          "name": tool.title.split(' | ')[0],
           "url": `https://simpleonlinetool.com/tools/${tool.slug}/`
         }))
       };
@@ -114,7 +114,7 @@ async function buildSite() {
       const categoryHtml = baseTemplateHtml
         .replace(/<!--SEO_TITLE-->/g, categoryContent.seoTitle)
         .replace(/<!--SEO_DESCRIPTION-->/g, categoryContent.metaDescription)
-        .replace(/<!--SEO_KEYWORDS-->/g, `${categoryName.toLowerCase()}, ${categoryTools.map(tool => tool.title.replace(/\\s*\\|.*$/, '').toLowerCase()).join(', ')}, free online tools`)
+        .replace(/<!--SEO_KEYWORDS-->/g, `${categoryName.toLowerCase()}, ${categoryTools.map(tool => tool.title.split(' | ')[0].toLowerCase()).join(', ')}, free online tools`)
         .replace(/<!--SEO_H1_TITLE-->/g, categoryContent.heading)
         .replace(/<!--SEO_H1_DESCRIPTION-->/g, categoryContent.summary)
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/category/${category}/`)
