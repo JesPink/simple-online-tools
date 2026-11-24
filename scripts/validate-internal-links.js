@@ -64,6 +64,37 @@ for (const relativePath of files) {
   }
 }
 
+// Static pages must have one descriptive page H1; the site logo is branding, not a heading.
+const staticPageHeadings = {
+  about: 'About Simple Online Tools',
+  contact: 'Contact Us',
+  privacy: 'Privacy Policy',
+  terms: 'Terms of Service'
+};
+for (const [page, expectedHeading] of Object.entries(staticPageHeadings)) {
+  const pagePath = path.join(root, 'src', `${page}.html`);
+  const html = fs.readFileSync(pagePath, 'utf8');
+  const headings = [...html.matchAll(/<h1\\b[^>]*>([\\s\\S]*?)<\\/h1>/gi)];
+  const headingText = headings[0]?.[1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim();
+  if (headings.length !== 1 || headingText !== expectedHeading) {
+    errors.push(`src/${page}.html: expected exactly one H1 ("${expectedHeading}"), found ${headings.length} (${headingText || 'none'})`);
+  }
+  if (!html.includes('<div class="brand-logo">Simple Online Tools</div>')) {
+    errors.push(`src/${page}.html: site logo must use the non-heading brand-logo element`);
+  }
+  for (const linkedPage of staticPages) {
+    if (!html.includes(`href="/${linkedPage}/"`)) {
+      errors.push(`src/${page}.html: missing direct canonical footer link to /${linkedPage}/`);
+    }
+  }
+}
+const homepage = fs.readFileSync(path.join(root, 'src/index.html'), 'utf8');
+for (const page of staticPages) {
+  if (!homepage.includes(`href="/${page}/"`)) {
+    errors.push(`src/index.html: missing direct canonical internal link to /${page}/`);
+  }
+}
+
 const app = fs.readFileSync(path.join(root, 'src/app.js'), 'utf8');
 for (const expression of [
   'href="/category/${category}/"',
