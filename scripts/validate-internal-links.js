@@ -1,7 +1,6 @@
 /**
- * Prevent regressions in canonical internal URLs.
- * Checks static HTML, navigation components, dynamic category templates,
- * and preservation of Cloudflare's legacy 301 redirects.
+ * Prevent regressions in canonical internal URLs and stale route destinations.
+ * Runs as part of npm run validate and npm run build.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -26,7 +25,11 @@ const categories = [
   'utilities-and-conversion'
 ];
 const staticPages = ['about', 'privacy', 'terms', 'contact'];
-const canonicalRoute = /^\/(?:category\/[^/]+|tools\/[^/]+|about|privacy|terms|contact)$/;
+const routeWithoutSlash = /^\/(?:category\/[^/]+|tools\/[^/]+|about|privacy|terms|contact)$/;
+const registryPath = path.join(root, 'src/tool-registry.json');
+const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+const toolSlugs = new Set(registry.map(tool => tool.slug));
+const categorySlugs = new Set(categories);
 const errors = [];
 
 for (const relativePath of files) {
@@ -38,8 +41,22 @@ for (const relativePath of files) {
   const source = fs.readFileSync(absolutePath, 'utf8');
   const hrefs = /href=["'](\/[^"'?#]*)["']/g;
   for (const match of source.matchAll(hrefs)) {
-    if (canonicalRoute.test(match[1])) {
-      errors.push(`${relativePath}: internal route "${match[1]}" is missing its trailing slash`);
+    const href = match[1];
+    if (routeWithoutSlash.test(href)) {
+      errors.push(`${relativePath}: internal route "${href}" is missing its trailing slash`);
+      continue;
+    }
+    const categoryMatch = href.match(/^\/category\/([^/]+)\/$/);
+    if (categoryMatch && !categorySlugs.has(categoryMatch[1])) {
+      errors.push(`${relativePath}: unknown category route "${href}"`);
+    }
+    const toolMatch = href.match(/^\/tools\/([^/]+)\/$/);
+    if (toolMatch && !toolMatch[1].includes('${') && !toolSlugs.has(toolMatch[1])) {
+      errors.push(`${relativePath}: unknown tool route "${href}"`);
+    }
+    const pageMatch = href.match(/^\/(about|privacy|terms|contact)\/$/);
+    if (href.startsWith('/') && /^(?:\/about|\/privacy|\/terms|\/contact)\/?$/.test(href) && !pageMatch) {
+      errors.push(`${relativePath}: invalid static page route "${href}"`);
     }
   }
 }
@@ -81,4 +98,4 @@ if (errors.length) {
   for (const error of errors) console.error(`  - ${error}`);
   process.exit(1);
 }
-console.log(`✅ Canonical internal-link validation passed (${files.length} source files, ${categories.length} categories, ${staticPages.length} static routes, legacy 301s intact).`);
+console.log(`✅ Canonical internal-link validation passed (${files.length} source files, ${categories.length} categories, ${registry.length} registered tools, ${staticPages.length} static routes, legacy 301s intact).`);
