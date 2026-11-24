@@ -6,7 +6,13 @@
     "keywords": "unique words counter, paragraph counter, website word count checker, word counter, character counter, unique word counter, text analysis",
     "category": "text-tools",
     "primaryCategory": "text-and-writing",
-    "tags": ["analyze", "text", "writing", "seo", "counter"],
+    "tags": [
+      "analyze",
+      "text",
+      "writing",
+      "seo",
+      "counter"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -29,7 +35,7 @@
       },
       {
         "slug": "text-formatter",
-        "name": "Text Formatter", 
+        "name": "Text Formatter",
         "description": "Clean up and format your text with our advanced text processing tools."
       }
     ],
@@ -50,7 +56,13 @@
     "keywords": "case converter, uppercase converter, lowercase converter, convert capital letters to lowercase, change text to uppercase, text case tool",
     "category": "text-tools",
     "primaryCategory": "text-and-writing",
-    "tags": ["transform", "text", "converter", "format", "coding"],
+    "tags": [
+      "transform",
+      "text",
+      "converter",
+      "format",
+      "coding"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -75,7 +87,7 @@
     "seo": {
       "focusKeyword": "case converter",
       "metaTitle": "Case Converter | Uppercase, Lowercase & Text Case Tool",
-      "metaDescription": "Free online case converter tool. Change text to uppercase, lowercase, sentence case, title case, and more instantly. Perfect for coding, writing, and formatting.",
+      "metaDescription": "Convert text to uppercase, lowercase, sentence case, or title case online. Format writing, headings, and code quickly with this free case converter.",
       "canonicalUrl": "/tools/case-converter/",
       "lastModified": "2026-04-18",
       "author": "Simple Online Tools",
@@ -89,7 +101,13 @@
     "keywords": "invoice generator, online invoice generator, free invoice, invoice maker, invoice builder, create invoice, invoice template",
     "category": "productivity-tools",
     "primaryCategory": "productivity-and-business",
-    "tags": ["generate", "business", "finance", "pdf", "invoice"],
+    "tags": [
+      "generate",
+      "business",
+      "finance",
+      "pdf",
+      "invoice"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -138,7 +156,13 @@
     "keywords": "passive voice detector, passive sentence detector, free grammar checker, writing improver, passive to active converter",
     "category": "text-tools",
     "primaryCategory": "text-and-writing",
-    "tags": ["analyze", "grammar", "writing", "improve", "detector"],
+    "tags": [
+      "analyze",
+      "grammar",
+      "writing",
+      "improve",
+      "detector"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -172,7 +196,13 @@
     "keywords": "value proposition generator, value proposition maker, value statement generator, unique value proposition generator, business messaging, elevator pitch",
     "category": "productivity-tools",
     "primaryCategory": "productivity-and-business",
-    "tags": ["generate", "business", "marketing", "messaging", "strategy"],
+    "tags": [
+      "generate",
+      "business",
+      "marketing",
+      "messaging",
+      "strategy"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -226,7 +256,13 @@
     "keywords": "meeting cost calculator, meeting cost counter, meeting time cost calculator, meeting ROI calculator, business meeting cost",
     "category": "productivity-tools",
     "primaryCategory": "productivity-and-business",
-    "tags": ["calculate", "business", "meeting", "productivity", "roi"],
+    "tags": [
+      "calculate",
+      "business",
+      "meeting",
+      "productivity",
+      "roi"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -280,7 +316,13 @@
     "keywords": "PDF metadata editor, pdf metadata viewer, change metadata pdf, remove pdf metadata, pdf privacy tool, document metadata viewer",
     "category": "productivity-tools",
     "primaryCategory": "files-and-docs",
-    "tags": ["edit", "pdf", "metadata", "privacy", "documents"],
+    "tags": [
+      "edit",
+      "pdf",
+      "metadata",
+      "privacy",
+      "documents"
+    ],
     "complexity": "complex",
     "privacy": "client-side",
     "type": "complex",
@@ -308,7 +350,7 @@
     "seo": {
       "focusKeyword": "PDF metadata editor",
       "metaTitle": "PDF Metadata Editor | View & Edit PDF Properties",
-      "metaDescription": "View, edit, and remove PDF metadata online. Secure client-side processing protects privacy while managing document properties, author info, and hidden data.",
+      "metaDescription": "View, edit, or remove PDF metadata such as title and author. Check document properties in your browser before sharing a file.",
       "canonicalUrl": "/tools/pdf-metadata-editor/",
       "lastModified": "2026-04-18",
       "author": "Simple Online Tools",
@@ -334,7 +376,13 @@
     "keywords": "meta description generator, meta description creator, seo description generator, meta description maker, meta description writer, free meta description generator",
     "category": "text-tools",
     "primaryCategory": "seo-and-marketing",
-    "tags": ["generate", "seo", "marketing", "meta", "description"],
+    "tags": [
+      "generate",
+      "seo",
+      "marketing",
+      "meta",
+      "description"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -388,7 +436,13 @@
     "keywords": "recipe scaler, recipe scaler online, scaling down recipes, scale up recipe, ingredient converter, servings calculator, measurement converter",
     "category": "productivity-tools",
     "primaryCategory": "utilities-and-conversion",
-    "tags": ["convert", "recipe", "cooking", "scale", "kitchen"],
+    "tags": [
+      "convert",
+      "recipe",
+      "cooking",
+      "scale",
+      "kitchen"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -416,7 +470,7 @@
     "seo": {
       "focusKeyword": "recipe scaler",
       "metaTitle": "Recipe Scaler | Free Kitchen Recipe Converter",
-      "metaDescription": "Scale recipes up or down instantly with our free recipe scaler. Convert ingredient quantities, handle fractions, and export scaled recipes with perfect proportions.",
+      "metaDescription": "Scale recipe ingredients for more or fewer servings. Convert quantities and fractions online, then review seasonings and cooking adjustments.",
       "canonicalUrl": "/tools/recipe-scaler/",
       "lastModified": "2026-04-18",
       "author": "Simple Online Tools",
