@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run build:watch\" \"npm run serve\"",
-    "build": "npm run validate && node esbuild.config.js && node scripts/validate-generated-output.js",
+    "build": "npm run validate && node esbuild.config.js",
     "build:watch": "npm run validate && node esbuild.config.js --watch",
     "validate": "node scripts/validate-foundation.js && node scripts/validate-internal-links.js && node scripts/validate-seo-routing.js",
     "validate:tool": "node scripts/validate-foundation.js",
@@ -23,7 +23,8 @@
     "test:tools": "playwright test tests/tools.spec.js",
     "test:mobile": "playwright test --project='Mobile Chrome'",
     "test:desktop": "playwright test --project='Desktop Chrome'",
-    "test:report": "playwright show-report playwright-report"
+    "test:report": "playwright show-report playwright-report",
+    "validate:output": "node scripts/validate-generated-output.js"
   },
   "keywords": [
     "tools",
