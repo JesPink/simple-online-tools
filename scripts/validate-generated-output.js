@@ -81,7 +81,7 @@ if (fs.existsSync(registryPath)) {
       continue;
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
-    const descriptionMatch = html.match(/<meta\\s+name=["']description["']\\s+content=["']([^"']*)["']/i);
+    const descriptionMatch = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i);
     if (!descriptionMatch || descriptionMatch[1].length > 155) {
       errors.push(`${relative}: meta description is missing or exceeds 155 characters`);
     }
