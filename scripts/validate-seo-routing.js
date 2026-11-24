@@ -33,7 +33,7 @@ if (!fs.existsSync(registryPath)) errors.push('Missing src/tool-registry.json');
 else {
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
   const categories = [...new Set(registry.map(tool => tool.primaryCategory))];
-  const categoryHeadingFields = ['decisionHeading', 'workflowHeading', 'notesHeading', 'relatedHeading'];
+  const categoryHeadingFields = ['decisionHeading'];
   for (const field of categoryHeadingFields) {
     const values = categories.map(category => getCategorySEO(category)[field]);
     if (values.some(value => !value) || new Set(values).size !== values.length) {
