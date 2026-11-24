@@ -94,7 +94,7 @@ for (const [page, expectedHeading] of Object.entries(staticPageHeadings)) {
     continue;
   }
   const html = fs.readFileSync(path.join(root, relative), 'utf8');
-  const headings = [...html.matchAll(/<h1\\b[^>]*>([\\s\\S]*?)<\\/h1>/gi)];
+  const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)];
   const headingText = headings[0]?.[1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim();
   if (headings.length !== 1 || headingText !== expectedHeading) {
     errors.push(`dist/${relative}: expected exactly one H1 ("${expectedHeading}"), found ${headings.length} (${headingText || 'none'})`);
