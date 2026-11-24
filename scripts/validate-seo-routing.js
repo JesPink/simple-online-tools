@@ -22,7 +22,15 @@ for (const file of htmlFiles) {
   }
   if (/summary_large_image/i.test(html)) errors.push(`${file}: large-image Twitter card has no image asset`);
 }
+const robotsSourcePath = path.join(root, 'public/robots.txt');
+if (!fs.existsSync(robotsSourcePath)) errors.push('Missing public/robots.txt source');
+else if (!/^Disallow: \/cdn-cgi\/$/m.test(fs.readFileSync(robotsSourcePath, 'utf8'))) {
+  errors.push('public/robots.txt must disallow Cloudflare-managed /cdn-cgi/ endpoints');
+}
 const build = fs.readFileSync(path.join(root, 'esbuild.config.js'), 'utf8');
+if (!/Disallow: \/cdn-cgi\//.test(build)) {
+  errors.push('Generated robots.txt must disallow Cloudflare-managed /cdn-cgi/ endpoints');
+}
 if (/OG_IMAGE|TWITTER_IMAGE|homepage-preview\.jpg|-preview\.jpg/.test(build)) {
   errors.push('esbuild.config.js still generates URLs for nonexistent social preview images');
 }

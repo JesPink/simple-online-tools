@@ -27,3 +27,4 @@ Allow: /*.json$
 Disallow: /src/
 Disallow: /node_modules/
 Disallow: /private/
+Disallow: /cdn-cgi/

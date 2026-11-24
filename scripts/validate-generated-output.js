@@ -18,6 +18,11 @@ if (!exists('404.html')) errors.push('dist/404.html is missing');
 else if (!/<meta\s+name=["']robots["']\s+content=["'][^"']*noindex/i.test(fs.readFileSync(path.join(root, '404.html'), 'utf8'))) {
   errors.push('dist/404.html must be noindex');
 }
+const robotsPath = path.join(root, 'robots.txt');
+if (!fs.existsSync(robotsPath)) errors.push('dist/robots.txt is missing');
+else if (!/^Disallow: \/cdn-cgi\/$/m.test(fs.readFileSync(robotsPath, 'utf8'))) {
+  errors.push('Generated dist/robots.txt must disallow Cloudflare-managed /cdn-cgi/ endpoints');
+}
 const htmlFiles = walk(root).filter(file => file.endsWith('.html'));
 for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');
