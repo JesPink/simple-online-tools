@@ -2,6 +2,7 @@ import esbuild from 'esbuild';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { getCategorySEO, generateCategoryDecisionPageHtml } from './src/category-content.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -85,27 +86,41 @@ async function buildSite() {
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
       
+      const categoryContent = getCategorySEO(category);
+      const categoryItemList = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": categoryContent.heading,
+        "itemListElement": categoryTools.map((tool, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": tool.title.split(' | ')[0],
+          "url": `https://simpleonlinetool.com/tools/${tool.slug}/`
+        }))
+      };
+      const categorySchema = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": categoryContent.heading,
+        "url": `https://simpleonlinetool.com/category/${category}/`,
+        "description": categoryContent.metaDescription,
+        "mainEntity": categoryItemList,
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "Simple Online Tools",
+          "url": "https://simpleonlinetool.com/"
+        }
+      };
       const categoryHtml = baseTemplateHtml
-        .replace(/<!--SEO_TITLE-->/g, `${categoryName} - Free Online Tools`)
-        .replace(/<!--SEO_DESCRIPTION-->/g, `Discover our collection of ${categoryName.toLowerCase()} tools. Free, fast, and no sign-up required.`)
-        .replace(/<!--SEO_KEYWORDS-->/g, `${categoryName.toLowerCase()}, free tools, online tools, ${category}`)
-        .replace(/<!--SEO_H1_TITLE-->/g, `${categoryName} Tools`)
-        .replace(/<!--SEO_H1_DESCRIPTION-->/g, `Browse free ${categoryName.toLowerCase()} tools with clean URLs and instant access.`)
+        .replace(/<!--SEO_TITLE-->/g, categoryContent.seoTitle)
+        .replace(/<!--SEO_DESCRIPTION-->/g, categoryContent.metaDescription)
+        .replace(/<!--SEO_KEYWORDS-->/g, `${categoryName.toLowerCase()}, ${categoryTools.map(tool => tool.title.split(' | ')[0].toLowerCase()).join(', ')}, free online tools`)
+        .replace(/<!--SEO_H1_TITLE-->/g, categoryContent.heading)
+        .replace(/<!--SEO_H1_DESCRIPTION-->/g, categoryContent.summary)
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/category/${category}/`)
-        .replace('<!--SCHEMA_MARKUP-->', `<script type="application/ld+json">${JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          "name": `${categoryName} Tools - Simple Online Tools`,
-          "url": `https://simpleonlinetool.com/category/${category}/`,
-          "description": `Browse free ${categoryName.toLowerCase()} tools.`,
-          "isPartOf": {
-            "@type": "WebSite",
-            "name": "Simple Online Tools",
-            "url": "https://simpleonlinetool.com/"
-          }
-        })}</script>`)
+        .replace('<!--SCHEMA_MARKUP-->', `<script type="application/ld+json">${JSON.stringify(categorySchema)}</script>`)
         .replace('<!--CANONICAL_URL-->', `<link rel="canonical" href="https://simpleonlinetool.com/category/${category}/">`)
-        .replace('<!--STATIC_INDEX_CONTENT-->', generateStaticToolListingHtml(toolRegistry, category))
+        .replace('<!--STATIC_INDEX_CONTENT-->', generateCategoryDecisionPageHtml(toolRegistry, category))
         .replace('<body>', `<body data-category-slug="${category}">`);
 
       // Create category directory and index.html file for clean URLs
@@ -629,7 +644,14 @@ function generateStaticToolListingHtml(toolRegistry, categorySlug = null) {
     .join('');
 
   const intro = categorySlug ? '' : `
-            <p>Simple Online Tools offers free, browser-based utilities for writing, productivity, file processing, and SEO tasks. No sign-up required. All tools run directly in your browser for fast results.</p>`;
+            <p>Simple Online Tools offers free, browser-based utilities for writing, productivity, file processing, and SEO tasks. No sign-up required. All tools run directly in your browser for fast results.</p>
+            <h2>Browse tools by category</h2>
+            <ul class="category-directory">
+              ${[...new Set(toolRegistry.map(tool => tool.primaryCategory))].map(slug => {
+                const category = getCategorySEO(slug);
+                return `<li><a href="/category/${slug}/">${category.heading}</a><p>${category.summary}</p></li>`;
+              }).join('')}
+            </ul>`;
 
   return `
         <section class="container" aria-label="Tool directory">

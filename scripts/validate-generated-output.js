@@ -23,6 +23,41 @@ if (!fs.existsSync(robotsPath)) errors.push('dist/robots.txt is missing');
 else if (!/^Disallow: \/cdn-cgi\/$/m.test(fs.readFileSync(robotsPath, 'utf8'))) {
   errors.push('Generated dist/robots.txt must disallow Cloudflare-managed /cdn-cgi/ endpoints');
 }
+const registryPath = path.resolve('src/tool-registry.json');
+if (fs.existsSync(registryPath)) {
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const categories = [...new Set(registry.map(tool => tool.primaryCategory))];
+  for (const category of categories) {
+    const relative = `category/${category}/index.html`;
+    if (!exists(relative)) {
+      errors.push(`Missing generated category page: ${relative}`);
+      continue;
+    }
+    const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    const contentMatch = html.match(/<section\b[^>]*class="[^"]*\bcategory-decision-content\b[^"]*"[^>]*>([\s\S]*?)<\/section>/i);
+    if (!contentMatch) {
+      errors.push(`${relative}: missing category decision content section`);
+      continue;
+    }
+    const visibleText = contentMatch[1].replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&(?:nbsp|amp|lt|gt|quot|#39);/g, " ")
+      .replace(/\s+/g, " ").trim();
+    const wordCount = visibleText.split(" ").filter(Boolean).length;
+    if (wordCount < 300 || wordCount > 600) {
+      errors.push(`${relative}: category editorial section has ${wordCount} visible words (expected 300–600; review the actual category content)`);
+    }
+    if (!html.includes(`href="/category/`) || !html.includes('category-related-links')) {
+      errors.push(`${relative}: missing crawlable related-category links`);
+    }
+    for (const tool of registry.filter(item => item.primaryCategory === category)) {
+      if (!html.includes(`href="/tools/${tool.slug}/"`)) {
+        errors.push(`${relative}: missing crawlable link to ${tool.slug}`);
+      }
+    }
+  }
+}
 const htmlFiles = walk(root).filter(file => file.endsWith('.html'));
 for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');
