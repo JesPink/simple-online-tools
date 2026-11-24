@@ -34,6 +34,19 @@ if (fs.existsSync(registryPath)) {
       continue;
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    const titleMatch = html.match(/<title>([\\s\\S]*?)<\\/title>/i);
+    const descriptionMatch = html.match(/<meta\\s+name=["']description["']\\s+content=["']([^"']*)["']/i);
+    const h2Texts = [...html.matchAll(/<h2\\b[^>]*>([\\s\\S]*?)<\\/h2>/gi)]
+      .map(match => match[1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/\\s+/g, ' ').trim());
+    if (category === 'productivity-and-business' && (!titleMatch || titleMatch[1].length > 60)) {
+      errors.push(`${relative}: category title is missing or exceeds 60 characters`);
+    }
+    if (category === 'productivity-and-business' && (!descriptionMatch || descriptionMatch[1].length > 155)) {
+      errors.push(`${relative}: category meta description is missing or exceeds 155 characters`);
+    }
+    if (new Set(h2Texts).size !== h2Texts.length) {
+      errors.push(`${relative}: repeated H2 text found within category page`);
+    }
     const contentMatch = html.match(/<section\b[^>]*class="[^"]*\bcategory-decision-content\b[^"]*"[^>]*>([\s\S]*?)<\/section>/i);
     if (!contentMatch) {
       errors.push(`${relative}: missing category decision content section`);
