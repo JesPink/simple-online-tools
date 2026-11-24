@@ -3,6 +3,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { getCategorySEO } from '../src/category-content.js';
 
 const root = path.resolve('dist');
 const errors = [];
