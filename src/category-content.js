@@ -1,7 +1,7 @@
 const CATEGORY_CONTENT = {
   'text-and-writing': {
     seoTitle: 'Free Text & Writing Tools for Clearer, Cleaner Text',
-    metaDescription: 'Count words, change text case, and spot passive voice with free browser-based writing tools. Choose the right tool for editing, proofreading, or preparing content.',
+    metaDescription: 'Count words, change text case, and review passive voice with free browser-based writing tools for editing, proofreading, and content preparation.',
     heading: 'Text & Writing Tools',
     summary: 'A practical set of free tools for checking, cleaning up, and preparing written text. Whether you are polishing a draft, formatting copied content, or checking a word limit, start with the task you need to finish.',
     intro: 'Writing work often involves small jobs that interrupt the actual writing: checking a word limit, fixing inconsistent capitalization, or finding sentences that sound indirect. These tools handle those focused tasks without asking you to install an editor or create an account. They are useful for students, editors, bloggers, marketers, and anyone who works with text in a browser.',
@@ -17,7 +17,7 @@ const CATEGORY_CONTENT = {
     related: ['productivity-and-business', 'seo-and-marketing']
   },
   'productivity-and-business': {
-    seoTitle: 'Free Productivity & Business Tools | Invoices, Meetings & Messaging',
+    seoTitle: 'Free Business Tools for Invoices, Meetings & Messaging',
     metaDescription: 'Create a client invoice, shape a clearer value proposition, or estimate meeting costs with free online business tools. No sign-up required.',
     heading: 'Productivity & Business Tools',
     summary: 'Small business tasks are easier when the numbers and wording are clear. Use these free tools for practical admin, sharper messaging, and more deliberate meetings.',
@@ -113,7 +113,7 @@ export function generateCategoryDecisionPageHtml(toolRegistry, categorySlug) {
   return `<section class="container category-decision-content" aria-label="${escapeHtml(content.heading)} guide">
     <div class="seo-content">
       <p class="category-summary">${escapeHtml(content.summary)}</p>
-      <h2>What you can do here</h2>
+      <h2>${escapeHtml(content.heading)}: common tasks</h2>
       <p>${escapeHtml(content.intro)}</p>
       <h2>Choose the right tool for the job</h2>
       <p>${escapeHtml(content.decision)}</p>
