@@ -34,14 +34,19 @@ if (fs.existsSync(registryPath)) {
       continue;
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
-    const visibleText = html.replace(/<script[\s\S]*?<\/script>/gi, ' ')
-      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/&(?:nbsp|amp|lt|gt|quot|#39);/g, ' ')
-      .replace(/\s+/g, ' ').trim();
-    const wordCount = visibleText.split(' ').filter(Boolean).length;
-    if (wordCount < 250 || wordCount > 700) {
-      errors.push(`${relative}: category decision page has ${wordCount} visible words (expected 250–700; review for thin or padded content)`);
+    const contentMatch = html.match(/<section\b[^>]*class="[^"]*\bcategory-decision-content\b[^"]*"[^>]*>([\s\S]*?)<\/section>/i);
+    if (!contentMatch) {
+      errors.push(`${relative}: missing category decision content section`);
+      continue;
+    }
+    const visibleText = contentMatch[1].replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&(?:nbsp|amp|lt|gt|quot|#39);/g, " ")
+      .replace(/\s+/g, " ").trim();
+    const wordCount = visibleText.split(" ").filter(Boolean).length;
+    if (wordCount < 300 || wordCount > 600) {
+      errors.push(`${relative}: category editorial section has ${wordCount} visible words (expected 300–600; review the actual category content)`);
     }
     if (!html.includes(`href="/category/`) || !html.includes('category-related-links')) {
       errors.push(`${relative}: missing crawlable related-category links`);
