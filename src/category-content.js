@@ -3,6 +3,10 @@ const CATEGORY_CONTENT = {
     seoTitle: 'Free Text & Writing Tools for Clearer, Cleaner Text',
     metaDescription: 'Count words, change text case, and review passive voice with free browser-based writing tools for editing, proofreading, and content preparation.',
     heading: 'Text & Writing Tools',
+    decisionHeading: "Choose a tool for your writing task",
+    workflowHeading: "Follow a practical editing workflow",
+    notesHeading: "Review these details before revising text",
+    relatedHeading: "Explore tools for writing and publishing",
     summary: 'A practical set of free tools for checking, cleaning up, and preparing written text. Whether you are polishing a draft, formatting copied content, or checking a word limit, start with the task you need to finish.',
     intro: 'Writing work often involves small jobs that interrupt the actual writing: checking a word limit, fixing inconsistent capitalization, or finding sentences that sound indirect. These tools handle those focused tasks without asking you to install an editor or create an account. They are useful for students, editors, bloggers, marketers, and anyone who works with text in a browser.',
     decision: 'Choose by the problem in front of you. If you need an accurate count before submitting an essay, article, product listing, or social post, use Word Counter. If the words are right but the capitalization is inconsistent, Case Converter is the faster route. If a draft feels distant or wordy, Passive Voice Detector can flag sentences worth reviewing. These tools solve different problems; one is not a replacement for the others.',
@@ -20,6 +24,10 @@ const CATEGORY_CONTENT = {
     seoTitle: 'Free Business Tools for Invoices, Meetings & Messaging',
     metaDescription: 'Create a client invoice, shape a clearer value proposition, or estimate meeting costs with free online business tools. No sign-up required.',
     heading: 'Productivity & Business Tools',
+    decisionHeading: "Select a tool for everyday business work",
+    workflowHeading: "Put these tools to work in a client workflow",
+    notesHeading: "Check assumptions before acting on results",
+    relatedHeading: "Explore related business and marketing tools",
     summary: 'Small business tasks are easier when the numbers and wording are clear. Use these free tools for practical admin, sharper messaging, and more deliberate meetings.',
     intro: 'Running a project or a small business means switching between work that creates value and the admin that keeps it moving. You may need to send a clear invoice, explain why a customer should choose your offer, or understand what a recurring meeting costs in staff time. This collection focuses on those everyday jobs rather than trying to replace a full accounting, CRM, or project-management platform.',
     decision: 'Start with the outcome. Choose Invoice Generator when you need to prepare a straightforward client invoice and download it as a PDF. Use Value Proposition Generator when your offer is difficult to explain in one or two sentences and you want structured messaging ideas to refine. Choose Meeting Cost Calculator when you want to make the time cost of a meeting visible using the attendance and compensation assumptions you enter.',
@@ -37,6 +45,10 @@ const CATEGORY_CONTENT = {
     seoTitle: 'PDF & Document Tools | View and Edit PDF Metadata Online',
     metaDescription: 'Inspect, update, or remove PDF metadata with a free browser-based PDF metadata editor. Understand document properties before sharing a file.',
     heading: 'Files & Documents',
+    decisionHeading: "Check PDF properties before sharing a file",
+    workflowHeading: "Review and update a PDF safely",
+    notesHeading: "Know what metadata removal leaves untouched",
+    relatedHeading: "Explore tools for document preparation",
     summary: 'A focused document utility for checking the information stored inside a PDF before you share or archive it.',
     intro: 'A PDF can contain more than the visible pages. Its metadata may include a document title, author name, subject, keywords, and other properties added by the software or person who created it. Those details can help organize files, but they can also be outdated or reveal information you did not intend to include. This category currently focuses on PDF metadata rather than broad file conversion or document editing.',
     decision: 'Use the PDF Metadata Editor when you want to inspect the properties stored in a PDF, correct inaccurate details, or remove metadata before sharing a document. It is particularly relevant for people preparing client deliverables, publishing downloadable documents, cleaning up older files, or checking what identifying details may travel with a PDF. If you only need to change the visible text or layout on a page, metadata editing is not the same as editing the PDF content itself.',
@@ -52,6 +64,10 @@ const CATEGORY_CONTENT = {
     seoTitle: 'Free SEO & Marketing Tools | Write Better Meta Descriptions',
     metaDescription: 'Draft and refine search-result meta descriptions with a free online generator. Explore tone and keyword options, then edit for accuracy and search intent.',
     heading: 'SEO & Marketing Tools',
+    decisionHeading: "Create a useful description for each page",
+    workflowHeading: "Draft and refine a search snippet",
+    notesHeading: "Understand how search snippets may appear",
+    relatedHeading: "Explore tools for content and messaging",
     summary: 'A practical writing aid for shaping concise search-result descriptions that accurately represent a page.',
     intro: 'A search result gives someone only a moment to decide whether a page is relevant. A useful meta description explains what the page offers in plain language and sets an accurate expectation for the click. It is not a guaranteed ranking lever, and search engines may choose a different snippet from the page, but writing a clear description is still a worthwhile part of publishing and content maintenance.',
     decision: 'Use the Meta Description Generator when you have a page topic and want help turning it into several concise description options. It is useful for landing pages, articles, product pages, and tool pages where the value is real but difficult to summarize. Start with the page’s main purpose and the searcher’s likely question; add a target phrase only where it fits naturally. Do not force a keyword into a sentence if it makes the description awkward or misleading.',
@@ -67,6 +83,10 @@ const CATEGORY_CONTENT = {
     seoTitle: 'Free Utilities & Conversion Tools | Scale Recipes Easily',
     metaDescription: 'Scale ingredient quantities up or down with a free recipe scaler. Convert servings, work with fractions, and prepare a recipe for a different group size.',
     heading: 'Utilities & Conversion Tools',
+    decisionHeading: "Scale a recipe to a new serving size",
+    workflowHeading: "Adjust ingredients and review the recipe",
+    notesHeading: "Check ingredients and cooking conditions",
+    relatedHeading: "Explore tools for recipe preparation",
     summary: 'A straightforward kitchen calculator for adjusting ingredient quantities when the number of servings changes.',
     intro: 'Everyday conversions are not always about meters, temperatures, or file formats. In the kitchen, one of the most common calculations is changing a recipe to suit a different number of people. Scaling every ingredient by hand is easy to get wrong, especially when a recipe uses fractions or a mix of units. This category currently features a recipe-scaling utility for that specific job.',
     decision: 'Choose Recipe Scaler when you want to increase or reduce ingredient quantities to match a new serving count. It is useful when cooking for a larger group, preparing fewer portions, or adapting a recipe for meal prep. Enter the original recipe quantities and serving amount, set the new target, and review the adjusted list before you start cooking. The tool handles the arithmetic; it cannot decide whether every ingredient should scale linearly.',
@@ -115,14 +135,14 @@ export function generateCategoryDecisionPageHtml(toolRegistry, categorySlug) {
       <p class="category-summary">${escapeHtml(content.summary)}</p>
       <h2>${escapeHtml(content.heading)}: common tasks</h2>
       <p>${escapeHtml(content.intro)}</p>
-      <h2>Choose the right tool for the job</h2>
+      <h2>${escapeHtml(content.decisionHeading)}</h2>
       <p>${escapeHtml(content.decision)}</p>
       <ul class="category-tool-list">${toolCards}</ul>
-      <h2>A practical way to use these tools</h2>
+      <h2>${escapeHtml(content.workflowHeading)}</h2>
       <p>${escapeHtml(content.workflow)}</p>
-      <h2>What to keep in mind</h2>
+      <h2>${escapeHtml(content.notesHeading)}</h2>
       <p>${escapeHtml(content.notes)}</p>
-      <h2>Explore related tools</h2>
+      <h2>${escapeHtml(content.relatedHeading)}</h2>
       <p>${escapeHtml(content.relatedIntro)}</p>
       <ul class="category-related-links">${relatedLinks}</ul>
     </div>
