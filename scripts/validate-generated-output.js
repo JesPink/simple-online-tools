@@ -38,7 +38,7 @@ if (fs.existsSync(registryPath)) {
       .replace(/<style[\s\S]*?<\/style>/gi, ' ')
       .replace(/<[^>]+>/g, ' ')
       .replace(/&(?:nbsp|amp|lt|gt|quot|#39);/g, ' ')
-      .replace(/\\s+/g, ' ').trim();
+      .replace(/\s+/g, ' ').trim();
     const wordCount = visibleText.split(' ').filter(Boolean).length;
     if (wordCount < 250 || wordCount > 700) {
       errors.push(`${relative}: category decision page has ${wordCount} visible words (expected 250–700; review for thin or padded content)`);
