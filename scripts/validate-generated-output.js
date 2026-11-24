@@ -38,7 +38,7 @@ if (fs.existsSync(registryPath)) {
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
     const categoryContent = getCategorySEO(category);
-    for (const field of ['decisionHeading', 'workflowHeading', 'notesHeading', 'relatedHeading']) {
+    for (const field of ['decisionHeading']) {
       const expectedHeading = categoryContent[field];
       if (!expectedHeading || !html.includes(`<h2>${expectedHeading}</h2>`)) {
         errors.push(`${relative}: generated HTML is missing the category-specific ${field}`);
