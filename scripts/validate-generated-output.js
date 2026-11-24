@@ -3,6 +3,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { getCategorySEO } from '../src/category-content.js';
 
 const root = path.resolve('dist');
 const errors = [];
@@ -27,6 +28,8 @@ const registryPath = path.resolve('src/tool-registry.json');
 if (fs.existsSync(registryPath)) {
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
   const categories = [...new Set(registry.map(tool => tool.primaryCategory))];
+  const renderedCategoryHeadings = new Set();
+
   for (const category of categories) {
     const relative = `category/${category}/index.html`;
     if (!exists(relative)) {
@@ -34,6 +37,17 @@ if (fs.existsSync(registryPath)) {
       continue;
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    const categoryContent = getCategorySEO(category);
+    for (const field of ['decisionHeading']) {
+      const expectedHeading = categoryContent[field];
+      if (!expectedHeading || !html.includes(`<h2>${expectedHeading}</h2>`)) {
+        errors.push(`${relative}: generated HTML is missing the category-specific ${field}`);
+      } else if (renderedCategoryHeadings.has(expectedHeading)) {
+        errors.push(`${relative}: duplicate category H2 across generated pages: ${expectedHeading}`);
+      } else {
+        renderedCategoryHeadings.add(expectedHeading);
+      }
+    }
     const titleMatch = html.match(/<title>([\s\S]*?)<\/title>/i);
     const descriptionMatch = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i);
     const h2Texts = [...html.matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/gi)]
