@@ -92,8 +92,6 @@ async function buildSite() {
         .replace(/<!--SEO_H1_TITLE-->/g, `${categoryName} Tools`)
         .replace(/<!--SEO_H1_DESCRIPTION-->/g, `Browse free ${categoryName.toLowerCase()} tools with clean URLs and instant access.`)
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/category/${category}/`)
-        .replace(/<!--OG_IMAGE-->/g, `https://simpleonlinetool.com/images/${category}-preview.jpg`)
-        .replace(/<!--TWITTER_IMAGE-->/g, `https://simpleonlinetool.com/images/${category}-preview.jpg`)
         .replace('<!--SCHEMA_MARKUP-->', `<script type="application/ld+json">${JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
@@ -137,8 +135,6 @@ async function buildSite() {
         .replace(/<!--SEO_H1_TITLE-->/g, tool.title) // For server-side H1
         .replace(/<!--SEO_H1_DESCRIPTION-->/g, tool.description) // For server-side description
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/tools/${tool.slug}/`)
-        .replace(/<!--OG_IMAGE-->/g, `https://simpleonlinetool.com/images/${tool.slug}-preview.jpg`)
-        .replace(/<!--TWITTER_IMAGE-->/g, `https://simpleonlinetool.com/images/${tool.slug}-preview.jpg`)
         .replace('<!--CANONICAL_URL-->', (() => { const raw = tool.seo?.canonicalUrl || `/tools/${tool.slug}/`; const url = raw.endsWith('/') ? raw : raw + '/'; return `<link rel="canonical" href="https://simpleonlinetool.com${url}">`; })())
         .replace('<!--STATIC_INDEX_CONTENT-->', '')
         .replace('<body>', `<body data-tool-slug="${tool.slug}">`);
@@ -438,8 +434,6 @@ async function buildSite() {
       .replace(/<!--SEO_H1_TITLE-->/g, 'Simple Online Tools')
       .replace(/<!--SEO_H1_DESCRIPTION-->/g, 'Free browser-based tools for writing, productivity, files, and SEO tasks.')
       .replace(/<!--OG_URL-->/g, 'https://simpleonlinetool.com/')
-      .replace(/<!--OG_IMAGE-->/g, 'https://simpleonlinetool.com/images/homepage-preview.jpg')
-      .replace(/<!--TWITTER_IMAGE-->/g, 'https://simpleonlinetool.com/images/homepage-preview.jpg')
       .replace('<!--SCHEMA_MARKUP-->', `<script type="application/ld+json">${JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebSite",
