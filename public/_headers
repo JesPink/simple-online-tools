@@ -14,10 +14,6 @@
 /tools/*/style.css
   Cache-Control: public, max-age=3600, must-revalidate
 
-# 🖼️ STATIC ASSETS: Long cache for truly static content
-/images/*
-  Cache-Control: public, max-age=31536000, immutable
-
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 

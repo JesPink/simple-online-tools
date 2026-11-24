@@ -6,11 +6,11 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run build:watch\" \"npm run serve\"",
-    "build": "npm run validate && node esbuild.config.js",
+    "build": "npm run validate && node esbuild.config.js && npm run validate:output",
     "build:watch": "npm run validate && node esbuild.config.js --watch",
-    "validate": "node scripts/validate-foundation.js && node scripts/validate-internal-links.js",
+    "validate": "node scripts/validate-foundation.js && node scripts/validate-internal-links.js && node scripts/validate-seo-routing.js",
     "validate:tool": "node scripts/validate-foundation.js",
-    "validate:strict": "node scripts/validate-foundation.js --strict && node scripts/validate-internal-links.js",
+    "validate:strict": "node scripts/validate-foundation.js --strict && node scripts/validate-internal-links.js && node scripts/validate-seo-routing.js",
     "create-tool": "node scripts/scaffold-tool.js",
     "setup-hooks": "node scripts/setup-hooks.js",
     "pre-commit": "npm run validate:strict",
@@ -23,7 +23,8 @@
     "test:tools": "playwright test tests/tools.spec.js",
     "test:mobile": "playwright test --project='Mobile Chrome'",
     "test:desktop": "playwright test --project='Desktop Chrome'",
-    "test:report": "playwright show-report playwright-report"
+    "test:report": "playwright show-report playwright-report",
+    "validate:output": "node scripts/validate-generated-output.js"
   },
   "keywords": [
     "tools",
