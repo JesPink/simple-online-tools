@@ -34,7 +34,7 @@ main {
 }
 
 @media (max-width: 767px) {
-  #main-header.scrolled .nav-brand h1 {
+  #main-header.scrolled .nav-brand .brand-logo {
     font-size: var(--font-size-lg);
     transition: font-size var(--transition-fast);
   }
@@ -58,7 +58,7 @@ main {
   color: var(--text-primary);
 }
 
-.nav-brand h1 {
+.nav-brand .brand-logo {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   margin: 0;
@@ -111,7 +111,7 @@ main {
   justify-content: center;
 }
 
-.nav-brand h1 {
+.nav-brand .brand-logo {
   font-size: var(--font-size-xl);
 }
 
@@ -128,7 +128,7 @@ main {
     justify-content: flex-end;
   }
   
-  .nav-brand h1 {
+  .nav-brand .brand-logo {
     font-size: var(--font-size-2xl);
   }
   
