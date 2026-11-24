@@ -46,7 +46,7 @@
   {
     "slug": "case-converter",
     "title": "Case Converter | Uppercase, Lowercase & Text Case Tool",
-    "description": "Free online case converter tool. Change text to uppercase, lowercase, sentence case, title case, and more instantly. Perfect for coding, writing, and formatting.",
+    "description": "Convert text to uppercase, lowercase, sentence case, or title case. Format writing, headings, and code snippets online for free.",
     "keywords": "case converter, uppercase converter, lowercase converter, convert capital letters to lowercase, change text to uppercase, text case tool",
     "category": "text-tools",
     "primaryCategory": "text-and-writing",
@@ -75,7 +75,7 @@
     "seo": {
       "focusKeyword": "case converter",
       "metaTitle": "Case Converter | Uppercase, Lowercase & Text Case Tool",
-      "metaDescription": "Free online case converter tool. Change text to uppercase, lowercase, sentence case, title case, and more instantly. Perfect for coding, writing, and formatting.",
+      "metaDescription": "Convert text to uppercase, lowercase, sentence case, or title case. Format writing, headings, and code snippets online for free.",
       "canonicalUrl": "/tools/case-converter/",
       "lastModified": "2026-04-18",
       "author": "Simple Online Tools",
@@ -276,7 +276,7 @@
   {
     "slug": "pdf-metadata-editor",
     "title": "PDF Metadata Editor | View & Edit PDF Properties",
-    "description": "View, edit, and remove PDF metadata online. Secure client-side processing protects privacy while managing document properties, author info, and hidden data.",
+    "description": "View, edit, or remove PDF metadata in your browser. Check document properties such as title and author before sharing a file.",
     "keywords": "PDF metadata editor, pdf metadata viewer, change metadata pdf, remove pdf metadata, pdf privacy tool, document metadata viewer",
     "category": "productivity-tools",
     "primaryCategory": "files-and-docs",
@@ -308,7 +308,7 @@
     "seo": {
       "focusKeyword": "PDF metadata editor",
       "metaTitle": "PDF Metadata Editor | View & Edit PDF Properties",
-      "metaDescription": "View, edit, and remove PDF metadata online. Secure client-side processing protects privacy while managing document properties, author info, and hidden data.",
+      "metaDescription": "View, edit, or remove PDF metadata in your browser. Check document properties such as title and author before sharing a file.",
       "canonicalUrl": "/tools/pdf-metadata-editor/",
       "lastModified": "2026-04-18",
       "author": "Simple Online Tools",
@@ -384,7 +384,7 @@
   {
     "slug": "recipe-scaler",
     "title": "Recipe Scaler | Free Kitchen Recipe Converter",
-    "description": "Scale recipes up or down instantly with our free recipe scaler. Convert ingredient quantities, handle fractions, and export scaled recipes with perfect proportions.",
+    "description": "Scale recipe ingredients for more or fewer servings. Adjust quantities and fractions online, then review seasonings and cooking times.",
     "keywords": "recipe scaler, recipe scaler online, scaling down recipes, scale up recipe, ingredient converter, servings calculator, measurement converter",
     "category": "productivity-tools",
     "primaryCategory": "utilities-and-conversion",
@@ -416,7 +416,7 @@
     "seo": {
       "focusKeyword": "recipe scaler",
       "metaTitle": "Recipe Scaler | Free Kitchen Recipe Converter",
-      "metaDescription": "Scale recipes up or down instantly with our free recipe scaler. Convert ingredient quantities, handle fractions, and export scaled recipes with perfect proportions.",
+      "metaDescription": "Scale recipe ingredients for more or fewer servings. Adjust quantities and fractions online, then review seasonings and cooking times.",
       "canonicalUrl": "/tools/recipe-scaler/",
       "lastModified": "2026-04-18",
       "author": "Simple Online Tools",

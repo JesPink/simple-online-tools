@@ -36,9 +36,24 @@ else {
   for (const category of categories) {
     try {
       const content = getCategorySEO(category);
+      if (content.seoTitle.length > 60) errors.push(`Category ${category} SEO title exceeds 60 characters (${content.seoTitle.length})`);
+      if (content.metaDescription.length > 155) errors.push(`Category ${category} meta description exceeds 155 characters (${content.metaDescription.length})`);
       const categoryTools = registry.filter(tool => tool.primaryCategory === category);
       for (const tool of categoryTools) {
         if (!content.tools[tool.slug]) errors.push(`Category ${category} is missing a unique description for ${tool.slug}`);
+      }
+      if (category === 'productivity-and-business' && content.seoTitle !== 'Free Business Tools for Invoices, Meetings & Messaging') {
+        errors.push('Productivity & Business title must retain its primary topic and core tool intents in a concise title');
+      }
+      const requiredShortDescriptions = {
+        'case-converter': 'Convert text to uppercase, lowercase, sentence case, or title case. Format writing, headings, and code snippets online for free.',
+        'pdf-metadata-editor': 'View, edit, or remove PDF metadata in your browser. Check document properties such as title and author before sharing a file.',
+        'recipe-scaler': 'Scale recipe ingredients for more or fewer servings. Adjust quantities and fractions online, then review seasonings and cooking times.'
+      };
+      for (const tool of categoryTools) {
+        if (requiredShortDescriptions[tool.slug] && tool.seo?.metaDescription !== requiredShortDescriptions[tool.slug]) {
+          errors.push(`Tool ${tool.slug} meta description does not match the reviewed concise copy`);
+        }
       }
       if (content.related.includes(category)) errors.push(`Category ${category} links to itself`);
     } catch (error) {
