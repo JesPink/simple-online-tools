@@ -25,6 +25,4 @@
 # Force HTTPS
 http://simpleonlinetool.com/* https://simpleonlinetool.com/:splat 301
 
-# 404 handling - redirect to homepage
-/tools/text-formatter/ / 301
-/tools/character-counter/ / 301
+# Removed legacy tool URLs intentionally return HTTP 404 via public/404.html.
