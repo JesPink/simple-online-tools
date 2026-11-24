@@ -68,6 +68,44 @@ for (const file of htmlFiles) {
     errors.push(`${relative}: generated HTML contains an unresolved social-image reference`);
   }
 }
+// Validate static-page heading hierarchy and direct internal discovery links.
+const staticPageHeadings = {
+  about: 'About Simple Online Tools',
+  contact: 'Contact Us',
+  privacy: 'Privacy Policy',
+  terms: 'Terms of Service'
+};
+const staticRoutes = Object.keys(staticPageHeadings);
+const homepagePath = path.join(root, 'index.html');
+if (!fs.existsSync(homepagePath)) {
+  errors.push('dist/index.html is missing; static-page discovery links cannot be checked');
+} else {
+  const homepage = fs.readFileSync(homepagePath, 'utf8');
+  for (const page of staticRoutes) {
+    if (!homepage.includes(`href="/${page}/"`)) {
+      errors.push(`dist/index.html: missing direct canonical internal link to /${page}/`);
+    }
+  }
+}
+for (const [page, expectedHeading] of Object.entries(staticPageHeadings)) {
+  const relative = `${page}/index.html`;
+  if (!exists(relative)) {
+    errors.push(`Missing generated static page: dist/${relative}`);
+    continue;
+  }
+  const html = fs.readFileSync(path.join(root, relative), 'utf8');
+  const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)];
+  const headingText = headings[0]?.[1].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim();
+  if (headings.length !== 1 || headingText !== expectedHeading) {
+    errors.push(`dist/${relative}: expected exactly one H1 ("${expectedHeading}"), found ${headings.length} (${headingText || 'none'})`);
+  }
+  for (const linkedPage of staticRoutes) {
+    if (!html.includes(`href="/${linkedPage}/"`)) {
+      errors.push(`dist/${relative}: missing direct canonical footer link to /${linkedPage}/`);
+    }
+  }
+}
+
 const sitemapPath = path.join(root, 'sitemap.xml');
 if (!fs.existsSync(sitemapPath)) errors.push('dist/sitemap.xml is missing');
 else {
