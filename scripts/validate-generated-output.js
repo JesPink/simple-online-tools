@@ -34,8 +34,8 @@ if (fs.existsSync(registryPath)) {
       continue;
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
-    const visibleText = html.replace(/<script[\\s\\S]*?<\\/script>/gi, ' ')
-      .replace(/<style[\\s\\S]*?<\\/style>/gi, ' ')
+    const visibleText = html.replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
       .replace(/<[^>]+>/g, ' ')
       .replace(/&(?:nbsp|amp|lt|gt|quot|#39);/g, ' ')
       .replace(/\\s+/g, ' ').trim();
