@@ -3,6 +3,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { getCategorySEO } from '../src/category-content.js';
 
 const root = process.cwd();
 const errors = [];
@@ -26,6 +27,24 @@ const robotsSourcePath = path.join(root, 'public/robots.txt');
 if (!fs.existsSync(robotsSourcePath)) errors.push('Missing public/robots.txt source');
 else if (!/^Disallow: \/cdn-cgi\/$/m.test(fs.readFileSync(robotsSourcePath, 'utf8'))) {
   errors.push('public/robots.txt must disallow Cloudflare-managed /cdn-cgi/ endpoints');
+}
+const registryPath = path.join(root, 'src/tool-registry.json');
+if (!fs.existsSync(registryPath)) errors.push('Missing src/tool-registry.json');
+else {
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const categories = [...new Set(registry.map(tool => tool.primaryCategory))];
+  for (const category of categories) {
+    try {
+      const content = getCategorySEO(category);
+      const categoryTools = registry.filter(tool => tool.primaryCategory === category);
+      for (const tool of categoryTools) {
+        if (!content.tools[tool.slug]) errors.push(`Category ${category} is missing a unique description for ${tool.slug}`);
+      }
+      if (content.related.includes(category)) errors.push(`Category ${category} links to itself`);
+    } catch (error) {
+      errors.push(error.message);
+    }
+  }
 }
 const build = fs.readFileSync(path.join(root, 'esbuild.config.js'), 'utf8');
 if (!/Disallow: \/cdn-cgi\//.test(build)) {
