@@ -97,7 +97,7 @@ if (fs.existsSync(registryPath)) {
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
     const category = getCategorySEO(tool.primaryCategory);
     const breadcrumbHref = `/category/${tool.primaryCategory}/`;
-    const breadcrumbMatches = [...html.matchAll(/<nav class="breadcrumbs" aria-label="Breadcrumb">([\\s\\S]*?)<\\/nav>/g)];
+    const breadcrumbMatches = [...html.matchAll(/<nav class="breadcrumbs" aria-label="Breadcrumb">([\s\S]*?)<\/nav>/g)];
     const escapedCategoryHeading = category.heading.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     const expectedCategoryLink = `<a href="${breadcrumbHref}">${escapedCategoryHeading}</a>`;
     const breadcrumbMarkup = breadcrumbMatches[0]?.[1] || '';
