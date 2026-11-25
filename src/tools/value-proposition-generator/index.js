@@ -60,6 +60,8 @@ export function render() {
 
           <h2>How to Use Our Value Proposition Generator</h2>
 
+          <p>Generated statements are starting points, not verified product claims. Review each result and remove or substantiate any statement about performance, customer numbers, awards, exclusivity, or outcomes before publishing.</p>
+
           <p>Creating an effective value proposition with our generator is straightforward and takes just minutes to complete. Follow these simple steps to develop compelling business messaging:</p>
 
           <p><strong>Step 1: Define Your Target Audience</strong><br>
@@ -152,23 +154,23 @@ export async function init() {
     "{audience} achieve {benefit} faster with {product}'s {feature}.",
     
     // Differentiation Focus
-    "The only {product} that helps {audience} {verb} {problem} through {feature}.",
-    "Unlike other solutions, {product} helps {audience} {verb} {problem} using our {adjective} {feature}.",
+    "{product} helps {audience} address {problem} with {feature}.",
+    "For {audience}, {product} offers {feature} to help address {problem}.",
     "{audience} choose {product} because it's the {adjective} way to {verb} {problem}.",
     
     // Results-Oriented
-    "Join thousands of {audience} who use {product} to {verb} {problem} with {feature}.",
+    "Use {product} to {verb} {problem} with {feature}.",
     "{product}: The {adjective} solution that helps {audience} go from {problem} to {benefit}.",
-    "Proven results: {audience} {verb} {problem} 10x faster with {product}'s {feature}.",
+    "{product} gives {audience} a way to {verb} {problem} with {feature}.",
     
     // Direct & Action-Focused
     "Ready to {verb} {problem}? {product} provides {adjective} {feature} for {audience}.",
-    "{audience} trust {product} to {verb} {problem} with our award-winning {feature}."
+    "{product} is designed for {audience} who want to {verb} {problem} with {feature}."
   ];
 
   // Compelling verbs and adjectives
   const verbs = ["achieve", "unlock", "simplify", "transform", "boost", "overcome", "eliminate", "streamline", "maximize", "optimize"];
-  const adjectives = ["effortless", "data-driven", "personalized", "scalable", "proven", "innovative", "intelligent", "comprehensive", "powerful", "reliable"];
+  const adjectives = ["clear", "practical", "flexible", "focused", "simple", "adaptable", "customer-focused", "straightforward", "relevant", "useful"];
 
   const generateBtn = document.getElementById('generate-btn');
   const resultsContainer = document.getElementById('results-container');
@@ -184,16 +186,27 @@ export async function init() {
     return array[Math.floor(Math.random() * array.length)];
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>\"']/g, character => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '\"': '&quot;',
+      "'": '&#39;'
+    })[character]);
+  }
+
   function generateValueProposition(formula, inputs) {
+    const safeInputs = Object.fromEntries(Object.entries(inputs).map(([key, value]) => [key, escapeHtml(value)]));
     const randomVerb = getRandomItem(verbs);
     const randomAdjective = getRandomItem(adjectives);
     
     const result = formula
-      .replace('{audience}', inputs.audience)
-      .replace('{problem}', inputs.problem)
-      .replace('{product}', inputs.product)
-      .replace('{feature}', inputs.feature)
-      .replace('{benefit}', inputs.benefit)
+      .replace('{audience}', safeInputs.audience)
+      .replace('{problem}', safeInputs.problem)
+      .replace('{product}', safeInputs.product)
+      .replace('{feature}', safeInputs.feature)
+      .replace('{benefit}', safeInputs.benefit)
       .replace('{verb}', randomVerb)
       .replace('{adjective}', randomAdjective);
     
