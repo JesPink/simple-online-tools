@@ -28,6 +28,23 @@ export function render() {
                 <input type="text" id="key-benefit" placeholder="e.g., save 10 hours weekly, double conversion rates" />
                 <div class="example-text">Try to quantify results when possible</div>
               </div>
+              <div class="form-group">
+                <label for="message-focus">Message focus</label>
+                <select id="message-focus" class="form-control">
+                  <option value="all">Explore all angles</option>
+                  <option value="problem">Problem-focused</option>
+                  <option value="feature">Feature-focused</option>
+                  <option value="benefit">Benefit-focused</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="variation-count">Number of drafts</label>
+                <select id="variation-count" class="form-control">
+                  <option value="3">3 drafts</option>
+                  <option value="5" selected>5 drafts</option>
+                  <option value="8">8 drafts</option>
+                </select>
+              </div>
               <div class="form-actions">
                 <button class="btn btn-primary" id="generate-btn">Generate Value Propositions</button>
                 <button class="btn btn-secondary" id="refine-btn" disabled>Get More Variations</button>
@@ -51,7 +68,7 @@ export function render() {
         
         <div class="seo-content">
           <h2>Free Value Proposition and USP Generator</h2>
-          <p>Use this value proposition generator to draft short customer-focused messages from five details: your target audience, the problem they face, your product or service, a key feature, and the benefit you want to communicate. The tool combines those details into several template-based variations you can review, edit, and adapt for a website headline, sales introduction, product description, or elevator pitch.</p>
+          <p>Use this value proposition generator to draft customer-focused messages from your audience, the problem they face, your product or service, a key feature, and an optional benefit. Choose a problem-, feature-, or benefit-focused angle, then generate 3, 5, or 8 template-based drafts to review and adapt for a website headline, sales introduction, product description, or elevator pitch.</p>
           <p>It is a writing aid, not an AI model, market-research tool, or competitor-analysis system. It does not verify whether a benefit is true, whether a claim is unique, or whether customers will respond to a message. Treat every generated statement as a draft and validate factual claims with your own product evidence and customer research.</p>
 
           <h2>How to Use the Value Proposition Maker</h2>
@@ -112,38 +129,26 @@ export function render() {
 }
 
 export async function init() {
-  // Value proposition formulas - organized by approach
+  // Neutral, input-grounded templates. Avoid unverified performance or uniqueness claims.
   const formulas = [
-    // Problem-Solution Focus
-    "We help {audience} {verb} {problem} by providing {feature}.",
-    "For {audience} struggling with {problem}, {product} delivers {adjective} {feature} that {verb} results.",
-    "Transform your {problem} into success with {product}'s {adjective} {feature} designed for {audience}.",
-    "Stop letting {problem} hold you back. {product} provides {adjective} {feature} built for {audience}.",
-    
-    // Benefit-Driven
-    "{product} helps {audience} achieve {benefit} through {adjective} {feature}.",
-    "Get {benefit} for your business with {product}'s proven {feature}.",
-    "{audience} achieve {benefit} faster with {product}'s {feature}.",
-    
-    // Differentiation Focus
-    "{product} helps {audience} address {problem} with {feature}.",
-    "For {audience}, {product} offers {feature} to help address {problem}.",
-    "{audience} choose {product} because it's the {adjective} way to {verb} {problem}.",
-    
-    // Results-Oriented
-    "Use {product} to {verb} {problem} with {feature}.",
-    "{product}: The {adjective} solution that helps {audience} go from {problem} to {benefit}.",
-    "{product} gives {audience} a way to {verb} {problem} with {feature}.",
-    
-    // Direct & Action-Focused
-    "Ready to {verb} {problem}? {product} provides {adjective} {feature} for {audience}.",
-    "{product} is designed for {audience} who want to {verb} {problem} with {feature}."
+    { focus: 'problem', text: "For {audience}, {product} addresses {problem} with {feature}." },
+    { focus: 'problem', text: "{product} gives {audience} a way to address {problem} using {feature}." },
+    { focus: 'problem', text: "When {problem} is a challenge, {product} offers {feature} for {audience}." },
+    { focus: 'problem', text: "{product} is designed for {audience} who need to address {problem} through {feature}." },
+    { focus: 'problem', text: "A way for {audience} to work on {problem}: {product} with {feature}." },
+    { focus: 'feature', text: "{product} provides {audience} with {feature} for addressing {problem}." },
+    { focus: 'feature', text: "With {feature}, {product} helps {audience} approach {problem}." },
+    { focus: 'feature', text: "{product} brings {feature} to {audience} working through {problem}." },
+    { focus: 'feature', text: "For {audience}, {product} combines {feature} with a focus on {problem}." },
+    { focus: 'feature', text: "{feature} is how {product} supports {audience} dealing with {problem}." },
+    { focus: 'benefit', text: "{product} helps {audience} work toward {benefit} through {feature}." },
+    { focus: 'benefit', text: "For {audience} seeking {benefit}, {product} offers {feature}." },
+    { focus: 'benefit', text: "{product} connects {feature} with the goal of {benefit} for {audience}." },
+    { focus: 'benefit', text: "A practical starting point for {audience} pursuing {benefit}: {product} and {feature}." },
+    { focus: 'benefit', text: "{product} is built around {feature} to help {audience} pursue {benefit}." }
   ];
 
-  // Compelling verbs and adjectives
-  const verbs = ["achieve", "unlock", "simplify", "transform", "boost", "overcome", "eliminate", "streamline", "maximize", "optimize"];
-  const adjectives = ["clear", "practical", "flexible", "focused", "simple", "adaptable", "customer-focused", "straightforward", "relevant", "useful"];
-
+  const generateBtn = document.getElementById('generate-btn');
   const generateBtn = document.getElementById('generate-btn');
   const resultsContainer = document.getElementById('results-container');
 
@@ -170,20 +175,7 @@ export async function init() {
 
   function generateValueProposition(formula, inputs) {
     const safeInputs = Object.fromEntries(Object.entries(inputs).map(([key, value]) => [key, escapeHtml(value)]));
-    const randomVerb = getRandomItem(verbs);
-    const randomAdjective = getRandomItem(adjectives);
-    
-    const result = formula
-      .replace('{audience}', safeInputs.audience)
-      .replace('{problem}', safeInputs.problem)
-      .replace('{product}', safeInputs.product)
-      .replace('{feature}', safeInputs.feature)
-      .replace('{benefit}', safeInputs.benefit)
-      .replace('{verb}', randomVerb)
-      .replace('{adjective}', randomAdjective);
-    
-    // Ensure the result starts with a capital letter
-    return capitalizeFirstLetter(result);
+    return formula.text.replace(/\{(audience|problem|product|feature|benefit)\}/g, (_, key) => safeInputs[key] || '');
   }
 
   function capitalizeFirstLetter(str) {
@@ -266,18 +258,12 @@ export async function init() {
       inputs.benefit = "better results";
     }
 
-    // Generate 5 unique propositions using different formulas
-    const selectedFormulas = [];
-    const propositions = [];
-
-    // Ensure we get unique formulas
-    while (selectedFormulas.length < Math.min(5, formulas.length)) {
-      const formula = getRandomItem(formulas);
-      if (!selectedFormulas.includes(formula)) {
-        selectedFormulas.push(formula);
-        propositions.push(generateValueProposition(formula, inputs));
-      }
-    }
+    const focus = document.getElementById('message-focus').value;
+    const count = Number(document.getElementById('variation-count').value);
+    const eligibleFormulas = focus === 'all' ? formulas : formulas.filter(formula => formula.focus === focus);
+    const shuffled = [...eligibleFormulas].sort(() => Math.random() - 0.5);
+    const propositions = shuffled.slice(0, Math.min(count, shuffled.length))
+      .map(formula => generateValueProposition(formula, inputs));
 
     displayResults(propositions);
   });
