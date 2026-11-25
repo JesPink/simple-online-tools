@@ -7,7 +7,7 @@ import { getCategorySEO } from '../src/category-content.js';
 
 const root = process.cwd();
 const errors = [];
-const isValidIsoDate = value => typeof value === 'string' && /^\\d{4}-\\d{2}-\\d{2}$/.test(value) && !Number.isNaN(Date.parse(value));
+const isValidIsoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value));
 const htmlFiles = [
   'src/index.html',
   'src/about.html',
