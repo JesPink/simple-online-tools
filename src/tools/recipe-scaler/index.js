@@ -59,7 +59,7 @@ export function render() {
           <h2>Understanding the Recipe Scaler</h2>
           <p>A recipe scaler is an essential kitchen tool that automatically adjusts ingredient quantities when you need to cook for more or fewer people than the original recipe serves. Our free online recipe scaler multiplies parsed ingredient quantities by the ratio between the original and target serving counts. Review the results before cooking: ingredients without a recognized quantity are left unchanged, and recipe methods, seasoning, and cooking times may need separate adjustment.</p>
 
-          <p>Whether you're cooking for a large family gathering or scaling down a recipe for a quiet dinner for two, a recipe scaler handles all the complex calculations instantly. The tool preserves ingredient ratios, converts between measurement units, and even handles fractional quantities with precision, making recipe adaptation effortless for home cooks and professional chefs alike.</p>
+          <p>Whether you're cooking for a large family gathering or scaling down a recipe for a quiet dinner for two, the tool calculates new quantities from the original and target serving counts. It keeps entered units unchanged, leaves unrecognized quantity formats as written, and offers optional fraction formatting for some small amounts.</p>
 
           <h2>How to Use Our Recipe Scaler</h2>
           <p>Converting recipe quantities with our tool is simple and intuitive. Follow these step-by-step instructions to scale any recipe perfectly:</p>
@@ -98,7 +98,7 @@ export function render() {
 
           <p><strong>Cooking Time Considerations:</strong> Though our tool focuses on ingredient quantities, understanding that cooking times don't always scale proportionally is crucial for recipe success.</p>
 
-          <h2>Unit Conversion and Measurement Precision</h2>
+          <h2>Ingredient Units and Measurement Precision</h2>
           <p>The recipe scaler recognizes common unit labels but keeps the unit entered by the user. It does not convert between volume and weight or between metric and imperial measurement systems.</p>
 
           <p>For international recipes, check the measurement system before scaling. This tool changes quantities but does not convert units; use a suitable unit converter when a recipe needs a different measurement system.</p>
