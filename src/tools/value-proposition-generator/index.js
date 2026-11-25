@@ -77,7 +77,7 @@ export function render() {
             <li><strong>State the problem:</strong> describe one need, frustration, or task that matters to that audience.</li>
             <li><strong>Enter your product or service:</strong> use the name customers recognize.</li>
             <li><strong>Add a feature:</strong> describe what the product actually does.</li>
-            <li><strong>Enter a benefit (optional):</strong> explain the outcome customers can reasonably expect. If omitted, the generator leaves the benefit out rather than inventing an outcome.</li>
+            <li><strong>Enter a benefit (optional):</strong> explain the outcome customers can reasonably expect. If omitted, the drafts use the neutral phrase “your intended outcome” rather than inventing a result.</li>
             <li><strong>Generate and refine:</strong> compare the draft variations, rewrite awkward wording, and keep only statements supported by evidence.</li>
           </ol>
 
@@ -243,7 +243,9 @@ export async function init() {
       return;
     }
 
-      const focus = document.getElementById('message-focus').value;
+      if (!inputs.benefit) inputs.benefit = 'your intended outcome';
+
+    const focus = document.getElementById('message-focus').value;
     const count = Number(document.getElementById('variation-count').value);
     const eligibleFormulas = focus === 'all' ? formulas : formulas.filter(formula => formula.focus === focus);
     const shuffled = [...eligibleFormulas].sort(() => Math.random() - 0.5);
