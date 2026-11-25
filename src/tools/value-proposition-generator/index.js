@@ -21,12 +21,12 @@ export function render() {
               </div>
               <div class="form-group">
                 <label for="key-feature">Key Feature <span class="help-text">(What your product does)</span></label>
-                <input type="text" id="key-feature" placeholder="e.g., automated lead tracking, AI-powered insights" />
+                <input type="text" id="key-feature" placeholder="e.g., shared booking page, automated lead tracking" />
               </div>
               <div class="form-group">
-                <label for="key-benefit">Main Benefit <span class="help-text">(What customers gain)</span></label>
-                <input type="text" id="key-benefit" placeholder="e.g., save 10 hours weekly, double conversion rates" />
-                <div class="example-text">Try to quantify results when possible</div>
+                <label for="key-benefit">Main Benefit <span class="help-text">(Optional: what customers can gain)</span></label>
+                <input type="text" id="key-benefit" placeholder="e.g., reduce manual steps, organize project feedback" />
+                <div class="example-text">Only enter measurable outcomes you can substantiate.</div>
               </div>
               <div class="form-group">
                 <label for="message-focus">Message focus</label>
@@ -77,7 +77,7 @@ export function render() {
             <li><strong>State the problem:</strong> describe one need, frustration, or task that matters to that audience.</li>
             <li><strong>Enter your product or service:</strong> use the name customers recognize.</li>
             <li><strong>Add a feature:</strong> describe what the product actually does.</li>
-            <li><strong>Enter a benefit (optional):</strong> explain the outcome customers can reasonably expect. If omitted, the tool uses the generic phrase “better results.”</li>
+            <li><strong>Enter a benefit (optional):</strong> explain the outcome customers can reasonably expect. If omitted, the generator leaves the benefit out rather than inventing an outcome.</li>
             <li><strong>Generate and refine:</strong> compare the draft variations, rewrite awkward wording, and keep only statements supported by evidence.</li>
           </ol>
 
@@ -149,7 +149,6 @@ export async function init() {
   ];
 
   const generateBtn = document.getElementById('generate-btn');
-  const generateBtn = document.getElementById('generate-btn');
   const resultsContainer = document.getElementById('results-container');
 
   // Form inputs
@@ -159,11 +158,7 @@ export async function init() {
   const keyFeatureInput = document.getElementById('key-feature');
   const keyBenefitInput = document.getElementById('key-benefit');
 
-  function getRandomItem(array) {
-    return array[Math.floor(Math.random() * array.length)];
-  }
-
-  function escapeHtml(value) {
+    function escapeHtml(value) {
     return String(value ?? '').replace(/[&<>\"']/g, character => ({
       '&': '&amp;',
       '<': '&lt;',
@@ -176,11 +171,6 @@ export async function init() {
   function generateValueProposition(formula, inputs) {
     const safeInputs = Object.fromEntries(Object.entries(inputs).map(([key, value]) => [key, escapeHtml(value)]));
     return formula.text.replace(/\{(audience|problem|product|feature|benefit)\}/g, (_, key) => safeInputs[key] || '');
-  }
-
-  function capitalizeFirstLetter(str) {
-    if (!str) return str;
-    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
   function copyToClipboard(text, button) {
@@ -253,12 +243,7 @@ export async function init() {
       return;
     }
 
-    // Use "better results" as fallback if no benefit specified
-    if (!inputs.benefit) {
-      inputs.benefit = "better results";
-    }
-
-    const focus = document.getElementById('message-focus').value;
+      const focus = document.getElementById('message-focus').value;
     const count = Number(document.getElementById('variation-count').value);
     const eligibleFormulas = focus === 'all' ? formulas : formulas.filter(formula => formula.focus === focus);
     const shuffled = [...eligibleFormulas].sort(() => Math.random() - 0.5);
