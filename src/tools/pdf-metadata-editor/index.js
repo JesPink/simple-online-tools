@@ -34,7 +34,7 @@ export function render() {
               
               <div class="form-actions" style="margin-top: var(--space-4);">
                 <button class="btn btn-primary" id="edit-metadata-btn">Edit Metadata</button>
-                <button class="btn btn-secondary" id="remove-all-btn">Remove All Metadata</button>
+                <button class="btn btn-secondary" id="remove-all-btn">Clear Supported Fields</button>
                 <button class="btn btn-secondary" id="download-btn" disabled>Download PDF</button>
               </div>
             </div>
@@ -80,7 +80,7 @@ export function render() {
         
         <div class="seo-content">
           <h2>Understanding the PDF Metadata Editor</h2>
-          <p>A <strong>PDF metadata editor</strong> is an essential privacy and document management tool that allows you to view, modify, and remove hidden information embedded within PDF documents. Every PDF file contains metadata - invisible data that includes details like the author's name, creation software, modification dates, and even potentially sensitive information about your computer or organization. Our PDF metadata editor operates entirely within your browser, ensuring complete privacy while giving you full control over your document's hidden properties.</p>
+          <p>A <strong>PDF metadata editor</strong> is an essential privacy and document management tool that allows you to view and edit common PDF document-information fields, such as title, author, subject, keywords, and software metadata. Every PDF file contains metadata - invisible data that includes details like the author's name, creation software, modification dates, and even potentially sensitive information about your computer or organization. Our PDF metadata editor operates entirely within your browser, ensuring complete privacy while giving you full control over your document's hidden properties.</p>
           
           <p>In today's digital landscape where document security and privacy are paramount concerns, understanding and managing PDF metadata has become crucial for professionals, journalists, legal experts, and privacy-conscious individuals. Hidden metadata can inadvertently reveal confidential information, compromise anonymity, or expose internal processes that should remain private. Our tool empowers you to inspect, edit, or completely strip this metadata before sharing documents, ensuring your privacy and professional standards are maintained.</p>
 
@@ -91,10 +91,10 @@ export function render() {
           Drag and drop your PDF file onto the upload area, or click to browse and select your file. The tool supports all standard PDF formats and processes files of various sizes entirely client-side for maximum privacy.</p>
           
           <p><strong>Step 2: Review Current Metadata</strong><br>
-          Once uploaded, the tool automatically extracts and displays all metadata properties including title, author, subject, keywords, creator application, creation date, modification date, and other embedded information.</p>
+          Once uploaded, the tool reads supported document-information properties such as title, author, subject, keywords, creator, producer, and available dates. It does not perform a forensic scan of every possible embedded data structure.</p>
           
           <p><strong>Step 3: Choose Your Action</strong><br>
-          You can either edit specific metadata fields to update document properties, or use the "Remove All Metadata" function to strip all hidden information for maximum privacy protection.</p>
+          You can either edit specific metadata fields to update document properties, or use "Clear Supported Fields" to clear the standard document-information fields this editor exposes. This does not guarantee removal of XMP metadata, annotations, attachments, hidden objects, or every other data structure in a PDF.</p>
           
           <p><strong>Step 4: Edit Metadata (Optional)</strong><br>
           If editing, modify any fields you want to change such as author name, document title, subject, or keywords. Leave fields empty to remove specific metadata properties.</p>
@@ -105,7 +105,7 @@ export function render() {
           <h2>PDF Metadata Viewer: Revealing Hidden Document Information</h2>
           <p>A PDF metadata viewer serves as a digital detective tool, uncovering the hidden layer of information that exists within every PDF document. This metadata can include far more than you might expect: the name of the person who created the document, the software used to generate it, internal file paths from the creator's computer, revision history, printing information, and even comments or annotations that may have been inadvertently left behind.</p>
           
-          <p>Professional PDF metadata viewers like our tool provide comprehensive insight into these hidden properties, displaying them in an organized, readable format that makes it easy to understand what information your PDF contains. This visibility is crucial for document security audits, compliance checks, and privacy assessments before sharing sensitive files with clients, colleagues, or the public.</p>
+          <p>Professional PDF metadata viewers like our tool provide comprehensive insight into these hidden properties, displaying the supported document-information fields in an organized format. It is not a complete privacy or forensic inspection of every object embedded in a PDF. This visibility is crucial for document security audits, compliance checks, and privacy assessments before sharing sensitive files with clients, colleagues, or the public.</p>
           
           <p>The metadata viewing capability becomes particularly valuable when receiving PDFs from external sources, as it allows you to assess what information the sender may have inadvertently included. This can help identify potential security risks, verify document authenticity, or simply understand the document's creation context and history.</p>
 
@@ -511,13 +511,13 @@ export async function init() {
       return {
         level: 'Low',
         description: 'Minimal metadata present. Low privacy risk.',
-        recommendations: 'Consider removing all metadata for maximum privacy.'
+        recommendations: 'Review the supported document-information fields; this tool does not inspect or remove every embedded PDF data structure.'
       };
     } else if (hasSensitiveInfo || hasPersonalInfo) {
       return {
         level: 'High',
         description: 'Contains potentially sensitive information including author names or system details.',
-        recommendations: 'Remove all metadata before sharing to protect privacy.'
+        recommendations: 'Clear supported document-information fields, then use a dedicated PDF inspection workflow if sensitive embedded data is a concern.'
       };
     } else {
       return {
@@ -627,7 +627,7 @@ export async function init() {
 
       await extractAndDisplayMetadata();
       downloadBtn.disabled = false;
-      showSuccess('All metadata removed successfully. You can now download the cleaned PDF.');
+      showSuccess('Supported document-information fields cleared. Other embedded PDF data may remain; review the file separately before sharing sensitive documents.');
       
     } catch (error) {
       console.error('Error removing metadata:', error);
