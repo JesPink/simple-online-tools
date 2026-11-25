@@ -102,11 +102,10 @@ export function render() {
 
         <h2>Related Writing Tools</h2>
         <p>After reviewing sentence structure, you can use the <a href="/tools/word-counter/">Word Counter</a> to check document length or the <a href="/tools/case-converter/">Case Converter</a> to change text capitalization. These tools address different editing tasks and can be used alongside a manual review.</p>
-      </div></div>
+      </div>
           </div>
         </div>
       </div>
-    </div>
   `;
 }
 
