@@ -85,6 +85,28 @@ if (fs.existsSync(registryPath)) {
     }
   }
 }
+// Verify every tool page exposes a visible, crawlable breadcrumb to its parent category.
+if (fs.existsSync(registryPath)) {
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  for (const tool of registry) {
+    const relative = `tools/${tool.slug}/index.html`;
+    if (!exists(relative)) {
+      errors.push(`Missing generated tool page for breadcrumb validation: dist/${relative}`);
+      continue;
+    }
+    const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    const category = getCategorySEO(tool.primaryCategory);
+    const breadcrumbHref = `/category/${tool.primaryCategory}/`;
+    const breadcrumbMatches = [...html.matchAll(/<nav class="breadcrumbs" aria-label="Breadcrumb">([\s\S]*?)<\/nav>/g)];
+    const escapedCategoryHeading = category.heading.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    const expectedCategoryLink = `<a href="${breadcrumbHref}">${escapedCategoryHeading}</a>`;
+    const breadcrumbMarkup = breadcrumbMatches[0]?.[1] || '';
+    if (breadcrumbMatches.length !== 1 || !breadcrumbMarkup.includes(expectedCategoryLink)) {
+      errors.push(`dist/${relative}: expected exactly one breadcrumb containing the category link and label ${breadcrumbHref}`);
+    }
+  }
+}
+
 // Guard the three tool-page descriptions shortened after the Screaming Frog audit.
 if (fs.existsSync(registryPath)) {
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
