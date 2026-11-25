@@ -215,7 +215,7 @@ test.describe('Passive Voice Detector Functionality', () => {
     const content = page.locator('.seo-content');
     await expect(content).toContainText('rule-based');
     await expect(content).toContainText('false positives');
-    await expect(content).toContainText('Passive voice does not directly affect');
+    await expect(content).toContainText('There is no reason to rewrite every passive sentence for SEO.');
     await expect(content).not.toContainText('readability analyzer');
   });
 });
@@ -243,12 +243,14 @@ test.describe('Value Proposition Generator Functionality', () => {
     await expect(generateBtn).toBeVisible();
   });
   
-  test('should have results section', async ({ page }) => {
+  test('should disclose that generation uses templates rather than AI or market research', async ({ page }) => {
     await page.goto('/tools/value-proposition-generator/');
     await page.waitForLoadState('networkidle');
-    
-    const results = page.locator('.tool-results');
-    await expect(results).toBeVisible();
+
+    const content = page.locator('.seo-content');
+    await expect(content).toContainText('predefined sentence templates');
+    await expect(content).toContainText('does not call an AI service');
+    await expect(content).toContainText('does not perform competitor analysis');
   });
 });
 
