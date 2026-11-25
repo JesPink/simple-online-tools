@@ -438,6 +438,12 @@ export async function init() {
     });
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>\"']/g, character => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;'
+    })[character]);
+  }
+
   function formatCurrency(amount) {
     const symbol = currencySymbols[currency.value] || '$';
     // Ensure consistent rounding and handle edge cases
@@ -473,7 +479,7 @@ export async function init() {
 
     const itemsHtml = items.map(item => `
       <tr>
-        <td class="item-desc">${item.description || 'Service/Product'}</td>
+        <td class="item-desc">${escapeHtml(item.description || 'Service/Product')}</td>
         <td class="item-qty">${item.quantity}</td>
         <td class="item-rate">${formatCurrency(item.rate)}</td>
         <td class="item-amount">${formatCurrency(item.amount)}</td>
@@ -486,10 +492,10 @@ export async function init() {
           <div class="invoice-header">
             <div class="invoice-title">INVOICE</div>
             <div class="invoice-meta">
-              <div class="invoice-number">Invoice #${invoiceNumber.value || 'INV-001'}</div>
+              <div class="invoice-number">Invoice #${escapeHtml(invoiceNumber.value || 'INV-001')}</div>
               <div class="invoice-dates">
-                <div>Date: ${invoiceDate.value || today}</div>
-                <div>Due: ${dueDate.value || today}</div>
+                <div>Date: ${escapeHtml(invoiceDate.value || today)}</div>
+                <div>Due: ${escapeHtml(dueDate.value || today)}</div>
               </div>
             </div>
           </div>
@@ -498,20 +504,20 @@ export async function init() {
           <div class="invoice-from">
             <div class="party-label">From:</div>
             <div class="party-details">
-              <div class="company-name">${fromCompany.value || 'Your Company'}</div>
-              <div class="address">${fromAddress.value.replace(/\n/g, '<br>') || 'Your Address'}</div>
-              ${fromEmail.value ? `<div class="contact">Email: ${fromEmail.value}</div>` : ''}
-              ${fromPhone.value ? `<div class="contact">Phone: ${fromPhone.value}</div>` : ''}
+              <div class="company-name">${escapeHtml(fromCompany.value || 'Your Company')}</div>
+              <div class="address">${escapeHtml(fromAddress.value).replace(/\n/g, '<br>') || 'Your Address'}</div>
+              ${fromEmail.value ? `<div class="contact">Email: ${escapeHtml(fromEmail.value)}</div>` : ''}
+              ${fromPhone.value ? `<div class="contact">Phone: ${escapeHtml(fromPhone.value)}</div>` : ''}
             </div>
           </div>
           
           <div class="invoice-to">
             <div class="party-label">To:</div>
             <div class="party-details">
-              <div class="company-name">${toCompany.value || 'Client Company'}</div>
-              <div class="address">${toAddress.value.replace(/\n/g, '<br>') || 'Client Address'}</div>
-              ${toEmail.value ? `<div class="contact">Email: ${toEmail.value}</div>` : ''}
-              ${toPhone.value ? `<div class="contact">Phone: ${toPhone.value}</div>` : ''}
+              <div class="company-name">${escapeHtml(toCompany.value || 'Client Company')}</div>
+              <div class="address">${escapeHtml(toAddress.value).replace(/\n/g, '<br>') || 'Client Address'}</div>
+              ${toEmail.value ? `<div class="contact">Email: ${escapeHtml(toEmail.value)}</div>` : ''}
+              ${toPhone.value ? `<div class="contact">Phone: ${escapeHtml(toPhone.value)}</div>` : ''}
             </div>
           </div>
         </div>
@@ -562,7 +568,7 @@ export async function init() {
           ${notes.value ? `
             <div class="invoice-notes">
               <div class="notes-label">Notes:</div>
-              <div class="notes-content">${notes.value.replace(/\n/g, '<br>')}</div>
+              <div class="notes-content">${escapeHtml(notes.value).replace(/\n/g, '<br>')}</div>
             </div>
           ` : ''}
         </div>
@@ -693,11 +699,11 @@ export async function init() {
       });
     }
     if (fromEmail.value) {
-      doc.text(`Email: ${fromEmail.value}`, 20, yPos);
+      doc.text(`Email: ${escapeHtml(fromEmail.value)}`, 20, yPos);
       yPos += 10;
     }
     if (fromPhone.value) {
-      doc.text(`Phone: ${fromPhone.value}`, 20, yPos);
+      doc.text(`Phone: ${escapeHtml(fromPhone.value)}`, 20, yPos);
       yPos += 10;
     }
     
@@ -718,11 +724,11 @@ export async function init() {
       });
     }
     if (toEmail.value) {
-      doc.text(`Email: ${toEmail.value}`, 120, yPos);
+      doc.text(`Email: ${escapeHtml(toEmail.value)}`, 120, yPos);
       yPos += 10;
     }
     if (toPhone.value) {
-      doc.text(`Phone: ${toPhone.value}`, 120, yPos);
+      doc.text(`Phone: ${escapeHtml(toPhone.value)}`, 120, yPos);
       yPos += 10;
     }
     
