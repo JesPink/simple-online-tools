@@ -80,7 +80,7 @@ export function render() {
         
         <div class="seo-content">
           <h2>Understanding the PDF Metadata Editor</h2>
-          <p>A <strong>PDF metadata editor</strong> is an essential privacy and document management tool that allows you to view and edit common PDF document-information fields, such as title, author, subject, keywords, and software metadata. Every PDF file contains metadata - invisible data that includes details like the author's name, creation software, modification dates, and even potentially sensitive information about your computer or organization. Our PDF metadata editor operates entirely within your browser, ensuring complete privacy while giving you full control over your document's hidden properties.</p>
+          <p>A <strong>PDF metadata editor</strong> is an essential privacy and document management tool that allows you to view and edit common PDF document-information fields, such as title, author, subject, keywords, and software metadata. Every PDF file contains metadata - invisible data that includes details like the author's name, creation software, modification dates, and even potentially sensitive information about your computer or organization. The editor processes the selected PDF in your browser and does not upload it to a processing server. It exposes a limited set of document-information fields rather than every possible hidden property.</p>
           
           <p>In today's digital landscape where document security and privacy are paramount concerns, understanding and managing PDF metadata has become crucial for professionals, journalists, legal experts, and privacy-conscious individuals. Hidden metadata can inadvertently reveal confidential information, compromise anonymity, or expose internal processes that should remain private. Our tool empowers you to inspect, edit, or completely strip this metadata before sharing documents, ensuring your privacy and professional standards are maintained.</p>
 
@@ -88,7 +88,7 @@ export function render() {
           <p>Using our PDF metadata editor is straightforward and secure, with all processing happening directly in your browser without any server uploads:</p>
           
           <p><strong>Step 1: Upload Your PDF Document</strong><br>
-          Drag and drop your PDF file onto the upload area, or click to browse and select your file. The tool supports all standard PDF formats and processes files of various sizes entirely client-side for maximum privacy.</p>
+          Drag and drop your PDF file onto the upload area, or click to browse and select your file. The tool works with many PDFs that its underlying PDF library can read and processes the selected file in your browser. Encrypted, malformed, or unusually complex files may not be supported.</p>
           
           <p><strong>Step 2: Review Current Metadata</strong><br>
           Once uploaded, the tool reads supported document-information properties such as title, author, subject, keywords, creator, producer, and available dates. It does not perform a forensic scan of every possible embedded data structure.</p>
@@ -119,7 +119,7 @@ export function render() {
           <h2>Change Metadata in PDF: Advanced Privacy Protection</h2>
           <p>Learning how to change metadata in PDF documents is essential for maintaining privacy and security in our connected world. Many users are unaware that when they share a PDF, they may also be sharing detailed information about their computer, software, internal file structures, and personal or organizational details embedded in the metadata.</p>
           
-          <p>The process of changing metadata in PDF files goes beyond simple field updates - it involves understanding what information should be preserved, modified, or completely removed based on the document's intended use and audience. For maximum privacy, you might choose to strip all metadata, creating a clean document with no hidden information. For professional purposes, you might selectively edit metadata to include only appropriate information while removing potentially sensitive details.</p>
+          <p>The process of changing metadata in PDF files goes beyond simple field updates - it involves understanding what information should be preserved, modified, or completely removed based on the document's intended use and audience. If you need to reduce exposed document information, you can clear the supported fields this editor provides. That action does not remove every possible embedded data structure, so do not treat it as a complete sanitization step for sensitive documents.</p>
           
           <p>Advanced users leverage metadata modification as part of comprehensive document security protocols. This includes standardizing creation dates to remove timing information, anonymizing author fields, removing software version details that might reveal system vulnerabilities, and eliminating internal file paths that could expose organizational structures or naming conventions.</p>
 
