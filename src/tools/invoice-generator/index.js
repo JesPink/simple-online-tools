@@ -92,7 +92,7 @@ export function render() {
               <div id="items-container">
                 <!-- Items will be dynamically added here -->
               </div>
-              <button id="add-item-btn" class="btn btn-secondary">+ Add Item</button>
+              <button type="button" id="add-item-btn" class="btn btn-secondary">+ Add Item</button>
             </div>
 
             <div class="form-section">
@@ -119,7 +119,7 @@ export function render() {
                 Download PDF
               </button>
               <small id="pdf-help" class="sr-only">Generate and download your invoice as a PDF file</small>
-              <button id="clear-form-btn" class="btn btn-secondary" aria-describedby="clear-help">
+              <button type="button" id="clear-form-btn" class="btn btn-secondary" aria-describedby="clear-help">
                 Clear Form
               </button>
               <small id="clear-help" class="sr-only">Reset all form fields to start fresh</small>
@@ -131,9 +131,9 @@ export function render() {
           <div class="preview-header">
             <div class="section-title">Invoice Preview</div>
             <div class="preview-actions">
-              <button id="zoom-out-btn" class="btn zoom-btn">-</button>
+              <button type="button" id="zoom-out-btn" class="btn zoom-btn" aria-label="Zoom out">-</button>
               <span id="zoom-level">100%</span>
-              <button id="zoom-in-btn" class="btn zoom-btn">+</button>
+              <button type="button" id="zoom-in-btn" class="btn zoom-btn" aria-label="Zoom in">+</button>
             </div>
           </div>
           <div class="invoice-preview-container">
@@ -353,20 +353,20 @@ export async function init() {
       <div class="item-row" data-index="${itemIndex}">
         <div class="item-controls">
           <div class="form-group">
-            <label>Description</label>
-            <input type="text" class="item-description" placeholder="Service or product description" />
+            <label for="item-description-${itemIndex}">Description</label>
+            <input type="text" id="item-description-${itemIndex}" class="item-description" placeholder="Service or product description" />
           </div>
           <div class="form-group">
-            <label>Qty</label>
-            <input type="number" class="item-quantity" placeholder="1" min="0" step="0.01" />
+            <label for="item-quantity-${itemIndex}">Quantity</label>
+            <input type="number" id="item-quantity-${itemIndex}" class="item-quantity" placeholder="1" min="0" step="0.01" />
           </div>
           <div class="form-group">
-            <label>Rate</label>
-            <input type="number" class="item-rate" placeholder="0.00" min="0" step="0.01" />
+            <label for="item-rate-${itemIndex}">Rate</label>
+            <input type="number" id="item-rate-${itemIndex}" class="item-rate" placeholder="0.00" min="0" step="0.01" />
           </div>
           <div class="form-group">
-            <label>Amount</label>
-            <input type="text" class="item-amount" readonly />
+            <label for="item-amount-${itemIndex}">Amount</label>
+            <input type="text" id="item-amount-${itemIndex}" class="item-amount" readonly aria-live="polite" />
           </div>
           <button type="button" class="btn remove-item-btn" title="Remove item">×</button>
         </div>
