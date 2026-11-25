@@ -240,7 +240,6 @@ async function buildSite() {
           "name": "Simple Online Tools",
           "url": "https://simpleonlinetool.com"
         },
-        "datePublished": tool.seo?.datePublished || "2025-09-16",
         "dateModified": tool.seo?.lastModified || "2025-09-16",
         "inLanguage": "en-US",
         "isAccessibleForFree": true
