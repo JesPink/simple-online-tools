@@ -85,6 +85,25 @@ if (fs.existsSync(registryPath)) {
     }
   }
 }
+// Verify every tool page exposes a visible, crawlable breadcrumb to its parent category.
+if (fs.existsSync(registryPath)) {
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  for (const tool of registry) {
+    const relative = `tools/${tool.slug}/index.html`;
+    if (!exists(relative)) {
+      errors.push(`Missing generated tool page for breadcrumb validation: dist/${relative}`);
+      continue;
+    }
+    const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    const category = getCategorySEO(tool.primaryCategory);
+    const breadcrumbHref = `href="/category/${tool.primaryCategory}/"`;
+    const breadcrumbCount = (html.match(/<nav class="breadcrumbs" aria-label="Breadcrumb">/g) || []).length;
+    if (breadcrumbCount !== 1 || !html.includes(breadcrumbHref) || !html.includes(category.heading)) {
+      errors.push(`dist/${relative}: expected exactly one visible breadcrumb linking to ${breadcrumbHref}`);
+    }
+  }
+}
+
 // Guard the three tool-page descriptions shortened after the Screaming Frog audit.
 if (fs.existsSync(registryPath)) {
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
