@@ -202,22 +202,22 @@ export function render() {
 
         <h2>Frequently Asked Questions</h2>
         
-        <h4>Is this invoice generator completely free to use?</h4>
+        <h3>Is this invoice generator completely free to use?</h3>
         <p>Yes, our <strong>invoice generator</strong> is completely free with no hidden costs, usage limits, or watermarks. You can create unlimited invoices, download PDFs, and access all features without any payment or subscription requirements.</p>
         
-        <h4>Can I customize the invoice template and add my logo?</h4>
+        <h3>Can I customize the invoice template and add my logo?</h3>
         <p>Currently, our invoice generator focuses on clean, professional text-based invoices. While logo upload isn't available in this version, the professional formatting and comprehensive customization options ensure your invoices maintain a polished, business-ready appearance.</p>
         
-        <h4>Is my business and client information secure?</h4>
+        <h3>Is my business and client information secure?</h3>
         <p>Absolutely. All invoice generation happens entirely in your browser - no data is sent to our servers. Your business information, client details, and invoice content remain completely private and secure throughout the entire process.</p>
 
-        <h4>Can I save my invoice data for future use?</h4>
+        <h3>Can I save my invoice data for future use?</h3>
         <p>The tool saves your form data locally in your browser, so your information will be retained when you return to create new invoices. However, we recommend downloading and saving your completed invoices as PDFs for your records.</p>
 
-        <h4>What file format does the invoice generator export?</h4>
+        <h3>What file format does the invoice generator export?</h3>
         <p>The invoice generator exports professional PDF files that are compatible with all devices and can be easily emailed to clients, printed for records, or stored in your accounting system.</p>
 
-        <h4>Can I handle multiple currencies and tax rates?</h4>
+        <h3>Can I handle multiple currencies and tax rates?</h3>
         <p>Yes, the tool supports multiple major currencies (USD, EUR, GBP, CAD, AUD) and allows you to set custom tax rates as percentages. This makes it suitable for international businesses and various tax jurisdictions.</p>
 
         <h2>Invoice Generator and Your Business Workflow</h2>
