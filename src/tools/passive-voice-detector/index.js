@@ -597,9 +597,9 @@ export async function init() {
     
     // Add confidence indicator for transparency
     const selectedSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
-    const confidenceIndicator = confidence >= 0.8 ? " (High confidence)" :
-                               confidence >= 0.6 ? " (Medium confidence)" :
-                               " (Low confidence - verify manually)";
+    const confidenceIndicator = confidence >= 0.8 ? " (Strong pattern match)" :
+                               confidence >= 0.6 ? " (Possible pattern match)" :
+                               " (Weak pattern match - verify manually)";
     
     return selectedSuggestion + confidenceIndicator;
   }
@@ -620,7 +620,7 @@ export async function init() {
                                 result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
         highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}.</span> `;
       } else {
-        highlightedHtml += `<span class="active-sentence">${result.sentence}.</span> `;
+        highlightedHtml += `<span class="active-sentence">${escapeHtml(result.sentence)}.</span> `;
       }
     });
     
