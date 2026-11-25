@@ -96,11 +96,13 @@ if (fs.existsSync(registryPath)) {
     }
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
     const category = getCategorySEO(tool.primaryCategory);
-    const breadcrumbHref = `href="/category/${tool.primaryCategory}/"`;
-    const breadcrumbCount = (html.match(/<nav class="breadcrumbs" aria-label="Breadcrumb">/g) || []).length;
+    const breadcrumbHref = `/category/${tool.primaryCategory}/`;
+    const breadcrumbMatches = [...html.matchAll(/<nav class="breadcrumbs" aria-label="Breadcrumb">([\\s\\S]*?)<\\/nav>/g)];
     const escapedCategoryHeading = category.heading.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-    if (breadcrumbCount !== 1 || !html.includes(breadcrumbHref) || !html.includes(escapedCategoryHeading)) {
-      errors.push(`dist/${relative}: expected exactly one visible breadcrumb linking to ${breadcrumbHref}`);
+    const expectedCategoryLink = `<a href="${breadcrumbHref}">${escapedCategoryHeading}</a>`;
+    const breadcrumbMarkup = breadcrumbMatches[0]?.[1] || '';
+    if (breadcrumbMatches.length !== 1 || !breadcrumbMarkup.includes(expectedCategoryLink)) {
+      errors.push(`dist/${relative}: expected exactly one breadcrumb containing the category link and label ${breadcrumbHref}`);
     }
   }
 }
