@@ -107,19 +107,19 @@ export function render() {
 
         <h2>Frequently Asked Questions</h2>
         
-        <h4>What types of case conversion does this case converter support?</h4>
+        <h3>What types of case conversion does this case converter support?</h3>
         <p>Our case converter supports five essential conversion types: sentence case (first letter capitalized), lowercase (all letters small), uppercase (all letters capitalized), title case (first letter of each word capitalized), and inverted case (alternates between upper and lowercase).</p>
         
-        <h4>Can I convert large amounts of text at once?</h4>
+        <h3>Can I convert large amounts of text at once?</h3>
         <p>Yes, our tool handles large text inputs efficiently. For documents over 5,000 characters, we implement smart debouncing to ensure optimal performance while maintaining real-time conversion capabilities.</p>
         
-        <h4>Is my text data secure when using this case converter?</h4>
+        <h3>Is my text data secure when using this case converter?</h3>
         <p>Absolutely. All text processing happens entirely in your browser - no data is sent to our servers. Your text remains completely private and secure throughout the conversion process.</p>
         
-        <h4>Does the tool work with special characters and international text?</h4>
+        <h3>Does the tool work with special characters and international text?</h3>
         <p>Yes, our case converter properly handles Unicode characters, accented letters, and international alphabets, making it suitable for multilingual content and special character formatting.</p>
         
-        <h4>Can I use this tool offline?</h4>
+        <h3>Can I use this tool offline?</h3>
         <p>Once the page loads, the case converter works completely offline since all processing happens in your browser. No internet connection is required for text conversion operations.</p>
 
         <h2>Case Converter and Your Workflow</h2>
