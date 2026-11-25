@@ -164,7 +164,7 @@ export function render() {
           <li><strong>Review and Download:</strong> Use the real-time preview to verify all details, then click "Download PDF" to generate your professional invoice instantly.</li>
         </ol>
         <p>
-          The invoice generator automatically calculates totals, applies taxes and discounts, and formats everything according to professional invoicing standards, saving you time while ensuring accuracy and compliance.
+          The invoice generator automatically calculates totals, applies taxes and discounts, and formats the invoice preview and PDF using the details and rates you enter. Check tax treatment, required invoice fields, and local legal requirements before sending it.
         </p>
 
         <h2>Online Invoice Generator for Modern Businesses</h2>
@@ -186,7 +186,7 @@ export function render() {
           Unlike many free invoice generators that impose limitations or watermarks, our tool provides full functionality without restrictions. You can generate unlimited invoices, include multiple line items, apply complex tax calculations, and download professional PDFs without any branding or usage limits. This makes it an ideal solution for businesses of any size, from solo freelancers to growing companies.
         </p>
         <p>
-          The <strong>best free invoice generator</strong> should also be user-friendly and efficient. Our intuitive interface reduces the learning curve, while smart features like automatic date filling, currency selection, and dynamic item management streamline the invoice creation process. Performance optimizations ensure smooth operation even with complex invoices containing numerous line items and detailed calculations.
+          An invoice generator should be easy to review and edit. This tool includes automatic date filling, five currency choices, dynamic line items, a live preview, and PDF download. Review the generated document carefully before sending it.
         </p>
 
         <h2>Professional Invoice Templates and Customization</h2>
