@@ -12,6 +12,16 @@ function normalizePath(filePath) {
   return filePath.replace(/\\/g, '/');
 }
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[character]);
+}
+
 async function buildSite() {
   try {
     console.log('🚀 Building Free Tools Platform with Cache Busting...');
@@ -153,6 +163,20 @@ async function buildSite() {
         .replace('<!--CANONICAL_URL-->', (() => { const raw = tool.seo?.canonicalUrl || `/tools/${tool.slug}/`; const url = raw.endsWith('/') ? raw : raw + '/'; return `<link rel="canonical" href="https://simpleonlinetool.com${url}">`; })())
         .replace('<!--STATIC_INDEX_CONTENT-->', '')
         .replace('<body>', `<body data-tool-slug="${tool.slug}">`);
+
+      // Add a visible, crawlable breadcrumb from each tool page to its parent category.
+      const toolCategoryContent = getCategorySEO(tool.primaryCategory);
+      const breadcrumbHtml = `<nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <a href="/category/${tool.primaryCategory}/">${escapeHtml(toolCategoryContent.heading)}</a>
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <span class="breadcrumb-current" aria-current="page">${escapeHtml(tool.title.split(' | ')[0])}</span>
+      </nav>`;
+      if (!toolHtml.includes('<main id="tool-container">')) {
+        throw new Error(`Tool template is missing the main container for breadcrumb injection: ${tool.slug}`);
+      }
+      toolHtml = toolHtml.replace('<main id="tool-container">', `<main id="tool-container">\n      ${breadcrumbHtml}`);
 
       // Add additional SEO meta tags
       let additionalMeta = '';
