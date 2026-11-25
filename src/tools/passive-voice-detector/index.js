@@ -604,6 +604,12 @@ export async function init() {
     return selectedSuggestion + confidenceIndicator;
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>\"']/g, character => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;'
+    })[character]);
+  }
+
   // Highlight passive sentences in text
   function highlightPassiveText(results) {
     let highlightedHtml = '';
@@ -612,7 +618,7 @@ export async function init() {
       if (result.isPassive) {
         const confidenceClass = result.confidence >= 0.7 ? 'high-confidence' : 
                                 result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
-        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${result.pattern || result.passiveMatch}">${result.sentence}.</span> `;
+        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}.</span> `;
       } else {
         highlightedHtml += `<span class="active-sentence">${result.sentence}.</span> `;
       }
@@ -641,11 +647,11 @@ export async function init() {
             <span class="pattern-info">${result.passiveType.replace('_', ' ').toUpperCase()}</span>
           </div>
           <div class="original-sentence">
-            <strong>Passive:</strong> "${result.sentence}."
-            ${result.pattern ? `<br><small>Pattern: <code>${result.pattern}</code></small>` : ''}
+            <strong>Passive:</strong> "${escapeHtml(result.sentence)}."
+            ${result.pattern ? `<br><small>Pattern: <code>${escapeHtml(result.pattern)}</code></small>` : ''}
           </div>
           <div class="suggestion-text">
-            <strong>Review prompt:</strong> ${result.suggestion}
+            <strong>Review prompt:</strong> ${escapeHtml(result.suggestion)}
           </div>
         </div>
       `;
