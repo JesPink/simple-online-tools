@@ -111,16 +111,16 @@ export function render() {
 
           <h2>Frequently Asked Questions</h2>
 
-          <h4>What makes a good meta description for SEO?</h4>
+          <h3>What makes a good meta description for SEO?</h3>
           <p>A good meta description for SEO is 120-160 characters long, includes your target keyword naturally, provides a clear value proposition, and includes a compelling call-to-action. It should accurately represent your page content while enticing users to click through from search results.</p>
 
-          <h4>How does a meta description generator improve my SEO workflow?</h4>
+          <h3>How does a meta description generator improve my SEO workflow?</h3>
           <p>A meta description generator streamlines your SEO workflow by automating the creation process, ensuring consistent formatting, maintaining optimal character counts, and providing multiple tone variations. This saves time while maintaining quality and consistency across all your web pages.</p>
 
-          <h4>Can I use the same meta description for multiple pages?</h4>
+          <h3>Can I use the same meta description for multiple pages?</h3>
           <p>No, each page should have a unique meta description that specifically describes its content. Duplicate meta descriptions can confuse search engines about which page to show for specific queries and may result in lower click-through rates.</p>
 
-          <h4>How often should I update my meta descriptions?</h4>
+          <h3>How often should I update my meta descriptions?</h3>
           <p>Review and update your meta descriptions regularly, especially when you refresh page content, target new keywords, or notice declining click-through rates. A good practice is to audit meta descriptions quarterly as part of your overall SEO maintenance.</p>
 
           <h2>Do meta descriptions directly affect search engine rankings?</h2>
@@ -621,7 +621,7 @@ export async function init() {
     } else if (showAll && variants.length > 1) {
       // Show all variants + "Regenerate All" button
       resultHtml += `<div class="variants-section">
-        <h4>Alternative Options:</h4>`;
+        <h3>Alternative Options:</h3>`;
       
       variants.slice(1).forEach((variant, index) => {
         resultHtml += `

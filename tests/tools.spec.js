@@ -229,6 +229,32 @@ test.describe('Value Proposition Generator Functionality', () => {
   });
 });
 
+
+  test('should not invent evidence-based marketing claims', async ({ page }) => {
+    await page.goto('/tools/value-proposition-generator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#target-audience').fill('small business owners');
+    await page.locator('#main-problem').fill('manual reporting');
+    await page.locator('#product-name').fill('Report Helper');
+    await page.locator('#key-feature').fill('automated report drafts');
+    await page.locator('#key-benefit').fill('faster report preparation');
+    await page.locator('#generate-btn').click();
+
+    const results = page.locator('#results-container');
+    await expect(results).toContainText('Report Helper');
+    await expect(results).not.toContainText(/10x faster|join thousands|award-winning|the only/i);
+  });
+
+  test('should render user-provided invoice content as text, not markup', async ({ page }) => {
+    await page.goto('/tools/invoice-generator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#from-company').fill('<img src=x onerror=alert(1)>');
+    await expect(page.locator('#invoice-preview img')).toHaveCount(0);
+    await expect(page.locator('#invoice-preview')).toContainText('<img src=x onerror=alert(1)>');
+  });
+
 // ============================================================
 // MEETING COST CALCULATOR TESTS
 // ============================================================
@@ -331,5 +357,18 @@ test.describe('Recipe Scaler Functionality', () => {
     const textarea = page.locator('textarea');
     const count = await textarea.count();
     expect(count).toBeGreaterThan(0);
+  });
+
+  test('should preserve fractional precision when scaling larger quantities', async ({ page }) => {
+    await page.goto('/tools/recipe-scaler/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#original-servings').fill('4');
+    await page.locator('#target-servings').fill('6');
+    await page.locator('#ingredients-input').fill('7 cups flour');
+    await page.locator('#round-fractions').uncheck();
+    await page.locator('#scale-btn').click();
+
+    await expect(page.locator('#scaled-recipe')).toContainText('10.5 cups flour');
   });
 });

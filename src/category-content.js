@@ -1,6 +1,7 @@
 const CATEGORY_CONTENT = {
   'text-and-writing': {
     seoTitle: 'Free Text & Writing Tools for Clearer, Cleaner Text',
+    lastModified: '2026-11-25',
     metaDescription: 'Count words, change text case, and review passive voice with free browser-based writing tools for editing, proofreading, and content preparation.',
     heading: 'Text & Writing Tools',
     decisionHeading: "Choose a tool for your writing task",
@@ -19,6 +20,7 @@ const CATEGORY_CONTENT = {
   },
   'productivity-and-business': {
     seoTitle: 'Free Business Tools for Invoices, Meetings & Messaging',
+    lastModified: '2026-11-25',
     metaDescription: 'Create a client invoice, shape a clearer value proposition, or estimate meeting costs with free online business tools. No sign-up required.',
     heading: 'Productivity & Business Tools',
     decisionHeading: "Select a tool for everyday business work",
@@ -37,6 +39,7 @@ const CATEGORY_CONTENT = {
   },
   'files-and-docs': {
     seoTitle: 'PDF & Document Tools | View and Edit PDF Metadata Online',
+    lastModified: '2026-11-25',
     metaDescription: 'Inspect, update, or remove PDF metadata with a free browser-based PDF metadata editor. Understand document properties before sharing a file.',
     heading: 'Files & Documents',
     decisionHeading: "Check PDF properties before sharing a file",
@@ -53,6 +56,7 @@ const CATEGORY_CONTENT = {
   },
   'seo-and-marketing': {
     seoTitle: 'Free SEO & Marketing Tools | Write Better Meta Descriptions',
+    lastModified: '2026-11-25',
     metaDescription: 'Draft and refine search-result meta descriptions with a free online generator. Explore tone and keyword options, then edit for accuracy and search intent.',
     heading: 'SEO & Marketing Tools',
     decisionHeading: "Create a useful description for each page",
@@ -69,6 +73,7 @@ const CATEGORY_CONTENT = {
   },
   'utilities-and-conversion': {
     seoTitle: 'Free Utilities & Conversion Tools | Scale Recipes Easily',
+    lastModified: '2026-11-25',
     metaDescription: 'Scale ingredient quantities up or down with a free recipe scaler. Convert servings, work with fractions, and prepare a recipe for a different group size.',
     heading: 'Utilities & Conversion Tools',
     decisionHeading: "Scale a recipe to a new serving size",

@@ -175,15 +175,46 @@ const sitemapPath = path.join(root, 'sitemap.xml');
 if (!fs.existsSync(sitemapPath)) errors.push('dist/sitemap.xml is missing');
 else {
   const sitemap = fs.readFileSync(sitemapPath, 'utf8');
-  const locations = [...sitemap.matchAll(/<loc>(https?:\/\/[^<]+)<\/loc>/g)].map(match => match[1]);
-  if (!locations.length) errors.push('Sitemap has no URLs');
+  const entries = [...sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)].map(match => match[1]);
+  const locations = entries.map(entry => entry.match(/<loc>(https?:\/\/[^<]+)<\/loc>/)?.[1]).filter(Boolean);
+  const registry = JSON.parse(fs.readFileSync(path.resolve('src/tool-registry.json'), 'utf8'));
+  const categories = [...new Set(registry.map(tool => tool.primaryCategory))];
+  const expectedLastModified = new Map([
+    ['https://simpleonlinetool.com/about/', '2026-11-24'],
+    ['https://simpleonlinetool.com/privacy/', '2026-11-24'],
+    ['https://simpleonlinetool.com/terms/', '2026-11-24'],
+    ['https://simpleonlinetool.com/contact/', '2026-11-24'],
+    ...categories.map(category => [`https://simpleonlinetool.com/category/${category}/`, getCategorySEO(category).lastModified]),
+    ...registry.map(tool => [`https://simpleonlinetool.com/tools/${tool.slug}/`, tool.seo?.lastModified])
+  ]);
+  const expectedLocations = new Set([
+    'https://simpleonlinetool.com/',
+    ...expectedLastModified.keys()
+  ]);
+  if (locations.length !== expectedLocations.size) errors.push(`Sitemap should contain ${expectedLocations.size} canonical URLs, found ${locations.length}`);
+  if (new Set(locations).size !== locations.length) errors.push('Sitemap contains duplicate URLs');
   for (const location of locations) {
+    if (!expectedLocations.has(location)) errors.push(`Unexpected sitemap URL: ${location}`);
     const url = new URL(location);
     const pathname = decodeURIComponent(url.pathname);
     if (pathname !== '/' && !pathname.endsWith('/')) { errors.push(`Noncanonical sitemap URL: ${location}`); continue; }
     const relative = pathname === '/' ? 'index.html' : `${pathname.slice(1)}index.html`;
     if (!exists(relative)) errors.push(`Sitemap URL has no generated page: ${location}`);
   }
+  for (const entry of entries) {
+    const location = entry.match(/<loc>(https?:\/\/[^<]+)<\/loc>/)?.[1];
+    const lastmod = entry.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1];
+    if (location === 'https://simpleonlinetool.com/') {
+      if (lastmod) errors.push('Homepage sitemap entry must omit lastmod until a reliable modification date is tracked');
+    } else {
+      const expected = expectedLastModified.get(location);
+      if (!lastmod) errors.push(`Sitemap entry is missing lastmod: ${location}`);
+      else if (!/^\d{4}-\d{2}-\d{2}$/.test(lastmod) || Number.isNaN(Date.parse(lastmod))) errors.push(`Invalid sitemap lastmod date for ${location}: ${lastmod}`);
+      else if (lastmod !== expected) errors.push(`Sitemap lastmod for ${location} does not match source metadata (${expected})`);
+      else if (Date.parse(lastmod) > Date.now()) errors.push(`Sitemap lastmod is in the future for ${location}`);
+    }
+  }
+  if (/<(?:changefreq|priority)>/i.test(sitemap)) errors.push('Sitemap should omit changefreq and priority because Google ignores these fields');
 }
 if (errors.length) {
   console.error('❌ Generated-output validation failed:');

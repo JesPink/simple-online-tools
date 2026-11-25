@@ -57,9 +57,9 @@ export function render() {
         </div>
         <div class="seo-content">
           <h2>Understanding the Recipe Scaler</h2>
-          <p>A recipe scaler is an essential kitchen tool that automatically adjusts ingredient quantities when you need to cook for more or fewer people than the original recipe serves. Our free online recipe scaler eliminates the guesswork and mathematical errors that often occur when manually calculating ingredient proportions, ensuring your scaled recipes maintain the perfect balance of flavors and textures every time.</p>
+          <p>A recipe scaler is an essential kitchen tool that automatically adjusts ingredient quantities when you need to cook for more or fewer people than the original recipe serves. Our free online recipe scaler multiplies parsed ingredient quantities by the ratio between the original and target serving counts. Review the results before cooking: ingredients without a recognized quantity are left unchanged, and recipe methods, seasoning, and cooking times may need separate adjustment.</p>
 
-          <p>Whether you're cooking for a large family gathering or scaling down a recipe for a quiet dinner for two, a recipe scaler handles all the complex calculations instantly. The tool preserves ingredient ratios, converts between measurement units, and even handles fractional quantities with precision, making recipe adaptation effortless for home cooks and professional chefs alike.</p>
+          <p>Whether you're cooking for a large family gathering or scaling down a recipe for a quiet dinner for two, the tool calculates new quantities from the original and target serving counts. It keeps entered units unchanged, leaves unrecognized quantity formats as written, and offers optional fraction formatting for some small amounts.</p>
 
           <h2>How to Use Our Recipe Scaler</h2>
           <p>Converting recipe quantities with our tool is simple and intuitive. Follow these step-by-step instructions to scale any recipe perfectly:</p>
@@ -73,10 +73,10 @@ export function render() {
           <li><strong>Export or Print:</strong> Use the copy, print, or JSON export features to save your scaled recipe for future use.</li>
           </ol>
 
-          <p>The tool automatically handles unit conversions, fraction calculations, and maintains the mathematical precision needed for successful cooking results.</p>
+          <p>The tool recognizes common whole-number, decimal, and fraction quantities and can format some small quantities as common fractions. It scales the quantities it can parse; it does not convert between measurement units or adjust cooking methods and times.</p>
 
           <h2>Recipe Scaler Online: The Digital Kitchen Assistant</h2>
-          <p>An online recipe scaler offers significant advantages over manual calculation methods or basic smartphone calculators. Our recipe scaler online provides advanced features like intelligent ingredient parsing, unit conversion between metric and imperial measurements, and fraction handling that traditional calculators simply cannot match.</p>
+          <p>An online recipe scaler offers significant advantages over manual calculation methods or basic smartphone calculators. The recipe scaler online parses common ingredient-line formats, scales numeric quantities, and optionally rounds small quantities to familiar fractions. It keeps the units you enter rather than converting between metric and imperial measurements.</p>
 
           <p>The digital format means you can access your recipe scaler online from any device, whether you're shopping for ingredients on your phone or cooking from your tablet in the kitchen. The tool saves time during meal planning and reduces food waste by ensuring you buy exactly the right quantities for your target serving size.</p>
 
@@ -98,34 +98,34 @@ export function render() {
 
           <p><strong>Cooking Time Considerations:</strong> Though our tool focuses on ingredient quantities, understanding that cooking times don't always scale proportionally is crucial for recipe success.</p>
 
-          <h2>Unit Conversion and Measurement Precision</h2>
-          <p>Professional cooking relies on accurate measurements, and our recipe scaler includes comprehensive unit conversion capabilities. The tool seamlessly converts between cups and milliliters, ounces and grams, tablespoons and teaspoons, ensuring you can work with any recipe regardless of its original measurement system.</p>
+          <h2>Ingredient Units and Measurement Precision</h2>
+          <p>The recipe scaler recognizes common unit labels but keeps the unit entered by the user. It does not convert between volume and weight or between metric and imperial measurement systems.</p>
 
-          <p>The measurement converter functionality is particularly valuable for international recipes or when working with ingredients measured in unfamiliar units. Rather than consulting separate conversion charts, our integrated system handles all conversions automatically while maintaining the mathematical precision required for consistent cooking results.</p>
+          <p>For international recipes, check the measurement system before scaling. This tool changes quantities but does not convert units; use a suitable unit converter when a recipe needs a different measurement system.</p>
 
           <p>For bakers who prefer weight-based measurements for accuracy, the tool converts volume measurements to weight equivalents where appropriate, supporting the precision that professional baking demands.</p>
 
           <h2>Frequently Asked Questions</h2>
 
-          <h4>How accurate is the recipe scaler for complex recipes?</h4>
-          <p>Our recipe scaler maintains mathematical precision for all ingredient calculations, but some complex recipes may require additional adjustments for seasoning and cooking techniques. The tool provides a solid foundation that works excellently for most recipes, with 95% accuracy for standard cooking and baking applications.</p>
+          <h3>How accurate is the recipe scaler for complex recipes?</h3>
+          <p>The tool multiplies quantities it can parse by the serving ratio. Optional fraction formatting can round small values, so review the displayed amounts—particularly for baking, where small measurement changes can matter. We have not independently benchmarked recipe accuracy.</p>
 
-          <h4>Can I use the recipe scaler for baking recipes that require precise ratios?</h4>
+          <h3>Can I use the recipe scaler for baking recipes that require precise ratios?</h3>
           <p>Yes, the recipe scaler is particularly effective for baking because it maintains exact mathematical ratios between ingredients. However, always consider that some baking techniques may need adjustment when scaling significantly up or down, particularly for yeasted breads and delicate pastries.</p>
 
-          <h4>What types of measurements can the recipe scaler handle?</h4>
+          <h3>What types of measurements can the recipe scaler handle?</h3>
           <p>The tool handles whole numbers, decimals, fractions (like 1/2 or 3/4), and mixed measurements. It recognizes common cooking units including cups, tablespoons, teaspoons, ounces, pounds, grams, kilograms, and milliliters, with automatic conversion between metric and imperial systems.</p>
 
-          <h4>Does the recipe scaler work for scaling down recipes to single servings?</h4>
+          <h3>Does the recipe scaler work for scaling down recipes to single servings?</h3>
           <p>Absolutely! The tool excels at scaling down recipes and handles the challenging fractional measurements that result from reducing large recipes to smaller portions. It provides practical measurement suggestions even for very small quantities.</p>
 
-          <h4>Can I save or export my scaled recipes?</h4>
+          <h3>Can I save or export my scaled recipes?</h3>
           <p>Yes, our recipe scaler offers multiple export options including copy-to-clipboard for easy sharing, printable format for kitchen reference, and JSON export for digital recipe management systems. This makes it easy to save and organize your perfectly scaled recipes.</p>
 
           <h2>Recipe Scaler and Your Cooking Workflow</h2>
           <p>Integrating our recipe scaler into your cooking routine transforms meal planning from a source of mathematical stress into a streamlined, confident process. The tool pairs perfectly with other kitchen utilities like our Word Counter for recipe description optimization and Case Converter for consistent recipe formatting across your digital cookbook.</p>
 
-          <p>Professional chefs use recipe scaling tools to maintain consistency across different service sizes, while home cooks appreciate the confidence that comes from knowing their ingredient ratios are mathematically perfect. Start using our free recipe scaler today to eliminate cooking calculation errors and enjoy consistently delicious results, whether you're cooking for one or feeding a crowd.</p>
+          <p>Recipe scaling is a starting point: taste, texture, pan size, and cooking time may not change linearly with serving count. Check the adjusted ingredients and method, especially for baking and seasoning.</p>
         </div>
       </div>
     </div>
@@ -282,7 +282,8 @@ export async function init() {
   }
 
   function formatQuantity(quantity, useRounding = true) {
-    if (quantity == null || quantity === 0) return '';
+    if (quantity == null || !Number.isFinite(quantity)) return '';
+    if (quantity === 0) return '0';
     
     // For small quantities (< 5), use fraction rounding
     // For larger quantities, use decimal rounding for practicality
@@ -291,7 +292,7 @@ export async function init() {
       const remainder = quantity - whole;
       
       // Check if remainder matches common fractions
-      const tolerance = 0.06;
+      const tolerance = 0.025;
       const fracMap = [
         [0.125, '1/8'],
         [0.25, '1/4'],
@@ -311,18 +312,9 @@ export async function init() {
       }
     }
     
-    // For larger quantities or when fractions don't match well, use decimal
-    if (quantity >= 10) {
-      // Round to nearest whole number for large quantities
-      return Math.round(quantity).toString();
-    } else if (quantity >= 5) {
-      // Round to nearest 0.5 for medium quantities
-      return (Math.round(quantity * 2) / 2).toString();
-    }
-    
-    // Round to 2 decimal places and remove trailing zeros for small quantities
-    const rounded = Math.round(quantity * 100) / 100;
-    return rounded % 1 === 0 ? rounded.toString() : rounded.toString();
+    // Preserve calculated quantities when no common fraction is selected.
+    const rounded = Math.round((quantity + Number.EPSILON) * 1000) / 1000;
+    return rounded.toFixed(3).replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
   }
 
   function formatUnit(unit, quantity) {
@@ -355,11 +347,16 @@ export async function init() {
 
   function scaleRecipe() {
     const title = recipeTitleInput.value.trim() || 'Untitled Recipe';
-    const originalServings = parseInt(originalServingsInput.value) || 1;
-    const targetServings = parseInt(targetServingsInput.value) || 1;
+    const originalServings = Number.parseInt(originalServingsInput.value, 10);
+    const targetServings = Number.parseInt(targetServingsInput.value, 10);
     const ingredients = ingredientsInput.value.trim();
 
     const useRounding = roundFractionsCheck.checked;
+
+    if (!Number.isInteger(originalServings) || originalServings < 1 || !Number.isInteger(targetServings) || targetServings < 1) {
+      showError('Enter valid positive whole-number serving counts.');
+      return;
+    }
 
     if (!ingredients) {
       showError('Please enter at least one ingredient.');
@@ -426,7 +423,7 @@ export async function init() {
   function displayScaledRecipe(data) {
     const recipeHtml = `
       <div class="recipe-header">
-        <h4>${data.title}</h4>
+        <h3>${data.title}</h3>
         <div class="serving-info">
           <span>Serves: ${data.targetServings}</span>
         </div>

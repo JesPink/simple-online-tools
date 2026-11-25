@@ -60,6 +60,8 @@ export function render() {
 
           <h2>How to Use Our Value Proposition Generator</h2>
 
+          <p>Generated statements are starting points, not verified product claims. Review each result and remove or substantiate any statement about performance, customer numbers, awards, exclusivity, or outcomes before publishing.</p>
+
           <p>Creating an effective value proposition with our generator is straightforward and takes just minutes to complete. Follow these simple steps to develop compelling business messaging:</p>
 
           <p><strong>Step 1: Define Your Target Audience</strong><br>
@@ -109,19 +111,19 @@ export function render() {
 
           <h2>Frequently Asked Questions</h2>
 
-          <h4>What makes a good value proposition, and how can a value proposition generator help?</h4>
+          <h3>What makes a good value proposition, and how can a value proposition generator help?</h3>
           <p>A good value proposition clearly states who you serve, what problem you solve, and why you're the best choice. A value proposition generator helps by providing proven frameworks, ensuring you include all essential elements, and offering multiple variations to test and refine.</p>
 
-          <h4>How long should my value proposition be?</h4>
+          <h3>How long should my value proposition be?</h3>
           <p>The most effective value propositions are typically one to two sentences long—concise enough to be memorable but comprehensive enough to communicate your unique value. They should be readable in under 10 seconds and immediately clear to your target audience.</p>
 
-          <h4>Can I use the same value proposition for different marketing channels?</h4>
+          <h3>Can I use the same value proposition for different marketing channels?</h3>
           <p>While your core value proposition should remain consistent, you may need slight variations for different channels. Social media posts might require shorter versions, while website headers can accommodate more detailed statements. The key is maintaining your central message while adapting the format.</p>
 
-          <h4>How often should I update my value proposition?</h4>
+          <h3>How often should I update my value proposition?</h3>
           <p>Review your value proposition quarterly and update it when you launch new products, enter new markets, or receive customer feedback indicating your current message isn't resonating. Market conditions and competitive landscapes change, so your messaging should evolve accordingly.</p>
 
-          <h4>What's the difference between a value proposition and a mission statement?</h4>
+          <h3>What's the difference between a value proposition and a mission statement?</h3>
           <p>A value proposition focuses on customer benefits and addresses "why should I buy from you?" A mission statement describes your company's purpose and addresses "why do we exist?" Value propositions are customer-focused and sales-oriented, while mission statements are company-focused and purpose-driven.</p>
 
           <h2>Value Proposition Generator and Your Business Workflow</h2>
@@ -152,23 +154,23 @@ export async function init() {
     "{audience} achieve {benefit} faster with {product}'s {feature}.",
     
     // Differentiation Focus
-    "The only {product} that helps {audience} {verb} {problem} through {feature}.",
-    "Unlike other solutions, {product} helps {audience} {verb} {problem} using our {adjective} {feature}.",
+    "{product} helps {audience} address {problem} with {feature}.",
+    "For {audience}, {product} offers {feature} to help address {problem}.",
     "{audience} choose {product} because it's the {adjective} way to {verb} {problem}.",
     
     // Results-Oriented
-    "Join thousands of {audience} who use {product} to {verb} {problem} with {feature}.",
+    "Use {product} to {verb} {problem} with {feature}.",
     "{product}: The {adjective} solution that helps {audience} go from {problem} to {benefit}.",
-    "Proven results: {audience} {verb} {problem} 10x faster with {product}'s {feature}.",
+    "{product} gives {audience} a way to {verb} {problem} with {feature}.",
     
     // Direct & Action-Focused
     "Ready to {verb} {problem}? {product} provides {adjective} {feature} for {audience}.",
-    "{audience} trust {product} to {verb} {problem} with our award-winning {feature}."
+    "{product} is designed for {audience} who want to {verb} {problem} with {feature}."
   ];
 
   // Compelling verbs and adjectives
   const verbs = ["achieve", "unlock", "simplify", "transform", "boost", "overcome", "eliminate", "streamline", "maximize", "optimize"];
-  const adjectives = ["effortless", "data-driven", "personalized", "scalable", "proven", "innovative", "intelligent", "comprehensive", "powerful", "reliable"];
+  const adjectives = ["clear", "practical", "flexible", "focused", "simple", "adaptable", "customer-focused", "straightforward", "relevant", "useful"];
 
   const generateBtn = document.getElementById('generate-btn');
   const resultsContainer = document.getElementById('results-container');
@@ -184,16 +186,27 @@ export async function init() {
     return array[Math.floor(Math.random() * array.length)];
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>\"']/g, character => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '\"': '&quot;',
+      "'": '&#39;'
+    })[character]);
+  }
+
   function generateValueProposition(formula, inputs) {
+    const safeInputs = Object.fromEntries(Object.entries(inputs).map(([key, value]) => [key, escapeHtml(value)]));
     const randomVerb = getRandomItem(verbs);
     const randomAdjective = getRandomItem(adjectives);
     
     const result = formula
-      .replace('{audience}', inputs.audience)
-      .replace('{problem}', inputs.problem)
-      .replace('{product}', inputs.product)
-      .replace('{feature}', inputs.feature)
-      .replace('{benefit}', inputs.benefit)
+      .replace('{audience}', safeInputs.audience)
+      .replace('{problem}', safeInputs.problem)
+      .replace('{product}', safeInputs.product)
+      .replace('{feature}', safeInputs.feature)
+      .replace('{benefit}', safeInputs.benefit)
       .replace('{verb}', randomVerb)
       .replace('{adjective}', randomAdjective);
     

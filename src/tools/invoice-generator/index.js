@@ -92,7 +92,7 @@ export function render() {
               <div id="items-container">
                 <!-- Items will be dynamically added here -->
               </div>
-              <button id="add-item-btn" class="btn btn-secondary">+ Add Item</button>
+              <button type="button" id="add-item-btn" class="btn btn-secondary">+ Add Item</button>
             </div>
 
             <div class="form-section">
@@ -119,7 +119,7 @@ export function render() {
                 Download PDF
               </button>
               <small id="pdf-help" class="sr-only">Generate and download your invoice as a PDF file</small>
-              <button id="clear-form-btn" class="btn btn-secondary" aria-describedby="clear-help">
+              <button type="button" id="clear-form-btn" class="btn btn-secondary" aria-describedby="clear-help">
                 Clear Form
               </button>
               <small id="clear-help" class="sr-only">Reset all form fields to start fresh</small>
@@ -131,9 +131,9 @@ export function render() {
           <div class="preview-header">
             <div class="section-title">Invoice Preview</div>
             <div class="preview-actions">
-              <button id="zoom-out-btn" class="btn zoom-btn">-</button>
+              <button type="button" id="zoom-out-btn" class="btn zoom-btn" aria-label="Zoom out">-</button>
               <span id="zoom-level">100%</span>
-              <button id="zoom-in-btn" class="btn zoom-btn">+</button>
+              <button type="button" id="zoom-in-btn" class="btn zoom-btn" aria-label="Zoom in">+</button>
             </div>
           </div>
           <div class="invoice-preview-container">
@@ -164,7 +164,7 @@ export function render() {
           <li><strong>Review and Download:</strong> Use the real-time preview to verify all details, then click "Download PDF" to generate your professional invoice instantly.</li>
         </ol>
         <p>
-          The invoice generator automatically calculates totals, applies taxes and discounts, and formats everything according to professional invoicing standards, saving you time while ensuring accuracy and compliance.
+          The invoice generator automatically calculates totals, applies taxes and discounts, and formats the invoice preview and PDF using the details and rates you enter. Check tax treatment, required invoice fields, and local legal requirements before sending it.
         </p>
 
         <h2>Online Invoice Generator for Modern Businesses</h2>
@@ -186,7 +186,7 @@ export function render() {
           Unlike many free invoice generators that impose limitations or watermarks, our tool provides full functionality without restrictions. You can generate unlimited invoices, include multiple line items, apply complex tax calculations, and download professional PDFs without any branding or usage limits. This makes it an ideal solution for businesses of any size, from solo freelancers to growing companies.
         </p>
         <p>
-          The <strong>best free invoice generator</strong> should also be user-friendly and efficient. Our intuitive interface reduces the learning curve, while smart features like automatic date filling, currency selection, and dynamic item management streamline the invoice creation process. Performance optimizations ensure smooth operation even with complex invoices containing numerous line items and detailed calculations.
+          An invoice generator should be easy to review and edit. This tool includes automatic date filling, five currency choices, dynamic line items, a live preview, and PDF download. Review the generated document carefully before sending it.
         </p>
 
         <h2>Professional Invoice Templates and Customization</h2>
@@ -202,22 +202,22 @@ export function render() {
 
         <h2>Frequently Asked Questions</h2>
         
-        <h4>Is this invoice generator completely free to use?</h4>
+        <h3>Is this invoice generator completely free to use?</h3>
         <p>Yes, our <strong>invoice generator</strong> is completely free with no hidden costs, usage limits, or watermarks. You can create unlimited invoices, download PDFs, and access all features without any payment or subscription requirements.</p>
         
-        <h4>Can I customize the invoice template and add my logo?</h4>
+        <h3>Can I customize the invoice template and add my logo?</h3>
         <p>Currently, our invoice generator focuses on clean, professional text-based invoices. While logo upload isn't available in this version, the professional formatting and comprehensive customization options ensure your invoices maintain a polished, business-ready appearance.</p>
         
-        <h4>Is my business and client information secure?</h4>
+        <h3>Is my business and client information secure?</h3>
         <p>Absolutely. All invoice generation happens entirely in your browser - no data is sent to our servers. Your business information, client details, and invoice content remain completely private and secure throughout the entire process.</p>
 
-        <h4>Can I save my invoice data for future use?</h4>
+        <h3>Can I save my invoice data for future use?</h3>
         <p>The tool saves your form data locally in your browser, so your information will be retained when you return to create new invoices. However, we recommend downloading and saving your completed invoices as PDFs for your records.</p>
 
-        <h4>What file format does the invoice generator export?</h4>
+        <h3>What file format does the invoice generator export?</h3>
         <p>The invoice generator exports professional PDF files that are compatible with all devices and can be easily emailed to clients, printed for records, or stored in your accounting system.</p>
 
-        <h4>Can I handle multiple currencies and tax rates?</h4>
+        <h3>Can I handle multiple currencies and tax rates?</h3>
         <p>Yes, the tool supports multiple major currencies (USD, EUR, GBP, CAD, AUD) and allows you to set custom tax rates as percentages. This makes it suitable for international businesses and various tax jurisdictions.</p>
 
         <h2>Invoice Generator and Your Business Workflow</h2>
@@ -268,6 +268,7 @@ export async function init() {
   const zoomLevel = document.getElementById('zoom-level');
 
   let items = [];
+  let nextItemId = 0;
   let currentZoom = 100;
   let updateTimeout = null;
 
@@ -348,25 +349,25 @@ export async function init() {
   });
 
   function addItem() {
-    const itemIndex = items.length;
+    const itemIndex = nextItemId++;
     const itemHtml = `
       <div class="item-row" data-index="${itemIndex}">
         <div class="item-controls">
           <div class="form-group">
-            <label>Description</label>
-            <input type="text" class="item-description" placeholder="Service or product description" />
+            <label for="item-description-${itemIndex}">Description</label>
+            <input type="text" id="item-description-${itemIndex}" class="item-description" placeholder="Service or product description" />
           </div>
           <div class="form-group">
-            <label>Qty</label>
-            <input type="number" class="item-quantity" placeholder="1" min="0" step="0.01" />
+            <label for="item-quantity-${itemIndex}">Quantity</label>
+            <input type="number" id="item-quantity-${itemIndex}" class="item-quantity" placeholder="1" min="0" step="0.01" />
           </div>
           <div class="form-group">
-            <label>Rate</label>
-            <input type="number" class="item-rate" placeholder="0.00" min="0" step="0.01" />
+            <label for="item-rate-${itemIndex}">Rate</label>
+            <input type="number" id="item-rate-${itemIndex}" class="item-rate" placeholder="0.00" min="0" step="0.01" />
           </div>
           <div class="form-group">
-            <label>Amount</label>
-            <input type="text" class="item-amount" readonly />
+            <label for="item-amount-${itemIndex}">Amount</label>
+            <input type="text" id="item-amount-${itemIndex}" class="item-amount" readonly aria-live="polite" />
           </div>
           <button type="button" class="btn remove-item-btn" title="Remove item">×</button>
         </div>
@@ -438,6 +439,12 @@ export async function init() {
     });
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>\"']/g, character => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;'
+    })[character]);
+  }
+
   function formatCurrency(amount) {
     const symbol = currencySymbols[currency.value] || '$';
     // Ensure consistent rounding and handle edge cases
@@ -473,7 +480,7 @@ export async function init() {
 
     const itemsHtml = items.map(item => `
       <tr>
-        <td class="item-desc">${item.description || 'Service/Product'}</td>
+        <td class="item-desc">${escapeHtml(item.description || 'Service/Product')}</td>
         <td class="item-qty">${item.quantity}</td>
         <td class="item-rate">${formatCurrency(item.rate)}</td>
         <td class="item-amount">${formatCurrency(item.amount)}</td>
@@ -486,10 +493,10 @@ export async function init() {
           <div class="invoice-header">
             <div class="invoice-title">INVOICE</div>
             <div class="invoice-meta">
-              <div class="invoice-number">Invoice #${invoiceNumber.value || 'INV-001'}</div>
+              <div class="invoice-number">Invoice #${escapeHtml(invoiceNumber.value || 'INV-001')}</div>
               <div class="invoice-dates">
-                <div>Date: ${invoiceDate.value || today}</div>
-                <div>Due: ${dueDate.value || today}</div>
+                <div>Date: ${escapeHtml(invoiceDate.value || today)}</div>
+                <div>Due: ${escapeHtml(dueDate.value || today)}</div>
               </div>
             </div>
           </div>
@@ -498,20 +505,20 @@ export async function init() {
           <div class="invoice-from">
             <div class="party-label">From:</div>
             <div class="party-details">
-              <div class="company-name">${fromCompany.value || 'Your Company'}</div>
-              <div class="address">${fromAddress.value.replace(/\n/g, '<br>') || 'Your Address'}</div>
-              ${fromEmail.value ? `<div class="contact">Email: ${fromEmail.value}</div>` : ''}
-              ${fromPhone.value ? `<div class="contact">Phone: ${fromPhone.value}</div>` : ''}
+              <div class="company-name">${escapeHtml(fromCompany.value || 'Your Company')}</div>
+              <div class="address">${escapeHtml(fromAddress.value).replace(/\n/g, '<br>') || 'Your Address'}</div>
+              ${fromEmail.value ? `<div class="contact">Email: ${escapeHtml(fromEmail.value)}</div>` : ''}
+              ${fromPhone.value ? `<div class="contact">Phone: ${escapeHtml(fromPhone.value)}</div>` : ''}
             </div>
           </div>
           
           <div class="invoice-to">
             <div class="party-label">To:</div>
             <div class="party-details">
-              <div class="company-name">${toCompany.value || 'Client Company'}</div>
-              <div class="address">${toAddress.value.replace(/\n/g, '<br>') || 'Client Address'}</div>
-              ${toEmail.value ? `<div class="contact">Email: ${toEmail.value}</div>` : ''}
-              ${toPhone.value ? `<div class="contact">Phone: ${toPhone.value}</div>` : ''}
+              <div class="company-name">${escapeHtml(toCompany.value || 'Client Company')}</div>
+              <div class="address">${escapeHtml(toAddress.value).replace(/\n/g, '<br>') || 'Client Address'}</div>
+              ${toEmail.value ? `<div class="contact">Email: ${escapeHtml(toEmail.value)}</div>` : ''}
+              ${toPhone.value ? `<div class="contact">Phone: ${escapeHtml(toPhone.value)}</div>` : ''}
             </div>
           </div>
         </div>
@@ -562,7 +569,7 @@ export async function init() {
           ${notes.value ? `
             <div class="invoice-notes">
               <div class="notes-label">Notes:</div>
-              <div class="notes-content">${notes.value.replace(/\n/g, '<br>')}</div>
+              <div class="notes-content">${escapeHtml(notes.value).replace(/\n/g, '<br>')}</div>
             </div>
           ` : ''}
         </div>
@@ -693,11 +700,11 @@ export async function init() {
       });
     }
     if (fromEmail.value) {
-      doc.text(`Email: ${fromEmail.value}`, 20, yPos);
+      doc.text(`Email: ${escapeHtml(fromEmail.value)}`, 20, yPos);
       yPos += 10;
     }
     if (fromPhone.value) {
-      doc.text(`Phone: ${fromPhone.value}`, 20, yPos);
+      doc.text(`Phone: ${escapeHtml(fromPhone.value)}`, 20, yPos);
       yPos += 10;
     }
     
@@ -718,11 +725,11 @@ export async function init() {
       });
     }
     if (toEmail.value) {
-      doc.text(`Email: ${toEmail.value}`, 120, yPos);
+      doc.text(`Email: ${escapeHtml(toEmail.value)}`, 120, yPos);
       yPos += 10;
     }
     if (toPhone.value) {
-      doc.text(`Phone: ${toPhone.value}`, 120, yPos);
+      doc.text(`Phone: ${escapeHtml(toPhone.value)}`, 120, yPos);
       yPos += 10;
     }
     

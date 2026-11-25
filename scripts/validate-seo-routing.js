@@ -7,6 +7,7 @@ import { getCategorySEO } from '../src/category-content.js';
 
 const root = process.cwd();
 const errors = [];
+const isValidIsoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value));
 const htmlFiles = [
   'src/index.html',
   'src/about.html',
@@ -44,11 +45,13 @@ else {
   for (const category of categories) {
     try {
       const content = getCategorySEO(category);
+      if (!isValidIsoDate(content.lastModified)) errors.push(`Category ${category} must have a valid, explicit lastModified date`);
       if (content.seoTitle.length > 60) errors.push(`Category ${category} SEO title exceeds 60 characters (${content.seoTitle.length})`);
       if (content.metaDescription.length > 155) errors.push(`Category ${category} meta description exceeds 155 characters (${content.metaDescription.length})`);
       const categoryTools = registry.filter(tool => tool.primaryCategory === category);
       for (const tool of categoryTools) {
         if (!content.tools[tool.slug]) errors.push(`Category ${category} is missing a unique description for ${tool.slug}`);
+        if (!isValidIsoDate(tool.seo?.lastModified)) errors.push(`Tool ${tool.slug} must have a valid, explicit SEO lastModified date`);
       }
       if (category === 'productivity-and-business' && content.seoTitle !== 'Free Business Tools for Invoices, Meetings & Messaging') {
         errors.push('Productivity & Business title must retain its primary topic and core tool intents in a concise title');

@@ -130,7 +130,7 @@ export function render() {
             specific requirements and constraints.
           </p>
           
-          <h4>Academic and Professional Writing</h4>
+          <h3>Academic and Professional Writing</h3>
           <p>
             In academic settings, essays, research papers, and dissertations often have strict word 
             count requirements. Staying within these limits demonstrates your ability to communicate 
@@ -138,7 +138,7 @@ export function render() {
             frequently have word count specifications that must be met for publication or submission.
           </p>
 
-          <h4>Content Marketing and SEO</h4>
+          <h3>Content Marketing and SEO</h3>
           <p>
             For digital marketing, word count significantly impacts SEO performance. Search engines 
             favor comprehensive content, with studies showing that pages with 1,500-2,500 words 
@@ -146,7 +146,7 @@ export function render() {
             all benefit from strategic word count optimization to improve visibility and engagement.
           </p>
 
-          <h4>Social Media Optimization</h4>
+          <h3>Social Media Optimization</h3>
           <p>
             Different social media platforms have varying character and word limits. Twitter posts 
             are limited to 280 characters, while LinkedIn posts perform best between 150-300 words. 
@@ -158,28 +158,28 @@ export function render() {
         <section class="content-section">
           <h2>Word Counter Use Cases</h2>
           
-          <h4>Academic Writing</h4>
+          <h3>Academic Writing</h3>
           <p>
             Students and researchers use word counters for essays, dissertations, and research papers. 
             Meeting exact word count requirements is essential for academic success, and our tool helps 
             ensure compliance with assignment guidelines while maintaining content quality.
           </p>
 
-          <h4>Professional Content Creation</h4>
+          <h3>Professional Content Creation</h3>
           <p>
             Content creators, journalists, and copywriters rely on word counts for article length, 
             blog post optimization, and meeting editorial requirements. Publishers often specify 
             exact word ranges for different types of content, making accurate counting essential.
           </p>
 
-          <h4>Social Media Management</h4>
+          <h3>Social Media Management</h3>
           <p>
             Social media managers use word and character counters to optimize posts for different 
             platforms. Each social network has optimal lengths for maximum engagement, and our tool 
             helps create perfectly sized content for Twitter, Facebook, LinkedIn, and Instagram.
           </p>
 
-          <h4>SEO and Web Content</h4>
+          <h3>SEO and Web Content</h3>
           <p>
             SEO professionals and web developers use word counters to optimize page content length 
             for search engine rankings. Meta descriptions, title tags, and body content all have 
@@ -189,28 +189,28 @@ export function render() {
 
         <h2>Frequently Asked Questions</h2>
         
-        <h4>How do I count unique words in my text?</h4>
+        <h3>How do I count unique words in my text?</h3>
         <p>Our tool automatically calculates the number of unique words for you. Simply paste your text into the input box, and look for the "Unique Words" metric in the results. Our <strong>unique words counter</strong> algorithm processes the text instantly, giving you a count of all distinct terms.</p>
         
-        <h4>Can I use this as a website word count checker?</h4>
+        <h3>Can I use this as a website word count checker?</h3>
         <p>Absolutely. While this tool requires you to paste text manually, it functions perfectly as a <strong>website word count checker</strong>. Simply copy the text from any webpage (Ctrl+A, Ctrl+C) and paste it into the box above. You'll instantly get the word count, character count, and other vital metrics for any web content.</p>
         
-        <h4>What is the maximum text length this tool can handle?</h4>
+        <h3>What is the maximum text length this tool can handle?</h3>
         <p>Our word counter can handle extremely large documents with hundreds of thousands of words. The tool is optimized for performance and will continue to provide accurate counts even with lengthy manuscripts, books, or research papers.</p>
 
-        <h4>How accurate is the word and character counting?</h4>
+        <h3>How accurate is the word and character counting?</h3>
         <p>Our counting algorithm is highly accurate and follows standard text processing rules. Words are counted by splitting text on whitespace and punctuation, while characters include all visible text, spaces, and punctuation marks. The tool provides both character counts with and without spaces for maximum flexibility.</p>
 
-        <h4>Does this tool work without an internet connection?</h4>
+        <h3>Does this tool work without an internet connection?</h3>
         <p>Yes! Once the page loads, our word counter works entirely offline. All processing happens in your browser, so you can count words even without internet access. This also means your text never leaves your device, ensuring complete privacy.</p>
 
-        <h4>Is my text data secure and private?</h4>
+        <h3>Is my text data secure and private?</h3>
         <p>Absolutely. Your text is processed entirely within your browser and never sent to our servers or any third parties. We don't store, save, or analyze your content in any way. When you close the page, your text is completely removed from memory.</p>
 
-        <h4>Can I use this tool for languages other than English?</h4>
+        <h3>Can I use this tool for languages other than English?</h3>
         <p>Yes, our word counter supports all languages and character sets, including Chinese, Japanese, Arabic, Russian, and many others. The tool correctly handles different writing systems and provides accurate counts regardless of the language used.</p>
 
-        <h4>How is reading time calculated?</h4>
+        <h3>How is reading time calculated?</h3>
         <p>Reading time is estimated based on the average adult reading speed of 225 words per minute. This is a widely accepted standard for silent reading of normal text. The calculation helps content creators estimate how long it will take readers to consume their content.</p>
 
         <h2>Word Counter and Your Workflow</h2>

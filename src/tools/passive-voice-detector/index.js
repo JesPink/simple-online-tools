@@ -47,7 +47,7 @@ export function render() {
             </div>
             
             <div id="suggestions-container" class="suggestions-container">
-              <h3 class="suggestions-title">Active Voice Suggestions</h3>
+              <h3 class="suggestions-title">Review Suggestions</h3>
               <div id="suggestions-list" class="suggestions-list"></div>
             </div>
           </div>
@@ -73,7 +73,7 @@ export function render() {
       <p>The analysis is instant and works entirely in your browser, ensuring your content remains private and secure. You can analyze unlimited text without any registration or signup requirements.</p>
       
       <h2>Mastering the Passive Sentence Detector</h2>
-      <p>Understanding how our <strong>passive sentence detector</strong> works helps you become a better writer. The tool uses advanced algorithms to identify several types of passive voice constructions commonly found in English writing.</p>
+      <p>Understanding how our <strong>passive sentence detector</strong> works helps you become a better writer. The tool uses browser-based pattern matching to flag common passive-voice forms in English. Because it relies on grammatical patterns rather than a full language model, it can miss some constructions and flag some active or ambiguous sentences.</p>
       
       <p>Passive voice typically follows the pattern "subject + be verb + past participle," such as "The report was written by John" instead of "John wrote the report." Our detector identifies these patterns by analyzing:</p>
       
@@ -97,19 +97,19 @@ export function render() {
       
       <h2>Frequently Asked Questions</h2>
       
-      <h4>What is passive voice and why should I avoid it?</h4>
+      <h3>What is passive voice and why should I avoid it?</h3>
       <p>Passive voice occurs when the subject of a sentence receives the action rather than performing it. For example, "The ball was thrown by Sarah" (passive) versus "Sarah threw the ball" (active). While passive voice isn't grammatically incorrect, it can make writing less engaging and harder to follow. Our passive voice detector helps you identify these constructions so you can choose when to use active voice for clearer communication.</p>
       
-      <h4>How accurate is this passive voice detector?</h4>
-      <p>Our passive voice detector uses sophisticated pattern recognition algorithms to achieve high accuracy in identifying passive constructions. The tool analyzes sentence structure, verb forms, and grammatical patterns to minimize false positives while catching subtle passive voice instances that writers might miss.</p>
+      <h3>How accurate is this passive voice detector?</h3>
+      <p>This detector uses a rule-based set of verb patterns and heuristic scoring. It is a quick editing aid, not a validated grammar test: review highlighted sentences in context, since idioms, adjectives, omitted actors, and less common sentence structures can cause missed detections or false positives.</p>
       
-      <h4>Can I use this tool for academic writing?</h4>
+      <h3>Can I use this tool for academic writing?</h3>
       <p>Absolutely! This passive voice checker is particularly valuable for academic writing, where clarity and precision are essential. Many academic style guides recommend minimizing passive voice to create more direct, engaging prose. The tool helps students and researchers identify areas for improvement in their papers, theses, and dissertations.</p>
       
-      <h4>Is my text stored or shared when using this tool?</h4>
+      <h3>Is my text stored or shared when using this tool?</h3>
       <p>No, your privacy is completely protected. This passive voice detector operates entirely within your browser using client-side processing. Your text is never sent to external servers, stored, or shared. You can analyze sensitive documents with complete confidence in your data security.</p>
       
-      <h4>Does passive voice affect SEO rankings?</h4>
+      <h3>Does passive voice affect SEO rankings?</h3>
       <p>While passive voice doesn't directly impact SEO rankings, it can affect user engagement metrics that search engines consider. Active voice generally creates more readable, engaging content that keeps visitors on your page longer and encourages sharing, indirectly benefiting your SEO performance.</p>
       
       <h2>Passive Voice Detector and Your Writing Workflow</h2>
@@ -140,7 +140,7 @@ export async function init() {
   let debounceTimer;
 
   // COMPREHENSIVE PASSIVE VOICE DETECTION SYSTEM
-  // Enhanced pattern-based detector with 85-90% accuracy target
+  // Pattern-based heuristic detector; scores are not calibrated accuracy probabilities.
   
   const PASSIVE_VOICE_PATTERNS = {
     // Core verb patterns
@@ -474,7 +474,7 @@ export async function init() {
     return Math.max(0, Math.min(1, confidence));
   }
   
-  // CONTEXT FILTERING (reduces false positives by 15-20%)
+  // Context filtering adjusts heuristic scores; its error rate has not been benchmarked.
   function applyContextFiltering(result, sentence) {
     if (!result.isPassive) return result;
     
@@ -597,11 +597,17 @@ export async function init() {
     
     // Add confidence indicator for transparency
     const selectedSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
-    const confidenceIndicator = confidence >= 0.8 ? " (High confidence)" :
-                               confidence >= 0.6 ? " (Medium confidence)" :
-                               " (Low confidence - verify manually)";
+    const confidenceIndicator = confidence >= 0.8 ? " (Strong pattern match)" :
+                               confidence >= 0.6 ? " (Possible pattern match)" :
+                               " (Weak pattern match - verify manually)";
     
     return selectedSuggestion + confidenceIndicator;
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>\"']/g, character => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;'
+    })[character]);
   }
 
   // Highlight passive sentences in text
@@ -612,9 +618,9 @@ export async function init() {
       if (result.isPassive) {
         const confidenceClass = result.confidence >= 0.7 ? 'high-confidence' : 
                                 result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
-        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Passive voice detected (${(result.confidence * 100).toFixed(0)}% confidence): ${result.pattern || result.passiveMatch}">${result.sentence}.</span> `;
+        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}.</span> `;
       } else {
-        highlightedHtml += `<span class="active-sentence">${result.sentence}.</span> `;
+        highlightedHtml += `<span class="active-sentence">${escapeHtml(result.sentence)}.</span> `;
       }
     });
     
@@ -631,21 +637,21 @@ export async function init() {
     
     let suggestionsHtml = '';
     passiveResults.forEach((result, index) => {
-      const confidenceIndicator = result.confidence >= 0.7 ? '🔴 High' : 
-                                  result.confidence >= 0.5 ? '🟡 Medium' : '⚪ Low';
+      const confidenceIndicator = result.confidence >= 0.7 ? '🔴 Strong' : 
+                                  result.confidence >= 0.5 ? '🟡 Possible' : '⚪ Weak';
       
       suggestionsHtml += `
         <div class="suggestion-item" data-confidence="${result.confidence}">
           <div class="suggestion-header">
-            <span class="confidence-badge">${confidenceIndicator} Confidence</span>
+            <span class="confidence-badge">${confidenceIndicator} pattern match</span>
             <span class="pattern-info">${result.passiveType.replace('_', ' ').toUpperCase()}</span>
           </div>
           <div class="original-sentence">
-            <strong>Passive:</strong> "${result.sentence}."
-            ${result.pattern ? `<br><small>Pattern: <code>${result.pattern}</code></small>` : ''}
+            <strong>Passive:</strong> "${escapeHtml(result.sentence)}."
+            ${result.pattern ? `<br><small>Pattern: <code>${escapeHtml(result.pattern)}</code></small>` : ''}
           </div>
           <div class="suggestion-text">
-            <strong>Suggestion:</strong> ${result.suggestion}
+            <strong>Review prompt:</strong> ${escapeHtml(result.suggestion)}
           </div>
         </div>
       `;
