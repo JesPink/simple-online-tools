@@ -97,19 +97,19 @@ export function render() {
       
       <h2>Frequently Asked Questions</h2>
       
-      <h4>What is passive voice and why should I avoid it?</h4>
+      <h3>What is passive voice and why should I avoid it?</h3>
       <p>Passive voice occurs when the subject of a sentence receives the action rather than performing it. For example, "The ball was thrown by Sarah" (passive) versus "Sarah threw the ball" (active). While passive voice isn't grammatically incorrect, it can make writing less engaging and harder to follow. Our passive voice detector helps you identify these constructions so you can choose when to use active voice for clearer communication.</p>
       
-      <h4>How accurate is this passive voice detector?</h4>
+      <h3>How accurate is this passive voice detector?</h3>
       <p>This detector uses a rule-based set of verb patterns and heuristic scoring. It is a quick editing aid, not a validated grammar test: review highlighted sentences in context, since idioms, adjectives, omitted actors, and less common sentence structures can cause missed detections or false positives.</p>
       
-      <h4>Can I use this tool for academic writing?</h4>
+      <h3>Can I use this tool for academic writing?</h3>
       <p>Absolutely! This passive voice checker is particularly valuable for academic writing, where clarity and precision are essential. Many academic style guides recommend minimizing passive voice to create more direct, engaging prose. The tool helps students and researchers identify areas for improvement in their papers, theses, and dissertations.</p>
       
-      <h4>Is my text stored or shared when using this tool?</h4>
+      <h3>Is my text stored or shared when using this tool?</h3>
       <p>No, your privacy is completely protected. This passive voice detector operates entirely within your browser using client-side processing. Your text is never sent to external servers, stored, or shared. You can analyze sensitive documents with complete confidence in your data security.</p>
       
-      <h4>Does passive voice affect SEO rankings?</h4>
+      <h3>Does passive voice affect SEO rankings?</h3>
       <p>While passive voice doesn't directly impact SEO rankings, it can affect user engagement metrics that search engines consider. Active voice generally creates more readable, engaging content that keeps visitors on your page longer and encourages sharing, indirectly benefiting your SEO performance.</p>
       
       <h2>Passive Voice Detector and Your Writing Workflow</h2>
