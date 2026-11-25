@@ -195,7 +195,30 @@ test.describe('Passive Voice Detector Functionality', () => {
     
     const results = page.locator('.tool-results');
     await expect(results).toBeVisible();
+    test('should identify a clear passive construction and show review guidance', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by John. John revised the report.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#total-sentences')).toHaveText('2');
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('#highlighted-text')).toContainText('The report was written by John');
+    await expect(page.locator('#suggestions-container')).toBeVisible();
   });
+
+  test('should describe its rule-based limitations and avoid unsupported SEO claims', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('.seo-content');
+    await expect(content).toContainText('rule-based');
+    await expect(content).toContainText('false positives');
+    await expect(content).toContainText('Passive voice does not directly affect');
+    await expect(content).not.toContainText('readability analyzer');
+  });
+});
 });
 
 // ============================================================
