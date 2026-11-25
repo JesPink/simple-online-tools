@@ -107,19 +107,19 @@ export function render() {
 
           <h2>Frequently Asked Questions</h2>
 
-          <h4>How accurate is the recipe scaler for complex recipes?</h4>
+          <h3>How accurate is the recipe scaler for complex recipes?</h3>
           <p>The tool multiplies quantities it can parse by the serving ratio. Optional fraction formatting can round small values, so review the displayed amounts—particularly for baking, where small measurement changes can matter. We have not independently benchmarked recipe accuracy.</p>
 
-          <h4>Can I use the recipe scaler for baking recipes that require precise ratios?</h4>
+          <h3>Can I use the recipe scaler for baking recipes that require precise ratios?</h3>
           <p>Yes, the recipe scaler is particularly effective for baking because it maintains exact mathematical ratios between ingredients. However, always consider that some baking techniques may need adjustment when scaling significantly up or down, particularly for yeasted breads and delicate pastries.</p>
 
-          <h4>What types of measurements can the recipe scaler handle?</h4>
+          <h3>What types of measurements can the recipe scaler handle?</h3>
           <p>The tool handles whole numbers, decimals, fractions (like 1/2 or 3/4), and mixed measurements. It recognizes common cooking units including cups, tablespoons, teaspoons, ounces, pounds, grams, kilograms, and milliliters, with automatic conversion between metric and imperial systems.</p>
 
-          <h4>Does the recipe scaler work for scaling down recipes to single servings?</h4>
+          <h3>Does the recipe scaler work for scaling down recipes to single servings?</h3>
           <p>Absolutely! The tool excels at scaling down recipes and handles the challenging fractional measurements that result from reducing large recipes to smaller portions. It provides practical measurement suggestions even for very small quantities.</p>
 
-          <h4>Can I save or export my scaled recipes?</h4>
+          <h3>Can I save or export my scaled recipes?</h3>
           <p>Yes, our recipe scaler offers multiple export options including copy-to-clipboard for easy sharing, printable format for kitchen reference, and JSON export for digital recipe management systems. This makes it easy to save and organize your perfectly scaled recipes.</p>
 
           <h2>Recipe Scaler and Your Cooking Workflow</h2>
@@ -423,7 +423,7 @@ export async function init() {
   function displayScaledRecipe(data) {
     const recipeHtml = `
       <div class="recipe-header">
-        <h4>${data.title}</h4>
+        <h3>${data.title}</h3>
         <div class="serving-info">
           <span>Serves: ${data.targetServings}</span>
         </div>
