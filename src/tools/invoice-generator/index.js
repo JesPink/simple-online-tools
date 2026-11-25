@@ -268,6 +268,7 @@ export async function init() {
   const zoomLevel = document.getElementById('zoom-level');
 
   let items = [];
+  let nextItemId = 0;
   let currentZoom = 100;
   let updateTimeout = null;
 
@@ -348,7 +349,7 @@ export async function init() {
   });
 
   function addItem() {
-    const itemIndex = items.length;
+    const itemIndex = nextItemId++;
     const itemHtml = `
       <div class="item-row" data-index="${itemIndex}">
         <div class="item-controls">
