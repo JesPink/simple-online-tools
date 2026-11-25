@@ -98,7 +98,8 @@ if (fs.existsSync(registryPath)) {
     const category = getCategorySEO(tool.primaryCategory);
     const breadcrumbHref = `href="/category/${tool.primaryCategory}/"`;
     const breadcrumbCount = (html.match(/<nav class="breadcrumbs" aria-label="Breadcrumb">/g) || []).length;
-    if (breadcrumbCount !== 1 || !html.includes(breadcrumbHref) || !html.includes(category.heading)) {
+    const escapedCategoryHeading = category.heading.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    if (breadcrumbCount !== 1 || !html.includes(breadcrumbHref) || !html.includes(escapedCategoryHeading)) {
       errors.push(`dist/${relative}: expected exactly one visible breadcrumb linking to ${breadcrumbHref}`);
     }
   }
