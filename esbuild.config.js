@@ -240,7 +240,7 @@ async function buildSite() {
           "name": "Simple Online Tools",
           "url": "https://simpleonlinetool.com"
         },
-        "datePublished": tool.seo?.lastModified || "2025-09-16",
+        "datePublished": tool.seo?.datePublished || "2025-09-16",
         "dateModified": tool.seo?.lastModified || "2025-09-16",
         "inLanguage": "en-US",
         "isAccessibleForFree": true
@@ -543,63 +543,47 @@ async function buildSite() {
 
 function generateSitemap(toolRegistry) {
   const baseUrl = 'https://simpleonlinetool.com';
-  const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-  const staticPages = ['about', 'privacy', 'terms', 'contact'];
-  
-  let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Homepage -->
-  <url>
-    <loc>${baseUrl}/</loc>
-    <lastmod>${currentDate}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  // Dates reflect the last significant source changes, not the current build date.
+  const staticPages = [
+    { name: 'about', lastModified: '2026-11-24' },
+    { name: 'privacy', lastModified: '2026-11-24' },
+    { name: 'terms', lastModified: '2026-11-24' },
+    { name: 'contact', lastModified: '2026-11-24' }
+  ];
+
+  const formatUrlEntry = (url, lastModified) => `  <url>
+    <loc>${url}</loc>
+    ${lastModified ? `<lastmod>${lastModified}</lastmod>\n    ` : ''}</url>
 `;
 
-  // Add static pages to sitemap
+  let sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage: omit lastmod until a reliable content-modification date is maintained -->
+`;
+  sitemapContent += formatUrlEntry(`${baseUrl}/`);
+
   sitemapContent += `  <!-- Static Pages -->
 `;
   for (const page of staticPages) {
-    sitemapContent += `  <url>
-    <loc>${baseUrl}/${page}/</loc>
-    <lastmod>${currentDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-`;
+    sitemapContent += formatUrlEntry(`${baseUrl}/${page.name}/`, page.lastModified);
   }
 
-  // Add category pages to sitemap
   const categories = [...new Set(toolRegistry.map(tool => tool.primaryCategory))];
   for (const category of categories) {
+    const categoryContent = getCategorySEO(category);
     sitemapContent += `  <!-- Category: ${category} -->
-  <url>
-    <loc>${baseUrl}/category/${category}/</loc>
-    <lastmod>${currentDate}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
 `;
+    sitemapContent += formatUrlEntry(`${baseUrl}/category/${category}/`, categoryContent.lastModified);
   }
 
-  // Add tool pages to sitemap
   sitemapContent += `  <!-- Tool Pages -->
 `;
   for (const tool of toolRegistry) {
-    const lastModified = tool.seo?.lastModified || currentDate;
-    sitemapContent += `  <url>
-    <loc>${baseUrl}/tools/${tool.slug}/</loc>
-    <lastmod>${lastModified}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-`;
+    sitemapContent += formatUrlEntry(`${baseUrl}/tools/${tool.slug}/`, tool.seo?.lastModified);
   }
 
   sitemapContent += `</urlset>`;
 
-  // Write sitemap.xml to dist directory
   const sitemapPath = path.join('dist', 'sitemap.xml');
   fs.writeFileSync(sitemapPath, sitemapContent);
   console.log('✅ Generated sitemap.xml with', toolRegistry.length + categories.length + staticPages.length + 1, 'URLs');
