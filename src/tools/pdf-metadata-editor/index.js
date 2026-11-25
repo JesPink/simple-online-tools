@@ -125,19 +125,19 @@ export function render() {
 
           <h2>Frequently Asked Questions</h2>
           
-          <h4>Is it safe to use an online PDF metadata editor with sensitive documents?</h4>
+          <h3>Is it safe to use an online PDF metadata editor with sensitive documents?</h3>
           <p>Our PDF metadata editor operates entirely within your browser using client-side processing, meaning your files never leave your device or get uploaded to any server. This makes it completely safe for sensitive documents, as no external parties can access your files or their metadata.</p>
           
-          <h4>What types of metadata can be found in PDF files?</h4>
+          <h3>What types of metadata can be found in PDF files?</h3>
           <p>PDF files can contain extensive metadata including author names, document title and subject, creation and modification dates, creator application details, keywords, internal file paths, user comments, revision history, printing information, and sometimes even GPS coordinates or camera information if the PDF was created from photos.</p>
           
-          <h4>Will removing metadata affect the PDF's content or formatting?</h4>
+          <h3>Will removing metadata affect the PDF's content or formatting?</h3>
           <p>No, removing or editing PDF metadata only affects the hidden information properties and does not change the visible content, formatting, images, or layout of your document. The PDF will look and function exactly the same, just without the embedded metadata.</p>
           
-          <h4>Can I batch process multiple PDFs to remove metadata?</h4>
+          <h3>Can I batch process multiple PDFs to remove metadata?</h3>
           <p>Currently, our tool processes one PDF at a time to ensure optimal performance and privacy. For batch processing needs, you can use the tool multiple times, with each file being processed securely within your browser without any server uploads.</p>
           
-          <h4>Why is PDF metadata removal important for privacy?</h4>
+          <h3>Why is PDF metadata removal important for privacy?</h3>
           <p>PDF metadata can reveal sensitive information about the document creator, their computer system, internal organizational structures, creation processes, and revision history. Removing this metadata before sharing documents prevents accidental disclosure of confidential information and protects personal and organizational privacy.</p>
 
           <h2>PDF Metadata Editor and Your Document Workflow</h2>
@@ -457,7 +457,7 @@ export async function init() {
       </div>
       
       <div class="privacy-assessment">
-        <h4>Privacy Assessment</h4>
+        <h3>Privacy Assessment</h3>
         <p>${privacyRisk.description}</p>
         ${privacyRisk.recommendations ? `<p><strong>Recommendations:</strong> ${privacyRisk.recommendations}</p>` : ''}
       </div>
@@ -475,7 +475,7 @@ export async function init() {
           </div>
         </div>
         <div class="privacy-assessment">
-          <h4>Metadata Analysis</h4>
+          <h3>Metadata Analysis</h3>
           <p>PDF metadata has been successfully extracted and is displayed above. The analysis tools are working properly.</p>
         </div>
       `;
