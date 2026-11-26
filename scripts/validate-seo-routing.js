@@ -58,8 +58,10 @@ else {
       }
       const requiredShortDescriptions = {
         'case-converter': 'Convert text to uppercase, lowercase, sentence case, or title case. Format writing, headings, and code snippets online for free.',
-        'pdf-metadata-editor': 'View, edit, or remove PDF metadata in your browser. Check document properties such as title and author before sharing a file.',
-        'recipe-scaler': 'Scale recipe ingredients for more or fewer servings. Adjust quantities and fractions online, then review seasonings and cooking times.'
+        'pdf-metadata-editor': 'View and edit common PDF document-information fields, or clear supported fields before sharing. This is not a full PDF sanitization tool.',
+        'recipe-scaler': 'Scale recipe ingredients for more or fewer servings. Adjust quantities and fractions online, then review seasonings and cooking times.',
+        'meta-description-generator': 'Draft meta description ideas from a page title and summary. Compare template-based variations, check character counts, and edit before publishing.',
+        'meeting-cost-calculator': 'Track a meeting\'s live cost from participant hourly rates and elapsed time. Add attendees, pause or reset the timer, and view cost projections.'
       };
       for (const tool of categoryTools) {
         if (requiredShortDescriptions[tool.slug] && tool.seo?.metaDescription !== requiredShortDescriptions[tool.slug]) {
