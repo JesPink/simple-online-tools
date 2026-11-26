@@ -157,7 +157,7 @@ async function buildSite() {
         .replace(/<!--SEO_TITLE-->/g, metaTitle)
         .replace(/<!--SEO_DESCRIPTION-->/g, metaDescription)
         .replace(/<!--SEO_KEYWORDS-->/g, metaKeywords)
-        .replace(/<!--SEO_H1_TITLE-->/g, tool.title) // For server-side H1
+        .replace(/<!--SEO_H1_TITLE-->/g, tool.title.split(' | ')[0].trim()) // Keep the visible H1 concise
         .replace(/<!--SEO_H1_DESCRIPTION-->/g, tool.description) // For server-side description
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/tools/${tool.slug}/`)
         .replace('<!--CANONICAL_URL-->', (() => { const raw = tool.seo?.canonicalUrl || `/tools/${tool.slug}/`; const url = raw.endsWith('/') ? raw : raw + '/'; return `<link rel="canonical" href="https://simpleonlinetool.com${url}">`; })())
@@ -224,7 +224,7 @@ async function buildSite() {
       const webApplicationSchema = {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": tool.title,
+        "name": tool.title.split(' | ')[0].trim(),
         "description": tool.description,
         "url": `https://simpleonlinetool.com/tools/${tool.slug}/`,
         "applicationCategory": "UtilityApplication",
@@ -593,7 +593,7 @@ function generateStaticToolListingHtml(toolRegistry, categorySlug = null) {
     .map((tool) => `
             <li>
               <a href="/tools/${tool.slug}/">
-                <strong>${tool.title}</strong>
+                <strong>${tool.title.split(' | ')[0].trim()}</strong>
               </a>
               ${tool.description ? `<p>${tool.description}</p>` : ''}
             </li>`)
