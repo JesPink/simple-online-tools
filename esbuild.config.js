@@ -494,7 +494,7 @@ function generateSitemap(toolRegistry) {
   const baseUrl = 'https://simpleonlinetool.com';
   // Dates reflect the last significant source changes, not the current build date.
   const staticPages = [
-    { name: 'about', lastModified: '2026-11-24' },
+    { name: 'about', lastModified: '2026-11-26' },
     { name: 'privacy', lastModified: '2026-11-24' },
     { name: 'terms', lastModified: '2026-11-24' },
     { name: 'contact', lastModified: '2026-11-24' }
