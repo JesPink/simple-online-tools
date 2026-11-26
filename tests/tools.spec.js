@@ -196,6 +196,18 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('.tool-results')).toBeVisible();
   });
 
+  test('should show explicit feedback when no passive patterns are found', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The manager wrote the report.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#passive-count')).toHaveText('0');
+    await expect(page.locator('#suggestions-container')).toBeVisible();
+    await expect(page.locator('#suggestions-container .no-suggestions')).toContainText('No passive-voice patterns detected');
+  });
+
   test('should identify a clear passive construction', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
@@ -212,11 +224,12 @@ test.describe('Passive Voice Detector Functionality', () => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
 
-    const content = page.locator('.seo-content');
-    await expect(content).toContainText('rule-based');
+    const content = page.locator('body');
+    await expect(content).toContainText('heuristic pattern-based checker');
     await expect(content).toContainText('false positives');
     await expect(content).toContainText('There is no reason to rewrite every passive sentence for SEO.');
     await expect(content).not.toContainText('readability analyzer');
+
   });
 });
 
@@ -240,7 +253,7 @@ test.describe('Value Proposition Generator Functionality', () => {
     await page.goto('/tools/value-proposition-generator/');
     await page.waitForLoadState('networkidle');
 
-    const content = page.locator('.seo-content');
+    const content = page.locator('body');
     await expect(content).toContainText('predefined sentence templates');
     await expect(content).toContainText('does not call an AI service');
     await expect(content).toContainText('does not see competitor products');
@@ -284,13 +297,13 @@ test.describe('Value Proposition Generator Functionality', () => {
 // ============================================================
 
 test.describe('Meeting Cost Calculator Functionality', () => {
-  test('should have number inputs', async ({ page }) => {
+  test('should expose participant name and hourly-rate inputs', async ({ page }) => {
     await page.goto('/tools/meeting-cost-calculator/');
     await page.waitForLoadState('networkidle');
-    
-    const numberInputs = page.locator('input[type="number"]');
-    const count = await numberInputs.count();
-    expect(count).toBeGreaterThanOrEqual(2);
+
+    await expect(page.locator('#participant-name')).toBeVisible();
+    await expect(page.locator('#hourly-rate')).toBeVisible();
+    await expect(page.locator('#hourly-rate')).toHaveAttribute('type', 'number');
   });
   
   test('should have start button', async ({ page }) => {
