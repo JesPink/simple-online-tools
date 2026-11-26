@@ -371,8 +371,8 @@
   },
   {
     "slug": "meta-description-generator",
-    "title": "Meta Description Generator | Free SEO Tool",
-    "description": "Generate SEO-optimized meta descriptions instantly. Create compelling meta descriptions with tone control, keyword targeting, and copy functionality.",
+    "title": "Meta Description Generator | Free Online Tool",
+    "description": "Draft meta description ideas from a page title and summary. Compare template-based variations, check character counts, and edit before publishing.",
     "keywords": "meta description generator, meta description creator, seo description generator, meta description maker, meta description writer, free meta description generator",
     "category": "text-tools",
     "primaryCategory": "seo-and-marketing",
@@ -389,7 +389,7 @@
     "jsPath": "/tools/meta-description-generator/index.js",
     "author": "Simple Online Tools",
     "datePublished": "2025-01-16",
-    "dateModified": "2025-01-16",
+    "dateModified": "2026-11-26",
     "relatedTools": [
       {
         "slug": "word-counter",
@@ -409,8 +409,8 @@
     ],
     "seo": {
       "focusKeyword": "meta description generator",
-      "metaTitle": "Meta Description Generator – Write SEO Snippets",
-      "metaDescription": "Generate SEO-optimized meta descriptions instantly. Create compelling meta descriptions with tone control and keyword targeting.",
+      "metaTitle": "Meta Description Generator – Draft Search Snippets",
+      "metaDescription": "Draft meta description ideas from a page title and summary. Compare template-based variations, check character counts, and edit before publishing.",
       "canonicalUrl": "/tools/meta-description-generator/",
       "lastModified": "2026-11-25",
       "author": "Simple Online Tools",
