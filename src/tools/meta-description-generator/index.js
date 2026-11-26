@@ -52,7 +52,7 @@ export function render() {
               </div>
               <div class="result-actions">
                 <button class="btn btn-primary" id="copy-btn" disabled>Copy to Clipboard</button>
-                <button class="btn btn-secondary" id="regenerate-btn" disabled>Regenerate</button>
+                <button class="btn btn-secondary" id="regenerate-btn" disabled>Rebuild Drafts</button>
               </div>
             </div>
           </div>
@@ -147,11 +147,13 @@ export async function init() {
         tone === 'creative' ? 'Discover' :
         tone === 'informative' ? 'Learn about' : 'Use';
 
-      const candidates = [
-        base,
-        cleanTitle && cleanSummary ? cleanTitle + ': ' + cleanSummary : focus + ': ' + base,
-        action + ' ' + focus + '. ' + base
-      ];
+      const candidates = [base];
+      if (cleanTitle && cleanSummary) {
+        candidates.push(cleanTitle + ': ' + cleanSummary);
+      }
+      if (focus && focus.toLowerCase() !== base.toLowerCase()) {
+        candidates.push(action + ' ' + focus + '. ' + base);
+      }
       const variants = [];
       candidates.forEach((candidate) => {
         const text = polishGrammar(candidate);
@@ -163,7 +165,7 @@ export async function init() {
       generatedVariants = variants.slice(0, 3);
       currentMetaDescription = generatedVariants[0].text;
       displayResult(currentMetaDescription, generatedVariants, isExpandedView);
-      regenerateBtn.textContent = isExpandedView ? 'Regenerate All' : 'Regenerate';
+      regenerateBtn.textContent = isExpandedView ? 'Rebuild All Drafts' : 'Rebuild Drafts';
     } catch (error) {
       console.error('Generation failed:', error);
       showError('Failed to generate meta description. Please try again.');
@@ -220,7 +222,7 @@ export async function init() {
         `;
       });
       resultHtml += `</div>`;
-      regenerateBtn.textContent = 'Regenerate All';
+      regenerateBtn.textContent = 'Rebuild All Drafts';
     }
 
     metaPreview.innerHTML = resultHtml;
@@ -234,7 +236,7 @@ export async function init() {
         currentMetaDescription = variantText;
         isExpandedView = false;
         displayResult(variantText, [{ text: variantText }], false);
-        regenerateBtn.textContent = 'Regenerate';
+        regenerateBtn.textContent = 'Rebuild Drafts';
       });
     });
 
