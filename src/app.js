@@ -263,7 +263,7 @@ class ToolsApp {
       toolContainer.innerHTML = `
         ${breadcrumbs}
         <div class="tool-header">
-          <h1>${toolConfig.title}</h1>
+          <h1>${this.getDisplayToolName(toolConfig)}</h1>
           <p class="tool-description">${toolConfig.description}</p>
         </div>
         ${toolHTML}
@@ -330,7 +330,7 @@ class ToolsApp {
         homepageHTML += `
           <div class="tool-card">
             <a href="/tools/${tool.slug}/" class="tool-link">
-              <h3>${tool.title}</h3>
+              <h3>${this.getDisplayToolName(tool)}</h3>
               <p>${tool.description}</p>
               <span class="tool-arrow">→</span>
             </a>
@@ -375,8 +375,7 @@ class ToolsApp {
         <div class="category-header">
           <h1>${categoryName}</h1>
           <p class="category-description">
-            Explore our collection of ${categoryName.toLowerCase()} tools. 
-            All tools are free, fast, and work directly in your browser.
+            Explore our ${categoryName.toLowerCase()} collection. These free tools run in your browser and support common tasks in this category.
           </p>
         </div>
         
@@ -388,7 +387,7 @@ class ToolsApp {
       categoryHTML += `
         <div class="tool-card">
           <a href="/tools/${tool.slug}/" class="tool-link">
-            <h3>${tool.title}</h3>
+            <h3>${this.getDisplayToolName(tool)}</h3>
             <p>${tool.description}</p>
             <span class="tool-arrow">→</span>
           </a>
@@ -418,8 +417,20 @@ class ToolsApp {
     return grouped;
   }
 
+  getDisplayToolName(tool) {
+    return String(tool?.title || tool?.name || '').split(' | ')[0].trim();
+  }
+
   formatCategoryName(category) {
-    return category
+    const labels = {
+      'text-and-writing': 'Text & Writing Tools',
+      'productivity-and-business': 'Productivity & Business Tools',
+      'files-and-docs': 'Files & Documents',
+      'seo-and-marketing': 'SEO & Marketing Tools',
+      'utilities-and-conversion': 'Utilities & Conversion Tools'
+    };
+
+    return labels[category] || category
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
@@ -427,14 +438,15 @@ class ToolsApp {
 
   createBreadcrumbs(toolConfig) {
     const categoryName = this.formatCategoryName(toolConfig.primaryCategory);
-    
+    const toolName = this.getDisplayToolName(toolConfig);
+
     return `
       <nav class="breadcrumbs">
         <a href="/">Home</a>
         <span class="breadcrumb-separator">›</span>
         <a href="/category/${toolConfig.primaryCategory}/">${categoryName}</a>
         <span class="breadcrumb-separator">›</span>
-        <span class="breadcrumb-current">${toolConfig.title}</span>
+        <span class="breadcrumb-current">${toolName}</span>
       </nav>
     `;
   }
