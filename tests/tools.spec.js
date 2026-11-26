@@ -443,7 +443,7 @@ test.describe('SEO content accuracy', () => {
     await page.goto('/tools/meta-description-generator/');
     await page.waitForLoadState('networkidle');
 
-    const summary = String.raw`Keep \\s+ and C:\\temp\\files exactly as written.`;
+    const summary = String.raw`Keep \s+ and C:\temp\files exactly as written.`;
     await page.locator('#content-summary').fill(summary);
     await page.locator('#generate-btn').click();
 
