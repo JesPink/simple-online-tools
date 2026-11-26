@@ -17,8 +17,8 @@ export function render() {
                 <small id="content-summary-help" class="form-help">Briefly describe what your page is about</small>
               </div>
               <div class="form-group">
-                <label for="target-keyword">Target Keyword (Optional)</label>
-                <input type="text" id="target-keyword" placeholder="Primary keyword to include..." aria-describedby="target-keyword-help" />
+                <label for="target-keyword">Relevant Search Phrase (Optional)</label>
+                <input type="text" id="target-keyword" placeholder="A phrase that accurately describes the page..." aria-describedby="target-keyword-help" />
                 <small id="target-keyword-help" class="form-help">Use a relevant phrase only if it accurately describes this page</small>
               </div>
               <div class="form-group">
@@ -26,7 +26,7 @@ export function render() {
                 <select id="tone-select" aria-describedby="tone-select-help">
                   <option value="professional">Professional</option>
                   <option value="friendly">Friendly</option>
-                  <option value="urgent">Urgent</option>
+                  <option value="urgent">Action-oriented</option>
                   <option value="informative">Informative</option>
                   <option value="creative">Creative</option>
                 </select>
@@ -145,7 +145,7 @@ export async function init() {
       const action = tone === 'friendly' ? 'Explore' :
         tone === 'urgent' ? 'Find' :
         tone === 'creative' ? 'Discover' :
-        tone === 'informative' ? 'Learn about' : 'See';
+        tone === 'informative' ? 'Learn about' : 'Use';
 
       const candidates = [
         base,
