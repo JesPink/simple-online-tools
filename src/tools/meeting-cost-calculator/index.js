@@ -22,7 +22,7 @@ export function render() {
                   <option value="INR">INR (₹) - Indian Rupee</option>
                   <option value="BRL">BRL (R$) - Brazilian Real</option>
                 </select>
-                <small class="currency-help">Note: All participant rates will be displayed in the selected currency</small>
+                <small class="currency-help">Choose one currency for all rates. Changing it changes display format only; it does not convert amounts.</small>
               </div>
               
               <div class="section-title">Add Participants</div>
@@ -211,7 +211,22 @@ export async function init() {
     }
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[character]);
+  }
+
   function updateParticipantsList() {
+    const participantsLocked = isRunning || isPaused;
+    participantNameInput.disabled = participantsLocked;
+    hourlyRateInput.disabled = participantsLocked;
+    addParticipantBtn.disabled = participantsLocked;
+
     if (participants.length === 0) {
       participantsList.innerHTML = '';
       return;
@@ -220,20 +235,17 @@ export async function init() {
     const listHtml = participants.map(participant => `
       <div class="participant-item">
         <div class="participant-info">
-          <span class="participant-name">${participant.name}</span>
+          <span class="participant-name">${escapeHtml(participant.name)}</span>
           <span class="participant-rate">${formatCurrency(participant.rate)}/hour</span>
         </div>
-        <button class="btn btn-secondary remove-btn" data-id="${participant.id}">Remove</button>
+        <button class="btn btn-secondary remove-btn" data-id="${participant.id}" ${participantsLocked ? 'disabled' : ''}>Remove</button>
       </div>
     `).join('');
 
     participantsList.innerHTML = listHtml;
-
-    // Add event listeners to remove buttons
-    const removeButtons = participantsList.querySelectorAll('.remove-btn');
-    removeButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = parseInt(e.target.getAttribute('data-id'));
+    participantsList.querySelectorAll('.remove-btn').forEach(btn => {
+      btn.addEventListener('click', (event) => {
+        const id = parseInt(event.currentTarget.getAttribute('data-id'), 10);
         removeParticipant(id);
       });
     });
@@ -249,22 +261,29 @@ export async function init() {
       startTime = Date.now() - pausedTime;
       isRunning = true;
       isPaused = false;
-      
+      updateParticipantsList();
+
       timerInterval = setInterval(updateTimer, 100);
-      
       startTimerBtn.textContent = 'Meeting Running...';
       startTimerBtn.disabled = true;
       pauseTimerBtn.disabled = false;
       resetTimerBtn.disabled = false;
+      updateTimer();
     }
   }
 
   function pauseTimer() {
     if (isRunning && !isPaused) {
+      pausedTime = Date.now() - startTime;
       isPaused = true;
       isRunning = false;
       clearInterval(timerInterval);
-      
+
+      timerDisplay.textContent = formatTime(pausedTime);
+      costDisplay.textContent = formatCurrency(calculateCurrentCost(pausedTime));
+      updateResults(pausedTime);
+      updateParticipantsList();
+
       startTimerBtn.textContent = 'Resume Meeting';
       startTimerBtn.disabled = false;
       pauseTimerBtn.disabled = true;
@@ -277,16 +296,17 @@ export async function init() {
     isPaused = false;
     startTime = null;
     pausedTime = 0;
-    
+
     timerDisplay.textContent = '00:00:00';
-    costDisplay.textContent = '$0.00';
-    
+    costDisplay.textContent = formatCurrency(0);
+
     startTimerBtn.textContent = 'Start Meeting';
     startTimerBtn.disabled = false;
     pauseTimerBtn.disabled = true;
     resetTimerBtn.disabled = true;
-    
-    updateResults();
+
+    updateParticipantsList();
+    updateResults(0);
   }
 
   function updateTimer() {
@@ -311,7 +331,6 @@ export async function init() {
 
     const totalHourlyRate = calculateTotalHourlyRate();
     const currentCost = calculateCurrentCost(elapsedTime);
-    const projectedHourCost = totalHourlyRate;
 
     const resultsHtml = `
       <div class="cost-breakdown">
@@ -365,13 +384,14 @@ export async function init() {
   // Currency change handler
   const currencySelect = document.getElementById('currency-select');
   currencySelect.addEventListener('change', () => {
-    // Update display for all existing participants and calculations
     updateParticipantsList();
-    if (isRunning || isPaused) {
-      updateResults();
-    }
+    const elapsedTime = isRunning && startTime
+      ? Date.now() - startTime
+      : isPaused ? pausedTime : 0;
+    costDisplay.textContent = formatCurrency(calculateCurrentCost(elapsedTime));
+    updateResults(elapsedTime);
   });
-  
+
   // Enter key support for form fields
   participantNameInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
