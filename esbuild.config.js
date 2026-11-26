@@ -245,57 +245,7 @@ async function buildSite() {
         "isAccessibleForFree": true
       };
 
-      // Create HowTo schema for tool usage
-      const howToSchema = {
-        "@context": "https://schema.org",
-        "@type": "HowTo",
-        "name": `How to Use ${tool.title}`,
-        "description": `Step-by-step guide on using our ${tool.title.toLowerCase()} tool.`,
-        "totalTime": "PT2M",
-        "estimatedCost": {
-          "@type": "MonetaryAmount",
-          "currency": "USD",
-          "value": "0"
-        },
-        "supply": [
-          {
-            "@type": "HowToSupply",
-            "name": "Web Browser"
-          },
-          {
-            "@type": "HowToSupply", 
-            "name": "Internet Connection"
-          }
-        ],
-        "tool": [
-          {
-            "@type": "HowToTool",
-            "name": tool.title
-          }
-        ],
-        "step": [
-          {
-            "@type": "HowToStep",
-            "position": 1,
-            "name": "Open the Tool",
-            "text": `Navigate to the ${tool.title} page on our website.`,
-            "url": `https://simpleonlinetool.com/tools/${tool.slug}/`
-          },
-          {
-            "@type": "HowToStep",
-            "position": 2,
-            "name": "Input Your Data",
-            "text": `Enter or paste your content into the input field.`
-          },
-          {
-            "@type": "HowToStep",
-            "position": 3,
-            "name": "Get Results",
-            "text": `View the instant results and analysis provided by our tool.`
-          }
-        ]
-      };
-
+      // Keep structured data aligned with supported search features and the actual page.
       // Add breadcrumb structured data
       const categoryName = tool.primaryCategory
         .split('-')
@@ -333,7 +283,7 @@ async function buildSite() {
       // Create the comprehensive schema markup script tags (including FAQ if found)
       let schemaMarkup = `
     <script type="application/ld+json">${JSON.stringify(webApplicationSchema, null, 2)}</script>
-    <script type="application/ld+json">${JSON.stringify(howToSchema, null, 2)}</script>
+
     <script type="application/ld+json">${JSON.stringify(breadcrumbSchema, null, 2)}</script>`;
       
       if (faqSchema) {
