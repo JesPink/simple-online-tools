@@ -142,7 +142,7 @@ export async function init() {
     { focus: 'feature', text: "For {audience}, {product} brings together {feature} and support for {problem}." },
     { focus: 'feature', text: "{feature} gives {audience} another way to work with {product} on {problem}." },
     { focus: 'benefit', text: "With {feature}, {product} helps {audience} work toward {benefit}." },
-    { focus: 'benefit', text: "{product} gives {audience} {feature} in support of {benefit}." },
+    { focus: 'benefit', text: "{product} helps {audience} pursue {benefit} by using {feature}." },
     { focus: 'benefit', text: "Work toward {benefit} with {feature} from {product}, designed for {audience}." },
     { focus: 'benefit', text: "For {audience}, {product} combines {feature} with a focus on {benefit}." },
     { focus: 'benefit', text: "{product} uses {feature} to help {audience} pursue {benefit}." }
