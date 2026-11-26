@@ -470,10 +470,11 @@ export async function init() {
   ]);
 
   function hasLikelyAgentByPhrase(sentence) {
-    const match = sentence.toLowerCase().match(/\bby\s+(?:(?:the|a|an|this|that|these|those)\s+)?([a-z][a-z'-]*)/);
-    if (!match) return false;
-    const object = match[1];
-    return !NON_AGENT_BY_OBJECTS.has(object) && !object.endsWith('ing');
+    for (const match of sentence.toLowerCase().matchAll(/\bby\s+(?:(?:the|a|an|this|that|these|those)\s+)?([a-z][a-z'-]*)/g)) {
+      const object = match[1];
+      if (!NON_AGENT_BY_OBJECTS.has(object) && !object.endsWith('ing')) return true;
+    }
+    return false;
   }
 
   // Context filtering adjusts heuristic scores; it does not produce calibrated accuracy probabilities.
