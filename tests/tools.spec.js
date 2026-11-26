@@ -409,3 +409,47 @@ test.describe('Recipe Scaler Functionality', () => {
     await expect(page.locator('#scaled-recipe')).toContainText('10.5 cups flour');
   });
 });
+
+// ============================================================
+// SEO CONTENT ACCURACY REGRESSION TESTS
+// ============================================================
+
+test.describe('SEO content accuracy', () => {
+  test('meta description drafts use supplied details without fabricated claims', async ({ page }) => {
+    await page.goto('/tools/meta-description-generator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#page-title').fill('Remote Work Policy');
+    await page.locator('#content-summary').fill('Explains eligibility, equipment, and communication expectations for remote employees.');
+    await page.locator('#target-keyword').fill('remote work policy');
+    await page.locator('#tone-select').selectOption('urgent');
+    await page.locator('#generate-btn').click();
+
+    const draft = page.locator('.meta-text').first();
+    await expect(draft).toContainText('Explains eligibility');
+    await expect(draft).not.toContainText(/limited time|trusted by thousands|guaranteed|top-rated/i);
+    await expect(page.locator('#length-status')).toContainText('Google');
+
+    await page.locator('#show-more-btn').click();
+    await expect(page.locator('.variant-label')).toHaveCount(2);
+    await expect(page.locator('.variant-score')).toHaveCount(0);
+  });
+
+  test('recipe scaler explains its actual unit and cooking limitations', async ({ page }) => {
+    await page.goto('/tools/recipe-scaler/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('.seo-content');
+    await expect(content).toContainText('does not convert between');
+    await expect(content).toContainText('does not adjust oven temperature, cooking time');
+    await expect(content).not.toContainText('automatic conversion between metric and imperial');
+  });
+
+  test('tool pages do not emit generic HowTo structured data', async ({ page }) => {
+    await page.goto('/tools/word-counter/');
+    await page.waitForLoadState('networkidle');
+
+    const schemaText = await page.locator('script[type="application/ld+json"]').allTextContents();
+    expect(schemaText.join('\n')).not.toContain('"@type": "HowTo"');
+  });
+});
