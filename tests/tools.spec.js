@@ -427,13 +427,27 @@ test.describe('SEO content accuracy', () => {
     await page.locator('#generate-btn').click();
 
     const draft = page.locator('.meta-text').first();
-    await expect(draft).toContainText('Explains eligibility');
-    await expect(draft).not.toContainText(/limited time|trusted by thousands|guaranteed|top-rated/i);
+    const summary = 'Explains eligibility, equipment, and communication expectations for remote employees.';
+    await expect(draft).toHaveText(summary);
     await expect(page.locator('#length-status')).toContainText('Google');
 
     await page.locator('#show-more-btn').click();
-    await expect(page.locator('.variant-label')).toHaveCount(2);
+    const alternatives = page.locator('.variant-text');
+    await expect(alternatives).toHaveCount(2);
+    await expect(alternatives.nth(0)).toHaveText('Remote Work Policy: ' + summary);
+    await expect(alternatives.nth(1)).toHaveText('Find remote work policy. ' + summary);
     await expect(page.locator('.variant-score')).toHaveCount(0);
+  });
+
+  test('meta generator preserves literal backslash sequences in summaries', async ({ page }) => {
+    await page.goto('/tools/meta-description-generator/');
+    await page.waitForLoadState('networkidle');
+
+    const summary = String.raw`Keep \\s+ and C:\\temp\\files exactly as written.`;
+    await page.locator('#content-summary').fill(summary);
+    await page.locator('#generate-btn').click();
+
+    await expect(page.locator('.meta-text').first()).toHaveText(summary);
   });
 
   test('meta description preview treats supplied HTML as text', async ({ page }) => {
