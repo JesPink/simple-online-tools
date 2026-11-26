@@ -139,7 +139,7 @@ export async function init() {
 
     try {
       const cleanTitle = tidy(title).replace(/\s+/g, ' ').trim();
-      const cleanSummary = tidy(summary).replace(/\\s+/g, ' ').trim();
+      const cleanSummary = tidy(summary).replace(/\s+/g, ' ').trim();
       const focus = keyword || cleanTitle || cleanSummary;
       const base = cleanSummary || cleanTitle;
       const action = tone === 'friendly' ? 'Explore' :
