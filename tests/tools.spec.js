@@ -506,7 +506,11 @@ test.describe('SEO content accuracy', () => {
     expect(breadcrumbSchemas).toHaveLength(1);
     const breadcrumb = breadcrumbSchemas[0];
     const visibleBreadcrumbs = await page.locator('.breadcrumbs a, .breadcrumbs .breadcrumb-current').allTextContents();
+    const visibleToolName = visibleBreadcrumbs.at(-1).trim();
     expect(breadcrumb.itemListElement.map((item) => item.name)).toEqual(visibleBreadcrumbs.map((name) => name.trim()));
+    await expect(page.locator('#tool-container h1')).toHaveText(visibleToolName);
+    const webApplication = schemas.find((schema) => schema['@type'] === 'WebApplication');
+    expect(webApplication.name).toBe(visibleToolName);
   });
 });
 
