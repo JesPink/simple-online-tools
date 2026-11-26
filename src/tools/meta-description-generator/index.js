@@ -52,7 +52,7 @@ export function render() {
               </div>
               <div class="result-actions">
                 <button class="btn btn-primary" id="copy-btn" disabled>Copy to Clipboard</button>
-                <button class="btn btn-secondary" id="regenerate-btn" disabled>Rebuild Drafts</button>
+                
               </div>
             </div>
           </div>
@@ -108,7 +108,6 @@ export async function init() {
   const generateBtn = document.getElementById('generate-btn');
   const clearBtn = document.getElementById('clear-btn');
   const copyBtn = document.getElementById('copy-btn');
-  const regenerateBtn = document.getElementById('regenerate-btn');
   const metaPreview = document.getElementById('meta-preview');
   const charCount = document.getElementById('char-count');
   const lengthStatus = document.getElementById('length-status');
@@ -165,7 +164,6 @@ export async function init() {
       generatedVariants = variants.slice(0, 3);
       currentMetaDescription = generatedVariants[0].text;
       displayResult(currentMetaDescription, generatedVariants, isExpandedView);
-      regenerateBtn.textContent = isExpandedView ? 'Rebuild All Drafts' : 'Rebuild Drafts';
     } catch (error) {
       console.error('Generation failed:', error);
       showError('Failed to generate meta description. Please try again.');
@@ -222,13 +220,11 @@ export async function init() {
         `;
       });
       resultHtml += `</div>`;
-      regenerateBtn.textContent = 'Rebuild All Drafts';
     }
 
     metaPreview.innerHTML = resultHtml;
     updateCharacterCount(bestMeta);
     copyBtn.disabled = false;
-    regenerateBtn.disabled = false;
 
     metaPreview.querySelectorAll('.use-variant-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -236,7 +232,6 @@ export async function init() {
         currentMetaDescription = variantText;
         isExpandedView = false;
         displayResult(variantText, [{ text: variantText }], false);
-        regenerateBtn.textContent = 'Rebuild Drafts';
       });
     });
 
@@ -262,7 +257,6 @@ export async function init() {
     charCount.textContent = '0';
     lengthStatus.textContent = '';
     copyBtn.disabled = true;
-    regenerateBtn.disabled = true;
   }
 
   function clearAll() {
@@ -274,7 +268,6 @@ export async function init() {
     charCount.textContent = '0';
     lengthStatus.textContent = '';
     copyBtn.disabled = true;
-    regenerateBtn.disabled = true;
     currentMetaDescription = '';
     generatedVariants = [];
   }
@@ -316,10 +309,6 @@ export async function init() {
   generateBtn.addEventListener('click', generateMetaDescription);
   clearBtn.addEventListener('click', clearAll);
   copyBtn.addEventListener('click', copyToClipboard);
-  regenerateBtn.addEventListener('click', () => {
-    // Force regeneration with different random selections
-    generateMetaDescription();
-  });
   
   // Real-time preview with debouncing
   pageTitleInput.addEventListener('input', debouncedPreview);
