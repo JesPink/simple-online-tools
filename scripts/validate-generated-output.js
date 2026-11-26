@@ -180,7 +180,7 @@ else {
   const registry = JSON.parse(fs.readFileSync(path.resolve('src/tool-registry.json'), 'utf8'));
   const categories = [...new Set(registry.map(tool => tool.primaryCategory))];
   const expectedLastModified = new Map([
-    ['https://simpleonlinetool.com/about/', '2026-11-24'],
+    ['https://simpleonlinetool.com/about/', '2026-11-26'],
     ['https://simpleonlinetool.com/privacy/', '2026-11-24'],
     ['https://simpleonlinetool.com/terms/', '2026-11-24'],
     ['https://simpleonlinetool.com/contact/', '2026-11-24'],
