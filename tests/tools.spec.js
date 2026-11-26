@@ -256,7 +256,7 @@ test.describe('Value Proposition Generator Functionality', () => {
     const content = page.locator('body');
     await expect(content).toContainText('predefined sentence templates');
     await expect(content).toContainText('does not call an AI service');
-    await expect(content).toContainText('does not see competitor products');
+    await expect(content).toContainText('cannot see competitor products');
   });
 
   test('should generate useful drafts without inventing evidence-based claims', async ({ page }) => {
