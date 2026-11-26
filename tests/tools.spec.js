@@ -520,7 +520,7 @@ test.describe('SEO content accuracy', () => {
     const content = page.locator('#tool-container .seo-content');
     await expect(content).toContainText('Combined hourly rate');
     await expect(content).toContainText('elapsed time in hours');
-    await expect(content).toContainText('does not measure meeting outcomes');
+    await expect(content).toContainText('Not measured: Meeting quality, business value');
     await expect(content).not.toContainText('37% of their time in meetings');
     await expect(content).not.toContainText('Long-Term Meeting ROI Analysis');
   });
