@@ -364,59 +364,38 @@ export async function init() {
     }
 
     try {
-      // Analyze content to choose the best pattern
-      const analysis = analyzeContent(title, summary, keyword);
-      
-      // Generate 3 high-quality variants using proven SEO patterns
-      const variants = [];
-      
-      // Always generate at least one of each type to ensure variety
-      const methods = [
-        () => buildMetaDescription(title, summary, keyword, tone, analysis),
-        () => createVariation1('', title, summary, keyword, tone, analysis),
-        () => createVariation2('', title, summary, keyword, tone, analysis)
+      const cleanTitle = tidy(title).replace(/\\s+/g, ' ').trim();
+      const cleanSummary = tidy(summary).replace(/\\s+/g, ' ').trim();
+      const focus = keyword || cleanTitle || cleanSummary;
+      const base = cleanSummary || cleanTitle;
+      const action = tone === 'friendly' ? 'Explore' :
+        tone === 'urgent' ? 'Find' :
+        tone === 'creative' ? 'Discover' :
+        tone === 'informative' ? 'Learn about' : 'See';
+
+      const candidates = [
+        base,
+        cleanTitle && cleanSummary ? cleanTitle + ': ' + cleanSummary : focus + ': ' + base,
+        action + ' ' + focus + '. ' + base
       ];
-      
-      // Randomize the order but ensure we use all 3 methods
-      const shuffledMethods = [...methods].sort(() => Math.random() - 0.5);
-      
-      for (let i = 0; i < 3; i++) {
-        let meta = shuffledMethods[i]();
-        
-        // Ensure proper keyword integration
-        if (keyword && !meta.toLowerCase().includes(keyword.toLowerCase())) {
-          meta = integrateKeyword(meta, keyword);
+      const variants = [];
+      candidates.forEach((candidate) => {
+        const text = polishGrammar(candidate);
+        if (text && !variants.some((variant) => variant.text.toLowerCase() === text.toLowerCase())) {
+          variants.push({ text });
         }
-        
-        // Final optimization
-        meta = optimizeLength(meta);
-        meta = polishGrammar(meta);
-        
-        const score = scoreMetaDescription(meta, keyword);
-        variants.push({ text: meta, score: score });
-      }
-      
-      // Sort by score
-      variants.sort((a, b) => b.score - a.score);
-      
-      generatedVariants = variants;
-      currentMetaDescription = variants[0].text;
-      
-      displayResult(variants[0].text, variants, isExpandedView); // Preserve current view state
-      
-      // Update button text based on view state
-      if (isExpandedView && variants.length > 1) {
-        regenerateBtn.textContent = 'Regenerate All';
-      } else {
-        regenerateBtn.textContent = 'Regenerate';
-      }
-      
+      });
+
+      generatedVariants = variants.slice(0, 3);
+      currentMetaDescription = generatedVariants[0].text;
+      displayResult(currentMetaDescription, generatedVariants, isExpandedView);
+      regenerateBtn.textContent = isExpandedView ? 'Regenerate All' : 'Regenerate';
     } catch (error) {
       console.error('Generation failed:', error);
       showError('Failed to generate meta description. Please try again.');
     }
   }
-  
+
   function createVariation1(baseMeta, title, summary, keyword, tone, analysis) {
     // Alternative approach for variation with expanded patterns
     const focus = keyword || extractMainConcept(title);
@@ -589,7 +568,7 @@ export async function init() {
         resultHtml += `
           <div class="variant-option" data-variant="${index + 1}">
             <div class="variant-text">${variant.text}</div>
-            <div class="variant-score">Score: ${variant.score}/100</div>
+            <div class="variant-label">Alternative ${index + 1}</div>
             <button class="btn btn-secondary btn-sm use-variant-btn" data-text="${variant.text.replace(/"/g, '&quot;')}">Use This</button>
           </div>
         `;
@@ -613,7 +592,7 @@ export async function init() {
         const variantText = e.target.getAttribute('data-text').replace(/&quot;/g, '"');
         currentMetaDescription = variantText;
         isExpandedView = false; // Reset to minimal view when selecting a variant
-        displayResult(variantText, [{ text: variantText, score: scoreMetaDescription(variantText, targetKeywordInput.value.trim()) }], false);
+        displayResult(variantText, [{ text: variantText }], false);
         regenerateBtn.textContent = 'Regenerate'; // Reset button text
       });
     });
@@ -630,17 +609,13 @@ export async function init() {
   function updateCharacterCount(text) {
     const length = text.length;
     charCount.textContent = length;
-    
-    // Update length status with color coding
-    if (length < 120) {
-      lengthStatus.textContent = '(Too short - aim for 120-160)';
-      lengthStatus.className = 'length-status warning';
-    } else if (length >= 120 && length <= 160) {
-      lengthStatus.textContent = '(Perfect length ✓)';
-      lengthStatus.className = 'length-status success';
+
+    if (length <= 160) {
+      lengthStatus.textContent = '(Common drafting range, not a Google limit)';
+      lengthStatus.className = 'length-status';
     } else {
-      lengthStatus.textContent = '(Too long - may be truncated)';
-      lengthStatus.className = 'length-status warning';
+      lengthStatus.textContent = '(Google may shorten snippets to fit the query and device)';
+      lengthStatus.className = 'length-status';
     }
   }
 
