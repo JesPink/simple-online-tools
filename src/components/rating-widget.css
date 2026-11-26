@@ -138,7 +138,7 @@
 
 .rating-count {
   font-size: 0.75rem;
-  color: var(--text-tertiary, #9ca3af);
+  color: var(--text-secondary, #475569);
   font-style: italic;
 }
 
