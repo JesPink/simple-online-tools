@@ -435,6 +435,18 @@ test.describe('SEO content accuracy', () => {
     await expect(page.locator('.variant-score')).toHaveCount(0);
   });
 
+  test('meta description preview treats supplied HTML as text', async ({ page }) => {
+    await page.goto('/tools/meta-description-generator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#page-title').fill('Example page');
+    await page.locator('#content-summary').fill('<img src=x onerror="window.__injected=true"> describes the page.');
+    await page.locator('#generate-btn').click();
+
+    await expect(page.locator('#meta-preview img')).toHaveCount(0);
+    await expect(page.locator('#meta-preview')).toContainText('<img');
+  });
+
   test('recipe scaler explains its actual unit and cooking limitations', async ({ page }) => {
     await page.goto('/tools/recipe-scaler/');
     await page.waitForLoadState('networkidle');
