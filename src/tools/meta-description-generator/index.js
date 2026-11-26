@@ -174,90 +174,87 @@ export async function init() {
     return tidy(meta);
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>\"']/g, (character) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '\"': '&quot;',
+      "'": '&#39;'
+    })[character]);
+  }
+
   function displayResult(bestMeta, variants = [], showAll = false) {
-    // Update view state tracking
     isExpandedView = showAll;
-    
+    const safeTitle = escapeHtml(pageTitleInput.value || 'Your Page Title');
+    const safeMeta = escapeHtml(bestMeta);
+
     let resultHtml = `
       <div class="serp-preview">
-        <div class="serp-title">${pageTitleInput.value || 'Your Page Title'}</div>
-        <div class="serp-url">https://yoursite.com/page-url</div>
-        <div class="serp-description">${bestMeta}</div>
+        <div class="serp-title">${safeTitle}</div>
+        <div class="serp-url">example.com/page</div>
+        <div class="serp-description">${safeMeta}</div>
       </div>
       <div class="meta-result-primary">
         <strong>Generated Description:</strong>
-        <div class="meta-text">${bestMeta}</div>
+        <div class="meta-text">${safeMeta}</div>
       </div>
     `;
-    
-    // Smart display logic
+
     if (!showAll && variants.length > 1) {
-      // Show "Generate More Options" button
       resultHtml += `
         <div class="more-options-section">
           <button class="btn btn-secondary" id="show-more-btn">Generate More Options</button>
         </div>
       `;
     } else if (showAll && variants.length > 1) {
-      // Show all variants + "Regenerate All" button
-      resultHtml += `<div class="variants-section">
-        <h3>Alternative Options:</h3>`;
-      
+      resultHtml += `<div class="variants-section"><h3>Alternative Options:</h3>`;
       variants.slice(1).forEach((variant, index) => {
+        const safeVariant = escapeHtml(variant.text);
         resultHtml += `
           <div class="variant-option" data-variant="${index + 1}">
-            <div class="variant-text">${variant.text}</div>
+            <div class="variant-text">${safeVariant}</div>
             <div class="variant-label">Alternative ${index + 1}</div>
-            <button class="btn btn-secondary btn-sm use-variant-btn" data-text="${variant.text.replace(/"/g, '&quot;')}">Use This</button>
+            <button class="btn btn-secondary btn-sm use-variant-btn" data-text="${safeVariant}">Use This</button>
           </div>
         `;
       });
-      
       resultHtml += `</div>`;
-      
-      // Update regenerate button text
       regenerateBtn.textContent = 'Regenerate All';
     }
-    
+
     metaPreview.innerHTML = resultHtml;
     updateCharacterCount(bestMeta);
     copyBtn.disabled = false;
     regenerateBtn.disabled = false;
-    
-    // Add event listeners for "Use This" buttons
-    const useVariantBtns = metaPreview.querySelectorAll('.use-variant-btn');
-    useVariantBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const variantText = e.target.getAttribute('data-text').replace(/&quot;/g, '"');
+
+    metaPreview.querySelectorAll('.use-variant-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const variantText = btn.getAttribute('data-text');
         currentMetaDescription = variantText;
-        isExpandedView = false; // Reset to minimal view when selecting a variant
+        isExpandedView = false;
         displayResult(variantText, [{ text: variantText }], false);
-        regenerateBtn.textContent = 'Regenerate'; // Reset button text
+        regenerateBtn.textContent = 'Regenerate';
       });
     });
-    
-    // Add event listener for "Generate More Options" button
+
     const showMoreBtn = document.getElementById('show-more-btn');
     if (showMoreBtn) {
-      showMoreBtn.addEventListener('click', () => {
-        displayResult(bestMeta, variants, true);
-      });
+      showMoreBtn.addEventListener('click', () => displayResult(bestMeta, variants, true));
     }
   }
-
   function updateCharacterCount(text) {
     const length = text.length;
     charCount.textContent = length;
-
-    if (length <= 160) {
+    if (length < 120) {
+      lengthStatus.textContent = '(Short draft; no fixed Google character limit)';
+    } else if (length <= 160) {
       lengthStatus.textContent = '(Common drafting range, not a Google limit)';
-      lengthStatus.className = 'length-status';
     } else {
       lengthStatus.textContent = '(Google may shorten snippets to fit the query and device)';
-      lengthStatus.className = 'length-status';
     }
+    lengthStatus.className = 'length-status';
   }
-
   function showError(message) {
     metaPreview.innerHTML = `<div class="error-message">${message}</div>`;
     charCount.textContent = '0';
