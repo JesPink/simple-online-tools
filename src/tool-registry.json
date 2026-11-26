@@ -251,9 +251,9 @@
   },
   {
     "slug": "meeting-cost-calculator",
-    "title": "Meeting Cost Calculator | Real-Time Meeting ROI",
-    "description": "Calculate meeting costs in real-time. Track expenses, improve efficiency, and optimize ROI with our free live meeting cost calculator.",
-    "keywords": "meeting cost calculator, meeting cost counter, meeting time cost calculator, meeting ROI calculator, business meeting cost",
+    "title": "Meeting Cost Calculator | Live Meeting Cost Timer",
+    "description": "Track a meeting's live cost from participant hourly rates and elapsed time. Add attendees, pause or reset the timer, and view cost projections.",
+    "keywords": "meeting cost calculator, meeting cost timer, live meeting cost, cost per minute, meeting expense estimate",
     "category": "productivity-tools",
     "primaryCategory": "productivity-and-business",
     "tags": [
@@ -261,7 +261,7 @@
       "business",
       "meeting",
       "productivity",
-      "roi"
+      "timer"
     ],
     "complexity": "simple",
     "privacy": "client-side",
@@ -269,7 +269,7 @@
     "jsPath": "/tools/meeting-cost-calculator/index.js",
     "author": "Simple Online Tools",
     "datePublished": "2025-01-16",
-    "dateModified": "2025-01-16",
+    "dateModified": "2026-11-26",
     "relatedTools": [
       {
         "slug": "word-counter",
@@ -289,10 +289,10 @@
     ],
     "seo": {
       "focusKeyword": "meeting cost calculator",
-      "metaTitle": "Meeting Cost Calculator – Track Meeting Expenses",
-      "metaDescription": "Calculate meeting costs in real-time. Track expenses, improve efficiency, and optimize ROI with our free live meeting cost calculator.",
+      "metaTitle": "Meeting Cost Calculator – Live Cost Timer",
+      "metaDescription": "Track a meeting's live cost from participant hourly rates and elapsed time. Add attendees, pause or reset the timer, and view cost projections.",
       "canonicalUrl": "/tools/meeting-cost-calculator/",
-      "lastModified": "2026-11-25",
+      "lastModified": "2026-11-26",
       "author": "Simple Online Tools",
       "articleType": "Tool"
     },
@@ -312,7 +312,7 @@
   {
     "slug": "pdf-metadata-editor",
     "title": "PDF Metadata Editor | View & Edit PDF Properties",
-    "description": "View, edit, or remove PDF metadata in your browser. Check document properties such as title and author before sharing a file.",
+    "description": "View and edit common PDF document-information fields, or clear supported fields before sharing. This browser-based editor is not a full PDF sanitization tool.",
     "keywords": "PDF metadata editor, pdf metadata viewer, change metadata pdf, remove pdf metadata, pdf privacy tool, document metadata viewer",
     "category": "productivity-tools",
     "primaryCategory": "files-and-docs",
@@ -329,7 +329,7 @@
     "jsPath": "/tools/pdf-metadata-editor/index.js",
     "author": "Simple Online Tools",
     "datePublished": "2025-01-16",
-    "dateModified": "2025-01-16",
+    "dateModified": "2026-11-26",
     "relatedTools": [
       {
         "slug": "word-counter",
@@ -350,9 +350,9 @@
     "seo": {
       "focusKeyword": "PDF metadata editor",
       "metaTitle": "PDF Metadata Editor – View & Edit PDF Properties Online",
-      "metaDescription": "View, edit, or remove PDF metadata in your browser. Check document properties such as title and author before sharing a file.",
+      "metaDescription": "View and edit common PDF document-information fields, or clear supported fields before sharing. This is not a full PDF sanitization tool.",
       "canonicalUrl": "/tools/pdf-metadata-editor/",
-      "lastModified": "2026-11-25",
+      "lastModified": "2026-11-26",
       "author": "Simple Online Tools",
       "articleType": "Tool"
     },
@@ -371,8 +371,8 @@
   },
   {
     "slug": "meta-description-generator",
-    "title": "Meta Description Generator | Free SEO Tool",
-    "description": "Generate SEO-optimized meta descriptions instantly. Create compelling meta descriptions with tone control, keyword targeting, and copy functionality.",
+    "title": "Meta Description Generator | Free Online Tool",
+    "description": "Draft meta description ideas from a page title and summary. Compare template-based variations, check character counts, and edit before publishing.",
     "keywords": "meta description generator, meta description creator, seo description generator, meta description maker, meta description writer, free meta description generator",
     "category": "text-tools",
     "primaryCategory": "seo-and-marketing",
@@ -389,7 +389,7 @@
     "jsPath": "/tools/meta-description-generator/index.js",
     "author": "Simple Online Tools",
     "datePublished": "2025-01-16",
-    "dateModified": "2025-01-16",
+    "dateModified": "2026-11-26",
     "relatedTools": [
       {
         "slug": "word-counter",
@@ -409,10 +409,10 @@
     ],
     "seo": {
       "focusKeyword": "meta description generator",
-      "metaTitle": "Meta Description Generator – Write SEO Snippets",
-      "metaDescription": "Generate SEO-optimized meta descriptions instantly. Create compelling meta descriptions with tone control and keyword targeting.",
+      "metaTitle": "Meta Description Generator – Draft Search Snippets",
+      "metaDescription": "Draft meta description ideas from a page title and summary. Compare template-based variations, check character counts, and edit before publishing.",
       "canonicalUrl": "/tools/meta-description-generator/",
-      "lastModified": "2026-11-25",
+      "lastModified": "2026-11-26",
       "author": "Simple Online Tools",
       "articleType": "Tool"
     },
@@ -449,7 +449,7 @@
     "jsPath": "/tools/recipe-scaler/index.js",
     "author": "Simple Online Tools",
     "datePublished": "2025-01-16",
-    "dateModified": "2025-01-16",
+    "dateModified": "2026-11-26",
     "relatedTools": [
       {
         "slug": "word-counter",
@@ -472,7 +472,7 @@
       "metaTitle": "Recipe Scaler – Adjust Ingredients & Servings",
       "metaDescription": "Scale recipe ingredients for more or fewer servings. Adjust quantities and fractions online, then review seasonings and cooking times.",
       "canonicalUrl": "/tools/recipe-scaler/",
-      "lastModified": "2026-11-25",
+      "lastModified": "2026-11-26",
       "author": "Simple Online Tools",
       "articleType": "Tool"
     },

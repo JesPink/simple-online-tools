@@ -22,7 +22,7 @@ export function render() {
                   <option value="INR">INR (₹) - Indian Rupee</option>
                   <option value="BRL">BRL (R$) - Brazilian Real</option>
                 </select>
-                <small class="currency-help">Note: All participant rates will be displayed in the selected currency</small>
+                <small class="currency-help">Choose one currency for all rates. Changing it changes display format only; it does not convert amounts.</small>
               </div>
               
               <div class="section-title">Add Participants</div>
@@ -67,78 +67,52 @@ export function render() {
         </div>
         
         <div class="seo-content">
-          <div class="section-title">Understanding the Meeting Cost Calculator</div>
-          <p>A <strong>meeting cost calculator</strong> is an essential business productivity tool that reveals the true financial impact of your meetings by calculating real-time costs based on participant salaries and meeting duration. In today's business environment where the average knowledge worker spends 37% of their time in meetings, understanding the actual dollar cost of each meeting has become crucial for optimizing productivity and making informed decisions about meeting necessity and duration.</p>
-          
-          <p>Our meeting cost calculator transforms abstract time into concrete financial data, helping teams and managers visualize exactly how much each minute costs when multiple professionals gather. Whether you're running a quick 15-minute standup or a lengthy strategic planning session, this tool provides immediate visibility into the accumulating expense, creating natural motivation for more focused and efficient discussions.</p>
+          <h2>What the Meeting Cost Calculator Measures</h2>
+          <p>This meeting cost calculator estimates the staff-time cost of a live meeting from the hourly rates you enter for each participant. Add the attendees, start the timer, and watch the estimated cost update as time passes. You can pause, resume, or reset the timer and review cost projections for common meeting lengths.</p>
 
-          <div class="section-title">How to Use Our Meeting Cost Calculator</div>
-          <p>Using our meeting cost calculator is straightforward and takes just minutes to set up, but provides valuable insights throughout your meeting duration:</p>
-          
-          <p><strong>Step 1: Add Meeting Participants</strong><br>
-          Enter each participant's name and their hourly rate. You can estimate hourly rates by dividing annual salaries by 2,080 working hours, or use industry averages for different roles if exact figures aren't available.</p>
-          
-          <p><strong>Step 2: Review Participant List</strong><br>
-          Once you've added participants, review the list to ensure accuracy. You can remove participants if plans change or add additional attendees as needed.</p>
-          
-          <p><strong>Step 3: Start the Meeting Timer</strong><br>
-          Click "Start Meeting" when your meeting begins. The calculator immediately starts tracking time and calculating cumulative costs based on all participants' combined hourly rates.</p>
-          
-          <p><strong>Step 4: Monitor Real-Time Costs</strong><br>
-          Watch as the meeting cost accumulates in real-time. This live feedback helps maintain awareness of the financial investment being made and encourages more focused discussions.</p>
-          
-          <p><strong>Step 5: Analyze Meeting Efficiency</strong><br>
-          Use the pause and reset functions to break down costs by agenda items or meeting segments, helping you identify which portions of meetings provide the most value relative to their cost.</p>
+          <h2>How the Meeting Cost Is Calculated</h2>
+          <p>The calculation uses the sum of participant hourly rates and the elapsed meeting time:</p>
+          <p><strong>Combined hourly rate</strong> = the sum of all participant hourly rates.</p>
+          <p><strong>Meeting cost</strong> = combined hourly rate × elapsed time in hours.</p>
+          <p><strong>Cost per minute</strong> = combined hourly rate ÷ 60.</p>
+          <p>For example, if three participants have hourly rates of $50, $60, and $70, their combined rate is $180 per hour. A 30-minute meeting is estimated at $90. The result is only as accurate as the rates and assumptions you enter.</p>
 
-          <h2>Meeting Cost Counter: Real-Time Financial Awareness</h2>
-          <p>A meeting cost counter serves as more than just a calculation tool—it's a behavioral change catalyst that transforms how teams approach meeting planning and execution. By providing immediate visual feedback on accumulating costs, the counter creates natural pressure to stay on topic, reduce tangential discussions, and respect scheduled time limits.</p>
-          
-          <p>The psychological impact of seeing dollars tick upward every second cannot be understated. Teams report that simply having a visible meeting cost counter running during their sessions leads to more focused conversations, quicker decision-making, and increased respect for everyone's time. This real-time awareness helps justify the business case for shorter meetings and more selective participant lists.</p>
-          
-          <p>Modern businesses are increasingly adopting meeting cost counters as part of their efficiency initiatives, with some companies requiring cost calculations for any meeting involving more than three people or lasting longer than 30 minutes. This data-driven approach to meeting management helps organizations make informed decisions about which meetings truly justify their financial investment.</p>
+          <h2>How to Use the Live Meeting Cost Timer</h2>
+          <ol>
+            <li><strong>Choose a currency:</strong> Select one currency for all participant rates before entering them.</li>
+            <li><strong>Add every participant:</strong> Enter each attendee's name and hourly rate. Add the full participant list before starting the timer.</li>
+            <li><strong>Start the meeting:</strong> Select Start Meeting when the meeting begins. The timer and estimated cost update while it runs.</li>
+            <li><strong>Pause or resume:</strong> Pause the timer for breaks and resume when the meeting continues. The elapsed time is retained.</li>
+            <li><strong>Review projections:</strong> Compare estimated costs for 15 minutes, 30 minutes, one hour, and two hours.</li>
+            <li><strong>Reset when finished:</strong> Reset the timer before setting up a different meeting or changing the participant list.</li>
+          </ol>
 
-          <h2>Meeting Time Cost Calculator for Strategic Planning</h2>
-          <p>A meeting time cost calculator becomes particularly valuable for strategic planning sessions, where senior executives and department heads often gather for extended periods. These high-level meetings can easily accumulate costs of hundreds or thousands of dollars per hour, making it crucial to ensure every minute delivers proportional value to the organization.</p>
-          
-          <p>By using a meeting time cost calculator during planning sessions, organizations can make data-informed decisions about meeting frequency, duration, and participant inclusion. The calculator helps answer critical questions: Is this two-hour session worth $2,400 in combined salaries? Would splitting this into smaller, focused sessions be more cost-effective? Are all invited participants essential, or could some receive updates through other channels?</p>
-          
-          <p>The strategic value extends beyond individual meetings to overall meeting culture transformation. Teams that regularly use meeting time cost calculators report developing better meeting hygiene, including more thorough agenda preparation, stricter time management, and increased focus on actionable outcomes rather than status updates or lengthy discussions that could happen asynchronously.</p>
+          <h2>Choosing Hourly Rates and Currency</h2>
+          <p>Use each participant's estimated hourly employment cost if you have it. If you only know annual salary, dividing it by 2,080 is one possible estimate of a standard full-time hourly rate; actual working hours and compensation vary. You can also enter another reasonable estimate, but label it clearly when sharing the result.</p>
+          <p>All participant rates must use the selected currency. Changing the currency changes how the numbers are formatted; it does not convert amounts using exchange rates. If you change currency, update the rates so they represent that currency.</p>
 
-          <h2>Meeting Cost Calculator Timer: Optimizing Business Efficiency</h2>
-          <p>The meeting cost calculator timer function provides granular insights into how meeting time translates to business expenses, enabling organizations to optimize their collaborative processes. Unlike simple timers that only track duration, a cost-integrated timer creates immediate awareness of financial implications, encouraging more disciplined meeting management.</p>
-          
-          <p>Professional teams use meeting cost calculator timers to establish meeting budgets, much like project budgets. Before scheduling a meeting, they estimate the total cost based on required participants and planned duration, then use the timer to stay within budget. This approach treats meeting time as the valuable business resource it truly is, leading to more strategic decisions about when meetings are necessary versus when alternatives like shared documents or asynchronous communication might suffice.</p>
-          
-          <p>The timer's pause and segment features allow for detailed analysis of meeting efficiency. Teams can track which agenda items consume the most time relative to their importance, identify recurring time drains, and develop strategies for more efficient future meetings. This data-driven approach to meeting optimization can result in significant productivity gains and cost savings across the organization.</p>
-
-          <h2>Meeting Cost Tracker: Long-Term Meeting ROI Analysis</h2>
-          <p>A comprehensive meeting cost tracker extends beyond individual session calculations to provide insights into long-term meeting patterns and return on investment. By tracking costs across multiple meetings, teams can identify trends, optimize recurring meetings, and make strategic decisions about their collaborative processes.</p>
-          
-          <p>Organizations using meeting cost trackers often discover surprising patterns: certain types of meetings consistently exceed their value threshold, some participants contribute more effectively in smaller groups, or specific meeting formats generate better outcomes per dollar invested. This data enables informed decisions about meeting restructuring, participant optimization, and format changes that can significantly improve overall efficiency.</p>
-          
-          <p>The tracking capability also supports budget planning and resource allocation decisions. Teams can forecast meeting costs for upcoming projects, compare the efficiency of different collaboration methods, and demonstrate the ROI of investments in meeting efficiency tools or training. This quantitative approach to meeting management aligns with broader business objectives of operational efficiency and cost optimization.</p>
+          <h2>What This Estimate Includes—and Excludes</h2>
+          <ul>
+            <li><strong>Included:</strong> The participant hourly rates you enter and the elapsed time measured by the timer.</li>
+            <li><strong>Not included:</strong> Employer taxes, benefits, overhead, room or software costs, preparation, follow-up work, opportunity cost, or recurring meeting schedules.</li>
+            <li><strong>Not measured:</strong> Meeting quality, business value, decisions made, productivity gains, or return on investment.</li>
+          </ul>
+          <p>This is a simple staff-time estimate, not payroll accounting or a full calculation of meeting ROI. Add any extra costs separately if you need a broader estimate.</p>
 
           <h2>Frequently Asked Questions</h2>
-          
-          <h3>How accurate is the meeting cost calculator in determining real meeting expenses?</h3>
-          <p>Our meeting cost calculator provides highly accurate cost estimates based on the hourly rates you input. The calculation includes all participants' combined hourly costs multiplied by meeting duration. However, remember that true meeting costs may include additional factors like opportunity costs, preparation time, and follow-up activities that extend beyond the actual meeting duration.</p>
-          
-          <h3>What's the ideal meeting cost threshold for different types of business meetings?</h3>
-          <p>Meeting cost thresholds vary by organization size and industry, but general guidelines suggest keeping routine meetings under $200, strategic planning sessions justified up to $1,000+ per hour, and decision-making meetings evaluated based on the financial impact of delayed decisions. The key is ensuring meeting outcomes justify the calculated investment.</p>
-          
-          <h3>Can I use estimated hourly rates if I don't know exact participant salaries?</h3>
-          <p>Yes, estimated rates work well for cost awareness purposes. Use industry salary surveys, role-based estimates, or general ranges (junior: $25-40/hour, mid-level: $40-75/hour, senior: $75-150/hour). The goal is relative cost awareness rather than precise accounting, so reasonable estimates provide valuable insights.</p>
-          
-          <h3>How can I use meeting cost data to improve team productivity?</h3>
-          <p>Use cost data to set meeting budgets, justify agenda changes, reduce participant lists to essential members only, and demonstrate the value of preparation. Share cost calculations with teams to create collective awareness and motivation for more efficient meetings. Track costs over time to identify improvement opportunities and measure progress.</p>
-          
-          <h3>Does the calculator account for benefits and overhead costs beyond salary?</h3>
-          <p>The basic calculator uses the hourly rates you provide. To account for full employment costs (benefits, overhead, etc.), multiply salary-based hourly rates by 1.25-1.4 when entering them. This adjustment provides a more comprehensive view of true participant costs, including typical benefit and overhead expenses.</p>
+          <h3>Does the calculator track the meeting cost in real time?</h3>
+          <p>Yes. While the timer is running, the displayed cost updates using the combined hourly rates and elapsed time. Pausing stops the timer; resuming continues from the elapsed time already recorded.</p>
+          <h3>Can I add or remove participants after starting?</h3>
+          <p>Add all participants before starting the timer. The participant fields are locked while the timer is running or paused so that a changed attendee list does not incorrectly apply to the entire elapsed meeting.</p>
+          <h3>Does changing the currency convert hourly rates?</h3>
+          <p>No. The currency selector changes the display format only. It does not perform currency conversion, so all rates must already be in the selected currency.</p>
+          <h3>Does the estimate include benefits and overhead?</h3>
+          <p>No. It multiplies the hourly rates you enter by elapsed time. Include benefits or overhead in your input rates if you want them reflected in the estimate.</p>
+          <h3>Can I calculate recurring meeting costs or ROI?</h3>
+          <p>No. This tool estimates one timed meeting and shows fixed-duration cost projections. It does not save meeting history, forecast recurring schedules, or measure meeting outcomes or ROI.</p>
 
-          <h2>Meeting Cost Calculator and Your Business Workflow</h2>
-          <p>Integrating a meeting cost calculator into your business workflow transforms meeting culture from time-focused to value-focused, ensuring every collaborative session delivers appropriate return on investment. This tool works excellently alongside other productivity tools like our <a href="/tools/word-counter/">Word Counter</a> for measuring meeting agenda length and our <a href="/tools/case-converter/">Case Converter</a> for standardizing meeting documentation formats.</p>
-          
-          <p>The meeting cost calculator serves as a cornerstone tool for organizations committed to operational efficiency and data-driven decision making. By quantifying the true cost of collaboration, it enables more strategic choices about when, how, and with whom to meet, ultimately leading to more productive teams and better business outcomes.</p>
+          <h2>Use the Estimate as a Planning Aid</h2>
+          <p>The result can help make the staff-time cost of a meeting more visible when planning attendance or duration. It cannot determine whether a meeting is worthwhile: compare the estimate with the purpose, decisions, and outcomes of the meeting before making that judgment.</p>
         </div>
       </div>
     </div>
@@ -237,7 +211,22 @@ export async function init() {
     }
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[character]);
+  }
+
   function updateParticipantsList() {
+    const participantsLocked = isRunning || isPaused;
+    participantNameInput.disabled = participantsLocked;
+    hourlyRateInput.disabled = participantsLocked;
+    addParticipantBtn.disabled = participantsLocked;
+
     if (participants.length === 0) {
       participantsList.innerHTML = '';
       return;
@@ -246,20 +235,17 @@ export async function init() {
     const listHtml = participants.map(participant => `
       <div class="participant-item">
         <div class="participant-info">
-          <span class="participant-name">${participant.name}</span>
+          <span class="participant-name">${escapeHtml(participant.name)}</span>
           <span class="participant-rate">${formatCurrency(participant.rate)}/hour</span>
         </div>
-        <button class="btn btn-secondary remove-btn" data-id="${participant.id}">Remove</button>
+        <button class="btn btn-secondary remove-btn" data-id="${participant.id}" ${participantsLocked ? 'disabled' : ''}>Remove</button>
       </div>
     `).join('');
 
     participantsList.innerHTML = listHtml;
-
-    // Add event listeners to remove buttons
-    const removeButtons = participantsList.querySelectorAll('.remove-btn');
-    removeButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const id = parseInt(e.target.getAttribute('data-id'));
+    participantsList.querySelectorAll('.remove-btn').forEach(btn => {
+      btn.addEventListener('click', (event) => {
+        const id = parseInt(event.currentTarget.getAttribute('data-id'), 10);
         removeParticipant(id);
       });
     });
@@ -275,22 +261,29 @@ export async function init() {
       startTime = Date.now() - pausedTime;
       isRunning = true;
       isPaused = false;
-      
+      updateParticipantsList();
+
       timerInterval = setInterval(updateTimer, 100);
-      
       startTimerBtn.textContent = 'Meeting Running...';
       startTimerBtn.disabled = true;
       pauseTimerBtn.disabled = false;
       resetTimerBtn.disabled = false;
+      updateTimer();
     }
   }
 
   function pauseTimer() {
     if (isRunning && !isPaused) {
+      pausedTime = Date.now() - startTime;
       isPaused = true;
       isRunning = false;
       clearInterval(timerInterval);
-      
+
+      timerDisplay.textContent = formatTime(pausedTime);
+      costDisplay.textContent = formatCurrency(calculateCurrentCost(pausedTime));
+      updateResults(pausedTime);
+      updateParticipantsList();
+
       startTimerBtn.textContent = 'Resume Meeting';
       startTimerBtn.disabled = false;
       pauseTimerBtn.disabled = true;
@@ -303,16 +296,17 @@ export async function init() {
     isPaused = false;
     startTime = null;
     pausedTime = 0;
-    
+
     timerDisplay.textContent = '00:00:00';
-    costDisplay.textContent = '$0.00';
-    
+    costDisplay.textContent = formatCurrency(0);
+
     startTimerBtn.textContent = 'Start Meeting';
     startTimerBtn.disabled = false;
     pauseTimerBtn.disabled = true;
     resetTimerBtn.disabled = true;
-    
-    updateResults();
+
+    updateParticipantsList();
+    updateResults(0);
   }
 
   function updateTimer() {
@@ -337,7 +331,6 @@ export async function init() {
 
     const totalHourlyRate = calculateTotalHourlyRate();
     const currentCost = calculateCurrentCost(elapsedTime);
-    const projectedHourCost = totalHourlyRate;
 
     const resultsHtml = `
       <div class="cost-breakdown">
@@ -391,13 +384,14 @@ export async function init() {
   // Currency change handler
   const currencySelect = document.getElementById('currency-select');
   currencySelect.addEventListener('change', () => {
-    // Update display for all existing participants and calculations
     updateParticipantsList();
-    if (isRunning || isPaused) {
-      updateResults();
-    }
+    const elapsedTime = isRunning && startTime
+      ? Date.now() - startTime
+      : isPaused ? pausedTime : 0;
+    costDisplay.textContent = formatCurrency(calculateCurrentCost(elapsedTime));
+    updateResults(elapsedTime);
   });
-  
+
   // Enter key support for form fields
   participantNameInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {

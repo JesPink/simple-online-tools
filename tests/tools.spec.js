@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { PDFDocument } from 'pdf-lib';
 
 /**
  * Tool-Specific Functionality Tests
@@ -407,5 +408,255 @@ test.describe('Recipe Scaler Functionality', () => {
     await page.locator('#scale-btn').click();
 
     await expect(page.locator('#scaled-recipe')).toContainText('10.5 cups flour');
+  });
+});
+
+// ============================================================
+// SEO CONTENT ACCURACY REGRESSION TESTS
+// ============================================================
+
+test.describe('SEO content accuracy', () => {
+  test('meta description drafts use supplied details without fabricated claims', async ({ page }) => {
+    await page.goto('/tools/meta-description-generator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#page-title').fill('Remote Work Policy');
+    await page.locator('#content-summary').fill('Explains eligibility, equipment, and communication expectations for remote employees.');
+    await page.locator('#target-keyword').fill('remote work policy');
+    await page.locator('#tone-select').selectOption('urgent');
+    await page.locator('#generate-btn').click();
+
+    const draft = page.locator('.meta-text').first();
+    const summary = 'Explains eligibility, equipment, and communication expectations for remote employees.';
+    await expect(draft).toHaveText(summary);
+    await expect(page.locator('#length-status')).toContainText('Google');
+
+    await page.locator('#show-more-btn').click();
+    const alternatives = page.locator('.variant-text');
+    await expect(alternatives).toHaveCount(2);
+    await expect(alternatives.nth(0)).toHaveText('Remote Work Policy: ' + summary);
+    await expect(alternatives.nth(1)).toHaveText('Find remote work policy. ' + summary);
+    await expect(page.locator('.variant-score')).toHaveCount(0);
+  });
+
+  test('meta generator preserves literal backslash sequences in summaries', async ({ page }) => {
+    await page.goto('/tools/meta-description-generator/');
+    await page.waitForLoadState('networkidle');
+
+    const summary = String.raw`Keep \s+ and C:\temp\files exactly as written.`;
+    await page.locator('#content-summary').fill(summary);
+    await page.locator('#generate-btn').click();
+
+    await expect(page.locator('.meta-text').first()).toHaveText(summary);
+  });
+
+  test('meta description preview treats supplied HTML as text', async ({ page }) => {
+    await page.goto('/tools/meta-description-generator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#page-title').fill('Example page');
+    await page.locator('#content-summary').fill('<img src=x onerror="window.__injected=true"> describes the page.');
+    await page.locator('#generate-btn').click();
+
+    await expect(page.locator('#meta-preview img')).toHaveCount(0);
+    await expect(page.locator('#meta-preview')).toContainText('<img');
+  });
+
+  test('recipe scaler explains its actual unit and cooking limitations', async ({ page }) => {
+    await page.goto('/tools/recipe-scaler/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('#tool-container .seo-content');
+    await expect(content).toContainText('does not convert between');
+    await expect(content).toContainText('does not adjust oven temperature, cooking time');
+    await expect(content).not.toContainText('automatic conversion between metric and imperial');
+  });
+  test('About page describes the current tool collection and qualifies data handling', async ({ page }) => {
+    await page.goto('/about/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('.page-content');
+    await expect(content).toContainText('data handling can differ by feature');
+    await expect(content).toContainText('PDF Metadata Editor');
+    await expect(content).toContainText('Recipe Scaler');
+    await expect(content).not.toContainText('Your information never leaves your device');
+  });
+
+
+  test('PDF metadata editor clearly limits its sanitization claims', async ({ page }) => {
+    await page.goto('/tools/pdf-metadata-editor/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('#tool-container .seo-content');
+    await expect(content).toContainText('does not guarantee removal');
+    await expect(content).toContainText('creation or modification dates');
+    await expect(content).toContainText('not a complete sanitization');
+    await expect(content).not.toContainText('completely safe for sensitive documents');
+  });
+
+  test('tool pages do not emit generic HowTo structured data', async ({ page }) => {
+    await page.goto('/tools/word-counter/');
+    await page.waitForLoadState('networkidle');
+
+    const schemaText = await page.locator('script[type="application/ld+json"]').allTextContents();
+    expect(schemaText.join('\n')).not.toContain('"@type": "HowTo"');
+
+    const schemas = schemaText.map((text) => JSON.parse(text));
+    const breadcrumbSchemas = schemas.filter((schema) => schema['@type'] === 'BreadcrumbList');
+    expect(breadcrumbSchemas).toHaveLength(1);
+    const breadcrumb = breadcrumbSchemas[0];
+    const visibleBreadcrumbs = await page.locator('.breadcrumbs a, .breadcrumbs .breadcrumb-current').allTextContents();
+    const visibleToolName = visibleBreadcrumbs.at(-1).trim();
+    expect(breadcrumb.itemListElement.map((item) => item.name)).toEqual(visibleBreadcrumbs.map((name) => name.trim()));
+    await expect(page.locator('#tool-container h1')).toHaveText(visibleToolName);
+    const webApplication = schemas.find((schema) => schema['@type'] === 'WebApplication');
+    expect(webApplication.name).toBe(visibleToolName);
+  });
+});
+
+// ============================================================
+// MEETING COST CALCULATOR BEHAVIOR REGRESSION TESTS
+// ============================================================
+
+
+  test('category pages use canonical category and concise tool labels', async ({ page }) => {
+    await page.goto('/category/text-and-writing/');
+    await page.waitForLoadState('networkidle');
+
+    await expect(page.locator('#tool-container h1')).toHaveText('Text & Writing Tools');
+    const toolNames = await page.locator('#tool-container .tool-card h3').allTextContents();
+    expect(toolNames.length).toBeGreaterThan(0);
+    expect(toolNames.every((name) => !name.includes('|'))).toBe(true);
+  });
+
+  test('meeting cost page explains its formula and excludes unsupported ROI claims', async ({ page }) => {
+    await page.goto('/tools/meeting-cost-calculator/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('#tool-container .seo-content');
+    await expect(content).toContainText('Combined hourly rate');
+    await expect(content).toContainText('elapsed time in hours');
+    await expect(content).toContainText('Not measured: Meeting quality, business value');
+    await expect(content).not.toContainText('37% of their time in meetings');
+    await expect(content).not.toContainText('Long-Term Meeting ROI Analysis');
+  });
+
+test.describe('Meeting Cost Calculator behavior', () => {
+  test('renders participant names as text instead of HTML', async ({ page }) => {
+    await page.goto('/tools/meeting-cost-calculator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#participant-name').fill('<img src=x onerror="window.__injected=true">');
+    await page.locator('#hourly-rate').fill('60');
+    await page.locator('#add-participant-btn').click();
+
+    await expect(page.locator('#participants-list img')).toHaveCount(0);
+    await expect(page.locator('#participants-list')).toContainText('<img');
+  });
+
+  test('pause and resume preserves elapsed time and locks participant edits', async ({ page }) => {
+    await page.goto('/tools/meeting-cost-calculator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#participant-name').fill('Participant A');
+    await page.locator('#hourly-rate').fill('60');
+    await page.locator('#add-participant-btn').click();
+    await page.locator('#start-timer-btn').click();
+    await page.waitForTimeout(1100);
+
+    await page.locator('#pause-timer-btn').click();
+    const pausedTime = await page.locator('#timer-display').innerText();
+    const pausedCost = await page.locator('#cost-display').innerText();
+    await expect(page.locator('#participant-name')).toBeDisabled();
+
+    await page.waitForTimeout(1100);
+    await expect(page.locator('#timer-display')).toHaveText(pausedTime);
+    await expect(page.locator('#cost-display')).toHaveText(pausedCost);
+
+    await page.locator('#start-timer-btn').click();
+    await page.waitForTimeout(1100);
+    const resumedTime = await page.locator('#timer-display').innerText();
+    expect(resumedTime).not.toBe(pausedTime);
+
+    await page.locator('#reset-timer-btn').click();
+    await expect(page.locator('#timer-display')).toHaveText('00:00:00');
+    await expect(page.locator('#cost-display')).toContainText('0.00');
+    await expect(page.locator('#participant-name')).toBeEnabled();
+  });
+
+  test('reset formats zero cost in the selected currency', async ({ page }) => {
+    await page.goto('/tools/meeting-cost-calculator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#currency-select').selectOption('EUR');
+    await page.locator('#participant-name').fill('Participant A');
+    await page.locator('#hourly-rate').fill('60');
+    await page.locator('#add-participant-btn').click();
+    await page.locator('#start-timer-btn').click();
+    await page.waitForTimeout(1100);
+    await page.locator('#reset-timer-btn').click();
+
+    await expect(page.locator('#cost-display')).toContainText('€0.00');
+  });
+});
+
+// ============================================================
+// PDF METADATA EDITOR REGRESSION TESTS
+// ============================================================
+
+test.describe('PDF Metadata Editor behavior', () => {
+  test('clears supported fields and enables the modified PDF download', async ({ page }) => {
+    const pdf = await PDFDocument.create();
+    pdf.setTitle('Sensitive test title');
+    pdf.setAuthor('Private test author');
+    pdf.setSubject('Internal subject');
+    pdf.setKeywords(['alpha', 'beta']);
+    pdf.setCreator('Test application');
+    const bytes = Buffer.from(await pdf.save());
+
+    await page.goto('/tools/pdf-metadata-editor/');
+    await page.waitForLoadState('networkidle');
+    await page.locator('#file-input').setInputFiles({
+      name: 'metadata-test.pdf',
+      mimeType: 'application/pdf',
+      buffer: bytes
+    });
+
+    const metadata = page.locator('#metadata-display');
+    await expect(metadata).toContainText('Sensitive test title');
+    await expect(metadata).toContainText('Private test author');
+    await expect(metadata).toContainText('alpha');
+
+    await page.locator('#remove-all-btn').click();
+
+    await expect(metadata).not.toContainText('Sensitive test title');
+    await expect(metadata).not.toContainText('Private test author');
+    await expect(metadata).not.toContainText('alpha');
+    await expect(page.locator('#download-btn')).toBeEnabled();
+  });
+
+  test('the most recently selected PDF becomes the active document', async ({ page }) => {
+    const firstPdf = await PDFDocument.create();
+    firstPdf.setTitle('First selected PDF');
+    const secondPdf = await PDFDocument.create();
+    secondPdf.setTitle('Second selected PDF');
+
+    await page.goto('/tools/pdf-metadata-editor/');
+    await page.waitForLoadState('networkidle');
+
+    const fileInput = page.locator('#file-input');
+    await fileInput.setInputFiles({
+      name: 'first.pdf',
+      mimeType: 'application/pdf',
+      buffer: Buffer.from(await firstPdf.save())
+    });
+    await fileInput.setInputFiles({
+      name: 'second.pdf',
+      mimeType: 'application/pdf',
+      buffer: Buffer.from(await secondPdf.save())
+    });
+
+    await expect(page.locator('#metadata-display')).toContainText('Second selected PDF');
+    await expect(page.locator('#metadata-display')).not.toContainText('First selected PDF');
   });
 });

@@ -157,7 +157,7 @@ async function buildSite() {
         .replace(/<!--SEO_TITLE-->/g, metaTitle)
         .replace(/<!--SEO_DESCRIPTION-->/g, metaDescription)
         .replace(/<!--SEO_KEYWORDS-->/g, metaKeywords)
-        .replace(/<!--SEO_H1_TITLE-->/g, tool.title) // For server-side H1
+        .replace(/<!--SEO_H1_TITLE-->/g, tool.title.split(' | ')[0].trim()) // Keep the visible H1 concise
         .replace(/<!--SEO_H1_DESCRIPTION-->/g, tool.description) // For server-side description
         .replace(/<!--OG_URL-->/g, `https://simpleonlinetool.com/tools/${tool.slug}/`)
         .replace('<!--CANONICAL_URL-->', (() => { const raw = tool.seo?.canonicalUrl || `/tools/${tool.slug}/`; const url = raw.endsWith('/') ? raw : raw + '/'; return `<link rel="canonical" href="https://simpleonlinetool.com${url}">`; })())
@@ -224,7 +224,7 @@ async function buildSite() {
       const webApplicationSchema = {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": tool.title,
+        "name": tool.title.split(' | ')[0].trim(),
         "description": tool.description,
         "url": `https://simpleonlinetool.com/tools/${tool.slug}/`,
         "applicationCategory": "UtilityApplication",
@@ -245,62 +245,9 @@ async function buildSite() {
         "isAccessibleForFree": true
       };
 
-      // Create HowTo schema for tool usage
-      const howToSchema = {
-        "@context": "https://schema.org",
-        "@type": "HowTo",
-        "name": `How to Use ${tool.title}`,
-        "description": `Step-by-step guide on using our ${tool.title.toLowerCase()} tool.`,
-        "totalTime": "PT2M",
-        "estimatedCost": {
-          "@type": "MonetaryAmount",
-          "currency": "USD",
-          "value": "0"
-        },
-        "supply": [
-          {
-            "@type": "HowToSupply",
-            "name": "Web Browser"
-          },
-          {
-            "@type": "HowToSupply", 
-            "name": "Internet Connection"
-          }
-        ],
-        "tool": [
-          {
-            "@type": "HowToTool",
-            "name": tool.title
-          }
-        ],
-        "step": [
-          {
-            "@type": "HowToStep",
-            "position": 1,
-            "name": "Open the Tool",
-            "text": `Navigate to the ${tool.title} page on our website.`,
-            "url": `https://simpleonlinetool.com/tools/${tool.slug}/`
-          },
-          {
-            "@type": "HowToStep",
-            "position": 2,
-            "name": "Input Your Data",
-            "text": `Enter or paste your content into the input field.`
-          },
-          {
-            "@type": "HowToStep",
-            "position": 3,
-            "name": "Get Results",
-            "text": `View the instant results and analysis provided by our tool.`
-          }
-        ]
-      };
-
+      // Keep structured data aligned with supported search features and the actual page.
       // Add breadcrumb structured data
-      const categoryName = tool.primaryCategory
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+      const categoryName = toolCategoryContent.heading;
 
       const breadcrumbSchema = {
         "@context": "https://schema.org",
@@ -321,7 +268,7 @@ async function buildSite() {
           {
             "@type": "ListItem",
             "position": 3,
-            "name": tool.title,
+            "name": tool.title.split(' | ')[0],
             "item": `https://simpleonlinetool.com/tools/${tool.slug}/`
           }
         ]
@@ -333,7 +280,7 @@ async function buildSite() {
       // Create the comprehensive schema markup script tags (including FAQ if found)
       let schemaMarkup = `
     <script type="application/ld+json">${JSON.stringify(webApplicationSchema, null, 2)}</script>
-    <script type="application/ld+json">${JSON.stringify(howToSchema, null, 2)}</script>
+
     <script type="application/ld+json">${JSON.stringify(breadcrumbSchema, null, 2)}</script>`;
       
       if (faqSchema) {
@@ -544,7 +491,7 @@ function generateSitemap(toolRegistry) {
   const baseUrl = 'https://simpleonlinetool.com';
   // Dates reflect the last significant source changes, not the current build date.
   const staticPages = [
-    { name: 'about', lastModified: '2026-11-24' },
+    { name: 'about', lastModified: '2026-11-26' },
     { name: 'privacy', lastModified: '2026-11-24' },
     { name: 'terms', lastModified: '2026-11-24' },
     { name: 'contact', lastModified: '2026-11-24' }
@@ -644,7 +591,7 @@ function generateStaticToolListingHtml(toolRegistry, categorySlug = null) {
     .map((tool) => `
             <li>
               <a href="/tools/${tool.slug}/">
-                <strong>${tool.title}</strong>
+                <strong>${tool.title.split(' | ')[0].trim()}</strong>
               </a>
               ${tool.description ? `<p>${tool.description}</p>` : ''}
             </li>`)
