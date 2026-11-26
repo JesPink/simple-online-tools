@@ -466,7 +466,7 @@ test.describe('SEO content accuracy', () => {
     await page.goto('/tools/recipe-scaler/');
     await page.waitForLoadState('networkidle');
 
-    const content = page.locator('.seo-content');
+    const content = page.locator('#tool-container .seo-content');
     await expect(content).toContainText('does not convert between');
     await expect(content).toContainText('does not adjust oven temperature, cooking time');
     await expect(content).not.toContainText('automatic conversion between metric and imperial');
@@ -487,7 +487,7 @@ test.describe('SEO content accuracy', () => {
     await page.goto('/tools/pdf-metadata-editor/');
     await page.waitForLoadState('networkidle');
 
-    const content = page.locator('.seo-content');
+    const content = page.locator('#tool-container .seo-content');
     await expect(content).toContainText('does not guarantee removal');
     await expect(content).toContainText('creation or modification dates');
     await expect(content).toContainText('not a complete sanitization');
@@ -517,7 +517,7 @@ test.describe('SEO content accuracy', () => {
     await page.goto('/tools/meeting-cost-calculator/');
     await page.waitForLoadState('networkidle');
 
-    const content = page.locator('.seo-content');
+    const content = page.locator('#tool-container .seo-content');
     await expect(content).toContainText('Combined hourly rate');
     await expect(content).toContainText('elapsed time in hours');
     await expect(content).toContainText('does not measure meeting outcomes');
