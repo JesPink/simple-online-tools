@@ -169,6 +169,7 @@ export async function init() {
   let currentPdfDoc = null;
   let currentPdfBytes = null;
   let originalMetadata = {};
+  let pdfLoadSequence = 0;
 
   // DOM elements
   const uploadArea = document.getElementById('upload-area');
@@ -230,70 +231,59 @@ export async function init() {
       showError('Please select a file.');
       return;
     }
-    
+
     if (file.type !== 'application/pdf') {
-      showError(`📄 Please select a valid PDF file. Selected file type: ${file.type || 'unknown'}. Only standard PDF files are supported.`);
+      showError('📄 Please select a valid PDF file. Selected file type: ' + (file.type || 'unknown') + '. Only standard PDF files are supported.');
       return;
     }
-    
-    // Check file size (reasonable limit of 50MB)
+
     if (file.size > 50 * 1024 * 1024) {
       showError('📁 File is too large. Please select a PDF file smaller than 50MB.');
       return;
     }
 
+    const requestId = ++pdfLoadSequence;
     const reader = new FileReader();
-    reader.onload = async (e) => {
+    reader.onload = async (event) => {
+      if (requestId !== pdfLoadSequence) return;
+
+      const loadedBytes = event.target.result;
       try {
-        console.log('File loaded, size:', e.target.result.byteLength);
-        currentPdfBytes = e.target.result;
-        
-        // Verify PDF-lib is available
         if (!PDFDocument) {
           throw new Error('PDF processing library not available');
         }
-        
-        console.log('Loading PDF with PDF-lib...');
-        
-        try {
-          currentPdfDoc = await PDFDocument.load(currentPdfBytes);
-          console.log('PDF loaded successfully:', currentPdfDoc);
-          
-          await extractAndDisplayMetadata();
-          metadataSection.style.display = 'block';
-          
-        } catch (pdfError) {
-          console.error('PDF loading error:', pdfError);
-          
-          // Handle specific PDF errors
-          if (pdfError.message.includes('encrypted') || 
-              pdfError.message.includes('password') || 
-              pdfError.message.includes('Encrypted') ||
-              pdfError.message.includes('Password')) {
-            showError('🔐 This PDF is encrypted or password-protected. Encrypted PDFs cannot be processed for security reasons. Please use an unencrypted PDF or remove the password protection first.');
-            return;
-          }
-          
-          if (pdfError.message.includes('Invalid PDF') || 
-              pdfError.message.includes('not a PDF') ||
-              pdfError.message.includes('corrupt')) {
-            showError('📄 This file appears to be corrupted or is not a valid PDF document. Please try with a different PDF file.');
-            return;
-          }
-          
-          // Generic PDF error
-          throw pdfError;
-        }
-        
+
+        const loadedDoc = await PDFDocument.load(loadedBytes);
+        if (requestId !== pdfLoadSequence) return;
+
+        currentPdfBytes = loadedBytes;
+        currentPdfDoc = loadedDoc;
+        await extractAndDisplayMetadata();
+        if (requestId !== pdfLoadSequence) return;
+        metadataSection.style.display = 'block';
       } catch (error) {
-        console.error('General error loading PDF:', error);
-        showError(`Failed to load PDF file: ${error.message}. Please ensure it's a valid, unencrypted PDF document and try again.`);
+        if (requestId !== pdfLoadSequence) return;
+        const message = error?.message || String(error);
+        if (/encrypted|password/i.test(message)) {
+          showError('🔐 This PDF is encrypted or password-protected. Please use an unencrypted PDF or remove the password protection first.');
+          return;
+        }
+        if (/invalid pdf|not a pdf|corrupt/i.test(message)) {
+          showError('📄 This file appears to be corrupted or is not a valid PDF document. Please try with a different PDF file.');
+          return;
+        }
+        showError('Failed to load PDF file: ' + message + '. Please ensure it is a valid, unencrypted PDF document and try again.');
+      }
+    };
+
+    reader.onerror = () => {
+      if (requestId === pdfLoadSequence) {
+        showError('Failed to read the selected PDF file. Please try again.');
       }
     };
     reader.readAsArrayBuffer(file);
   }
-
-  async function extractAndDisplayMetadata() {
+async function extractAndDisplayMetadata() {
     try {
       console.log('Extracting metadata from PDF document:', currentPdfDoc);
       
