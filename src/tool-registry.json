@@ -312,7 +312,7 @@
   {
     "slug": "pdf-metadata-editor",
     "title": "PDF Metadata Editor | View & Edit PDF Properties",
-    "description": "View, edit, or remove PDF metadata in your browser. Check document properties such as title and author before sharing a file.",
+    "description": "View and edit common PDF document-information fields, or clear supported fields before sharing. This browser-based editor is not a full PDF sanitization tool.",
     "keywords": "PDF metadata editor, pdf metadata viewer, change metadata pdf, remove pdf metadata, pdf privacy tool, document metadata viewer",
     "category": "productivity-tools",
     "primaryCategory": "files-and-docs",
@@ -350,9 +350,9 @@
     "seo": {
       "focusKeyword": "PDF metadata editor",
       "metaTitle": "PDF Metadata Editor – View & Edit PDF Properties Online",
-      "metaDescription": "View, edit, or remove PDF metadata in your browser. Check document properties such as title and author before sharing a file.",
+      "metaDescription": "View and edit common PDF document-information fields, or clear supported fields before sharing. This is not a full PDF sanitization tool.",
       "canonicalUrl": "/tools/pdf-metadata-editor/",
-      "lastModified": "2026-11-25",
+      "lastModified": "2026-11-26",
       "author": "Simple Online Tools",
       "articleType": "Tool"
     },
@@ -412,7 +412,7 @@
       "metaTitle": "Meta Description Generator – Draft Search Snippets",
       "metaDescription": "Draft meta description ideas from a page title and summary. Compare template-based variations, check character counts, and edit before publishing.",
       "canonicalUrl": "/tools/meta-description-generator/",
-      "lastModified": "2026-11-25",
+      "lastModified": "2026-11-26",
       "author": "Simple Online Tools",
       "articleType": "Tool"
     },
