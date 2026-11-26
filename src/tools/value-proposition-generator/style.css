@@ -12,6 +12,15 @@
   max-width: 100%;
 }
 
+/* Keep the form and its results aligned on a shared, centered content width. */
+.value-proposition-generator-tool .tool-main,
+.value-proposition-generator-tool .tool-results {
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .value-proposition-generator-tool .placeholder-text {
   color: var(--text-secondary);
   font-style: italic;

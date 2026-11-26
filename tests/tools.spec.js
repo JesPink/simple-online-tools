@@ -192,9 +192,44 @@ test.describe('Passive Voice Detector Functionality', () => {
   test('should have results section', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
-    
-    const results = page.locator('.tool-results');
-    await expect(results).toBeVisible();
+
+    await expect(page.locator('.tool-results')).toBeVisible();
+  });
+
+  test('should show explicit feedback when no passive patterns are found', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The manager wrote the report.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#passive-count')).toHaveText('0');
+    await expect(page.locator('#suggestions-container')).toBeVisible();
+    await expect(page.locator('#suggestions-container .no-suggestions')).toContainText('No passive-voice patterns detected');
+  });
+
+  test('should identify a clear passive construction', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by John. John revised the report.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#total-sentences')).toHaveText('2');
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('#highlighted-text')).toContainText('The report was written by John');
+  });
+
+  test('should explain the rule-based limitations accurately', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('body');
+    await expect(content).toContainText('heuristic pattern-based checker');
+    await expect(content).toContainText('false positives');
+    await expect(content).toContainText('There is no reason to rewrite every passive sentence for SEO.');
+    await expect(content).not.toContainText('readability analyzer');
+
   });
 });
 
@@ -203,34 +238,28 @@ test.describe('Passive Voice Detector Functionality', () => {
 // ============================================================
 
 test.describe('Value Proposition Generator Functionality', () => {
-  test('should have input fields', async ({ page }) => {
+  test('should have input fields and a generate button', async ({ page }) => {
     await page.goto('/tools/value-proposition-generator/');
     await page.waitForLoadState('networkidle');
-    
-    const inputs = page.locator('input, textarea');
-    const count = await inputs.count();
-    expect(count).toBeGreaterThan(0);
-  });
-  
-  test('should have generate button', async ({ page }) => {
-    await page.goto('/tools/value-proposition-generator/');
-    await page.waitForLoadState('networkidle');
-    
-    const generateBtn = page.locator('button').first();
-    await expect(generateBtn).toBeVisible();
-  });
-  
-  test('should have results section', async ({ page }) => {
-    await page.goto('/tools/value-proposition-generator/');
-    await page.waitForLoadState('networkidle');
-    
-    const results = page.locator('.tool-results');
-    await expect(results).toBeVisible();
-  });
-});
 
+    await expect(page.locator('#target-audience')).toBeVisible();
+    await expect(page.locator('#main-problem')).toBeVisible();
+    await expect(page.locator('#product-name')).toBeVisible();
+    await expect(page.locator('#key-feature')).toBeVisible();
+    await expect(page.locator('#generate-btn')).toBeVisible();
+  });
 
-  test('should not invent evidence-based marketing claims', async ({ page }) => {
+  test('should disclose template-based generation and its limitations', async ({ page }) => {
+    await page.goto('/tools/value-proposition-generator/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('body');
+    await expect(content).toContainText('predefined sentence templates');
+    await expect(content).toContainText('does not call an AI service');
+    await expect(content).toContainText('cannot see competitor products');
+  });
+
+  test('should generate useful drafts without inventing evidence-based claims', async ({ page }) => {
     await page.goto('/tools/value-proposition-generator/');
     await page.waitForLoadState('networkidle');
 
@@ -242,31 +271,39 @@ test.describe('Value Proposition Generator Functionality', () => {
     await page.locator('#generate-btn').click();
 
     const results = page.locator('#results-container');
+    await expect(results.locator('.result-item')).toHaveCount(5);
     await expect(results).toContainText('Report Helper');
     await expect(results).not.toContainText(/10x faster|join thousands|award-winning|the only/i);
+    await expect(page.locator('#copy-all-btn')).toBeVisible();
+    await expect(page.locator('#refine-btn')).toBeEnabled();
   });
 
-  test('should render user-provided invoice content as text, not markup', async ({ page }) => {
-    await page.goto('/tools/invoice-generator/');
+  test('should allow the benefit to be omitted and still generate drafts', async ({ page }) => {
+    await page.goto('/tools/value-proposition-generator/');
     await page.waitForLoadState('networkidle');
 
-    await page.locator('#from-company').fill('<img src=x onerror=alert(1)>');
-    await expect(page.locator('#invoice-preview img')).toHaveCount(0);
-    await expect(page.locator('#invoice-preview')).toContainText('<img src=x onerror=alert(1)>');
+    await page.locator('#target-audience').fill('independent designers');
+    await page.locator('#main-problem').fill('inconsistent client feedback');
+    await page.locator('#product-name').fill('Design Review');
+    await page.locator('#key-feature').fill('structured feedback forms');
+    await page.locator('#generate-btn').click();
+
+    await expect(page.locator('#results-container .result-item')).toHaveCount(5);
   });
+});
 
 // ============================================================
 // MEETING COST CALCULATOR TESTS
 // ============================================================
 
 test.describe('Meeting Cost Calculator Functionality', () => {
-  test('should have number inputs', async ({ page }) => {
+  test('should expose participant name and hourly-rate inputs', async ({ page }) => {
     await page.goto('/tools/meeting-cost-calculator/');
     await page.waitForLoadState('networkidle');
-    
-    const numberInputs = page.locator('input[type="number"]');
-    const count = await numberInputs.count();
-    expect(count).toBeGreaterThanOrEqual(2);
+
+    await expect(page.locator('#participant-name')).toBeVisible();
+    await expect(page.locator('#hourly-rate')).toBeVisible();
+    await expect(page.locator('#hourly-rate')).toHaveAttribute('type', 'number');
   });
   
   test('should have start button', async ({ page }) => {

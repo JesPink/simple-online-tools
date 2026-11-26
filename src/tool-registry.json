@@ -6,7 +6,13 @@
     "keywords": "unique words counter, paragraph counter, website word count checker, word counter, character counter, unique word counter, text analysis",
     "category": "text-tools",
     "primaryCategory": "text-and-writing",
-    "tags": ["analyze", "text", "writing", "seo", "counter"],
+    "tags": [
+      "analyze",
+      "text",
+      "writing",
+      "seo",
+      "counter"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -29,7 +35,7 @@
       },
       {
         "slug": "text-formatter",
-        "name": "Text Formatter", 
+        "name": "Text Formatter",
         "description": "Clean up and format your text with our advanced text processing tools."
       }
     ],
@@ -50,7 +56,13 @@
     "keywords": "case converter, uppercase converter, lowercase converter, convert capital letters to lowercase, change text to uppercase, text case tool",
     "category": "text-tools",
     "primaryCategory": "text-and-writing",
-    "tags": ["transform", "text", "converter", "format", "coding"],
+    "tags": [
+      "transform",
+      "text",
+      "converter",
+      "format",
+      "coding"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -89,7 +101,13 @@
     "keywords": "invoice generator, online invoice generator, free invoice, invoice maker, invoice builder, create invoice, invoice template",
     "category": "productivity-tools",
     "primaryCategory": "productivity-and-business",
-    "tags": ["generate", "business", "finance", "pdf", "invoice"],
+    "tags": [
+      "generate",
+      "business",
+      "finance",
+      "pdf",
+      "invoice"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -134,11 +152,17 @@
   {
     "slug": "passive-voice-detector",
     "title": "Passive Voice Detector | Free Grammar Checker Tool",
-    "description": "Instantly find and fix passive voice in your writing with our free online detector. Improve clarity, engagement, and SEO with active voice suggestions.",
-    "keywords": "passive voice detector, passive sentence detector, free grammar checker, writing improver, passive to active converter",
+    "description": "Check English text for common passive-voice patterns, review highlighted sentences, and consider active-voice revisions.",
+    "keywords": "passive voice checker, passive voice detector, passive sentence checker, active vs passive voice, check passive voice",
     "category": "text-tools",
     "primaryCategory": "text-and-writing",
-    "tags": ["analyze", "grammar", "writing", "improve", "detector"],
+    "tags": [
+      "analyze",
+      "grammar",
+      "writing",
+      "improve",
+      "detector"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -156,9 +180,9 @@
       }
     ],
     "seo": {
-      "focusKeyword": "passive voice detector",
-      "metaTitle": "Passive Voice Detector – Find Passive Sentences",
-      "metaDescription": "Instantly find and fix passive voice in your writing with our free online detector. Improve clarity, engagement, and SEO with active voice suggestions.",
+      "focusKeyword": "passive voice checker",
+      "metaTitle": "Free Passive Voice Checker – Find Passive Sentences",
+      "metaDescription": "Check English text for common passive-voice patterns. Review highlighted sentences, pattern counts, and prompts for considering active-voice revisions.",
       "canonicalUrl": "/tools/passive-voice-detector/",
       "lastModified": "2026-11-25",
       "author": "Simple Online Tools",
@@ -168,11 +192,17 @@
   {
     "slug": "value-proposition-generator",
     "title": "Value Proposition Generator | Free Business Messaging Tool",
-    "description": "Create compelling value propositions with proven frameworks. Generate multiple variations for marketing, sales, and elevator pitches. Free.",
-    "keywords": "value proposition generator, value proposition maker, value statement generator, unique value proposition generator, business messaging, elevator pitch",
+    "description": "Draft customer-focused value propositions from your audience, problem, product, feature, and benefit. Free template-based generator.",
+    "keywords": "value proposition generator, value proposition maker, value proposition statement, unique selling proposition, USP generator, business messaging",
     "category": "productivity-tools",
     "primaryCategory": "productivity-and-business",
-    "tags": ["generate", "business", "marketing", "messaging", "strategy"],
+    "tags": [
+      "generate",
+      "business",
+      "marketing",
+      "messaging",
+      "strategy"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -200,7 +230,7 @@
     "seo": {
       "focusKeyword": "value proposition generator",
       "metaTitle": "Value Proposition Generator – Build Clear Messaging",
-      "metaDescription": "Create compelling value propositions with proven frameworks. Generate multiple variations for marketing, sales, and elevator pitches instantly.",
+      "metaDescription": "Draft value propositions from your audience, customer problem, product, feature, and benefit. Generate template-based messaging variations for review.",
       "canonicalUrl": "/tools/value-proposition-generator/",
       "lastModified": "2026-11-25",
       "author": "Simple Online Tools",
@@ -226,7 +256,13 @@
     "keywords": "meeting cost calculator, meeting cost counter, meeting time cost calculator, meeting ROI calculator, business meeting cost",
     "category": "productivity-tools",
     "primaryCategory": "productivity-and-business",
-    "tags": ["calculate", "business", "meeting", "productivity", "roi"],
+    "tags": [
+      "calculate",
+      "business",
+      "meeting",
+      "productivity",
+      "roi"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -280,7 +316,13 @@
     "keywords": "PDF metadata editor, pdf metadata viewer, change metadata pdf, remove pdf metadata, pdf privacy tool, document metadata viewer",
     "category": "productivity-tools",
     "primaryCategory": "files-and-docs",
-    "tags": ["edit", "pdf", "metadata", "privacy", "documents"],
+    "tags": [
+      "edit",
+      "pdf",
+      "metadata",
+      "privacy",
+      "documents"
+    ],
     "complexity": "complex",
     "privacy": "client-side",
     "type": "complex",
@@ -334,7 +376,13 @@
     "keywords": "meta description generator, meta description creator, seo description generator, meta description maker, meta description writer, free meta description generator",
     "category": "text-tools",
     "primaryCategory": "seo-and-marketing",
-    "tags": ["generate", "seo", "marketing", "meta", "description"],
+    "tags": [
+      "generate",
+      "seo",
+      "marketing",
+      "meta",
+      "description"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
@@ -388,7 +436,13 @@
     "keywords": "recipe scaler, recipe scaler online, scaling down recipes, scale up recipe, ingredient converter, servings calculator, measurement converter",
     "category": "productivity-tools",
     "primaryCategory": "utilities-and-conversion",
-    "tags": ["convert", "recipe", "cooking", "scale", "kitchen"],
+    "tags": [
+      "convert",
+      "recipe",
+      "cooking",
+      "scale",
+      "kitchen"
+    ],
     "complexity": "simple",
     "privacy": "client-side",
     "type": "simple",
