@@ -119,73 +119,11 @@ export async function init() {
   let isExpandedView = false; // Track if user is in expanded view
 
   // Utility functions for enhanced meta description generation
-  function pick(array) {
-    return array[Math.floor(Math.random() * array.length)];
-  }
-
-  function ensureKeyword(meta, keyword) {
-    if (!keyword) return meta;
-    const idx = meta.toLowerCase().indexOf(keyword.toLowerCase());
-    if (idx >= 0) return meta;
-    // Insert keyword at the beginning for better SEO
-    return `${keyword} — ${meta}`;
-  }
-
-  function safeTruncate(s, max = 155) {
-    if (s.length <= max) return s;
-    let cut = s.substring(0, max);
-    // Drop partial word to avoid mid-word cuts
-    cut = cut.replace(/\s+\S*$/, '');
-    return cut + '...';
-  }
-
-  function tidy(s) {
-    // Clean up spacing and punctuation
-    s = s.replace(/\s+/g, ' ').trim();
-    s = s.replace(/\s+([.,!?:;])/g, '$1');
-    s = s.replace(/\s{2,}/g, ' ');
-    
-    // Generic redundancy removal patterns
-    s = s.replace(/\b(\w+)\s+\1\b/gi, '$1'); // Remove duplicate words
-    s = s.replace(/(\w+)\s+(\w+)\s+\1\s+\2/gi, '$1 $2'); // Remove duplicate phrases
-    
-    // Generic pattern fixes that work for any content
-    // Fix awkward repetitive structures: "X with Y X" -> "Professional X with Y"
-    s = s.replace(/(\w+)\s+with\s+[^.!?]*\1/gi, (match, word) => {
-      return `Professional ${word.toLowerCase()} with comprehensive features`;
-    });
-    
-    // Fix awkward preposition chains: "X for Y for Z" -> "X designed for Y and Z"
-    s = s.replace(/(\w+)\s+for\s+([^.!?]*)\s+for\s+([^.!?]*)/gi, '$1 designed for $2 and $3');
-    
-    // Fix timing contradictions generically
-    s = s.replace(/before.*time.*out.*(today|now)/gi, 'today only');
-    s = s.replace(/until.*time.*out.*(today|now)/gi, 'available now');
-    s = s.replace(/time runs out (today|now)/gi, 'limited time');
-    
-    // Generic grammar improvements
-    s = s.replace(/with\s+([^.!?]*)\s+explained/gi, 'with detailed $1');
-    s = s.replace(/featuring\s+([^.!?]*)\s+information/gi, 'with comprehensive $1');
-    s = s.replace(/\s+(and|to)\s+(and|to)\s+/gi, ' and '); // Remove duplicate connectors
-    
-    // Improve common awkward endings
-    s = s.replace(/\bhere\./gi, 'available.');
-    s = s.replace(/\bnow\.\s*$/gi, 'today.');
-    
-    // Remove duplicate connectors generically
-    s = s.replace(/\b(and|with|for|to)\s+\1\b/gi, '$1');
-    s = s.replace(/\b(now|today)\s+(now|today)\b/gi, '$1');
-    
-    // Capitalize properly and fix common proper nouns
-    s = s.charAt(0).toUpperCase() + s.slice(1);
-    s = s.replace(/\.\s+([a-z])/g, (match, p1) => '. ' + p1.toUpperCase());
-    
-    // Common proper noun capitalizations
-    s = s.replace(/\b(german|french|italian|japanese|american)\b/gi, (match) => 
-      match.charAt(0).toUpperCase() + match.slice(1).toLowerCase()
-    );
-    
-    return s;
+  function tidy(value) {
+    return String(value || '')
+      .replace(/\s+/g, ' ')
+      .replace(/\s+([.,!?:;])/g, '$1')
+      .trim();
   }
 
   function generateMetaDescription() {
@@ -233,19 +171,8 @@ export async function init() {
   }
 
   function polishGrammar(meta) {
-    // Simple grammar polish without over-processing
-    meta = meta.replace(/\s+/g, ' ').trim();
-    meta = meta.replace(/\s+([.,!?:;])/g, '$1');
-    meta = meta.charAt(0).toUpperCase() + meta.slice(1);
-    
-    // Fix common issues
-    meta = meta.replace(/\b(a|an)\s+(a|an)\b/gi, '$1');
-    meta = meta.replace(/\.\s*\./g, '.');
-    
-    return meta;
+    return tidy(meta);
   }
-
-
 
   function displayResult(bestMeta, variants = [], showAll = false) {
     // Update view state tracking
