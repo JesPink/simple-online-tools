@@ -444,6 +444,17 @@ test.describe('SEO content accuracy', () => {
     await expect(content).toContainText('does not adjust oven temperature, cooking time');
     await expect(content).not.toContainText('automatic conversion between metric and imperial');
   });
+  test('About page describes the current tool collection and qualifies data handling', async ({ page }) => {
+    await page.goto('/about/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('.page-content');
+    await expect(content).toContainText('data handling can differ by feature');
+    await expect(content).toContainText('PDF Metadata Editor');
+    await expect(content).toContainText('Recipe Scaler');
+    await expect(content).not.toContainText('Your information never leaves your device');
+  });
+
 
   test('tool pages do not emit generic HowTo structured data', async ({ page }) => {
     await page.goto('/tools/word-counter/');
