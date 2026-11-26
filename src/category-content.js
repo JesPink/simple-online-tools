@@ -50,7 +50,7 @@ const CATEGORY_CONTENT = {
     notes: 'Metadata is only one layer of document privacy. A name may still appear in the page text, a scanned signature may remain visible, and revisions or embedded attachments may need separate handling. Keep an untouched original when the document is important, and follow your organization’s retention or records policy before removing information.',
     relatedIntro: 'If you are preparing the text that goes into a document, Text & Writing has tools for word counts, formatting, and writing review. For business paperwork and client billing, see Productivity & Business.',
     tools: {
-      'pdf-metadata-editor': 'View the metadata properties stored in a PDF, update fields such as title or author where supported, and remove metadata you do not want carried with the file. Use it as a document-properties check—not as a guarantee that all hidden content or personal information has been removed.'
+      'pdf-metadata-editor': 'View PDF document-information fields, edit selected properties, or clear the supported fields before sharing. It does not remove every kind of PDF metadata or sanitize hidden content.'
     },
     related: ['text-and-writing', 'productivity-and-business']
   },
