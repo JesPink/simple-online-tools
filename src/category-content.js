@@ -40,7 +40,7 @@ const CATEGORY_CONTENT = {
   'files-and-docs': {
     seoTitle: 'PDF & Document Tools | View and Edit PDF Metadata Online',
     lastModified: '2026-11-26',
-    metaDescription: 'View and edit common PDF document-information fields, or clear supported fields before sharing. This is not a full PDF sanitization tool.',
+    metaDescription: 'Explore the PDF Metadata Editor, review the document properties it supports, and learn what metadata clearing does not remove before sharing a file.',
     heading: 'Files & Documents',
     decisionHeading: "Check PDF properties before sharing a file",
     summary: 'A focused document utility for checking the information stored inside a PDF before you share or archive it.',
