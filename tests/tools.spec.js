@@ -500,6 +500,11 @@ test.describe('SEO content accuracy', () => {
 
     const schemaText = await page.locator('script[type="application/ld+json"]').allTextContents();
     expect(schemaText.join('\n')).not.toContain('"@type": "HowTo"');
+
+    const schemas = schemaText.map((text) => JSON.parse(text));
+    const breadcrumb = schemas.find((schema) => schema['@type'] === 'BreadcrumbList');
+    const visibleBreadcrumbs = await page.locator('.breadcrumbs a, .breadcrumbs .breadcrumb-current').allTextContents();
+    expect(breadcrumb.itemListElement.map((item) => item.name)).toEqual(visibleBreadcrumbs.map((name) => name.trim()));
   });
 });
 
