@@ -118,6 +118,7 @@ export async function init() {
   const passivePercentageEl = document.getElementById('passive-percentage');
   const highlightedTextEl = document.getElementById('highlighted-text');
   const suggestionsContainer = document.getElementById('suggestions-container');
+  const suggestionsTitle = suggestionsContainer.querySelector('.suggestions-title');
   const suggestionsList = document.getElementById('suggestions-list');
 
   let debounceTimer;
@@ -615,7 +616,7 @@ export async function init() {
     const passiveResults = results.filter(r => r.isPassive);
     
     if (passiveResults.length === 0) {
-      return '<p class="no-suggestions">Great! No passive voice detected in your text.</p>';
+      return '<p class="no-suggestions" role="status" aria-live="polite">No passive-voice patterns detected in this text. The checker found no matches among the patterns it recognizes.</p>';
     }
     
     let suggestionsHtml = '';
@@ -670,8 +671,9 @@ export async function init() {
       // Update suggestions
       suggestionsList.innerHTML = generateSuggestionsHtml(results);
       
-      // Show suggestions container if there are passive sentences
-      suggestionsContainer.style.display = passiveCount > 0 ? 'block' : 'none';
+      // Always show a clear outcome after analysis, including when no patterns match.
+      suggestionsTitle.textContent = passiveCount > 0 ? 'Review Suggestions' : 'Result';
+      suggestionsContainer.style.display = 'block';
       
       console.log('Analysis completed:', { totalSentences, passiveCount, passivePercentage });
     } catch (error) {
