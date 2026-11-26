@@ -573,7 +573,7 @@ export async function init() {
       currentPdfDoc.setTitle('');
       currentPdfDoc.setAuthor('');
       currentPdfDoc.setSubject('');
-      currentPdfDoc.setKeywords('');
+      currentPdfDoc.setKeywords([]);
       currentPdfDoc.setCreator('');
       currentPdfDoc.setProducer('');
 
