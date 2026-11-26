@@ -470,7 +470,7 @@ export async function init() {
   ]);
 
   function hasLikelyAgentByPhrase(sentence) {
-    const match = sentence.toLowerCase().match(/\\bby\\s+(?:(?:the|a|an|this|that|these|those)\\s+)?([a-z][a-z'-]*)/);
+    const match = sentence.toLowerCase().match(/\bby\s+(?:(?:the|a|an|this|that|these|those)\s+)?([a-z][a-z'-]*)/);
     if (!match) return false;
     const object = match[1];
     return !NON_AGENT_BY_OBJECTS.has(object) && !object.endsWith('ing');
@@ -481,7 +481,7 @@ export async function init() {
     if (!result.isPassive) return result;
 
     const lowerSentence = sentence.toLowerCase();
-    const participle = (result.passiveMatch || '').split(/\\s+/).pop();
+    const participle = (result.passiveMatch || '').split(/\s+/).pop();
 
     // Avoid counting common adjectival lookalikes unless a likely agent is named.
     // This favors precision, but may miss an ambiguous passive with an omitted agent.
