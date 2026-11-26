@@ -247,10 +247,7 @@ async function buildSite() {
 
       // Keep structured data aligned with supported search features and the actual page.
       // Add breadcrumb structured data
-      const categoryName = tool.primaryCategory
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+      const categoryName = toolCategoryContent.heading;
 
       const breadcrumbSchema = {
         "@context": "https://schema.org",
@@ -271,7 +268,7 @@ async function buildSite() {
           {
             "@type": "ListItem",
             "position": 3,
-            "name": tool.title,
+            "name": tool.title.split(' | ')[0],
             "item": `https://simpleonlinetool.com/tools/${tool.slug}/`
           }
         ]
