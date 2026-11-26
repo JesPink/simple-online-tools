@@ -138,7 +138,7 @@ const metaDescriptionOwners = new Map();
 for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');
   const relative = path.relative(root, file).replace(/\\/g, '/');
-  const descriptionMatch = html.match(/<meta\s+name=["']description["']\s+content=(["'])(.*?)\\1/i);
+  const descriptionMatch = html.match(/<meta\s+name=["']description["']\s+content=(["'])(.*?)\1/i);
   if (!descriptionMatch) continue;
 
   const normalizedDescription = descriptionMatch[2].replace(/\s+/g, ' ').trim().toLowerCase();
