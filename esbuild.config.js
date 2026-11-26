@@ -274,6 +274,8 @@ async function buildSite() {
         ]
       };
 
+      console.log(`[SEO] Breadcrumb ${tool.slug}: ${breadcrumbSchema.itemListElement.map(item => item.name).join(' > ')}`);
+
       // Extract FAQ schema from tool SEO content
       const faqSchema = extractFAQSchema(toolSeoContent, tool.slug);
 
