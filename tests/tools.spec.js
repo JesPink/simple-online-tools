@@ -487,3 +487,66 @@ test.describe('SEO content accuracy', () => {
     expect(schemaText.join('\n')).not.toContain('"@type": "HowTo"');
   });
 });
+
+// ============================================================
+// MEETING COST CALCULATOR BEHAVIOR REGRESSION TESTS
+// ============================================================
+
+test.describe('Meeting Cost Calculator behavior', () => {
+  test('renders participant names as text instead of HTML', async ({ page }) => {
+    await page.goto('/tools/meeting-cost-calculator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#participant-name').fill('<img src=x onerror="window.__injected=true">');
+    await page.locator('#hourly-rate').fill('60');
+    await page.locator('#add-participant-btn').click();
+
+    await expect(page.locator('#participants-list img')).toHaveCount(0);
+    await expect(page.locator('#participants-list')).toContainText('<img');
+  });
+
+  test('pause and resume preserves elapsed time and locks participant edits', async ({ page }) => {
+    await page.goto('/tools/meeting-cost-calculator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#participant-name').fill('Participant A');
+    await page.locator('#hourly-rate').fill('60');
+    await page.locator('#add-participant-btn').click();
+    await page.locator('#start-timer-btn').click();
+    await page.waitForTimeout(1100);
+
+    await page.locator('#pause-timer-btn').click();
+    const pausedTime = await page.locator('#timer-display').innerText();
+    const pausedCost = await page.locator('#cost-display').innerText();
+    await expect(page.locator('#participant-name')).toBeDisabled();
+
+    await page.waitForTimeout(1100);
+    await expect(page.locator('#timer-display')).toHaveText(pausedTime);
+    await expect(page.locator('#cost-display')).toHaveText(pausedCost);
+
+    await page.locator('#start-timer-btn').click();
+    await page.waitForTimeout(1100);
+    const resumedTime = await page.locator('#timer-display').innerText();
+    expect(resumedTime).not.toBe(pausedTime);
+
+    await page.locator('#reset-timer-btn').click();
+    await expect(page.locator('#timer-display')).toHaveText('00:00:00');
+    await expect(page.locator('#cost-display')).toContainText('0.00');
+    await expect(page.locator('#participant-name')).toBeEnabled();
+  });
+
+  test('reset formats zero cost in the selected currency', async ({ page }) => {
+    await page.goto('/tools/meeting-cost-calculator/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#currency-select').selectOption('EUR');
+    await page.locator('#participant-name').fill('Participant A');
+    await page.locator('#hourly-rate').fill('60');
+    await page.locator('#add-participant-btn').click();
+    await page.locator('#start-timer-btn').click();
+    await page.waitForTimeout(1100);
+    await page.locator('#reset-timer-btn').click();
+
+    await expect(page.locator('#cost-display')).toContainText('€0.00');
+  });
+});
