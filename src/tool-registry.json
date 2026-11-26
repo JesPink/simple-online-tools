@@ -251,9 +251,9 @@
   },
   {
     "slug": "meeting-cost-calculator",
-    "title": "Meeting Cost Calculator | Real-Time Meeting ROI",
-    "description": "Calculate meeting costs in real-time. Track expenses, improve efficiency, and optimize ROI with our free live meeting cost calculator.",
-    "keywords": "meeting cost calculator, meeting cost counter, meeting time cost calculator, meeting ROI calculator, business meeting cost",
+    "title": "Meeting Cost Calculator | Live Meeting Cost Timer",
+    "description": "Track a meeting's live cost from participant hourly rates and elapsed time. Add attendees, pause or reset the timer, and view cost projections.",
+    "keywords": "meeting cost calculator, meeting cost timer, live meeting cost, cost per minute, meeting expense estimate",
     "category": "productivity-tools",
     "primaryCategory": "productivity-and-business",
     "tags": [
@@ -261,7 +261,7 @@
       "business",
       "meeting",
       "productivity",
-      "roi"
+      "timer"
     ],
     "complexity": "simple",
     "privacy": "client-side",
@@ -269,7 +269,7 @@
     "jsPath": "/tools/meeting-cost-calculator/index.js",
     "author": "Simple Online Tools",
     "datePublished": "2025-01-16",
-    "dateModified": "2025-01-16",
+    "dateModified": "2026-11-26",
     "relatedTools": [
       {
         "slug": "word-counter",
@@ -289,10 +289,10 @@
     ],
     "seo": {
       "focusKeyword": "meeting cost calculator",
-      "metaTitle": "Meeting Cost Calculator – Track Meeting Expenses",
-      "metaDescription": "Calculate meeting costs in real-time. Track expenses, improve efficiency, and optimize ROI with our free live meeting cost calculator.",
+      "metaTitle": "Meeting Cost Calculator – Live Cost Timer",
+      "metaDescription": "Track a meeting's live cost from participant hourly rates and elapsed time. Add attendees, pause or reset the timer, and view cost projections.",
       "canonicalUrl": "/tools/meeting-cost-calculator/",
-      "lastModified": "2026-11-25",
+      "lastModified": "2026-11-26",
       "author": "Simple Online Tools",
       "articleType": "Tool"
     },
