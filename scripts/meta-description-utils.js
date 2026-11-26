@@ -24,14 +24,13 @@ export function decodeHtmlCharacterReferences(value) {
 }
 
 function getAttribute(tag, name) {
-  const escapedName = name.replace(/[.*+?^\u0024{}()|[\]\\]/g, '\\$&');
-  const match = tag.match(new RegExp('(?:^|\\s)' + escapedName + '\\s*=\\s*(?:"([^"]*)"|\\'([^\\']*)\\'|([^\\s>]+))', 'i'));
+  const match = tag.match(new RegExp('(?:^|\\s)' + name + '\\s*=\\s*(?:"([^"]*)"|\\'([^\\']*)\\'|([^\\s>]+))', 'i'));
   return match ? (match[1] ?? match[2] ?? match[3] ?? '') : null;
 }
 
 export function extractMetaDescriptions(html) {
   const descriptions = [];
-  for (const match of String(html).matchAll(/<meta\\b[^>]*>/gi)) {
+  for (const match of String(html).matchAll(/<meta\b[^>]*>/gi)) {
     const tag = match[0];
     if ((getAttribute(tag, 'name') || '').toLowerCase() !== 'description') continue;
     const content = getAttribute(tag, 'content');
