@@ -221,6 +221,31 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#highlighted-text')).toContainText('The report was written by John');
   });
 
+  test('should not count common adjective-like participles as passive without a likely agent', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill(
+      'I am interested in the result. She is excited about the trip. He was tired after work. They got bored during the lecture.'
+    );
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#total-sentences')).toHaveText('4');
+    await expect(page.locator('#passive-count')).toHaveText('0');
+    await expect(page.locator('#suggestions-container .no-suggestions')).toBeVisible();
+  });
+
+  test('should retain adjective-like participles when a likely passive agent is named', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The audience was surprised by the announcement.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('#highlighted-text')).toContainText('The audience was surprised by the announcement');
+  });
+
   test('should explain the rule-based limitations accurately', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
