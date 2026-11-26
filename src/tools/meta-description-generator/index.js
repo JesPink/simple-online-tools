@@ -19,7 +19,7 @@ export function render() {
               <div class="form-group">
                 <label for="target-keyword">Target Keyword (Optional)</label>
                 <input type="text" id="target-keyword" placeholder="Primary keyword to include..." aria-describedby="target-keyword-help" />
-                <small id="target-keyword-help" class="form-help">Main keyword you want to rank for in search engines</small>
+                <small id="target-keyword-help" class="form-help">Use a relevant phrase only if it accurately describes this page</small>
               </div>
               <div class="form-group">
                 <label for="tone-select">Tone</label>
@@ -58,81 +58,43 @@ export function render() {
           </div>
         </div>
         <div class="seo-content">
-          <h2>Understanding the Meta Description Generator</h2>
-          <p>A meta description generator is an essential SEO tool that helps you create compelling, optimized meta descriptions for your web pages. These short snippets of text appear beneath your page title in search engine results and play a crucial role in attracting clicks from potential visitors. Our free meta description generator streamlines the process of crafting perfect meta descriptions that balance SEO optimization with user engagement, ensuring your pages stand out in crowded search results.</p>
-
-          <p>Meta descriptions serve as your page's elevator pitch to search engine users. While they don't directly impact rankings, they significantly influence click-through rates, which can indirectly boost your SEO performance. A well-crafted meta description can be the difference between a user clicking on your result or choosing a competitor's page instead.</p>
-
-          <h2>How to Use Our Meta Description Generator</h2>
-          <p>Creating effective meta descriptions with our tool is straightforward and takes just a few simple steps:</p>
-
-          <ol>
-          <li><strong>Enter Your Page Title:</strong> Start by inputting your page's title or main heading. This helps the generator understand your content's primary focus.</li>
-          <li><strong>Add Content Summary:</strong> Provide a brief description of your page content. This gives context for creating a relevant and engaging meta description.</li>
-          <li><strong>Include Target Keyword (Optional):</strong> If you have a specific keyword you want to target, enter it here. The generator will incorporate it naturally into your meta description.</li>
-          <li><strong>Select Your Tone:</strong> Choose from professional, friendly, urgent, informative, or creative tones to match your brand voice and target audience.</li>
-          <li><strong>Generate and Review:</strong> Click the generate button to create your meta description. Review the character count and optimize as needed.</li>
-          <li><strong>Copy and Implement:</strong> Use the copy button to easily transfer your optimized meta description to your website's HTML or CMS.</li>
-          </ol>
-
-          <h2>What is a Meta Description Creator and Why You Need One</h2>
-          <p>A meta description creator is a specialized tool designed to help website owners, marketers, and SEO professionals craft compelling meta descriptions efficiently. Unlike manually writing descriptions, a meta description creator ensures consistency, optimal length, and keyword integration across all your web pages.</p>
-
-          <p>The challenge with writing meta descriptions manually is maintaining the perfect balance between SEO optimization and user appeal while staying within the 120-160 character limit. Our meta description creator solves this by providing templates, character counting, and tone variations that align with best practices and search engine guidelines.</p>
-
-          <p>Professional marketers and content creators rely on meta description creators to scale their SEO efforts. Instead of spending hours crafting individual descriptions, you can generate multiple variations quickly, test different approaches, and maintain consistent messaging across your entire website.</p>
-
-          <h2>SEO Description Generator: Boosting Your Click-Through Rates</h2>
-          <p>An SEO description generator focuses specifically on creating meta descriptions that drive organic traffic and improve search engine visibility. Our SEO description generator incorporates proven marketing psychology principles and SEO best practices to maximize your pages' click-through potential.</p>
-
-          <p>The key advantage of using an SEO description generator is its ability to create descriptions that appeal to both search engines and human users. It ensures proper keyword placement, maintains optimal character counts, and incorporates compelling calls-to-action that encourage clicks.</p>
-
-          <p>Search engines like Google use meta descriptions as snippets in search results about 70% of the time. When your meta description is well-optimized and engaging, it can significantly increase your organic click-through rates, leading to more website traffic and potential conversions.</p>
-
-          <h2>Best Practices for Meta Description Optimization</h2>
-          <p>Creating effective meta descriptions requires understanding both technical SEO requirements and user psychology. Here are essential best practices to follow:</p>
-
-          <p><strong>Character Count Optimization:</strong> Keep your meta descriptions between 120-160 characters. Descriptions shorter than 120 characters may appear incomplete, while those longer than 160 characters risk being truncated in search results.</p>
-
-          <p><strong>Keyword Integration:</strong> Include your target keyword naturally within the meta description, preferably near the beginning. However, avoid keyword stuffing, which can make your description sound unnatural and potentially harm your SEO.</p>
-
-          <p><strong>Compelling Call-to-Action:</strong> End your meta description with a clear call-to-action that encourages users to click. Phrases like "Learn more," "Get started today," or "Discover how" can increase engagement.</p>
-
-          <p><strong>Unique Descriptions:</strong> Each page on your website should have a unique meta description that accurately reflects its specific content. Duplicate meta descriptions can confuse search engines and users alike.</p>
-
-          <h2>Advanced Meta Description Strategies</h2>
-          <p>Beyond basic optimization, advanced meta description strategies can give you a competitive edge in search results. Consider implementing these techniques using our meta description writer:</p>
-
-          <p><strong>Emotional Triggers:</strong> Incorporate emotional words that resonate with your target audience. Words like "essential," "proven," "exclusive," or "breakthrough" can increase click-through rates when used appropriately.</p>
-
-          <p><strong>Number and Statistics:</strong> Including specific numbers or statistics in your meta descriptions can increase credibility and attract clicks. For example, "Increase conversions by 47%" is more compelling than "Increase conversions significantly."</p>
-
-          <p><strong>Problem-Solution Format:</strong> Structure your meta description to first identify a problem your audience faces, then position your content as the solution. This approach directly addresses user intent and search queries.</p>
-
-          <h2>Frequently Asked Questions</h2>
-
-          <h3>What makes a good meta description for SEO?</h3>
-          <p>A good meta description for SEO is 120-160 characters long, includes your target keyword naturally, provides a clear value proposition, and includes a compelling call-to-action. It should accurately represent your page content while enticing users to click through from search results.</p>
-
-          <h3>How does a meta description generator improve my SEO workflow?</h3>
-          <p>A meta description generator streamlines your SEO workflow by automating the creation process, ensuring consistent formatting, maintaining optimal character counts, and providing multiple tone variations. This saves time while maintaining quality and consistency across all your web pages.</p>
-
-          <h3>Can I use the same meta description for multiple pages?</h3>
-          <p>No, each page should have a unique meta description that specifically describes its content. Duplicate meta descriptions can confuse search engines about which page to show for specific queries and may result in lower click-through rates.</p>
-
-          <h3>How often should I update my meta descriptions?</h3>
-          <p>Review and update your meta descriptions regularly, especially when you refresh page content, target new keywords, or notice declining click-through rates. A good practice is to audit meta descriptions quarterly as part of your overall SEO maintenance.</p>
-
-          <h2>Do meta descriptions directly affect search engine rankings?</h2>
-          <p>While meta descriptions don't directly influence search engine rankings, they significantly impact click-through rates, which can indirectly affect your SEO performance. Higher click-through rates signal to search engines that your content is relevant and valuable to users.</p>
-
-          <h2>Meta Description Generator and Your SEO Workflow</h2>
-          <p>Integrating our meta description generator into your SEO workflow can dramatically improve your efficiency and results. By automating the creation of optimized meta descriptions, you can focus more time on creating quality content and implementing other SEO strategies.</p>
-
-          <p>The tool works perfectly alongside other SEO resources like our Word Counter for content optimization and Case Converter for proper text formatting. Together, these tools form a comprehensive suite that supports every aspect of your content marketing and SEO efforts.</p>
-
-          <p>Start using our free meta description generator today to create compelling, SEO-optimized meta descriptions that drive more organic traffic to your website. With consistent use, you'll see improved click-through rates and better overall search engine performance.</p>
-        </div>
+<h2>What a Meta Description Does</h2>
+<p>A meta description is a short summary in a page's HTML that may be used as the description beneath its title in search results. Google primarily creates snippets from page content and may use the meta description when it gives searchers a more accurate summary. Google can show different snippets for different searches, and it may rewrite the description.</p>
+<p>Meta descriptions are not a direct Google ranking factor. A clear, accurate description can help people understand what a page offers, but no wording or character count guarantees a ranking, a particular snippet, or more clicks.</p>
+<h2>How to Use the Generator</h2>
+<ol>
+<li><strong>Enter the page title:</strong> Use the title or main heading that identifies the page.</li>
+<li><strong>Summarize the page:</strong> Include the actual content, feature, audience, or task a visitor will find.</li>
+<li><strong>Add a target phrase only when relevant:</strong> It should describe the page naturally, not be included just to repeat a keyword.</li>
+<li><strong>Choose a tone:</strong> Select a style that fits the page and its audience.</li>
+<li><strong>Review the drafts:</strong> Compare the three template-based options, correct anything inaccurate, and copy the version that best represents the page.</li>
+</ol>
+<h2>How This Generator Works</h2>
+<p>This tool runs in your browser. It combines the title, summary, optional target phrase, and selected tone into three variations using built-in writing templates. It does not use an AI model, visit or analyze your page, check search rankings, verify factual claims, or predict click-through rates.</p>
+<p>The drafts are starting points, not validated SEO recommendations. They can still sound generic or awkward, especially when the supplied summary is vague. Edit the result so it describes the page precisely and does not promise features, outcomes, prices, or credentials that the page cannot support.</p>
+<h2>Writing a Useful Meta Description</h2>
+<ul>
+<li><strong>Describe the page specifically:</strong> Explain what a visitor can do, learn, compare, or access.</li>
+<li><strong>Make each important page distinct:</strong> Avoid reusing one generic description across unrelated pages.</li>
+<li><strong>Use natural language:</strong> Include a relevant search phrase only when it fits the sentence and page.</li>
+<li><strong>Prefer evidence over persuasion tricks:</strong> Avoid invented statistics, unsupported superlatives, fake scarcity, and claims such as “trusted by thousands” unless they are verified.</li>
+<li><strong>Keep the searcher in mind:</strong> The description should set an accurate expectation for the page, not simply repeat keywords.</li>
+</ul>
+<p>There is no fixed character limit for a meta description. Search snippets are shortened as needed to fit the device and query. A length around 120–160 characters can be a useful drafting reference, but it is not a Google requirement or a guarantee that the full text will appear.</p>
+<h2>Frequently Asked Questions</h2>
+<h3>Do meta descriptions directly improve Google rankings?</h3>
+<p>No. Google does not use the meta description as a direct ranking factor. A useful description can help searchers understand a result, but it does not guarantee a higher position or a click.</p>
+<h3>Will Google always show the description I write?</h3>
+<p>No. Google primarily generates snippets from page content and may use your meta description when it better summarizes the page for a particular query.</p>
+<h3>Is there an ideal character limit?</h3>
+<p>No fixed limit applies. Search snippets are truncated to fit the available display. Use the character count as an editing aid, not a pass-or-fail SEO rule.</p>
+<h3>Does this tool use AI or analyze my website?</h3>
+<p>No. It uses built-in templates in your browser and the information you enter. It does not fetch your page, connect to Google, or evaluate keyword difficulty or rankings.</p>
+<h3>Should every page have a unique meta description?</h3>
+<p>Where practical, write a distinct summary for each important page. Make sure it reflects that page's actual content and value rather than changing only a keyword.</p>
+<h2>Review Before Publishing</h2>
+<p>Read the draft beside the page it describes. Remove any detail that is not visible or supported on the page, check that the wording matches the searcher's likely task, and remember that Google may choose a different snippet. Use this generator to speed up drafting, not to replace editorial review.</p>
+</div>
       </div>
     </div>
   `;
