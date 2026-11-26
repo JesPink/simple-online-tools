@@ -131,21 +131,21 @@ export function render() {
 export async function init() {
   // Neutral, input-grounded templates. Avoid unverified performance or uniqueness claims.
   const formulas = [
-    { focus: 'problem', text: "For {audience}, {product} addresses {problem} with {feature}." },
-    { focus: 'problem', text: "{product} gives {audience} a way to address {problem} using {feature}." },
-    { focus: 'problem', text: "When {problem} is a challenge, {product} offers {feature} for {audience}." },
-    { focus: 'problem', text: "{product} is designed for {audience} who need to address {problem} through {feature}." },
-    { focus: 'problem', text: "A way for {audience} to work on {problem}: {product} with {feature}." },
-    { focus: 'feature', text: "{product} provides {audience} with {feature} for addressing {problem}." },
-    { focus: 'feature', text: "With {feature}, {product} helps {audience} approach {problem}." },
-    { focus: 'feature', text: "{product} brings {feature} to {audience} working through {problem}." },
-    { focus: 'feature', text: "For {audience}, {product} combines {feature} with a focus on {problem}." },
-    { focus: 'feature', text: "{feature} is how {product} supports {audience} dealing with {problem}." },
-    { focus: 'benefit', text: "{product} helps {audience} work toward {benefit} through {feature}." },
-    { focus: 'benefit', text: "For {audience} seeking {benefit}, {product} offers {feature}." },
-    { focus: 'benefit', text: "{product} connects {feature} with the goal of {benefit} for {audience}." },
-    { focus: 'benefit', text: "A practical starting point for {audience} pursuing {benefit}: {product} and {feature}." },
-    { focus: 'benefit', text: "{product} is built around {feature} to help {audience} pursue {benefit}." }
+    { focus: 'problem', text: "{product} helps {audience} address {problem} through {feature}." },
+    { focus: 'problem', text: "For {audience} facing {problem}, {product} uses {feature} to support their work." },
+    { focus: 'problem', text: "With {feature}, {product} gives {audience} another way to tackle {problem}." },
+    { focus: 'problem', text: "Designed for {audience}, {product} brings {feature} to work on {problem}." },
+    { focus: 'problem', text: "Use {product} to approach {problem} with {feature} designed for {audience}." },
+    { focus: 'feature', text: "{product} gives {audience} access to {feature} for work on {problem}." },
+    { focus: 'feature', text: "Use {feature} from {product} to help manage {problem}." },
+    { focus: 'feature', text: "{product} puts {feature} to work for {audience} dealing with {problem}." },
+    { focus: 'feature', text: "For {audience}, {product} brings together {feature} and support for {problem}." },
+    { focus: 'feature', text: "{feature} gives {audience} another way to work with {product} on {problem}." },
+    { focus: 'benefit', text: "With {feature}, {product} helps {audience} work toward {benefit}." },
+    { focus: 'benefit', text: "{product} gives {audience} {feature} in support of {benefit}." },
+    { focus: 'benefit', text: "Work toward {benefit} with {feature} from {product}, designed for {audience}." },
+    { focus: 'benefit', text: "For {audience}, {product} combines {feature} with a focus on {benefit}." },
+    { focus: 'benefit', text: "{product} uses {feature} to help {audience} pursue {benefit}." }
   ];
 
   const generateBtn = document.getElementById('generate-btn');
