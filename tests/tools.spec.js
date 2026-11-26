@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { PDFDocument } from 'pdf-lib';
 
 /**
  * Tool-Specific Functionality Tests
@@ -561,5 +562,66 @@ test.describe('Meeting Cost Calculator behavior', () => {
     await page.locator('#reset-timer-btn').click();
 
     await expect(page.locator('#cost-display')).toContainText('€0.00');
+  });
+});
+
+// ============================================================
+// PDF METADATA EDITOR REGRESSION TESTS
+// ============================================================
+
+test.describe('PDF Metadata Editor behavior', () => {
+  test('clears supported fields and enables the modified PDF download', async ({ page }) => {
+    const pdf = await PDFDocument.create();
+    pdf.setTitle('Sensitive test title');
+    pdf.setAuthor('Private test author');
+    pdf.setSubject('Internal subject');
+    pdf.setKeywords(['alpha', 'beta']);
+    pdf.setCreator('Test application');
+    const bytes = Buffer.from(await pdf.save());
+
+    await page.goto('/tools/pdf-metadata-editor/');
+    await page.waitForLoadState('networkidle');
+    await page.locator('#file-input').setInputFiles({
+      name: 'metadata-test.pdf',
+      mimeType: 'application/pdf',
+      buffer: bytes
+    });
+
+    const metadata = page.locator('#metadata-display');
+    await expect(metadata).toContainText('Sensitive test title');
+    await expect(metadata).toContainText('Private test author');
+    await expect(metadata).toContainText('alpha');
+
+    await page.locator('#remove-all-btn').click();
+
+    await expect(metadata).not.toContainText('Sensitive test title');
+    await expect(metadata).not.toContainText('Private test author');
+    await expect(metadata).not.toContainText('alpha');
+    await expect(page.locator('#download-btn')).toBeEnabled();
+  });
+
+  test('the most recently selected PDF becomes the active document', async ({ page }) => {
+    const firstPdf = await PDFDocument.create();
+    firstPdf.setTitle('First selected PDF');
+    const secondPdf = await PDFDocument.create();
+    secondPdf.setTitle('Second selected PDF');
+
+    await page.goto('/tools/pdf-metadata-editor/');
+    await page.waitForLoadState('networkidle');
+
+    const fileInput = page.locator('#file-input');
+    await fileInput.setInputFiles({
+      name: 'first.pdf',
+      mimeType: 'application/pdf',
+      buffer: Buffer.from(await firstPdf.save())
+    });
+    await fileInput.setInputFiles({
+      name: 'second.pdf',
+      mimeType: 'application/pdf',
+      buffer: Buffer.from(await secondPdf.save())
+    });
+
+    await expect(page.locator('#metadata-display')).toContainText('Second selected PDF');
+    await expect(page.locator('#metadata-display')).not.toContainText('First selected PDF');
   });
 });
