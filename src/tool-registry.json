@@ -329,7 +329,7 @@
     "jsPath": "/tools/pdf-metadata-editor/index.js",
     "author": "Simple Online Tools",
     "datePublished": "2025-01-16",
-    "dateModified": "2025-01-16",
+    "dateModified": "2026-11-26",
     "relatedTools": [
       {
         "slug": "word-counter",
@@ -449,7 +449,7 @@
     "jsPath": "/tools/recipe-scaler/index.js",
     "author": "Simple Online Tools",
     "datePublished": "2025-01-16",
-    "dateModified": "2025-01-16",
+    "dateModified": "2026-11-26",
     "relatedTools": [
       {
         "slug": "word-counter",
@@ -472,7 +472,7 @@
       "metaTitle": "Recipe Scaler – Adjust Ingredients & Servings",
       "metaDescription": "Scale recipe ingredients for more or fewer servings. Adjust quantities and fractions online, then review seasonings and cooking times.",
       "canonicalUrl": "/tools/recipe-scaler/",
-      "lastModified": "2026-11-25",
+      "lastModified": "2026-11-26",
       "author": "Simple Online Tools",
       "articleType": "Tool"
     },
