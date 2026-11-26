@@ -24,8 +24,10 @@ export function decodeHtmlCharacterReferences(value) {
 }
 
 function getAttribute(tag, name) {
-  const match = tag.match(new RegExp('(?:^|\\s)' + name + '\\s*=\\s*(?:"([^"]*)"|\\'([^\\']*)\\'|([^\\s>]+))', 'i'));
-  return match ? (match[1] ?? match[2] ?? match[3] ?? '') : null;
+  for (const match of tag.matchAll(/([^\s=/>]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g)) {
+    if (match[1].toLowerCase() === name) return match[2] ?? match[3] ?? match[4] ?? '';
+  }
+  return null;
 }
 
 export function extractMetaDescriptions(html) {
