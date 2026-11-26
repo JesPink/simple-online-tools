@@ -492,6 +492,19 @@ test.describe('SEO content accuracy', () => {
 // MEETING COST CALCULATOR BEHAVIOR REGRESSION TESTS
 // ============================================================
 
+
+  test('meeting cost page explains its formula and excludes unsupported ROI claims', async ({ page }) => {
+    await page.goto('/tools/meeting-cost-calculator/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('.seo-content');
+    await expect(content).toContainText('Combined hourly rate');
+    await expect(content).toContainText('elapsed time in hours');
+    await expect(content).toContainText('does not measure meeting outcomes');
+    await expect(content).not.toContainText('37% of their time in meetings');
+    await expect(content).not.toContainText('Long-Term Meeting ROI Analysis');
+  });
+
 test.describe('Meeting Cost Calculator behavior', () => {
   test('renders participant names as text instead of HTML', async ({ page }) => {
     await page.goto('/tools/meeting-cost-calculator/');
