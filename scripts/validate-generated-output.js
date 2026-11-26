@@ -133,6 +133,25 @@ for (const file of htmlFiles) {
     errors.push(`${relative}: generated HTML contains an unresolved social-image reference`);
   }
 }
+// Prevent duplicate meta descriptions across generated pages.
+const metaDescriptionOwners = new Map();
+for (const file of htmlFiles) {
+  const html = fs.readFileSync(file, 'utf8');
+  const relative = path.relative(root, file).replace(/\\\\/g, '/');
+  const descriptionMatch = html.match(/<meta\\s+name=["']description["']\\s+content=["']([^"']*)["']/i);
+  if (!descriptionMatch) continue;
+
+  const normalizedDescription = descriptionMatch[1].replace(/\\s+/g, ' ').trim().toLowerCase();
+  if (!normalizedDescription) continue;
+
+  const existingPage = metaDescriptionOwners.get(normalizedDescription);
+  if (existingPage) {
+    errors.push(`${relative}: duplicate meta description also used by ${existingPage}`);
+  } else {
+    metaDescriptionOwners.set(normalizedDescription, relative);
+  }
+}
+
 // Validate static-page heading hierarchy and direct internal discovery links.
 const staticPageHeadings = {
   about: 'About Simple Online Tools',
