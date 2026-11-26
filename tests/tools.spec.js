@@ -468,6 +468,17 @@ test.describe('SEO content accuracy', () => {
   });
 
 
+  test('PDF metadata editor clearly limits its sanitization claims', async ({ page }) => {
+    await page.goto('/tools/pdf-metadata-editor/');
+    await page.waitForLoadState('networkidle');
+
+    const content = page.locator('.seo-content');
+    await expect(content).toContainText('does not guarantee removal');
+    await expect(content).toContainText('creation or modification dates');
+    await expect(content).toContainText('not a complete sanitization');
+    await expect(content).not.toContainText('completely safe for sensitive documents');
+  });
+
   test('tool pages do not emit generic HowTo structured data', async ({ page }) => {
     await page.goto('/tools/word-counter/');
     await page.waitForLoadState('networkidle');
