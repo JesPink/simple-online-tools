@@ -519,6 +519,16 @@ test.describe('SEO content accuracy', () => {
 // ============================================================
 
 
+  test('category pages use canonical category and concise tool labels', async ({ page }) => {
+    await page.goto('/category/text-and-writing/');
+    await page.waitForLoadState('networkidle');
+
+    await expect(page.locator('#tool-container h1')).toHaveText('Text & Writing Tools');
+    const toolNames = await page.locator('#tool-container .tool-card h3').allTextContents();
+    expect(toolNames.length).toBeGreaterThan(0);
+    expect(toolNames.every((name) => !name.includes('|'))).toBe(true);
+  });
+
   test('meeting cost page explains its formula and excludes unsupported ROI claims', async ({ page }) => {
     await page.goto('/tools/meeting-cost-calculator/');
     await page.waitForLoadState('networkidle');
