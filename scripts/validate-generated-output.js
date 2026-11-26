@@ -133,6 +133,26 @@ for (const file of htmlFiles) {
     errors.push(`${relative}: generated HTML contains an unresolved social-image reference`);
   }
 }
+// Prevent duplicate meta descriptions across generated pages. Parse every description
+// tag regardless of attribute order, then compare browser-equivalent decoded values.
+import { extractMetaDescriptions } from './meta-description-utils.js';
+const metaDescriptionOwners = new Map();
+for (const file of htmlFiles) {
+  const html = fs.readFileSync(file, 'utf8');
+  const relative = path.relative(root, file).replace(/\\/g, '/');
+  for (const description of extractMetaDescriptions(html)) {
+    const normalizedDescription = description.replace(/\s+/g, ' ').trim().toLowerCase();
+    if (!normalizedDescription) continue;
+
+    const existingPage = metaDescriptionOwners.get(normalizedDescription);
+    if (existingPage) {
+      errors.push(`${relative}: duplicate meta description also used by ${existingPage}`);
+    } else {
+      metaDescriptionOwners.set(normalizedDescription, relative);
+    }
+  }
+}
+
 // Validate static-page heading hierarchy and direct internal discovery links.
 const staticPageHeadings = {
   about: 'About Simple Online Tools',
