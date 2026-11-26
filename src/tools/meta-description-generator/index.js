@@ -67,10 +67,10 @@ export function render() {
 <li><strong>Summarize the page:</strong> Include the actual content, feature, audience, or task a visitor will find.</li>
 <li><strong>Add a target phrase only when relevant:</strong> It should describe the page naturally, not be included just to repeat a keyword.</li>
 <li><strong>Choose a tone:</strong> Select a style that fits the page and its audience.</li>
-<li><strong>Review the drafts:</strong> Compare the three template-based options, correct anything inaccurate, and copy the version that best represents the page.</li>
+<li><strong>Review the drafts:</strong> Compare the available template-based options, correct anything inaccurate, and copy the version that best represents the page.</li>
 </ol>
 <h2>How This Generator Works</h2>
-<p>This tool runs in your browser. It combines the title, summary, optional target phrase, and selected tone into three variations using built-in writing templates. It does not use an AI model, visit or analyze your page, check search rankings, verify factual claims, or predict click-through rates.</p>
+<p>This tool runs in your browser. It combines the title, summary, optional target phrase, and selected tone into up to three variations using built-in writing templates. It does not use an AI model, visit or analyze your page, check search rankings, verify factual claims, or predict click-through rates.</p>
 <p>The drafts are starting points, not validated SEO recommendations. They can still sound generic or awkward, especially when the supplied summary is vague. Edit the result so it describes the page precisely and does not promise features, outcomes, prices, or credentials that the page cannot support.</p>
 <h2>Writing a Useful Meta Description</h2>
 <ul>
