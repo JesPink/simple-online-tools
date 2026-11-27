@@ -33,6 +33,20 @@ const registryPath = path.join(root, 'src/tool-registry.json');
 if (!fs.existsSync(registryPath)) errors.push('Missing src/tool-registry.json');
 else {
   const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const toolSlugs = new Set(registry.map(tool => tool.slug));
+  for (const tool of registry) {
+    const related = tool.relatedTools || [];
+    const relatedSlugs = related.map(item => typeof item === 'string' ? item : item?.slug);
+    if (relatedSlugs.some(slug => !slug || !toolSlugs.has(slug))) {
+      errors.push(`Tool ${tool.slug} has a relatedTools entry that does not match a registered tool`);
+    }
+    if (relatedSlugs.includes(tool.slug)) {
+      errors.push(`Tool ${tool.slug} must not link to itself in relatedTools`);
+    }
+    if (new Set(relatedSlugs).size !== relatedSlugs.length) {
+      errors.push(`Tool ${tool.slug} has duplicate relatedTools entries`);
+    }
+  }
   const categories = [...new Set(registry.map(tool => tool.primaryCategory))];
   const categoryHeadingFields = ['decisionHeading'];
   for (const field of categoryHeadingFields) {
