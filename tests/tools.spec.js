@@ -280,6 +280,32 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#suggestions-list .apply-rewrite-btn')).toHaveCount(0);
   });
 
+
+  test('should reject causal by-phrases but recognize agents with participial modifiers', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('She was excited by the prospect. I was tired by the end of the day. I got bored by walking around.');
+    await page.locator('#analyze-btn').click();
+    await expect(page.locator('#passive-count')).toHaveText('0');
+
+    await page.locator('#text-input').fill('The audience was surprised by the visiting performers.');
+    await page.locator('#analyze-btn').click();
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('.suggestion-item')).toContainText('The visiting performers surprised the audience.');
+  });
+
+  test('should conjugate present-tense rewrites using the named actor', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report is reviewed by the editor. The reports are reviewed by the editors.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('.suggestion-item').nth(0)).toContainText('The editor reviews the report.');
+    await expect(page.locator('.suggestion-item').nth(1)).toContainText('The editors review the reports.');
+  });
+
   test('should explain the rule-based limitations accurately', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
