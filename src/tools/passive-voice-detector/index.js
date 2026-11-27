@@ -518,17 +518,17 @@ export async function init() {
   // construction when an explicit by-agent and a supported verb form are present.
   // Ambiguous or compound sentences remain review-only; never invent an actor.
   function generateActiveRewrite(sentence, passiveMatch) {
-    if (!passiveMatch || /\\b(?:been|being|get|got|getting)\\b/i.test(passiveMatch)) return null;
-    const passiveTokens = passiveMatch.toLowerCase().split(/\\s+/);
+    if (!passiveMatch || /\b(?:been|being|get|got|getting)\b/i.test(passiveMatch)) return null;
+    const passiveTokens = passiveMatch.toLowerCase().split(/\s+/);
     const auxiliary = passiveTokens[0];
     const participle = passiveTokens[passiveTokens.length - 1];
     if (!['was', 'were', 'is', 'are', 'am'].includes(auxiliary)) return null;
 
     // Avoid applying a sentence-level by-phrase to the wrong verb in compound sentences.
-    const passiveAuxiliaries = sentence.match(/\\b(?:is|am|are|was|were|been|being)\\b/gi) || [];
+    const passiveAuxiliaries = sentence.match(/\b(?:is|am|are|was|were|been|being)\b/gi) || [];
     if (passiveAuxiliaries.length !== 1) return null;
 
-    const predicatePattern = new RegExp('\\\\b' + auxiliary + '\\\\b(?:\\\\s+\\\\w+){0,3}\\\\s+' + participle + '\\\\b', 'i');
+    const predicatePattern = new RegExp('\\b' + auxiliary + '\\b(?:\\s+\\w+){0,3}\\s+' + participle + '\\b', 'i');
     const predicateMatch = predicatePattern.exec(sentence);
     if (!predicateMatch) return null;
     const byIndex = sentence.toLowerCase().indexOf(' by ', predicateMatch.index + predicateMatch[0].length);
@@ -539,8 +539,8 @@ export async function init() {
     if (intervening && !/^(?:carefully|quickly|slowly|recently|already|finally|successfully|officially|properly|thoroughly|deliberately)$/i.test(intervening)) return null;
 
     const agent = sentence.slice(byIndex + 4).replace(/[.!?]+$/, '').trim();
-    if (!object || !agent || /[,;:]|\\b(?:during|after|before|yesterday|today|tomorrow|because|while|since|through|within|without|under|over|around)\\b/i.test(agent)) return null;
-    if (/\\bby\\b/i.test(agent) || NON_AGENT_BY_OBJECTS.has(agent.toLowerCase())) return null;
+    if (!object || !agent || /[,;:]|\b(?:during|after|before|yesterday|today|tomorrow|because|while|since|through|within|without|under|over|around)\b/i.test(agent)) return null;
+    if (/\bby\b/i.test(agent) || NON_AGENT_BY_OBJECTS.has(agent.toLowerCase())) return null;
 
     const irregularPast = {
       arisen:'arose', beaten:'beat', begun:'began', bitten:'bit', blown:'blew', born:'bore',
@@ -561,9 +561,9 @@ export async function init() {
     if (!activeVerb) return null;
 
     if (auxiliary === 'is' || auxiliary === 'am' || auxiliary === 'are') {
-      const agentWords = agent.toLowerCase().split(/\\s+/);
+      const agentWords = agent.toLowerCase().split(/\s+/);
       const agentHead = agentWords[agentWords.length - 1];
-      const pluralAgent = /\\band\\b/i.test(agent) || /^(?:we|you|they)$/i.test(agent) ||
+      const pluralAgent = /\band\b/i.test(agent) || /^(?:we|you|they)$/i.test(agent) ||
         (/(?:s|people|men|women|children)$/i.test(agentHead) && !/(?:ss|us|is)$/i.test(agentHead));
       const thirdPersonSingular = !pluralAgent && !/^i$/i.test(agent);
       if (thirdPersonSingular) {
