@@ -260,6 +260,17 @@ test.describe('Passive Voice Detector Functionality', () => {
   });
 
 
+
+  test('should preserve supported adverbs when rewriting a passive sentence', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was carefully written by John.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('.suggestion-item')).toContainText('John carefully wrote the report.');
+  });
+
   test('should offer and apply a conservative active rewrite when the actor is explicit', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
