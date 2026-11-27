@@ -42,12 +42,12 @@ export function render() {
             </div>
             
             <div class="output-container">
-              <h3 class="output-title">Analysis Results</h3>
+              <h3 class="output-title">Text with detected patterns</h3>
               <div id="highlighted-text" class="highlighted-output"></div>
             </div>
             
             <div id="suggestions-container" class="suggestions-container">
-              <h3 class="suggestions-title">Review Suggestions</h3>
+              <h3 class="suggestions-title">Review each detected pattern</h3>
               <div id="suggestions-list" class="suggestions-list"></div>
             </div>
           </div>
@@ -77,7 +77,7 @@ export function render() {
         <p>To revise a passive sentence, identify who or what performed the action, make that actor the subject when it is known and relevant, and adjust the verb. Do not invent an actor when the original sentence intentionally leaves it unknown.</p>
 
         <h2>How This Passive Voice Detector Works</h2>
-        <p>The checker uses JavaScript pattern matching rather than a full syntactic or semantic grammar model. It looks for selected forms of <em>be</em> or <em>get</em> near words in an included past-participle list, plus patterns such as “should be reviewed” and “has been completed.” It filters a short list of common adjective-like words, such as “interested,” “excited,” “tired,” and “bored,” unless the sentence contains a likely agent phrase.</p>
+        <p>The checker uses JavaScript pattern matching rather than a full syntactic or semantic grammar model. It looks for selected forms of <em>be</em> or <em>get</em> near words in an included past-participle list, plus selected modal and perfect constructions. It filters several common adjective-like words, but context can still be ambiguous.</p>
         <p>This approach is fast, but English grammar is more complex than a word-pattern test. The adjective filter favors precision and may miss an ambiguous passive when the actor is omitted; other participles can still function as adjectives, and passive constructions may fall outside the supported patterns. Sentence splitting is punctuation-based, so abbreviations and unusual punctuation can also affect the displayed sentence count. Review results manually, especially for academic, legal, or technical writing.</p>
 
         <h2>When Should You Use Passive Voice?</h2>
@@ -93,8 +93,8 @@ export function render() {
         <p>It is a heuristic pattern-based checker, not a validated grammar assessment. It can still produce false positives and miss constructions outside its rules. Always judge a highlighted sentence in context.</p>
         <h3>Can I use it to check passive voice in Word or Google Docs?</h3>
         <p>Yes. Copy text from Word or Google Docs into the checker, analyze it, and review the results. The tool does not directly integrate with or modify either application.</p>
-        <h3>Does it automatically convert passive voice to active voice?</h3>
-        <p>It displays prompts to help you think about possible active-voice revisions; it does not automatically rewrite sentences. Identify the actor yourself and check that any revision preserves the original meaning.</p>
+        <h3>Can it rewrite passive voice into active voice?</h3>
+        <p>For a limited set of simple constructions with an explicit “by” agent, the checker offers a draft active rewrite you can apply. It does not rewrite every passive construction. Compound sentences, ambiguous agents, and unsupported verb forms remain review-only. Always check that a suggested rewrite preserves the original meaning.</p>
         <h3>Should I remove every passive sentence?</h3>
         <p>No. Passive voice is appropriate when the actor is unknown, unimportant, or less relevant than the action or its recipient. Revise only when an active construction makes the sentence clearer.</p>
         <h3>Is my text uploaded for analysis?</h3>
@@ -242,8 +242,9 @@ export async function init() {
         confidence: analysisResult.confidence || 0,
         pattern: analysisResult.pattern || null,
         index,
-        suggestion: analysisResult.isPassive ? 
-          generateActiveSuggestion(trimmedSentence, analysisResult.passiveMatch, analysisResult.passiveType, analysisResult.confidence) : null
+        activeRewrite: analysisResult.isPassive ? generateActiveRewrite(trimmedSentence, analysisResult.passiveMatch) : null,
+        suggestion: analysisResult.isPassive ?
+          generateActiveSuggestion(trimmedSentence, analysisResult.passiveMatch) : null
       });
     });
     
@@ -470,7 +471,7 @@ export async function init() {
   ]);
 
   function hasLikelyAgentByPhrase(sentence) {
-    for (const match of sentence.toLowerCase().matchAll(/\bby\s+(?:(?:the|a|an|this|that|these|those)\s+)?([a-z][a-z'-]*)/g)) {
+    for (const match of sentence.toLowerCase().matchAll(/\bby\s+(?:(?:the|a|an|this|that|these|those)\s+)?([\p{L}][\p{L}'’-]*)/gu)) {
       const object = match[1];
       if (!NON_AGENT_BY_OBJECTS.has(object) && !object.endsWith('ing')) return true;
     }
@@ -513,103 +514,74 @@ export async function init() {
     return result;
   }
 
-  // INTELLIGENT ACTIVE VOICE SUGGESTIONS SYSTEM
-  // Context-aware suggestions based on passive type and confidence level
-  function generateActiveSuggestion(sentence, passiveMatch, passiveType, confidence) {
-    // Enhanced suggestion system with specific examples and confidence-based advice
-    const suggestionSets = {
-      'be_passive': {
-        high: [
-          `Transform "${passiveMatch}" by identifying the actor: Who performed this action?`,
-          "Move the actor from after 'by' to the beginning of the sentence",
-          "Replace the passive construction with active voice: 'Actor + active verb + object'"
-        ],
-        medium: [
-          "Look for who or what performs the action and make them the subject",
-          "Replace 'was/were + past participle' with the active verb form",
-          "Consider: 'The report was written' → 'John wrote the report'"
-        ],
-        low: [
-          "This might be passive voice - check if you can identify who performs the action",
-          "Consider rewriting with active voice if clearer",
-          "Ask: Who or what is doing the action in this sentence?"
-        ]
-      },
-      
-      'get_passive': {
-        high: [
-          `Replace "${passiveMatch}" with direct action`,
-          "Get-passives are informal - use standard active voice instead",
-          "Example: 'got stolen' → 'thieves stole' or 'someone stole'"
-        ],
-        medium: [
-          "Get-passive detected - consider using active voice",
-          "Replace 'get/got + past participle' with active construction",
-          "Identify who performs the action on the subject"
-        ],
-        low: [
-          "This may be informal passive voice using 'get'",
-          "Consider if active voice would be clearer",
-          "Check if you can identify the actor performing the action"
-        ]
-      },
-      
-      'modal_passive': {
-        high: [
-          `Convert "${passiveMatch}" to active voice`,
-          "Keep the modal verb but make the actor the subject",
-          "Pattern: 'Modal + be + participle' → 'Actor + modal + active verb'"
-        ],
-        medium: [
-          "Modal passive detected - identify who should perform the action",
-          "Remove 'be' and use the active form with the modal verb",
-          "Example: 'should be completed' → 'we should complete'"
-        ],
-        low: [
-          "This may be modal passive voice",
-          "Consider if active voice would be more direct",
-          "Who should perform this action?"
-        ]
-      },
-      
-      'perfect_passive': {
-        high: [
-          `Transform "${passiveMatch}" by identifying the actor`,
-          "Keep the perfect tense but use active voice",
-          "Pattern: 'Have/has/had been + participle' → 'Actor + have/has/had + active verb'"
-        ],
-        medium: [
-          "Perfect passive detected - who completed this action?",
-          "Remove 'been' and use active perfect form",
-          "Example: 'has been completed' → 'John has completed'"
-        ],
-        low: [
-          "This may be perfect passive voice",
-          "Consider active voice for more direct communication",
-          "Who performed or completed this action?"
-        ]
+  // Conservative active-voice rewriting: only rewrite a simple, single-clause
+  // construction when an explicit by-agent and a supported verb form are present.
+  // Ambiguous or compound sentences remain review-only; never invent an actor.
+  function generateActiveRewrite(sentence, passiveMatch) {
+    if (!passiveMatch || /\\b(?:been|being|get|got|getting)\\b/i.test(passiveMatch)) return null;
+    const passiveTokens = passiveMatch.toLowerCase().split(/\\s+/);
+    const auxiliary = passiveTokens[0];
+    const participle = passiveTokens[passiveTokens.length - 1];
+    if (!['was', 'were', 'is', 'are', 'am'].includes(auxiliary)) return null;
+
+    // Avoid applying a sentence-level by-phrase to the wrong verb in compound sentences.
+    const passiveAuxiliaries = sentence.match(/\\b(?:is|am|are|was|were|been|being)\\b/gi) || [];
+    if (passiveAuxiliaries.length !== 1) return null;
+
+    const predicatePattern = new RegExp('\\\\b' + auxiliary + '\\\\b(?:\\\\s+\\\\w+){0,3}\\\\s+' + participle + '\\\\b', 'i');
+    const predicateMatch = predicatePattern.exec(sentence);
+    if (!predicateMatch) return null;
+    const byIndex = sentence.toLowerCase().indexOf(' by ', predicateMatch.index + predicateMatch[0].length);
+    if (byIndex < 0) return null;
+
+    const object = sentence.slice(0, predicateMatch.index).trim();
+    const intervening = sentence.slice(predicateMatch.index + predicateMatch[0].length, byIndex).trim();
+    if (intervening && !/^(?:carefully|quickly|slowly|recently|already|finally|successfully|officially|properly|thoroughly|deliberately)$/i.test(intervening)) return null;
+
+    const agent = sentence.slice(byIndex + 4).replace(/[.!?]+$/, '').trim();
+    if (!object || !agent || /[,;:]|\\b(?:during|after|before|yesterday|today|tomorrow|because|while|since|through|within|without|under|over|around)\\b/i.test(agent)) return null;
+    if (/\\bby\\b/i.test(agent) || NON_AGENT_BY_OBJECTS.has(agent.toLowerCase())) return null;
+
+    const irregularPast = {
+      arisen:'arose', beaten:'beat', begun:'began', bitten:'bit', blown:'blew', born:'bore',
+      bought:'bought', brought:'brought', built:'built', caught:'caught', chosen:'chose',
+      come:'came', done:'did', drawn:'drew', driven:'drove', drunk:'drank', eaten:'ate',
+      fallen:'fell', felt:'felt', flown:'flew', forgotten:'forgot', forgiven:'forgave',
+      frozen:'froze', given:'gave', gone:'went', grown:'grew', heard:'heard', held:'held',
+      hidden:'hid', known:'knew', laid:'laid', led:'led', left:'left', lost:'lost',
+      made:'made', met:'met', paid:'paid', proven:'proved', read:'read', ridden:'rode',
+      risen:'rose', run:'ran', said:'said', seen:'saw', sent:'sent', shown:'showed',
+      spoken:'spoke', stolen:'stole', taken:'took', taught:'taught', thought:'thought',
+      thrown:'threw', told:'told', understood:'understood', worn:'wore', won:'won',
+      written:'wrote', uncovered:'uncovered', cataloged:'cataloged', catalogued:'catalogued',
+      surprised:'surprised', excited:'excited', tired:'tired', bored:'bored'
+    };
+    let activeVerb = irregularPast[participle];
+    if (!activeVerb && participle.endsWith('ed')) activeVerb = participle;
+    if (!activeVerb) return null;
+
+    if (auxiliary === 'is' || auxiliary === 'am' || auxiliary === 'are') {
+      if (auxiliary !== 'are' && !/\\band\\b/i.test(agent)) {
+        if (activeVerb.endsWith('y') && !/[aeiou]y$/i.test(activeVerb)) activeVerb = activeVerb.slice(0, -1) + 'ies';
+        else if (/(s|sh|ch|x|z|o)$/i.test(activeVerb)) activeVerb += 'es';
+        else activeVerb += 's';
       }
-    };
-    
-    // Determine confidence level for suggestion selection
-    const confidenceLevel = confidence >= 0.7 ? 'high' : 
-                           confidence >= 0.5 ? 'medium' : 'low';
-    
-    const typeSpecificSuggestions = suggestionSets[passiveType] || {
-      high: ["Strong passive voice detected - rewrite in active voice"],
-      medium: ["Possible passive voice - consider active voice"],
-      low: ["Check if active voice would be clearer"]
-    };
-    
-    const suggestions = typeSpecificSuggestions[confidenceLevel] || typeSpecificSuggestions.medium;
-    
-    // Add confidence indicator for transparency
-    const selectedSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
-    const confidenceIndicator = confidence >= 0.8 ? " (Strong pattern match)" :
-                               confidence >= 0.6 ? " (Possible pattern match)" :
-                               " (Weak pattern match - verify manually)";
-    
-    return selectedSuggestion + confidenceIndicator;
+    }
+    const capitalizedAgent = agent.charAt(0).toUpperCase() + agent.slice(1);
+    const activeSentence = capitalizedAgent + ' ' + activeVerb + ' ' + object.charAt(0).toLowerCase() + object.slice(1);
+    const punctuation = /[.!?]$/.exec(sentence)?.[0] || '.';
+    return activeSentence.replace(/[.!?]+$/, '') + punctuation;
+  }
+
+  // Deterministic, context-specific guidance instead of randomly selected generic prompts.
+  function generateActiveSuggestion(sentence, passiveMatch) {
+    if (generateActiveRewrite(sentence, passiveMatch)) {
+      return 'The actor is named and this simple construction can be rewritten. Review the proposed version before applying it.';
+    }
+    if (/\\bby\\b/i.test(sentence)) {
+      return 'A by-phrase appears, but the tool cannot safely connect it to this verb. Confirm the actor and clause before rewriting.';
+    }
+    return 'The actor is not stated. Identify who performed the action before rewriting; the tool will not invent an actor.';
   }
 
   function escapeHtml(value) {
@@ -637,35 +609,35 @@ export async function init() {
 
   // Generate suggestions HTML
   function generateSuggestionsHtml(results) {
-    const passiveResults = results.filter(r => r.isPassive);
-    
+    const passiveResults = results.filter(result => result.isPassive);
     if (passiveResults.length === 0) {
       return '<p class="no-suggestions" role="status" aria-live="polite">No passive-voice patterns detected in this text. The checker found no matches among the patterns it recognizes.</p>';
     }
-    
-    let suggestionsHtml = '';
-    passiveResults.forEach((result, index) => {
-      const confidenceIndicator = result.confidence >= 0.7 ? '🔴 Strong' : 
-                                  result.confidence >= 0.5 ? '🟡 Possible' : '⚪ Weak';
-      
-      suggestionsHtml += `
-        <div class="suggestion-item" data-confidence="${result.confidence}">
-          <div class="suggestion-header">
-            <span class="confidence-badge">${confidenceIndicator} pattern match</span>
-            <span class="pattern-info">${result.passiveType.replace('_', ' ').toUpperCase()}</span>
-          </div>
-          <div class="original-sentence">
-            <strong>Passive:</strong> "${escapeHtml(result.sentence)}."
-            ${result.pattern ? `<br><small>Pattern: <code>${escapeHtml(result.pattern)}</code></small>` : ''}
-          </div>
-          <div class="suggestion-text">
-            <strong>Review prompt:</strong> ${escapeHtml(result.suggestion)}
-          </div>
+    return passiveResults.map(result => {
+      const confidenceLabel = result.confidence >= 0.7 ? 'Strong pattern match' :
+        result.confidence >= 0.5 ? 'Possible pattern match' : 'Weak pattern match — review carefully';
+      const confidenceClass = result.confidence >= 0.7 ? 'high-confidence' :
+        result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
+      const rewriteHtml = result.activeRewrite ? `
+        <div class="rewrite-preview">
+          <strong>Suggested active version</strong>
+          <p>${escapeHtml(result.activeRewrite)}</p>
+          <button type="button" class="btn btn-secondary apply-rewrite-btn"
+            data-original="${escapeHtml(result.sentence)}"
+            data-rewrite="${escapeHtml(result.activeRewrite)}">Apply rewrite</button>
         </div>
+      ` : '';
+      return `
+        <article class="suggestion-item ${confidenceClass}" data-confidence="${result.confidence}">
+          <div class="suggestion-header">
+            <span class="confidence-badge">${confidenceLabel}</span>
+            <code class="pattern-info">${escapeHtml(result.pattern || result.passiveMatch || 'Possible passive pattern')}</code>
+          </div>
+          <p class="suggestion-text">${escapeHtml(result.suggestion)}</p>
+          ${rewriteHtml}
+        </article>
       `;
-    });
-    
-    return suggestionsHtml;
+    }).join('');
   }
 
   // Analyze text function
@@ -715,6 +687,21 @@ export async function init() {
     suggestionsList.innerHTML = '<p class="no-suggestions">Analysis suggestions will appear here after you enter text.</p>';
     suggestionsContainer.style.display = 'none';
   }
+
+  // Apply only the exact rewrite shown to the user, then re-run the analysis.
+  suggestionsList.addEventListener('click', (event) => {
+    const button = event.target.closest('.apply-rewrite-btn');
+    if (!button) return;
+    const original = button.getAttribute('data-original');
+    const rewrite = button.getAttribute('data-rewrite');
+    if (!original || !rewrite) return;
+    const currentText = textInput.value;
+    const occurrence = currentText.indexOf(original);
+    if (occurrence < 0) return;
+    textInput.value = currentText.slice(0, occurrence) + rewrite.replace(/[.!?]$/, '') + currentText.slice(occurrence + original.length);
+    analyzeText();
+    textInput.focus();
+  });
 
   // Event listeners
   console.log('Setting up passive voice detector event listeners');
