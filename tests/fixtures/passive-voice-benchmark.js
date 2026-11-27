@@ -183,7 +183,11 @@ export const passiveVoiceBenchmark = [
   { id: 'passive-get-adverb-accidentally', text: 'The file got accidentally deleted.', passive: true, clauses: 1 },
   { id: 'passive-get-adverb-regularly', text: 'The package gets regularly inspected.', passive: true, clauses: 1 },
   { id: 'active-infinitive-ready', text: 'The team wants to be ready.', passive: false, clauses: 0 },
-  { id: 'active-get-hungry', text: 'The child gets hungry after school.', passive: false, clauses: 0 }
+  { id: 'active-get-hungry', text: 'The child gets hungry after school.', passive: false, clauses: 0 },
+  { id: 'modal-perfect-plus-past-perfect-subordinate', text: 'His life could have been saved if the right medicine had been given to him immediately after the accident.', passive: true, clauses: 2 },
+  { id: 'passive-main-active-if-clause', text: 'The report was approved if the manager agreed to the changes.', passive: true, clauses: 1 },
+  { id: 'active-main-passive-although-clause', text: 'The editor approved the report although the first draft had been rejected.', passive: true, clauses: 1 },
+  { id: 'two-passives-because-clause', text: 'The match was postponed because the field had been flooded.', passive: true, clauses: 2 }
 ];
 
 export const passiveRewriteBenchmark = passiveVoiceBenchmark.filter(item => item.rewrite);
