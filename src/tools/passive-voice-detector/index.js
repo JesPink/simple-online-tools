@@ -561,7 +561,12 @@ export async function init() {
     if (!activeVerb) return null;
 
     if (auxiliary === 'is' || auxiliary === 'am' || auxiliary === 'are') {
-      if (auxiliary !== 'are' && !/\\band\\b/i.test(agent)) {
+      const agentWords = agent.toLowerCase().split(/\\s+/);
+      const agentHead = agentWords[agentWords.length - 1];
+      const pluralAgent = /\\band\\b/i.test(agent) || /^(?:we|you|they)$/i.test(agent) ||
+        (/(?:s|people|men|women|children)$/i.test(agentHead) && !/(?:ss|us|is)$/i.test(agentHead));
+      const thirdPersonSingular = !pluralAgent && !/^i$/i.test(agent);
+      if (thirdPersonSingular) {
         if (activeVerb.endsWith('y') && !/[aeiou]y$/i.test(activeVerb)) activeVerb = activeVerb.slice(0, -1) + 'ies';
         else if (/(s|sh|ch|x|z|o)$/i.test(activeVerb)) activeVerb += 'es';
         else activeVerb += 's';
