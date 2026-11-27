@@ -232,7 +232,7 @@
   }
   
   .passive-voice-detector-tool .stats-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-6);
   }
   
@@ -243,10 +243,14 @@
     border-right: 1px solid var(--border-color);
   }
   
-  .passive-voice-detector-tool .stat-item:last-child {
+  .passive-voice-detector-tool .stat-item:nth-child(2n) {
     border-right: none;
   }
-  
+
+  .passive-voice-detector-tool .stats-note {
+    grid-column: 1 / -1;
+  }
+
   .passive-voice-detector-tool .stat-label {
     margin-bottom: var(--space-2);
   }
@@ -267,7 +271,7 @@
     border-right: none;
   }
   
-  .passive-voice-detector-tool .stat-item:last-child {
+  .passive-voice-detector-tool .stat-item:nth-last-child(2) {
     border-bottom: none;
   }
 }
@@ -293,3 +297,25 @@
 .passive-voice-detector-tool .suggestion-text { margin: 0; font-style: normal; }
 
 .passive-voice-detector-tool .undo-rewrite-btn { display: none; }
+
+@media (min-width: 1024px) {
+  .passive-voice-detector-tool .stats-container {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .passive-voice-detector-tool .stat-item:nth-child(2n) {
+    border-right: 1px solid var(--border-color);
+  }
+
+  .passive-voice-detector-tool .stat-item:last-of-type {
+    border-right: none;
+  }
+}
+
+.passive-voice-detector-tool .stats-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-relaxed);
+}

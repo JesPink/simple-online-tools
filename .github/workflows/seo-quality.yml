@@ -2,9 +2,9 @@ name: SEO and tool regression checks
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, product/passive-voice-v2]
   push:
-    branches: [main, seo/phase-2-sitemap-and-content-quality]
+    branches: [main, seo/phase-2-sitemap-and-content-quality, product/passive-voice-benchmark-rebuild]
 
 permissions:
   contents: read
@@ -29,9 +29,15 @@ jobs:
       - name: Build and validate generated SEO output
         run: npm run build
 
+      - name: Run passive voice engine benchmark
+        run: npm run test:engine
+
       - name: Install Chromium
         # GitHub-hosted Ubuntu runners include Chromium's system libraries; avoid refreshing third-party apt feeds.
         run: npx playwright install chromium
 
       - name: Run desktop regression tests
         run: npx playwright test --project="Desktop Chrome"
+
+      - name: Run passive detector mobile regression tests
+        run: npx playwright test --project="Mobile Chrome" tests/foundation.spec.js tests/tools.spec.js --grep="passive-voice-detector|Passive Voice Detector"
