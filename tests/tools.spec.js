@@ -209,6 +209,19 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#suggestions-container .no-suggestions')).toContainText('No passive-voice patterns detected');
   });
 
+
+  test('should preserve original punctuation and avoid rewriting passive questions as statements', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by John?');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#highlighted-text')).toContainText('The report was written by John?');
+    await expect(page.locator('#highlighted-text')).not.toContainText('John.');
+    await expect(page.locator('.apply-rewrite-btn')).toHaveCount(0);
+  });
+
   test('should identify a clear passive construction', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
