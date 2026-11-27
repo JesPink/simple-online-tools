@@ -246,6 +246,40 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#highlighted-text')).toContainText('The audience was surprised by the magician');
   });
 
+
+  test('should offer and apply a conservative active rewrite when the actor is explicit', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+    await page.locator('#text-input').fill('The report was written by John.');
+    await page.locator('#analyze-btn').click();
+    const suggestion = page.locator('.suggestion-item');
+    await expect(suggestion).toContainText('John wrote the report.');
+    await expect(suggestion.locator('.apply-rewrite-btn')).toBeVisible();
+    await suggestion.locator('.apply-rewrite-btn').click();
+    await expect(page.locator('#text-input')).toHaveValue('John wrote the report.');
+    await expect(page.locator('#passive-count')).toHaveText('0');
+  });
+
+  test('should not invent an actor or repeat the full original sentence in suggestions', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+    const original = 'The report was written.';
+    await page.locator('#text-input').fill(original);
+    await page.locator('#analyze-btn').click();
+    const suggestions = page.locator('#suggestions-list');
+    await expect(suggestions).toContainText('actor is not stated');
+    await expect(suggestions.locator('.apply-rewrite-btn')).toHaveCount(0);
+    await expect(suggestions).not.toContainText(original);
+  });
+
+  test('should avoid unsafe rewrites when a sentence contains multiple passive auxiliaries', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+    await page.locator('#text-input').fill('The tablets were uncovered and have been cataloged by university historians.');
+    await page.locator('#analyze-btn').click();
+    await expect(page.locator('#suggestions-list .apply-rewrite-btn')).toHaveCount(0);
+  });
+
   test('should explain the rule-based limitations accurately', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
