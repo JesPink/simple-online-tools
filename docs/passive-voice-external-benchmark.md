@@ -11,7 +11,7 @@ python3 scripts/evaluate-passive-voice-ud.py --self-test
 python3 scripts/evaluate-passive-voice-ud.py
 ```
 
-The full run downloads the pinned test split into memory, parses the gold labels, invokes the existing detector through Node.js, and prints aggregate precision, recall, F1, accuracy, and confusion-matrix counts. It does not save or print corpus sentences. Network access to GitHub is required.
+The full run downloads the pinned test split into memory, parses the gold labels, invokes the existing detector through Node.js, and prints aggregate precision, recall, F1, accuracy, and confusion-matrix counts. Sentence-level predictions include both the primary sentence result and any additional clause-level passive detections, so a passive construction in a later clause is not incorrectly treated as active merely because the opening clause is active. It does not save or print corpus sentences. Network access to GitHub is required.
 
 ## Corpus and reproducibility
 
