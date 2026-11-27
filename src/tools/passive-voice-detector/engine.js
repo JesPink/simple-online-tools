@@ -218,31 +218,40 @@ function detectCoordinatedPerfectPassive(sentence, sentenceStart) {
 // handler above rather than guessed.
 function detectAdditionalPassiveClauses(sentence, sentenceStart, existingPatterns = [], primaryMatch = null) {
   const found = [];
-  const conjunctionMatches = Array.from(sentence.matchAll(/\b(?:and|but|or|if|when|whenever|because|although|though|while|unless|until|once|after|before|since|whereas|where)\s+/gi));
-  for (let i = 0; i < conjunctionMatches.length; i++) {
-    const match = conjunctionMatches[i];
-    const clauseStart = match.index + match[0].length;
-    const clauseEnd = conjunctionMatches[i + 1]?.index ?? sentence.length;
-    const rawClause = sentence.slice(clauseStart, clauseEnd);
+  const separators = Array.from(sentence.matchAll(/\b(?:and|but|or|if|when|whenever|because|although|though|while|unless|until|once|after|before|since|whereas|where)\s+/gi));
+  const ranges = [];
+  let rangeStart = 0;
+
+  // Include the leading clause as well: the highest-confidence sentence-level
+  // match may be in a later subordinate clause, not in the opening clause.
+  for (const separator of separators) {
+    ranges.push({ start: rangeStart, end: separator.index });
+    rangeStart = separator.index + separator[0].length;
+  }
+  ranges.push({ start: rangeStart, end: sentence.length });
+
+  for (const range of ranges) {
+    const rawClause = sentence.slice(range.start, range.end);
     const clauseText = rawClause.trim();
     if (!clauseText) continue;
     const leadingSpace = rawClause.length - rawClause.trimStart().length;
-    const normalizedStart = clauseStart + leadingSpace;
+    const normalizedStart = range.start + leadingSpace;
     if (existingPatterns.some(pattern => pattern.start === sentenceStart + normalizedStart)) continue;
+
     // Subjectless auxiliary continuations share the earlier subject and are
-    // handled by detectCoordinatedPerfectPassive.
+    // handled by the dedicated coordinated-passive detector.
     if (/^(?:have|has|had|is|am|are|was|were|being|been)\b/i.test(clauseText)) continue;
+
     const punctuation = /[.!?]+$/.exec(clauseText)?.[0] || '';
     const clauseForAnalysis = clauseText.slice(0, clauseText.length - punctuation.length).trim();
     if (!clauseForAnalysis) continue;
     const analysis = analyzeForPassiveVoice(clauseForAnalysis);
     if (!analysis.isPassive) continue;
-    // The sentence-level detector already counts one passive construction.
-    // Do not count that same construction again when its clause is not first.
-    // Skip only the clause that actually contains the sentence-level
-    // primary match. The highest-confidence match can occur in a later
-    // subordinate clause, so matching by verb text alone loses other clauses.
+
+    // Skip only the clause that actually contains the sentence-level primary
+    // match. This works even when that match is in a later subordinate clause.
     if (primaryMatch && clauseForAnalysis.toLowerCase().includes(primaryMatch.toLowerCase())) continue;
+
     const absoluteStart = sentenceStart + normalizedStart;
     if (found.some(item => item.start === absoluteStart)) continue;
     const rewriteInput = clauseForAnalysis + punctuation;
