@@ -260,6 +260,18 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#passive-count')).toHaveText('0');
   });
 
+
+  test('should recognize accented names as explicit agents', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by Élodie.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('.suggestion-item')).toContainText('Élodie wrote the report.');
+    await expect(page.locator('.apply-rewrite-btn')).toBeVisible();
+  });
+
   test('should not invent an actor or repeat the full original sentence in suggestions', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
