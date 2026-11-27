@@ -30,7 +30,8 @@ jobs:
         run: npm run build
 
       - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+        # GitHub-hosted Ubuntu runners include Chromium's system libraries; avoid refreshing third-party apt feeds.
+        run: npx playwright install chromium
 
       - name: Run desktop regression tests
         run: npx playwright test --project="Desktop Chrome"
