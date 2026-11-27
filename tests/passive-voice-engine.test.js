@@ -52,6 +52,15 @@ test('labeled rewrite benchmark: generated active versions match reviewed output
   assert.deepEqual(failures, [], failures.join('\n'));
 });
 
+test('reported modal-perfect sentence contains exactly two passive constructions in one sentence', () => {
+  const text = 'His life could have been saved if the right medicine had been given to him immediately after the accident.';
+  const results = analyzePassiveText(text);
+  assert.equal(results.length, 1);
+  assert.equal(results[0].isPassive, true);
+  assert.equal(results[0].additionalPatterns.length, 1);
+  assert.equal((results[0].isPassive ? 1 : 0) + results[0].additionalPatterns.length, 2);
+});
+
 test('unsafe and ambiguous structures never receive an automatic rewrite', () => {
   const examples = [
     'The report was written yesterday.',
