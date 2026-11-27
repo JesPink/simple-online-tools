@@ -272,6 +272,19 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('.apply-rewrite-btn')).toBeVisible();
   });
 
+
+  test('should apply a rewrite to the selected occurrence when sentences are duplicated', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by John. The report was written by John.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('.apply-rewrite-btn')).toHaveCount(2);
+    await page.locator('.apply-rewrite-btn').nth(1).click();
+    await expect(page.locator('#text-input')).toHaveValue('The report was written by John. John wrote the report.');
+  });
+
   test('should not invent an actor or repeat the full original sentence in suggestions', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
