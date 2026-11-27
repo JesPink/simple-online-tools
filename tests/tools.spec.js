@@ -282,6 +282,10 @@ test.describe('Passive Voice Detector Functionality', () => {
     await suggestion.locator('.apply-rewrite-btn').click();
     await expect(page.locator('#text-input')).toHaveValue('John wrote the report.');
     await expect(page.locator('#passive-count')).toHaveText('0');
+    await expect(page.locator('#undo-rewrite-btn')).toBeVisible();
+    await page.locator('#undo-rewrite-btn').click();
+    await expect(page.locator('#text-input')).toHaveValue('The report was written by John.');
+    await expect(page.locator('#passive-count')).toHaveText('1');
   });
 
 
