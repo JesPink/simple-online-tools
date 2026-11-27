@@ -18,26 +18,9 @@
     "type": "simple",
     "jsPath": "/tools/word-counter/index.js",
     "relatedTools": [
-      {
-        "slug": "case-converter",
-        "name": "Case Converter",
-        "description": "Transform text between uppercase, lowercase, title case, and more formats instantly."
-      },
-      {
-        "slug": "invoice-generator",
-        "name": "Invoice Generator",
-        "description": "Create professional invoices instantly with customizable templates and PDF download."
-      },
-      {
-        "slug": "character-counter",
-        "name": "Character Counter",
-        "description": "Count characters with precision for social media posts and meta descriptions."
-      },
-      {
-        "slug": "text-formatter",
-        "name": "Text Formatter",
-        "description": "Clean up and format your text with our advanced text processing tools."
-      }
+      "case-converter",
+      "passive-voice-detector",
+      "meta-description-generator"
     ],
     "seo": {
       "focusKeyword": "unique words counter",
@@ -68,21 +51,9 @@
     "type": "simple",
     "jsPath": "/tools/case-converter/index.js",
     "relatedTools": [
-      {
-        "slug": "word-counter",
-        "name": "Word Counter",
-        "description": "Count words, characters, sentences, and paragraphs in your text instantly."
-      },
-      {
-        "slug": "invoice-generator",
-        "name": "Invoice Generator",
-        "description": "Create professional invoices instantly with customizable templates and PDF download."
-      },
-      {
-        "slug": "text-formatter",
-        "name": "Text Formatter",
-        "description": "Clean up and format your text with our advanced text processing tools."
-      }
+      "word-counter",
+      "passive-voice-detector",
+      "meta-description-generator"
     ],
     "seo": {
       "focusKeyword": "case converter",
@@ -116,16 +87,9 @@
     "datePublished": "2025-09-16",
     "dateModified": "2025-09-16",
     "relatedTools": [
-      {
-        "slug": "word-counter",
-        "name": "Word Counter",
-        "description": "Count words, characters, sentences, and paragraphs in your text instantly."
-      },
-      {
-        "slug": "case-converter",
-        "name": "Case Converter",
-        "description": "Transform text between uppercase, lowercase, title case, and more formats instantly."
-      }
+      "value-proposition-generator",
+      "meeting-cost-calculator",
+      "pdf-metadata-editor"
     ],
     "seo": {
       "focusKeyword": "invoice generator",
@@ -168,16 +132,9 @@
     "type": "simple",
     "jsPath": "/tools/passive-voice-detector/index.js",
     "relatedTools": [
-      {
-        "slug": "word-counter",
-        "name": "Word Counter",
-        "description": "Count words, characters, sentences, and paragraphs in your text instantly."
-      },
-      {
-        "slug": "case-converter",
-        "name": "Case Converter",
-        "description": "Transform text between uppercase, lowercase, title case, and more formats instantly."
-      }
+      "word-counter",
+      "case-converter",
+      "meta-description-generator"
     ],
     "seo": {
       "focusKeyword": "passive voice checker",
@@ -211,21 +168,9 @@
     "datePublished": "2025-09-21",
     "dateModified": "2025-09-21",
     "relatedTools": [
-      {
-        "slug": "word-counter",
-        "name": "Word Counter",
-        "description": "Count words, characters, sentences, and paragraphs in your text instantly."
-      },
-      {
-        "slug": "case-converter",
-        "name": "Case Converter",
-        "description": "Transform text between uppercase, lowercase, title case, and more formats instantly."
-      },
-      {
-        "slug": "invoice-generator",
-        "name": "Invoice Generator",
-        "description": "Create professional invoices instantly with customizable templates and PDF download."
-      }
+      "invoice-generator",
+      "meeting-cost-calculator",
+      "meta-description-generator"
     ],
     "seo": {
       "focusKeyword": "value proposition generator",
@@ -271,21 +216,8 @@
     "datePublished": "2025-01-16",
     "dateModified": "2026-11-26",
     "relatedTools": [
-      {
-        "slug": "word-counter",
-        "name": "Word Counter",
-        "description": "Count words, characters, sentences, and paragraphs in your text instantly."
-      },
-      {
-        "slug": "case-converter",
-        "name": "Case Converter",
-        "description": "Transform text between uppercase, lowercase, title case, and more formats instantly."
-      },
-      {
-        "slug": "value-proposition-generator",
-        "name": "Value Proposition Generator",
-        "description": "Create compelling business messaging and value statements with proven frameworks."
-      }
+      "invoice-generator",
+      "value-proposition-generator"
     ],
     "seo": {
       "focusKeyword": "meeting cost calculator",
@@ -331,21 +263,7 @@
     "datePublished": "2025-01-16",
     "dateModified": "2026-11-26",
     "relatedTools": [
-      {
-        "slug": "word-counter",
-        "name": "Word Counter",
-        "description": "Count words, characters, sentences, and paragraphs in your text instantly."
-      },
-      {
-        "slug": "case-converter",
-        "name": "Case Converter",
-        "description": "Transform text between uppercase, lowercase, title case, and more formats instantly."
-      },
-      {
-        "slug": "meeting-cost-calculator",
-        "name": "Meeting Cost Calculator",
-        "description": "Calculate real-time meeting costs and optimize business efficiency with live cost tracking."
-      }
+      "invoice-generator"
     ],
     "seo": {
       "focusKeyword": "PDF metadata editor",
@@ -391,21 +309,9 @@
     "datePublished": "2025-01-16",
     "dateModified": "2026-11-26",
     "relatedTools": [
-      {
-        "slug": "word-counter",
-        "name": "Word Counter",
-        "description": "Count words, characters, sentences, and paragraphs in your text instantly."
-      },
-      {
-        "slug": "case-converter",
-        "name": "Case Converter",
-        "description": "Transform text between uppercase, lowercase, title case, and more formats instantly."
-      },
-      {
-        "slug": "passive-voice-detector",
-        "name": "Passive Voice Detector",
-        "description": "Find and fix passive voice in your writing for better clarity and engagement."
-      }
+      "passive-voice-detector",
+      "word-counter",
+      "case-converter"
     ],
     "seo": {
       "focusKeyword": "meta description generator",
@@ -450,23 +356,7 @@
     "author": "Simple Online Tools",
     "datePublished": "2025-01-16",
     "dateModified": "2026-11-26",
-    "relatedTools": [
-      {
-        "slug": "word-counter",
-        "name": "Word Counter",
-        "description": "Count words, characters, sentences, and paragraphs in your text instantly."
-      },
-      {
-        "slug": "case-converter",
-        "name": "Case Converter",
-        "description": "Transform text between uppercase, lowercase, title case, and more formats instantly."
-      },
-      {
-        "slug": "meeting-cost-calculator",
-        "name": "Meeting Cost Calculator",
-        "description": "Calculate real-time meeting costs and optimize business efficiency with live cost tracking."
-      }
-    ],
+    "relatedTools": [],
     "seo": {
       "focusKeyword": "recipe scaler",
       "metaTitle": "Recipe Scaler – Adjust Ingredients & Servings",
