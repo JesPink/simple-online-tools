@@ -225,21 +225,25 @@ export async function init() {
 
   // Enhanced passive voice detection
   function detectPassiveVoice(text) {
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const sentenceMatches = Array.from(text.matchAll(/[^.!?]+(?:[.!?]+|$)/g));
     const results = [];
-    let searchOffset = 0;
 
-    sentences.forEach((sentence, index) => {
-      const trimmedSentence = sentence.trim();
-      if (trimmedSentence.length === 0) return;
-      const sentenceStart = text.indexOf(trimmedSentence, searchOffset);
-      const sentenceEnd = sentenceStart >= 0 ? sentenceStart + trimmedSentence.length : -1;
-      if (sentenceEnd >= 0) searchOffset = sentenceEnd;
+    sentenceMatches.forEach((match, index) => {
+      const rawSentence = match[0];
+      const trimmedWithPunctuation = rawSentence.trim();
+      const leadingWhitespace = rawSentence.length - rawSentence.trimStart().length;
+      const punctuation = /[.!?]+$/.exec(trimmedWithPunctuation)?.[0] || '';
+      const trimmedSentence = trimmedWithPunctuation.slice(0, trimmedWithPunctuation.length - punctuation.length).trimEnd();
+      if (!trimmedSentence) return;
 
+      const sentenceStart = match.index + leadingWhitespace;
+      const sentenceEnd = sentenceStart + trimmedSentence.length;
+      const sentenceForRewrite = trimmedSentence + punctuation;
       const analysisResult = analyzeForPassiveVoice(trimmedSentence);
-      
+
       results.push({
         sentence: trimmedSentence,
+        punctuation,
         isPassive: analysisResult.isPassive,
         passiveMatch: analysisResult.passiveMatch,
         passiveType: analysisResult.passiveType,
@@ -248,15 +252,15 @@ export async function init() {
         index,
         start: sentenceStart,
         end: sentenceEnd,
-        activeRewrite: analysisResult.isPassive ? generateActiveRewrite(trimmedSentence, analysisResult.passiveMatch) : null,
+        activeRewrite: analysisResult.isPassive ? generateActiveRewrite(sentenceForRewrite, analysisResult.passiveMatch) : null,
         suggestion: analysisResult.isPassive ?
-          generateActiveSuggestion(trimmedSentence, analysisResult.passiveMatch) : null
+          generateActiveSuggestion(sentenceForRewrite, analysisResult.passiveMatch) : null
       });
     });
-    
+
     return results;
   }
-  
+
   // ENHANCED COMPREHENSIVE PASSIVE VOICE ANALYZER
   // Multi-pattern detection with confidence scoring and context awareness
   function analyzeForPassiveVoice(sentence) {
@@ -540,7 +544,7 @@ export async function init() {
   // construction when an explicit by-agent and a supported verb form are present.
   // Ambiguous or compound sentences remain review-only; never invent an actor.
   function generateActiveRewrite(sentence, passiveMatch) {
-    if (!passiveMatch || /\b(?:been|being|get|got|getting)\b/i.test(passiveMatch)) return null;
+    if (!passiveMatch || /\?\s*$/.test(sentence) || /\b(?:been|being|get|got|getting)\b/i.test(passiveMatch)) return null;
     const passiveTokens = passiveMatch.toLowerCase().split(/\s+/);
     const auxiliary = passiveTokens[0];
     const participle = passiveTokens[passiveTokens.length - 1];
@@ -613,7 +617,7 @@ export async function init() {
     }
     const capitalizedAgent = agent.charAt(0).toUpperCase() + agent.slice(1);
     const activeSentence = capitalizedAgent + ' ' + activeVerb + ' ' + object.charAt(0).toLowerCase() + object.slice(1);
-    const punctuation = /[.!?]$/.exec(sentence)?.[0] || '.';
+    const punctuation = /[.!?]+$/.exec(sentence)?.[0] || '';
     return activeSentence.replace(/[.!?]+$/, '') + punctuation;
   }
 
@@ -642,9 +646,9 @@ export async function init() {
       if (result.isPassive) {
         const confidenceClass = result.confidence >= 0.7 ? 'high-confidence' : 
                                 result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
-        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}.</span> `;
+        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}.</span> `;
       } else {
-        highlightedHtml += `<span class="active-sentence">${escapeHtml(result.sentence)}.</span> `;
+        highlightedHtml += `<span class="active-sentence">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}</span> `;
       }
     });
     
