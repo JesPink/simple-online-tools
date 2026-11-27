@@ -8,7 +8,6 @@ to disk or included in output.
 from __future__ import annotations
 
 import json
-import math
 import sys
 import urllib.request
 import subprocess
@@ -164,7 +163,9 @@ def main() -> int:
         assert parsed[0]["passive"] is True, parsed[0]
         assert set(parsed[0]["evidence"]) == {"Voice=Pass", "nsubj:pass", "aux:pass", "obl:agent"}
         assert parsed[1]["passive"] is False, parsed[1]
-        print("Parser self-test passed (2 sentences; passive and active labels).")
+        predictions = run_detector(parsed)
+        assert predictions == [True, False], predictions
+        print("Parser + Node detector integration self-test passed (one passive, one active).")
         return 0
 
     print(f"Fetching pinned {CORPUS_VERSION} from {CORPUS_URL}", file=sys.stderr)
