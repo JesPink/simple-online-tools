@@ -163,9 +163,16 @@ def main() -> int:
         assert parsed[0]["passive"] is True, parsed[0]
         assert set(parsed[0]["evidence"]) == {"Voice=Pass", "nsubj:pass", "aux:pass", "obl:agent"}
         assert parsed[1]["passive"] is False, parsed[1]
-        predictions = run_detector(parsed)
-        assert predictions == [True, False], predictions
-        print("Parser + Node detector integration self-test passed (one passive, one active).")
+        # Include an active opening clause followed by a passive coordinated clause.
+        # Sentence-level evaluation must count the later passive as positive too.
+        integration_samples = parsed + [{
+            "text": "Maya wrote the report, but it was reviewed by the editor.",
+            "passive": True,
+            "evidence": ["integration-fixture"],
+        }]
+        predictions = run_detector(integration_samples)
+        assert predictions == [True, False, True], predictions
+        print("Parser + Node detector integration self-test passed (passive, active, later-clause passive).")
         return 0
 
     print(f"Fetching pinned {CORPUS_VERSION} from {CORPUS_URL}", file=sys.stderr)
