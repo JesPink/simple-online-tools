@@ -325,12 +325,23 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(suggestions).not.toContainText(original);
   });
 
-  test('should avoid unsafe rewrites when a sentence contains multiple passive auxiliaries', async ({ page }) => {
+  test('should detect and safely rewrite a coordinated perfect-passive clause without changing the first clause', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
-    await page.locator('#text-input').fill('The tablets were uncovered and have been cataloged by university historians.');
+    const original = "Hundreds of ancient clay tablets were uncovered beneath the temple courtyard during last summer's excavation and have since been carefully cataloged by university historians.";
+    await page.locator('#text-input').fill(original);
     await page.locator('#analyze-btn').click();
-    await expect(page.locator('#suggestions-list .apply-rewrite-btn')).toHaveCount(0);
+
+    await expect(page.locator('#total-sentences')).toHaveText('1');
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('.suggestion-item')).toHaveCount(2);
+    await expect(page.locator('.suggestion-item').nth(0)).toContainText('No actor is stated for this first passive clause');
+    await expect(page.locator('.suggestion-item').nth(1)).toContainText('university historians have since carefully cataloged them');
+    await expect(page.locator('.suggestion-item .apply-rewrite-btn')).toHaveCount(1);
+
+    await page.locator('.suggestion-item .apply-rewrite-btn').click();
+    await expect(page.locator('#text-input')).toHaveValue("Hundreds of ancient clay tablets were uncovered beneath the temple courtyard during last summer's excavation and university historians have since carefully cataloged them.");
+    await expect(page.locator('#passive-count')).toHaveText('1');
   });
 
 
