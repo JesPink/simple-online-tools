@@ -21,6 +21,7 @@ export function render() {
                 <div class="form-actions">
                   <button id="analyze-btn" class="btn btn-primary">Analyze Text</button>
                   <button id="clear-btn" class="btn btn-secondary">Clear</button>
+                  <button id="undo-rewrite-btn" class="btn btn-secondary undo-rewrite-btn" type="button">Undo rewrite</button>
                 </div>
               </div>
             </div>
@@ -115,6 +116,7 @@ export async function init() {
   const textInput = document.getElementById('text-input');
   const analyzeBtn = document.getElementById('analyze-btn');
   const clearBtn = document.getElementById('clear-btn');
+  const undoRewriteBtn = document.getElementById('undo-rewrite-btn');
   const totalSentencesEl = document.getElementById('total-sentences');
   const passiveCountEl = document.getElementById('passive-count');
   const passivePercentageEl = document.getElementById('passive-percentage');
@@ -124,6 +126,7 @@ export async function init() {
   const suggestionsList = document.getElementById('suggestions-list');
 
   let debounceTimer;
+  let previousTextBeforeRewrite = null;
 
   // COMPREHENSIVE PASSIVE VOICE DETECTION SYSTEM
   // Pattern-based heuristic detector; scores are not calibrated accuracy probabilities.
@@ -757,7 +760,18 @@ export async function init() {
     const currentText = textInput.value;
     const end = start + original.length;
     if (currentText.slice(start, end) !== original) return;
+    previousTextBeforeRewrite = currentText;
     textInput.value = currentText.slice(0, start) + rewrite.replace(/[.!?]$/, '') + currentText.slice(end);
+    undoRewriteBtn.style.display = 'inline-flex';
+    analyzeText();
+    textInput.focus();
+  });
+
+  undoRewriteBtn.addEventListener('click', () => {
+    if (previousTextBeforeRewrite === null) return;
+    textInput.value = previousTextBeforeRewrite;
+    previousTextBeforeRewrite = null;
+    undoRewriteBtn.style.display = 'none';
     analyzeText();
     textInput.focus();
   });
@@ -773,12 +787,16 @@ export async function init() {
   clearBtn.addEventListener('click', () => {
     console.log('Clear button clicked');
     textInput.value = '';
+    previousTextBeforeRewrite = null;
+    undoRewriteBtn.style.display = 'none';
     resetResults();
     textInput.focus();
   });
 
   // Smart debouncing for large inputs
   textInput.addEventListener('input', (e) => {
+    previousTextBeforeRewrite = null;
+    undoRewriteBtn.style.display = 'none';
     clearTimeout(debounceTimer);
     
     const textLength = e.target.value.length;
