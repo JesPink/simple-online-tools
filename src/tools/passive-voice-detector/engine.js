@@ -218,6 +218,7 @@ function detectCoordinatedPerfectPassive(sentence, sentenceStart) {
 // handler above rather than guessed.
 function detectAdditionalPassiveClauses(sentence, sentenceStart, existingPatterns = [], primaryMatch = null) {
   const found = [];
+  let primaryMatchAccountedFor = false;
   const separators = Array.from(sentence.matchAll(/\b(?:and|but|or|if|when|whenever|because|although|though|while|unless|until|once|after|before|since|whereas|where)\s+/gi));
   const ranges = [];
   let rangeStart = 0;
@@ -248,9 +249,13 @@ function detectAdditionalPassiveClauses(sentence, sentenceStart, existingPattern
     const analysis = analyzeForPassiveVoice(clauseForAnalysis);
     if (!analysis.isPassive) continue;
 
-    // Skip only the clause that actually contains the sentence-level primary
-    // match. This works even when that match is in a later subordinate clause.
-    if (primaryMatch && clauseForAnalysis.toLowerCase().includes(primaryMatch.toLowerCase())) continue;
+    // Skip the first clause whose detected pattern matches the sentence-level
+    // primary result. Segments are processed in text order, so this also handles
+    // identical passive forms in separate clauses without double-counting.
+    if (!primaryMatchAccountedFor && primaryMatch && analysis.passiveMatch === primaryMatch) {
+      primaryMatchAccountedFor = true;
+      continue;
+    }
 
     const absoluteStart = sentenceStart + normalizedStart;
     if (found.some(item => item.start === absoluteStart)) continue;
