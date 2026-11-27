@@ -273,13 +273,14 @@ export async function init() {
   // have since been carefully cataloged by historians"). Keep the first
   // clause intact and rewrite only the coordinated tail.
   function detectCoordinatedPerfectPassive(sentence, sentenceStart) {
-    const match = /\band\s+(have|has|had)\s+((?:(?:since|already|recently|carefully|quickly|slowly|thoroughly|successfully|officially|properly|deliberately|widely|regularly|usually|often|frequently|quietly|publicly|privately|directly|independently|closely)\s+)*)been\s+([a-z]+ed)\s+by\s+(.+)$/i.exec(sentence);
+    const adverbPattern = '(?:since|already|recently|carefully|quickly|slowly|thoroughly|successfully|officially|properly|deliberately|widely|regularly|usually|often|frequently|quietly|publicly|privately|directly|independently|closely)';
+    const match = new RegExp('\\\\band\\\\s+(have|has|had)\\\\s+((?:' + adverbPattern + '\\\\s+)*)been\\\\s+((?:' + adverbPattern + '\\\\s+)*)([a-z]+ed)\\\\s+by\\\\s+(.+)$', 'i').exec(sentence);
     if (!match) return [];
-    const participle = match[3].toLowerCase();
+    const participle = match[4].toLowerCase();
     const baseVerbs = { cataloged: 'catalog', catalogued: 'catalogue', reviewed: 'review', recorded: 'record', examined: 'examine', documented: 'document', processed: 'process', discovered: 'discover', uncovered: 'uncover', completed: 'complete', published: 'publish', prepared: 'prepare', created: 'create', updated: 'update', delivered: 'deliver', managed: 'manage', designed: 'design', tested: 'test', cleaned: 'clean' };
     const base = baseVerbs[participle];
     if (!base) return [];
-    const actor = match[4].trim().replace(/[.!?]+$/, '');
+    const actor = match[5].trim().replace(/[.!?]+$/, '');
     if (!actor || /[,;:]|\b(?:during|after|before|because|while|through|within|without|under|over|around)\b/i.test(actor)) return [];
     const actorObject = actor.toLowerCase().replace(/^(?:the|a|an|this|that|these|those)\s+/, '').split(/\s+/)[0];
     if (NON_AGENT_BY_OBJECTS.has(actorObject) || /\bby\b/i.test(actor)) return [];
@@ -294,7 +295,7 @@ export async function init() {
     const actorHead = actorWords[actorWords.length - 1];
     const pluralActor = /\band\b/i.test(actor) || /(?:s|people|men|women|children)$/i.test(actorHead);
     const activeAuxiliary = auxiliary === 'had' ? 'had' : (pluralActor ? 'have' : 'has');
-    const adverbs = match[2].trim();
+    const adverbs = [match[2].trim(), match[3].trim()].filter(Boolean).join(' ');
     const activeVerb = participle;
     const lowerActor = actor.charAt(0).toLowerCase() + actor.slice(1);
     const clauseStart = match.index;
