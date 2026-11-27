@@ -219,7 +219,7 @@ function detectCoordinatedPerfectPassive(sentence, sentenceStart) {
 function detectAdditionalPassiveClauses(sentence, sentenceStart, existingPatterns = [], primaryMatch = null) {
   const found = [];
   let primaryMatchAccountedFor = false;
-  const conjunctionMatches = Array.from(sentence.matchAll(/\b(?:and|but|or)\s+/gi));
+  const conjunctionMatches = Array.from(sentence.matchAll(/\b(?:and|but|or|if|when|whenever|because|although|though|while|unless|until|once|after|before|since|whereas|where)\s+/gi));
   for (let i = 0; i < conjunctionMatches.length; i++) {
     const match = conjunctionMatches[i];
     const clauseStart = match.index + match[0].length;
