@@ -243,6 +243,7 @@ export async function init() {
       const sentenceEnd = sentenceStart + trimmedSentence.length;
       const sentenceForRewrite = trimmedSentence + punctuation;
       const analysisResult = analyzeForPassiveVoice(trimmedSentence);
+      const additionalPatterns = detectCoordinatedPerfectPassive(trimmedSentence, sentenceStart);
 
       results.push({
         sentence: trimmedSentence,
@@ -257,11 +258,56 @@ export async function init() {
         end: sentenceEnd,
         activeRewrite: analysisResult.isPassive ? generateActiveRewrite(sentenceForRewrite, analysisResult.passiveMatch) : null,
         suggestion: analysisResult.isPassive ?
-          generateActiveSuggestion(sentenceForRewrite, analysisResult.passiveMatch) : null
+          (additionalPatterns.length
+            ? 'No actor is stated for this first passive clause. The actor in the later clause applies only to that later action.'
+            : generateActiveSuggestion(sentenceForRewrite, analysisResult.passiveMatch)) : null,
+        additionalPatterns
       });
     });
 
     return results;
+  }
+
+  // Detect a narrow, safely rewritable coordinated perfect-passive clause
+  // that shares the subject of an earlier clause (e.g. "... were found and
+  // have since been carefully cataloged by historians"). Keep the first
+  // clause intact and rewrite only the coordinated tail.
+  function detectCoordinatedPerfectPassive(sentence, sentenceStart) {
+    const match = /\\band\\s+(have|has|had)\\s+((?:(?:since|already|recently|carefully|quickly|slowly|thoroughly|successfully|officially|properly|deliberately|widely|regularly|usually|often|frequently|quietly|publicly|privately|directly|independently|closely)\\s+)*)been\\s+([a-z]+ed)\\s+by\\s+(.+)$/i.exec(sentence);
+    if (!match) return [];
+    const participle = match[3].toLowerCase();
+    const baseVerbs = { cataloged: 'catalog', catalogued: 'catalogue', reviewed: 'review', recorded: 'record', examined: 'examine', documented: 'document', processed: 'process', discovered: 'discover', uncovered: 'uncover', completed: 'complete', published: 'publish', prepared: 'prepare', created: 'create', updated: 'update', delivered: 'deliver', managed: 'manage', designed: 'design', tested: 'test', cleaned: 'clean' };
+    const base = baseVerbs[participle];
+    if (!base) return [];
+    const actor = match[4].trim().replace(/[.!?]+$/, '');
+    if (!actor || /[,;:]|\\b(?:during|after|before|because|while|through|within|without|under|over|around)\\b/i.test(actor)) return [];
+    const actorObject = actor.toLowerCase().replace(/^(?:the|a|an|this|that|these|those)\\s+/, '').split(/\\s+/)[0];
+    if (NON_AGENT_BY_OBJECTS.has(actorObject) || /\\bby\\b/i.test(actor)) return [];
+    const firstClause = sentence.slice(0, match.index);
+    const subjectMatch = /^(.*?)\\b(?:is|am|are|was|were)\\b/i.exec(firstClause);
+    if (!subjectMatch) return [];
+    const subject = subjectMatch[1].trim();
+    const lastWord = subject.toLowerCase().match(/[\\p{L}]+$/u)?.[0] || '';
+    const objectPronoun = /(?:s|people|men|women|children)$/i.test(lastWord) ? 'them' : 'it';
+    const auxiliary = match[1].toLowerCase();
+    const actorWords = actor.toLowerCase().split(/\\s+/);
+    const actorHead = actorWords[actorWords.length - 1];
+    const pluralActor = /\\band\\b/i.test(actor) || /(?:s|people|men|women|children)$/i.test(actorHead);
+    const activeAuxiliary = auxiliary === 'had' ? 'had' : (pluralActor ? 'have' : 'has');
+    const adverbs = match[2].trim();
+    const activeVerb = base;
+    const lowerActor = actor.charAt(0).toLowerCase() + actor.slice(1);
+    const clauseStart = match.index;
+    const originalClause = sentence.slice(clauseStart);
+    const rewriteClause = 'and ' + lowerActor + ' ' + activeAuxiliary + (adverbs ? ' ' + adverbs : '') + ' ' + activeVerb + ' ' + objectPronoun;
+    return [{
+      sentence: originalClause,
+      start: sentenceStart + clauseStart,
+      activeRewrite: rewriteClause,
+      suggestion: 'The actor is named in this clause. Review the proposed active version before applying it.',
+      pattern: `${auxiliary} been ${participle} (coordinated clause)`,
+      confidence: 0.95
+    }];
   }
 
   // ENHANCED COMPREHENSIVE PASSIVE VOICE ANALYZER
@@ -669,7 +715,8 @@ export async function init() {
 
   // Generate suggestions HTML
   function generateSuggestionsHtml(results) {
-    const passiveResults = results.filter(result => result.isPassive);
+    const passiveResults = results.filter(result => result.isPassive)
+      .flatMap(result => [result, ...(result.additionalPatterns || [])]);
     if (passiveResults.length === 0) {
       return '<p class="no-suggestions" role="status" aria-live="polite">No passive-voice patterns detected in this text. The checker found no matches among the patterns it recognizes.</p>';
     }
