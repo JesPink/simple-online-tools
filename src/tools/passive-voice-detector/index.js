@@ -646,7 +646,7 @@ export async function init() {
       if (result.isPassive) {
         const confidenceClass = result.confidence >= 0.7 ? 'high-confidence' : 
                                 result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
-        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}.</span> `;
+        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}</span> `;
       } else {
         highlightedHtml += `<span class="active-sentence">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}</span> `;
       }
