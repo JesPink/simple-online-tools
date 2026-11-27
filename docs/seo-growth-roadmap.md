@@ -95,6 +95,25 @@ The first V2 increment adds deterministic review guidance, removes the duplicate
 - Add an editable full-text rewrite preview only after clause-level mapping is reliable.
 - Consider an optional language-model rewrite only if privacy, cost, latency, and serverless architecture are explicitly designed and disclosed. Do not send user text to a third-party service by default.
 
+### Directional competitor scan (2026-11-27)
+
+This is a live search-result and indexed-page review, not a complete hands-on product test:
+
+| Competitor | Observed product promise | Implication |
+|---|---|---|
+| Grammarly | Inline underlines, hover suggestions, accept-to-apply workflow, broader writing assistance and integrations; continued use prompts sign-up | Users expect suggestions to be actionable, not generic instructions. Competing on breadth is unrealistic. |
+| Typeahead | Browser-based, no sign-up, common passive patterns, and active wording only for simple cases with a named actor | A privacy-first, rule-based checker can compete if its limitations and rewrite coverage are explicit. |
+| Galaxy of Tools | Highlights passive patterns, identifies missing agents, and offers active rewrites when a “by” agent is present; discloses pattern-based limits | Basic detection plus an explicit-agent rewrite is already table stakes among focused tools. |
+| TinyToolz | Paste-and-check workflow with highlighted text, counts, percentage, and an active-voice rewrite promise | A useful summary dashboard is expected, but the rewrite must actually work. |
+
+Sources:
+- Grammarly: https://www.grammarly.com/passive-voice-checker
+- Typeahead: https://www.typeahead.ai/tools/passive-voice-checker
+- Galaxy of Tools: https://galaxyoftools.com/passive-voice-checker/
+- TinyToolz: https://tinytoolz.app/passive-voice-detector/
+
+**Product positioning implication:** Do not claim to be a full grammar assistant. Aim for a fast, private, no-sign-up passive-voice reviewer that explains why a pattern was flagged, distinguishes unknown actors from explicit agents, and applies only rewrites that preserve meaning. The moat cannot be the detector alone; it must be trustworthy explanations, careful edge-case handling, transparent evaluation, and a better user workflow.
+
 ### 3. Search intent and page quality
 
 For each tool page:
