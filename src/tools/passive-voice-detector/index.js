@@ -77,8 +77,8 @@ export function render() {
         <p>To revise a passive sentence, identify who or what performed the action, make that actor the subject when it is known and relevant, and adjust the verb. Do not invent an actor when the original sentence intentionally leaves it unknown.</p>
 
         <h2>How This Passive Voice Detector Works</h2>
-        <p>The checker uses JavaScript pattern matching rather than a full syntactic or semantic grammar model. It looks for selected forms of <em>be</em> or <em>get</em> near words in an included past-participle list, plus patterns such as “should be reviewed” and “has been completed.” The detector then applies simple context checks and heuristic scores before displaying a match.</p>
-        <p>This approach is fast, but English grammar is more complex than a word-pattern test. Some participles also function as adjectives, regular past-tense verbs can resemble participles, and passive constructions do not always use the patterns covered by this checker. Sentence splitting is punctuation-based, so abbreviations and unusual punctuation can also affect the displayed sentence count. Review results manually, especially for academic, legal, or technical writing.</p>
+        <p>The checker uses JavaScript pattern matching rather than a full syntactic or semantic grammar model. It looks for selected forms of <em>be</em> or <em>get</em> near words in an included past-participle list, plus patterns such as “should be reviewed” and “has been completed.” It filters a short list of common adjective-like words, such as “interested,” “excited,” “tired,” and “bored,” unless the sentence contains a likely agent phrase.</p>
+        <p>This approach is fast, but English grammar is more complex than a word-pattern test. The adjective filter favors precision and may miss an ambiguous passive when the actor is omitted; other participles can still function as adjectives, and passive constructions may fall outside the supported patterns. Sentence splitting is punctuation-based, so abbreviations and unusual punctuation can also affect the displayed sentence count. Review results manually, especially for academic, legal, or technical writing.</p>
 
         <h2>When Should You Use Passive Voice?</h2>
         <p>Passive voice is not automatically a writing mistake. It can be useful when the person doing the action is unknown (“The package was delivered”), obvious from context, or less important than the result (“The samples were stored at room temperature”). It is also common in scientific and technical writing when the procedure or object is the focus.</p>
@@ -87,8 +87,10 @@ export function render() {
         <h2>Frequently Asked Questions</h2>
         <h3>What is a passive voice checker?</h3>
         <p>A passive voice checker scans writing for sentence patterns that may use passive voice. This tool highlights patterns it recognizes, counts the matches, and offers suggested active wording for review.</p>
+        <h3>Does it treat words like “interested” or “tired” as passive voice?</h3>
+        <p>The checker filters several common adjective-like uses when no likely agent is named. Because grammar depends on context, it can still miss some passive sentences or flag other ambiguous phrases. Review every result in context.</p>
         <h3>How accurate is this passive voice detector?</h3>
-        <p>It is a heuristic pattern-based checker, not a validated grammar assessment. It can produce false positives and miss constructions outside its rules. Always judge a highlighted sentence in context.</p>
+        <p>It is a heuristic pattern-based checker, not a validated grammar assessment. It can still produce false positives and miss constructions outside its rules. Always judge a highlighted sentence in context.</p>
         <h3>Can I use it to check passive voice in Word or Google Docs?</h3>
         <p>Yes. Copy text from Word or Google Docs into the checker, analyze it, and review the results. The tool does not directly integrate with or modify either application.</p>
         <h3>Does it automatically convert passive voice to active voice?</h3>
@@ -458,34 +460,56 @@ export async function init() {
     return Math.max(0, Math.min(1, confidence));
   }
   
-  // Context filtering adjusts heuristic scores; its error rate has not been benchmarked.
+  // These words commonly function as adjectives. Without a likely agent phrase,
+  // count them as adjectival states rather than passive constructions.
+  const NON_AGENT_BY_OBJECTS = new Set([
+    'accident', 'chance', 'choice', 'comparison', 'contrast', 'default', 'definition',
+    'design', 'end', 'far', 'hand', 'heart', 'large', 'lot', 'means', 'mistake',
+    'myself', 'nature', 'necessity', 'now', 'ourselves', 'then', 'themselves',
+    'time', 'way', 'yourself', 'yourselves', 'himself', 'herself', 'itself'
+  ]);
+
+  function hasLikelyAgentByPhrase(sentence) {
+    for (const match of sentence.toLowerCase().matchAll(/\bby\s+(?:(?:the|a|an|this|that|these|those)\s+)?([a-z][a-z'-]*)/g)) {
+      const object = match[1];
+      if (!NON_AGENT_BY_OBJECTS.has(object) && !object.endsWith('ing')) return true;
+    }
+    return false;
+  }
+
+  // Context filtering adjusts heuristic scores; it does not produce calibrated accuracy probabilities.
   function applyContextFiltering(result, sentence) {
     if (!result.isPassive) return result;
-    
+
     const lowerSentence = sentence.toLowerCase();
-    
-    // Check for active voice indicators that suggest false positive
+    const participle = (result.passiveMatch || '').split(/\s+/).pop();
+
+    // Avoid counting common adjectival lookalikes unless a likely agent is named.
+    // This favors precision, but may miss an ambiguous passive with an omitted agent.
+    if (PASSIVE_VOICE_PATTERNS.adjectivalUses.has(participle) && !hasLikelyAgentByPhrase(lowerSentence)) {
+      return { isPassive: false, passiveMatch: null, passiveType: null, confidence: 0 };
+    }
+
+    // Check for active voice indicators that suggest false positives.
     for (const indicator of PASSIVE_VOICE_PATTERNS.activeIndicators) {
       if (lowerSentence.includes(indicator)) {
-        result.confidence *= 0.5; // Reduce confidence significantly
+        result.confidence *= 0.5;
         break;
       }
     }
-    
-    // Boost confidence for clear passive indicators
+
+    // Boost confidence for clear passive indicators.
     for (const indicator of PASSIVE_VOICE_PATTERNS.passiveIndicators) {
       if (lowerSentence.includes(indicator)) {
         result.confidence = Math.min(1, result.confidence * 1.3);
         break;
       }
     }
-    
-    // Final confidence threshold (only report if confident enough)
-    // Reduced threshold from 0.4 to 0.25 to catch valid passive constructions
+
     if (result.confidence < 0.25) {
       return { isPassive: false, passiveMatch: null, passiveType: null, confidence: 0 };
     }
-    
+
     return result;
   }
 
