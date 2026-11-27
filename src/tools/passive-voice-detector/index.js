@@ -586,7 +586,7 @@ export async function init() {
       catalogued:'catalogue', uncovered:'uncover', surprised:'surprise',
       excited:'excite', cleaned:'clean', tested:'test', completed:'complete',
       updated:'update', managed:'manage', prepared:'prepare', designed:'design',
-      published:'publish', developed:'developed', processed:'process'
+      published:'publish', developed:'develop', processed:'process'
     };
     const isPresent = ['is', 'am', 'are'].includes(auxiliary);
     let activeVerb = isPresent ? presentBases[participle] : irregularPast[participle];
