@@ -460,8 +460,8 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#passive-count')).toHaveText('1');
     await expect(page.locator('#passive-clause-count')).toHaveText('2');
     await expect(page.locator('.suggestion-item')).toHaveCount(2);
-    await expect(page.locator('.suggestion-item').nth(0)).toContainText('could have been saved');
-    await expect(page.locator('.suggestion-item').nth(1)).toContainText('had been given');
+    await expect(page.locator('.suggestion-item').nth(0).locator('.pattern-info')).toContainText('been + saved');
+    await expect(page.locator('.suggestion-item').nth(1).locator('.pattern-info')).toContainText('been + given');
     await expect(page.locator('.suggestion-item .apply-rewrite-btn')).toHaveCount(0);
   });
 
