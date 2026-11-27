@@ -227,11 +227,15 @@ export async function init() {
   function detectPassiveVoice(text) {
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
     const results = [];
-    
+    let searchOffset = 0;
+
     sentences.forEach((sentence, index) => {
       const trimmedSentence = sentence.trim();
       if (trimmedSentence.length === 0) return;
-      
+      const sentenceStart = text.indexOf(trimmedSentence, searchOffset);
+      const sentenceEnd = sentenceStart >= 0 ? sentenceStart + trimmedSentence.length : -1;
+      if (sentenceEnd >= 0) searchOffset = sentenceEnd;
+
       const analysisResult = analyzeForPassiveVoice(trimmedSentence);
       
       results.push({
@@ -242,6 +246,8 @@ export async function init() {
         confidence: analysisResult.confidence || 0,
         pattern: analysisResult.pattern || null,
         index,
+        start: sentenceStart,
+        end: sentenceEnd,
         activeRewrite: analysisResult.isPassive ? generateActiveRewrite(trimmedSentence, analysisResult.passiveMatch) : null,
         suggestion: analysisResult.isPassive ?
           generateActiveSuggestion(trimmedSentence, analysisResult.passiveMatch) : null
@@ -661,6 +667,7 @@ export async function init() {
           <strong>Suggested active version</strong>
           <p>${escapeHtml(result.activeRewrite)}</p>
           <button type="button" class="btn btn-secondary apply-rewrite-btn"
+            data-start="${result.start}"
             data-original="${escapeHtml(result.sentence)}"
             data-rewrite="${escapeHtml(result.activeRewrite)}">Apply rewrite</button>
         </div>
@@ -732,11 +739,12 @@ export async function init() {
     if (!button) return;
     const original = button.getAttribute('data-original');
     const rewrite = button.getAttribute('data-rewrite');
-    if (!original || !rewrite) return;
+    const start = Number(button.getAttribute('data-start'));
+    if (!original || !rewrite || !Number.isInteger(start) || start < 0) return;
     const currentText = textInput.value;
-    const occurrence = currentText.indexOf(original);
-    if (occurrence < 0) return;
-    textInput.value = currentText.slice(0, occurrence) + rewrite.replace(/[.!?]$/, '') + currentText.slice(occurrence + original.length);
+    const end = start + original.length;
+    if (currentText.slice(start, end) !== original) return;
+    textInput.value = currentText.slice(0, start) + rewrite.replace(/[.!?]$/, '') + currentText.slice(end);
     analyzeText();
     textInput.focus();
   });
