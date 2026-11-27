@@ -167,10 +167,10 @@ def main() -> int:
         # Exercise each supported annotation signal independently, including
         # files without a trailing blank line and ignored multiword/empty rows.
         parser_cases = [
-            ("# text = A was seen.\\n1\\tA\\t_\\tPRON\\t_\\t_\\t2\\tnsubj:pass\\t_\\t_\\n2\\twas\\t_\\tAUX\\t_\\t_\\t0\\troot\\t_\\t_", True, {"nsubj:pass"}),
-            ("# text = It is done.\\n1\\tIt\\t_\\tPRON\\t_\\t_\\t2\\tnsubj\\t_\\t_\\n2\\tis\\t_\\tAUX\\t_\\tVoice=Pass\\t0\\troot\\t_\\t_", True, {"Voice=Pass"}),
-            ("# text = She seems ready.\\n1\\tShe\\t_\\tPRON\\t_\\t_\\t2\\tnsubj\\t_\\t_\\n2\\tseems\\t_\\tVERB\\t_\\t_\\t0\\troot\\t_\\t_", False, set()),
-            ("# text = The work, which was reviewed, passed.\\n1-2\\tThe_work\\t_\\t_\\t_\\t_\\t_\\t_\\t_\\t_\\n1\\tThe\\t_\\tDET\\t_\\t_\\t2\\tdet\\t_\\t_\\n2\\twork\\t_\\tNOUN\\t_\\t_\\t4\\tnsubj\\t_\\t_\\n3\\twas\\t_\\tAUX\\t_\\t_\\t4\\taux:pass\\t_\\t_\\n3.1\\tghost\\t_\\tX\\t_\\t_\\t_\\t_\\t_\\t_\\n4\\treviewed\\t_\\tVERB\\t_\\t_\\t2\\tacl\\t_\\t_", True, {"aux:pass"}),
+            ("# text = A was seen.\n1\tA\t_\tPRON\t_\t_\t2\tnsubj:pass\t_\t_\n2\twas\t_\tAUX\t_\t_\t0\troot\t_\t_", True, {"nsubj:pass"}),
+            ("# text = It is done.\n1\tIt\t_\tPRON\t_\t_\t2\tnsubj\t_\t_\n2\tis\t_\tAUX\t_\tVoice=Pass\t0\troot\t_\t_", True, {"Voice=Pass"}),
+            ("# text = She seems ready.\n1\tShe\t_\tPRON\t_\t_\t2\tnsubj\t_\t_\n2\tseems\t_\tVERB\t_\t_\t0\troot\t_\t_", False, set()),
+            ("# text = The work, which was reviewed, passed.\n1-2\tThe_work\t_\t_\t_\t_\t_\t_\t_\t_\n1\tThe\t_\tDET\t_\t_\t2\tdet\t_\t_\n2\twork\t_\tNOUN\t_\t_\t4\tnsubj\t_\t_\n3\twas\t_\tAUX\t_\t_\t4\taux:pass\t_\t_\n3.1\tghost\t_\tX\t_\t_\t_\t_\t_\t_\n4\treviewed\t_\tVERB\t_\t_\t2\tacl\t_\t_", True, {"aux:pass"}),
         ]
         for source, expected_passive, expected_evidence in parser_cases:
             result = parse_conllu(source)
@@ -178,7 +178,7 @@ def main() -> int:
             assert result[0]["passive"] is expected_passive, result[0]
             assert set(result[0]["evidence"]) == expected_evidence, result[0]
 
-        fallback = parse_conllu("1\\tMaya\\t_\\tPROPN\\t_\\t_\\t2\\tnsubj\\t_\\t_\\n2\\twrote\\t_\\tVERB\\t_\\t_\\t0\\troot\\t_\\t_")
+        fallback = parse_conllu("1\tMaya\t_\tPROPN\t_\t_\t2\tnsubj\t_\t_\n2\twrote\t_\tVERB\t_\t_\t0\troot\t_\t_")
         assert fallback == [{"text": "Maya wrote", "passive": False, "evidence": []}], fallback
         assert metrics(parsed, [True, False])["true_positive"] == 1
         assert metrics(parsed, [True, False])["true_negative"] == 1
