@@ -274,7 +274,7 @@ export async function init() {
   // clause intact and rewrite only the coordinated tail.
   function detectCoordinatedPerfectPassive(sentence, sentenceStart) {
     const adverbPattern = '(?:since|already|recently|carefully|quickly|slowly|thoroughly|successfully|officially|properly|deliberately|widely|regularly|usually|often|frequently|quietly|publicly|privately|directly|independently|closely)';
-    const match = new RegExp('\\\\band\\\\s+(have|has|had)\\\\s+((?:' + adverbPattern + '\\\\s+)*)been\\\\s+((?:' + adverbPattern + '\\\\s+)*)([a-z]+ed)\\\\s+by\\\\s+(.+)$', 'i').exec(sentence);
+    const match = new RegExp('\\band\\s+(have|has|had)\\s+((?:' + adverbPattern + '\\s+)*)been\\s+((?:' + adverbPattern + '\\s+)*)([a-z]+ed)\\s+by\\s+(.+)$', 'i').exec(sentence);
     if (!match) return [];
     const participle = match[4].toLowerCase();
     const baseVerbs = { cataloged: 'catalog', catalogued: 'catalogue', reviewed: 'review', recorded: 'record', examined: 'examine', documented: 'document', processed: 'process', discovered: 'discover', uncovered: 'uncover', completed: 'complete', published: 'publish', prepared: 'prepare', created: 'create', updated: 'update', delivered: 'deliver', managed: 'manage', designed: 'design', tested: 'test', cleaned: 'clean' };
