@@ -291,3 +291,5 @@
 }
 .passive-voice-detector-tool .apply-rewrite-btn { min-height: 40px; }
 .passive-voice-detector-tool .suggestion-text { margin: 0; font-style: normal; }
+
+.passive-voice-detector-tool .undo-rewrite-btn { display: none; }
