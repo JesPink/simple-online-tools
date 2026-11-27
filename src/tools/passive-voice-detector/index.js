@@ -55,7 +55,7 @@ export function render() {
       
       <div class="seo-content">
         <h2>Free Passive Voice Checker and Detector</h2>
-        <p>Use this free passive voice checker to review English text for common passive-voice patterns. Paste or type your writing, select <strong>Analyze Text</strong>, and review the highlighted sentences, sentence count, passive-pattern count, and prompts for considering active-voice revisions. It is useful for editing essays, reports, articles, emails, and other drafts when you want to check whether the actor or action is clear.</p>
+        <p>Use this free passive voice checker to review English text for common passive-voice patterns. Paste or type your writing, select <strong>Analyze Text</strong>, and review highlighted sentences, pattern counts, and explanations. For supported simple constructions with a clear actor, preview and apply an active-voice rewrite. Ambiguous cases remain review-only so the tool does not invent an actor or silently change your meaning.</p>
         <p>The detector is a quick first-pass editing aid, not a complete grammar checker. It uses browser-based word and pattern matching, so it can miss passive constructions and flag phrases that are not passive in context. Treat each highlight as a prompt to review the sentence—not an instruction to remove every passive construction.</p>
 
         <h2>How to Check for Passive Voice</h2>
@@ -63,7 +63,7 @@ export function render() {
           <li><strong>Paste your draft:</strong> Add the English text you want to review in the text box.</li>
           <li><strong>Run the check:</strong> Select <strong>Analyze Text</strong> to scan the text for patterns the detector recognizes.</li>
           <li><strong>Review the highlights:</strong> Read each highlighted sentence in context and decide whether it is genuinely passive.</li>
-          <li><strong>Consider the suggestion:</strong> Use the proposed active wording as a starting point, then check that it preserves the original meaning.</li>
+          <li><strong>Review a rewrite when available:</strong> Apply the draft active version only when the actor and verb form are clear, then check that it preserves the original meaning.</li>
           <li><strong>Revise selectively:</strong> Keep passive voice when the receiver of the action is the right focus or when the actor is unknown or unimportant.</li>
         </ol>
 
