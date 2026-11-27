@@ -562,7 +562,15 @@ export async function init() {
 
     const object = sentence.slice(0, predicateMatch.index).trim();
     const intervening = sentence.slice(predicateMatch.index + predicateMatch[0].length, byIndex).trim();
-    if (intervening && !/^(?:carefully|quickly|slowly|recently|already|finally|successfully|officially|properly|thoroughly|deliberately)$/i.test(intervening)) return null;
+    const predicateWords = predicateMatch[0].trim().split(/\s+/);
+    const adverbs = predicateWords.slice(1, -1).concat(intervening ? intervening.split(/\s+/) : []);
+    const supportedAdverbs = new Set([
+      'carefully', 'quickly', 'slowly', 'recently', 'already', 'finally',
+      'successfully', 'officially', 'properly', 'thoroughly', 'deliberately',
+      'widely', 'regularly', 'usually', 'often', 'frequently', 'quietly',
+      'publicly', 'privately', 'directly', 'independently', 'closely'
+    ]);
+    if (adverbs.some(adverb => !supportedAdverbs.has(adverb.toLowerCase()))) return null;
 
     const agent = sentence.slice(byIndex + 4).replace(/[.!?]+$/, '').trim();
     if (!object || !agent || /[,;:]|\b(?:during|after|before|yesterday|today|tomorrow|because|while|since|through|within|without|under|over|around)\b/i.test(agent)) return null;
@@ -616,7 +624,8 @@ export async function init() {
       }
     }
     const capitalizedAgent = agent.charAt(0).toUpperCase() + agent.slice(1);
-    const activeSentence = capitalizedAgent + ' ' + activeVerb + ' ' + object.charAt(0).toLowerCase() + object.slice(1);
+    const adverbPhrase = adverbs.join(' ');
+    const activeSentence = capitalizedAgent + (adverbPhrase ? ' ' + adverbPhrase : '') + ' ' + activeVerb + ' ' + object.charAt(0).toLowerCase() + object.slice(1);
     const punctuation = /[.!?]+$/.exec(sentence)?.[0] || '';
     return activeSentence.replace(/[.!?]+$/, '') + punctuation;
   }
