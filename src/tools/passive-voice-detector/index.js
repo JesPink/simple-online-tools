@@ -467,13 +467,29 @@ export async function init() {
     'accident', 'chance', 'choice', 'comparison', 'contrast', 'default', 'definition',
     'design', 'end', 'far', 'hand', 'heart', 'large', 'lot', 'means', 'mistake',
     'myself', 'nature', 'necessity', 'now', 'ourselves', 'then', 'themselves',
-    'time', 'way', 'yourself', 'yourselves', 'himself', 'herself', 'itself'
+    'time', 'way', 'yourself', 'yourselves', 'himself', 'herself', 'itself',
+    'prospect', 'idea', 'possibility', 'news', 'fact', 'thought', 'sight', 'sound',
+    'smell', 'taste', 'appearance', 'presence', 'absence', 'result', 'weather',
+    'circumstances', 'experience', 'situation', 'impression', 'feeling'
+  ]);
+
+  const LIKELY_AGENT_HEADWORDS = new Set([
+    'performer', 'performers', 'person', 'people', 'team', 'teams', 'staff',
+    'employee', 'employees', 'worker', 'workers', 'historian', 'historians',
+    'editor', 'editors', 'manager', 'managers', 'magician', 'magicians',
+    'referee', 'referees', 'teacher', 'teachers', 'student', 'students',
+    'visitor', 'visitors', 'guest', 'guests', 'player', 'players', 'police',
+    'committee', 'department', 'researcher', 'researchers', 'scientist', 'scientists',
+    'author', 'authors', 'doctor', 'doctors', 'nurse', 'nurses', 'company'
   ]);
 
   function hasLikelyAgentByPhrase(sentence) {
-    for (const match of sentence.toLowerCase().matchAll(/\bby\s+(?:(?:the|a|an|this|that|these|those)\s+)?([\p{L}][\p{L}'’-]*)/gu)) {
-      const object = match[1];
-      if (!NON_AGENT_BY_OBJECTS.has(object) && !object.endsWith('ing')) return true;
+    for (const match of sentence.toLowerCase().matchAll(/\bby\s+(?:(?:the|a|an|this|that|these|those)\s+)?([\p{L}][\p{L}'’-]*(?:\s+[\p{L}][\p{L}'’-]*)?)/gu)) {
+      const phraseWords = match[1].split(/\s+/);
+      const object = phraseWords[0];
+      if (NON_AGENT_BY_OBJECTS.has(object)) continue;
+      if (object.endsWith('ing') && !LIKELY_AGENT_HEADWORDS.has(phraseWords[1])) continue;
+      return true;
     }
     return false;
   }
@@ -540,7 +556,8 @@ export async function init() {
 
     const agent = sentence.slice(byIndex + 4).replace(/[.!?]+$/, '').trim();
     if (!object || !agent || /[,;:]|\b(?:during|after|before|yesterday|today|tomorrow|because|while|since|through|within|without|under|over|around)\b/i.test(agent)) return null;
-    if (/\bby\b/i.test(agent) || NON_AGENT_BY_OBJECTS.has(agent.toLowerCase())) return null;
+    const agentObject = agent.toLowerCase().replace(/^(?:the|a|an|this|that|these|those)\s+/, '').split(/\s+/)[0];
+    if (/\bby\b/i.test(agent) || NON_AGENT_BY_OBJECTS.has(agentObject)) return null;
 
     const irregularPast = {
       arisen:'arose', beaten:'beat', begun:'began', bitten:'bit', blown:'blew', born:'bore',
