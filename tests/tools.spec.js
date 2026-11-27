@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { PDFDocument } from 'pdf-lib';
+import { passiveVoiceBenchmark, passiveRewriteBenchmark } from './fixtures/passive-voice-benchmark.js';
 
 /**
  * Tool-Specific Functionality Tests
@@ -209,6 +210,80 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#suggestions-container .no-suggestions')).toContainText('No passive-voice patterns detected');
   });
 
+
+  test('should render untrusted input as text rather than executable HTML', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    const payload = '<img src=x onerror=alert(1)> The report was written by John.';
+    await page.locator('#text-input').fill(payload);
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#highlighted-text img')).toHaveCount(0);
+    await expect(page.locator('#suggestions-list img')).toHaveCount(0);
+    await expect(page.locator('#highlighted-text')).toContainText('<img src=x onerror=alert(1)>');
+  });
+
+  test('should analyze text locally without sending it to an external service', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    const externalRequests = [];
+    const origin = new URL(page.url()).origin;
+    page.on('request', request => {
+      if (new URL(request.url()).origin !== origin) externalRequests.push(request.url());
+    });
+
+    await page.locator('#text-input').fill('The report was written by John.');
+    await page.locator('#analyze-btn').click();
+    await page.waitForTimeout(300);
+
+    expect(externalRequests).toEqual([]);
+  });
+
+  test('should clear all analysis metrics and suggestions', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by John.');
+    await page.locator('#analyze-btn').click();
+    await expect(page.locator('#passive-clause-count')).toHaveText('1');
+
+    await page.locator('#clear-btn').click();
+    await expect(page.locator('#text-input')).toHaveValue('');
+    await expect(page.locator('#total-sentences')).toHaveText('0');
+    await expect(page.locator('#passive-count')).toHaveText('0');
+    await expect(page.locator('#passive-percentage')).toHaveText('0%');
+    await expect(page.locator('#passive-clause-count')).toHaveText('0');
+    await expect(page.locator('#suggestions-container')).toBeHidden();
+  });
+
+  test('should handle a long multi-sentence document consistently', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    const text = Array.from({ length: 100 }, (_, index) =>
+      `The report ${index + 1} was written by Maya.`).join(' ');
+    await page.locator('#text-input').fill(text);
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#total-sentences')).toHaveText('100');
+    await expect(page.locator('#passive-count')).toHaveText('100');
+    await expect(page.locator('#passive-clause-count')).toHaveText('100');
+  });
+
+  test('should preserve original punctuation and avoid rewriting passive questions as statements', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by John?');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#highlighted-text')).toContainText('The report was written by John?');
+    await expect(page.locator('#highlighted-text')).not.toContainText('John.');
+    await expect(page.locator('.apply-rewrite-btn')).toHaveCount(0);
+  });
+
   test('should identify a clear passive construction', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
@@ -219,6 +294,21 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#total-sentences')).toHaveText('2');
     await expect(page.locator('#passive-count')).toHaveText('1');
     await expect(page.locator('#highlighted-text')).toContainText('The report was written by John');
+  });
+
+  test('should split sentences without breaking common abbreviations or decimal times', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('Dr. Smith reviewed the report. The report was approved.');
+    await page.locator('#analyze-btn').click();
+    await expect(page.locator('#total-sentences')).toHaveText('2');
+    await expect(page.locator('#passive-count')).toHaveText('1');
+
+    await page.locator('#text-input').fill('The meeting starts at 3.30 p.m. The report was approved.');
+    await page.locator('#analyze-btn').click();
+    await expect(page.locator('#total-sentences')).toHaveText('2');
+    await expect(page.locator('#passive-count')).toHaveText('1');
   });
 
   test('should not count common adjective-like participles as passive without a likely agent', async ({ page }) => {
@@ -246,6 +336,160 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#highlighted-text')).toContainText('The audience was surprised by the magician');
   });
 
+
+
+  test('should preserve supported adverbs when rewriting a passive sentence', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was carefully written by John.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('.suggestion-item')).toContainText('John carefully wrote the report.');
+  });
+
+  test('should offer and apply a conservative active rewrite when the actor is explicit', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+    await page.locator('#text-input').fill('The report was written by John.');
+    await page.locator('#analyze-btn').click();
+    const suggestion = page.locator('.suggestion-item');
+    await expect(suggestion).toContainText('John wrote the report.');
+    await expect(suggestion.locator('.apply-rewrite-btn')).toBeVisible();
+    await suggestion.locator('.apply-rewrite-btn').click();
+    await expect(page.locator('#text-input')).toHaveValue('John wrote the report.');
+    await expect(page.locator('#passive-count')).toHaveText('0');
+    await expect(page.locator('#undo-rewrite-btn')).toBeVisible();
+    await page.locator('#undo-rewrite-btn').click();
+    await expect(page.locator('#text-input')).toHaveValue('The report was written by John.');
+    await expect(page.locator('#passive-count')).toHaveText('1');
+  });
+
+
+  test('should recognize accented names as explicit agents', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by Élodie.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('.suggestion-item')).toContainText('Élodie wrote the report.');
+    await expect(page.locator('.apply-rewrite-btn')).toBeVisible();
+  });
+
+
+  test('should apply rewrites at the correct offsets when input has leading whitespace', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('  \n  The report was written by John. The editor reviewed it.  ');
+    await page.locator('#analyze-btn').click();
+    await expect(page.locator('.suggestion-item')).toContainText('John wrote the report.');
+    await page.locator('.apply-rewrite-btn').click();
+    await expect(page.locator('#text-input')).toHaveValue('  \n  John wrote the report. The editor reviewed it.  ');
+  });
+
+  test('should apply a rewrite to the selected occurrence when sentences are duplicated', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by John. The report was written by John.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('.apply-rewrite-btn')).toHaveCount(2);
+    await page.locator('.apply-rewrite-btn').nth(1).click();
+    await expect(page.locator('#text-input')).toHaveValue('The report was written by John. John wrote the report.');
+  });
+
+  test('should withhold rewrites when a by-agent is followed by a temporal phrase', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report was written by John in 2020.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('.apply-rewrite-btn')).toHaveCount(0);
+    await expect(page.locator('#suggestions-list')).toContainText('cannot safely connect it to this verb');
+  });
+
+  test('should not invent an actor or repeat the full original sentence in suggestions', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+    const original = 'The report was written.';
+    await page.locator('#text-input').fill(original);
+    await page.locator('#analyze-btn').click();
+    const suggestions = page.locator('#suggestions-list');
+    await expect(suggestions).toContainText('actor is not stated');
+    await expect(suggestions.locator('.apply-rewrite-btn')).toHaveCount(0);
+    await expect(suggestions).not.toContainText(original);
+  });
+
+  test('should detect and safely rewrite a coordinated perfect-passive clause without changing the first clause', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+    const original = "Hundreds of ancient clay tablets were uncovered beneath the temple courtyard during last summer's excavation and have since been carefully cataloged by university historians.";
+    await page.locator('#text-input').fill(original);
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#total-sentences')).toHaveText('1');
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('#passive-clause-count')).toHaveText('2');
+    await expect(page.locator('.suggestion-item')).toHaveCount(2);
+    await expect(page.locator('.suggestion-item').nth(0)).toContainText('No actor is stated for this first passive clause');
+    await expect(page.locator('.suggestion-item').nth(1)).toContainText('university historians have since carefully cataloged them');
+    await expect(page.locator('.suggestion-item .apply-rewrite-btn')).toHaveCount(1);
+
+    await page.locator('.suggestion-item .apply-rewrite-btn').click();
+    await expect(page.locator('#text-input')).toHaveValue("Hundreds of ancient clay tablets were uncovered beneath the temple courtyard during last summer's excavation and university historians have since carefully cataloged them.");
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('#passive-clause-count')).toHaveText('1');
+    await expect(page.locator('#passive-percentage')).toHaveText('100%');
+    await expect(page.locator('.stats-note')).toContainText('not a measure of how much of the text is passive');
+  });
+
+
+  test('should count both modal-perfect and subordinate past-perfect passive constructions', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+    const original = 'His life could have been saved if the right medicine had been given to him immediately after the accident.';
+    await page.locator('#text-input').fill(original);
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#total-sentences')).toHaveText('1');
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('#passive-clause-count')).toHaveText('2');
+    await expect(page.locator('.suggestion-item')).toHaveCount(2);
+    await expect(page.locator('.suggestion-item').nth(0).locator('.pattern-info')).toContainText('been + saved');
+    await expect(page.locator('.suggestion-item').nth(1).locator('.pattern-info')).toContainText('been + given');
+    await expect(page.locator('.suggestion-item .apply-rewrite-btn')).toHaveCount(0);
+  });
+
+  test('should reject causal by-phrases but recognize agents with participial modifiers', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('She was excited by the prospect. I was tired by the end of the day. I got bored by walking around.');
+    await page.locator('#analyze-btn').click();
+    await expect(page.locator('#passive-count')).toHaveText('0');
+
+    await page.locator('#text-input').fill('The audience was surprised by the visiting performers.');
+    await page.locator('#analyze-btn').click();
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('.suggestion-item')).toContainText('The visiting performers surprised the audience.');
+  });
+
+  test('should conjugate present-tense rewrites using the named actor', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    await page.locator('#text-input').fill('The report is reviewed by the editor. The reports are reviewed by the editors.');
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('.suggestion-item').nth(0)).toContainText('The editor reviews the report.');
+    await expect(page.locator('.suggestion-item').nth(1)).toContainText('The editors review the reports.');
+  });
+
   test('should explain the rule-based limitations accurately', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
@@ -257,6 +501,71 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(content).not.toContainText('readability analyzer');
 
   });
+
+  test('should meet the labeled passive-voice detection benchmark', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    const failures = [];
+    for (const sample of passiveVoiceBenchmark) {
+      await page.locator('#text-input').fill(sample.text);
+      await page.locator('#analyze-btn').click();
+      const actualCount = Number(await page.locator('#passive-count').textContent());
+      const actualPassive = actualCount > 0;
+      const actualClauseCount = Number(await page.locator('#passive-clause-count').textContent());
+      if (actualPassive !== sample.passive) {
+        failures.push(`${sample.id}: expected ${sample.passive ? 'passive' : 'active'}, got ${actualPassive ? 'passive' : 'active'} (sentence count=${actualCount}) — ${sample.text}`);
+      }
+      if (actualClauseCount !== sample.clauses) {
+        failures.push(`${sample.id}: expected ${sample.clauses} passive clause(s), got ${actualClauseCount} — ${sample.text}`);
+      }
+    }
+
+    expect(failures, `Passive voice benchmark failures (\n${failures.join('\n')})`).toEqual([]);
+  });
+
+  test('should not offer unsafe fragment rewrites for shared-subject passive predicates', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    for (const text of [
+      'The report was written and published by Maya.',
+      'The car was washed and polished by the staff.'
+    ]) {
+      await page.locator('#text-input').fill(text);
+      await page.locator('#analyze-btn').click();
+      await expect(page.locator('#passive-clause-count')).toHaveText('2');
+      await expect(page.locator('.apply-rewrite-btn')).toHaveCount(0);
+      await expect(page.locator('.suggestions-list, #suggestions-list')).toContainText('shares the subject and auxiliary');
+    }
+  });
+
+  test('should produce the labeled active rewrites without changing their meaning', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+
+    const failures = [];
+    for (const sample of passiveRewriteBenchmark) {
+      await page.locator('#text-input').fill(sample.text);
+      await page.locator('#analyze-btn').click();
+      const suggestion = page.locator('.suggestion-item').filter({ hasText: sample.rewrite });
+      const proposed = await suggestion.locator('.rewrite-preview p').textContent().catch(() => null);
+      if (proposed?.trim() !== sample.rewrite) {
+        failures.push(`${sample.id}: expected rewrite "${sample.rewrite}", got "${proposed?.trim() || 'no rewrite'}"`);
+      }
+      if (await suggestion.locator('.apply-rewrite-btn').count() !== 1) {
+        failures.push(`${sample.id}: expected exactly one applicable rewrite`);
+        continue;
+      }
+      await suggestion.locator('.apply-rewrite-btn').click();
+      const actual = await page.locator('#text-input').inputValue();
+      if (actual !== sample.rewrite) {
+        failures.push(`${sample.id}: applied "${actual}" instead of "${sample.rewrite}"`);
+      }
+    }
+    expect(failures, `Passive rewrite benchmark failures (\n${failures.join('\n')})`).toEqual([]);
+  });
+
 });
 
 // ============================================================

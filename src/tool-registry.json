@@ -152,7 +152,7 @@
   {
     "slug": "passive-voice-detector",
     "title": "Passive Voice Detector | Free Grammar Checker Tool",
-    "description": "Check English text for common passive-voice patterns, review highlighted sentences, and consider active-voice revisions.",
+    "description": "Check common passive-voice patterns, review clear explanations, and apply active rewrites for supported sentences.",
     "keywords": "passive voice checker, passive voice detector, passive sentence checker, active vs passive voice, check passive voice",
     "category": "text-tools",
     "primaryCategory": "text-and-writing",
@@ -182,9 +182,9 @@
     "seo": {
       "focusKeyword": "passive voice checker",
       "metaTitle": "Free Passive Voice Checker – Find Passive Sentences",
-      "metaDescription": "Check English text for common passive-voice patterns. Review highlighted sentences, pattern counts, and prompts for considering active-voice revisions.",
+      "metaDescription": "Find common passive-voice patterns, review why they were flagged, and apply active rewrites when the actor and verb form are clear.",
       "canonicalUrl": "/tools/passive-voice-detector/",
-      "lastModified": "2026-11-25",
+      "lastModified": "2026-11-27",
       "author": "Simple Online Tools",
       "articleType": "Tool"
     }
