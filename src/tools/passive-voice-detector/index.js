@@ -573,11 +573,27 @@ export async function init() {
       written:'wrote', uncovered:'uncovered', cataloged:'cataloged', catalogued:'catalogued',
       surprised:'surprised', excited:'excited', tired:'tired', bored:'bored'
     };
-    let activeVerb = irregularPast[participle];
-    if (!activeVerb && participle.endsWith('ed')) activeVerb = participle;
+    const presentBases = {
+      written:'write', made:'make', built:'build', chosen:'choose', given:'give',
+      taken:'take', thrown:'throw', stolen:'steal', seen:'see', done:'do',
+      sent:'send', told:'tell', known:'know', shown:'show', broken:'break',
+      found:'find', kept:'keep', taught:'teach', thought:'think', caught:'catch',
+      bought:'buy', brought:'bring', read:'read', understood:'understand',
+      led:'lead', lost:'lose', paid:'pay', said:'say', won:'win', eaten:'eat',
+      driven:'drive', flown:'fly', grown:'grow', fallen:'fall', spoken:'speak',
+      reviewed:'review', created:'create', used:'use', changed:'change',
+      delivered:'deliver', discovered:'discover', cataloged:'catalog',
+      catalogued:'catalogue', uncovered:'uncover', surprised:'surprise',
+      excited:'excite', cleaned:'clean', tested:'test', completed:'complete',
+      updated:'update', managed:'manage', prepared:'prepare', designed:'design',
+      published:'publish', developed:'developed', processed:'process'
+    };
+    const isPresent = ['is', 'am', 'are'].includes(auxiliary);
+    let activeVerb = isPresent ? presentBases[participle] : irregularPast[participle];
+    if (!isPresent && !activeVerb && participle.endsWith('ed')) activeVerb = participle;
     if (!activeVerb) return null;
 
-    if (auxiliary === 'is' || auxiliary === 'am' || auxiliary === 'are') {
+    if (isPresent) {
       const agentWords = agent.toLowerCase().split(/\s+/);
       const agentHead = agentWords[agentWords.length - 1];
       const pluralAgent = /\band\b/i.test(agent) || /^(?:we|you|they)$/i.test(agent) ||
