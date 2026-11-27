@@ -449,6 +449,22 @@ test.describe('Passive Voice Detector Functionality', () => {
   });
 
 
+  test('should count both modal-perfect and subordinate past-perfect passive constructions', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+    const original = 'His life could have been saved if the right medicine had been given to him immediately after the accident.';
+    await page.locator('#text-input').fill(original);
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#total-sentences')).toHaveText('1');
+    await expect(page.locator('#passive-count')).toHaveText('1');
+    await expect(page.locator('#passive-clause-count')).toHaveText('2');
+    await expect(page.locator('.suggestion-item')).toHaveCount(2);
+    await expect(page.locator('.suggestion-item').nth(0)).toContainText('could have been saved');
+    await expect(page.locator('.suggestion-item').nth(1)).toContainText('had been given');
+    await expect(page.locator('.suggestion-item .apply-rewrite-btn')).toHaveCount(0);
+  });
+
   test('should reject causal by-phrases but recognize agents with participial modifiers', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
