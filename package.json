@@ -25,7 +25,7 @@
     "test:desktop": "playwright test --project='Desktop Chrome'",
     "test:report": "playwright show-report playwright-report",
     "validate:output": "node scripts/validate-generated-output.js",
-    "test:engine": "node --test tests/passive-voice-engine.test.js"
+    "test:engine": "node --test tests/*-engine.test.js"
   },
   "keywords": [
     "tools",
