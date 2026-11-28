@@ -124,6 +124,21 @@ if (fs.existsSync(registryPath)) {
   }
 }
 const htmlFiles = walk(root).filter(file => file.endsWith('.html'));
+// Every public page must contain exactly one GA4 configuration. The 404 document is excluded.
+for (const file of htmlFiles) {
+  const relative = path.relative(root, file).replace(/\\\\/g, '/');
+  if (relative.toLowerCase() === '404.html') continue;
+  const html = fs.readFileSync(file, 'utf8');
+  const configMatches = html.match(/gtag\\(['"]config['"],\\s*['"]G-69YB2G5L5P['"]\\)/g) || [];
+  const loaderMatches = html.match(/googletagmanager\\.com\\/gtag\\/js\\?id=G-69YB2G5L5P/g) || [];
+  if (configMatches.length !== 1 || loaderMatches.length !== 1) {
+    errors.push(`${relative}: expected exactly one GA4 config and loader for G-69YB2G5L5P (found ${configMatches.length} config, ${loaderMatches.length} loader)`);
+  }
+  if (!html.includes("['simpleonlinetool.com','www.simpleonlinetool.com']") &&
+      !html.includes('["simpleonlinetool.com","www.simpleonlinetool.com"]')) {
+    errors.push(`${relative}: GA4 must be restricted to the production hostname`);
+  }
+}
 for (const file of htmlFiles) {
   const html = fs.readFileSync(file, 'utf8');
   const relative = path.relative(root, file).replace(/\\/g, '/');
