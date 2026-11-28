@@ -1,4 +1,4 @@
-const EMAIL_PATTERN = /(?<![\p{L}\p{N}.!#$%&'*+/=?^_\x60{|}~-])([\p{L}\p{N}.!#$%&'*+/=?^_\x60{|}~-]+)@((?:[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?\.)+[\p{L}]{2,63})(?![A-Z0-9-]|\.[A-Z0-9])/giu;
+const EMAIL_PATTERN = /(?<![\p{L}\p{N}.!#$%&'*+/=?^_\x60{|}~-])([\p{L}\p{N}.!#$%&'*+/=?^_\x60{|}~-]+)@((?:[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?\.)+[\p{L}]{2,63})(?![\p{L}\p{N}-]|\.[\p{L}\p{N}])/giu;
 const FILE_LIKE_TLDS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'css', 'js', 'map', 'woff', 'woff2', 'ttf', 'eot']);
 
 function decodeEntities(value) {
