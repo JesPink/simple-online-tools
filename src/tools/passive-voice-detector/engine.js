@@ -338,8 +338,20 @@ const PASSIVE_AUXILIARY_MODIFIERS = new Set([
   'finally', 'now', 'again', 'once', 'even', 'largely', 'mostly'
 ]);
 
+  'carefully', 'quickly', 'slowly', 'easily', 'successfully',
+  'unexpectedly', 'accidentally', 'officially', 'properly',
+  'thoroughly', 'deliberately', 'widely', 'regularly',
+  'frequently', 'quietly', 'publicly', 'privately',
+  'directly', 'independently', 'closely'
+]);
+
+const PASSIVE_CLAUSE_BOUNDARIES = new Set([
+  'and', 'but', 'or', 'because', 'although', 'though', 'while',
+  'whereas', 'if', 'when', 'unless', 'until', 'since', 'after', 'before'
+]);
+
 function isPassiveAuxiliaryModifier(word) {
-  return PASSIVE_AUXILIARY_MODIFIERS.has(word) || /^[a-z]+ly$/.test(word);
+  return PASSIVE_AUXILIARY_MODIFIERS.has(word);
 }
 
 // Pattern 1: BE + Past Participle (was written, is made, are being processed)
@@ -351,6 +363,7 @@ function detectBePassive(words, originalSentence) {
       // Look ahead for past participle (skip adverbs, articles)
       for (let j = i + 1; j < Math.min(i + 5, words.length); j++) {
         const potentialParticiple = words[j];
+        if (PASSIVE_CLAUSE_BOUNDARIES.has(potentialParticiple)) break;
         
         // Allow short adverbial gaps and common inverted-question
         // determiners, but do not scan arbitrarily far across a clause.
