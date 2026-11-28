@@ -1,4 +1,5 @@
 const EMAIL_PATTERN = /(?<![\p{L}\p{N}.!#$%&'*+/=?^_\x60{|}~-])([\p{L}\p{N}.!#$%&'*+/=?^_\x60{|}~-]+)@((?:[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?\.)+[\p{L}]{2,63})(?![\p{L}\p{N}-]|\.[\p{L}\p{N}])/giu;
+const utf8Encoder = new TextEncoder();
 const FILE_LIKE_TLDS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'css', 'js', 'map', 'woff', 'woff2', 'ttf', 'eot']);
 
 function decodeEntities(value) {
@@ -83,7 +84,7 @@ function mapNormalizedOffset(offset, replacements) {
 
 function validateCandidate(email) {
   const [local, domain] = email.split('@');
-  const byteLength = value => new TextEncoder().encode(value).length;
+  const byteLength = value => utf8Encoder.encode(value).length;
   if (byteLength(email) > 254) return false;
   if (!local || byteLength(local) > 64 || local.startsWith('.') || local.endsWith('.') || local.includes('..')) return false;
   if (!domain || byteLength(domain) > 253 || domain.startsWith('.') || domain.endsWith('.')) return false;
@@ -99,11 +100,13 @@ function getLineContext(text, start, end, lineNumber) {
   const lineEnd = nextBreak === -1 ? text.length : nextBreak;
   const line = text.slice(lineStart, lineEnd);
   const column = start - lineStart + 1;
-  let context = line.trim();
-  if (context.length > 180) {
+  let context;
+  if (line.length > 180) {
     const relative = Math.max(0, start - lineStart);
     const from = Math.max(0, relative - 65);
     context = (from > 0 ? '…' : '') + line.slice(from, Math.min(line.length, from + 150)).trim() + (from + 150 < line.length ? '…' : '');
+  } else {
+    context = line.trim();
   }
   return { lineNumber, column, context };
 }
@@ -167,12 +170,17 @@ export function groupEmailMatches(matches) {
 }
 
 export function removeEmailMatches(text, matches, replacement = '') {
-  let output = String(text ?? '');
-  const ordered = [...matches].sort((a, b) => b.start - a.start);
+  const source = String(text ?? '');
+  const ordered = [...matches].sort((a, b) => a.start - b.start);
+  const parts = [];
+  let cursor = 0;
   for (const match of ordered) {
-    output = output.slice(0, match.start) + replacement + output.slice(match.end);
+    if (match.start < cursor) continue;
+    parts.push(source.slice(cursor, match.start), replacement);
+    cursor = match.end;
   }
-  return output;
+  parts.push(source.slice(cursor));
+  return parts.join('');
 }
 
 export function getEmailStats(matches) {
