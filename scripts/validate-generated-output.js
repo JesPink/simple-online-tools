@@ -123,6 +123,35 @@ if (fs.existsSync(registryPath)) {
     }
   }
 }
+
+// Verify the Email Extractor page fulfills text-extraction intent and excludes scraper targeting.
+if (fs.existsSync(registryPath)) {
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const tool = registry.find(item => item.slug === 'email-extractor');
+  if (!tool) errors.push('Email Extractor is missing from the tool registry');
+  else {
+    const relative = 'tools/email-extractor/index.html';
+    if (!exists(relative)) errors.push('Missing generated Email Extractor page');
+    else {
+      const html = fs.readFileSync(path.join(root, relative), 'utf8');
+      const title = html.match(/<title>([\s\S]*?)<\/title>/i)?.[1] || '';
+      const description = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i)?.[1] || '';
+      const canonical = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i)?.[1] || '';
+      const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]?.replace(/<[^>]+>/g, '').trim() || '';
+      if (title.length > 60 || !title.toLowerCase().includes('email extractor')) errors.push('Email Extractor title is missing or too long');
+      if (description.length > 155 || !description.toLowerCase().includes('extract email addresses')) errors.push('Email Extractor meta description is missing, too long, or misaligned');
+      if (canonical !== 'https://simpleonlinetool.com/tools/email-extractor/') errors.push('Email Extractor canonical URL is incorrect');
+      if (h1 !== 'Extract Emails from Text') errors.push('Email Extractor H1 must match the primary text-extraction intent');
+      if (!html.includes('Extract email addresses from text online') || !html.includes('not an email scraper') || !html.includes('does not visit websites')) {
+        errors.push('Email Extractor static SEO content must clearly describe text extraction and exclude website scraping intent');
+      }
+      if (/email scraper|email finder|website crawler/i.test(title + ' ' + (tool.keywords || ''))) {
+        errors.push('Email Extractor title/keywords must not target scraping or contact-discovery intent');
+      }
+    }
+  }
+}
+
 const htmlFiles = walk(root).filter(file => file.endsWith('.html'));
 const toolRegistryForAnalytics = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
 for (const tool of toolRegistryForAnalytics) {

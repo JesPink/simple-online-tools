@@ -213,6 +213,8 @@ export function render() {
         <h3>How is reading time calculated?</h3>
         <p>Reading time is estimated based on the average adult reading speed of 225 words per minute. This is a widely accepted standard for silent reading of normal text. The calculation helps content creators estimate how long it will take readers to consume their content.</p>
 
+        <p>Working with copied contact lists or documents? Use the <a href="/tools/email-extractor/">Email Extractor</a> to collect email addresses already present in supplied text or supported files, then review duplicates and export the list.</p>
+
         <h2>Word Counter and Your Workflow</h2>
         <p>Our word counter integrates perfectly into any writing workflow, whether you're crafting academic papers, creating blog content, or managing social media posts. The tool provides instant feedback that helps you meet specific requirements and optimize your content for different platforms.</p>
         <p>Whether you're a student working on assignments with strict word limits, a content creator optimizing for SEO, or a social media manager crafting platform-specific posts, our word counter delivers the precise metrics you need. The real-time analysis ensures you stay within guidelines while maintaining the quality and impact of your message.</p>

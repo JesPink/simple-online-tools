@@ -41,3 +41,6 @@ jobs:
 
       - name: Run passive detector mobile regression tests
         run: npx playwright test --project="Mobile Chrome" tests/foundation.spec.js tests/tools.spec.js --grep="passive-voice-detector|Passive Voice Detector"
+
+      - name: Run Email Extractor mobile regression tests
+        run: npx playwright test --project="Mobile Chrome" tests/email-extractor.spec.js

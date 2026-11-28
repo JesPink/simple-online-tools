@@ -12,7 +12,8 @@ const POPULAR_TOOLS = [
   ['word-counter', 'Word Counter'],
   ['case-converter', 'Case Converter'],
   ['invoice-generator', 'Invoice Generator'],
-  ['pdf-metadata-editor', 'PDF Metadata Editor']
+  ['pdf-metadata-editor', 'PDF Metadata Editor'],
+  ['email-extractor', 'Email Extractor']
 ];
 
 export function createFooter() {
