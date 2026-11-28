@@ -45,8 +45,22 @@ export function render() {
               <div class="email-stat"><span id="email-domain-count">0</span><small>Domains</small></div>
             </div>
             <div class="email-result-controls">
-              <div class="form-group"><label for="email-domain-filter">Filter by domain or address</label><input id="email-domain-filter" type="search" placeholder="e.g. example.com"></div>
+              <div class="form-group"><label for="email-domain-filter">Search addresses or domains</label><input id="email-domain-filter" type="search" placeholder="e.g. example.com"></div>
               <div class="form-group"><label for="email-sort">Sort results</label><select id="email-sort"><option value="source">Source order</option><option value="alpha">Email address (A–Z)</option><option value="domain">Domain (A–Z)</option></select></div>
+              <div class="form-group"><label for="email-include-domains">Include only these domains</label><input id="email-include-domains" type="text" placeholder="example.com, company.org"></div>
+              <div class="form-group"><label for="email-exclude-domains">Exclude these domains</label><input id="email-exclude-domains" type="text" placeholder="blocked.com, old-company.org"></div>
+            </div>
+            <div class="email-output-controls">
+              <div class="form-group">
+                <label for="email-separator">Separator for copy and TXT</label>
+                <select id="email-separator">
+                  <option value="newline">One address per line</option>
+                  <option value="comma">Comma and space</option>
+                  <option value="semicolon">Semicolon and space</option>
+                </select>
+              </div>
+              <label class="email-option"><input id="lowercase-plain-list" type="checkbox"> Lowercase copied and TXT addresses</label>
+              <p class="email-help">CSV and JSON preserve the first-seen spelling. Lowercasing can change a technically case-sensitive email local-part.</p>
             </div>
             <div id="email-domain-summary" class="email-domain-summary" aria-label="Domain counts"></div>
             <div id="email-results-list" class="email-results-list"><p class="email-empty">Your extracted addresses will appear here.</p></div>
@@ -280,6 +294,7 @@ export async function init() {
       setError('Clipboard access was unavailable. Select the result text and copy it manually.');
     }
   }
+  function getSeparator() { return separatorSelect.value === 'comma' ? ', ' : separatorSelect.value === 'semicolon' ? '; ' : '\n'; }
   function getUniqueEmails() {
     return visibleGroups().map(group => lowercaseOutput.checked ? group.email.toLowerCase() : group.email);
   }
@@ -381,7 +396,7 @@ export async function init() {
     domainFilter.value = '';
     includeDomains.value = '';
     excludeDomains.value = '';
-    separatorSelect.value = '\\n';
+    separatorSelect.value = 'newline';
     lowercaseOutput.checked = false;
     includeObfuscated.checked = true;
     showOccurrences.checked = false;
@@ -404,7 +419,7 @@ export async function init() {
   excludeDomains.addEventListener('input', renderResults);
   sortSelect.addEventListener('change', renderResults);
   showOccurrences.addEventListener('change', renderResults);
-  copyButton.addEventListener('click', () => copyText(getUniqueEmails().join(separatorSelect.value), copyButton));
+  copyButton.addEventListener('click', () => copyText(getUniqueEmails().join(getSeparator()), copyButton));
   txtButton.addEventListener('click', () => downloadFile('extracted-emails.txt', getUniqueEmails().join(separatorSelect.value), 'text/plain;charset=utf-8'));
   csvButton.addEventListener('click', () => downloadFile('extracted-emails.csv', getCsv(), 'text/csv;charset=utf-8'));
   jsonButton.addEventListener('click', () => downloadFile('extracted-emails.json', getJson(), 'application/json;charset=utf-8'));
