@@ -2,7 +2,9 @@
 """Evaluate a PassivePy-style dependency matcher against UD English-EWT.
 
 Research-only reference implementation based on the MIT-licensed PassivePy
-project by Mitra Mirshafiee (2022):
+project by Mitra Mirshafiee (2021). Matcher patterns are adapted from its
+MIT-licensed source; the required notice is in
+docs/third-party-notices/passivepy-mit-license.txt:
 https://github.com/mitramir55/PassivePy
 
 The matcher patterns below are adapted from PassivePy's
