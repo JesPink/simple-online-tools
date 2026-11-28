@@ -76,7 +76,7 @@ else {
         'recipe-scaler': 'Scale recipe ingredients for more or fewer servings. Adjust quantities and fractions online, then review seasonings and cooking times.',
         'meta-description-generator': 'Draft meta description ideas from a page title and summary. Compare template-based variations, check character counts, and edit before publishing.',
         'meeting-cost-calculator': 'Track a meeting\'s live cost from participant hourly rates and elapsed time. Add attendees, pause or reset the timer, and view cost projections.',
-        'email-extractor': 'Extract email addresses from pasted text and supported files. Group duplicates, filter by domain, review source locations, and export results privately in your browser.'
+        'email-extractor': 'Extract email addresses from text or files. Group duplicates, filter domains, review source matches, and export results privately in your browser.'
       };
       for (const tool of categoryTools) {
         if (requiredShortDescriptions[tool.slug] && tool.seo?.metaDescription !== requiredShortDescriptions[tool.slug]) {
