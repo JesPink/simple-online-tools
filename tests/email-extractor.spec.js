@@ -17,6 +17,11 @@ test.describe('Email Extractor', () => {
     await expect(page.locator('#email-results-list')).toContainText('2 occurrences');
     await expect(page.locator('#email-results-list')).toContainText('Line 1');
 
+    await page.locator('#ignore-local-case').uncheck();
+    await expect(page.locator('#email-unique-count')).toHaveText('3');
+    await page.locator('#ignore-local-case').check();
+    await expect(page.locator('#email-unique-count')).toHaveText('2');
+
     await page.locator('#email-domain-filter').fill('example.org');
     await expect(page.locator('#email-results-list')).toContainText('help@example.org');
     await expect(page.locator('#email-results-list')).not.toContainText('jane@example.com');
