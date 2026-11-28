@@ -21,7 +21,7 @@ test.describe('Email Extractor', () => {
     await expect(page.locator('#email-results-list')).not.toContainText('jane@example.com');
 
     await page.locator('#email-domain-filter').fill('');
-    await page.locator('#email-show-occurrences').check();
+    await page.locator('#show-occurrences').check();
     await expect(page.locator('#email-results-list')).toContainText('JANE@example.com');
 
     await page.locator('#email-removal-text').fill('[removed]');
