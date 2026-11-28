@@ -413,7 +413,7 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#suggestions-list')).toContainText('cannot safely connect it to this verb');
   });
 
-  test('should not invent an actor or repeat the full original sentence in suggestions', async ({ page }) => {
+  test('shows the original sentence for review without inventing an actor', async ({ page }) => {
     await page.goto('/tools/passive-voice-detector/');
     await page.waitForLoadState('networkidle');
     const original = 'The report was written.';
@@ -421,8 +421,25 @@ test.describe('Passive Voice Detector Functionality', () => {
     await page.locator('#analyze-btn').click();
     const suggestions = page.locator('#suggestions-list');
     await expect(suggestions).toContainText('actor is not stated');
+    await expect(suggestions.locator('.original-sentence')).toHaveText(original);
     await expect(suggestions.locator('.apply-rewrite-btn')).toHaveCount(0);
-    await expect(suggestions).not.toContainText(original);
+    await expect(suggestions.locator('.jump-to-sentence-btn')).toHaveCount(1);
+  });
+
+  test('groups multiple detections by sentence and navigates to the exact repeated occurrence', async ({ page }) => {
+    await page.goto('/tools/passive-voice-detector/');
+    await page.waitForLoadState('networkidle');
+    const sentence = 'The report was written.';
+    await page.locator('#text-input').fill(`${sentence} ${sentence}`);
+    await page.locator('#analyze-btn').click();
+
+    await expect(page.locator('#passive-count')).toHaveText('2');
+    await expect(page.locator('.suggestion-item')).toHaveCount(2);
+    await expect(page.locator('.original-sentence')).toHaveCount(2);
+    const secondReviewButton = page.locator('.jump-to-sentence-btn').nth(1);
+    await expect(secondReviewButton).toHaveAttribute('data-index', '1');
+    await secondReviewButton.click();
+    await expect(page.locator('.passive-sentence[data-index="1"]')).toHaveClass(/sentence-targeted/);
   });
 
   test('should detect and safely rewrite a coordinated perfect-passive clause without changing the first clause', async ({ page }) => {
@@ -435,10 +452,12 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#total-sentences')).toHaveText('1');
     await expect(page.locator('#passive-count')).toHaveText('1');
     await expect(page.locator('#passive-clause-count')).toHaveText('2');
-    await expect(page.locator('.suggestion-item')).toHaveCount(2);
-    await expect(page.locator('.suggestion-item').nth(0)).toContainText('No actor is stated for this first passive clause');
-    await expect(page.locator('.suggestion-item').nth(1)).toContainText('university historians have since carefully cataloged them');
+    await expect(page.locator('.suggestion-item')).toHaveCount(1);
+    await expect(page.locator('.suggestion-item .original-sentence')).toContainText(original);
+    await expect(page.locator('.suggestion-item')).toContainText('No actor is stated for this first passive clause');
+    await expect(page.locator('.suggestion-item')).toContainText('university historians have since carefully cataloged them');
     await expect(page.locator('.suggestion-item .apply-rewrite-btn')).toHaveCount(1);
+    await expect(page.locator('.suggestion-item .construction-review')).toHaveCount(2);
 
     await page.locator('.suggestion-item .apply-rewrite-btn').click();
     await expect(page.locator('#text-input')).toHaveValue("Hundreds of ancient clay tablets were uncovered beneath the temple courtyard during last summer's excavation and university historians have since carefully cataloged them.");
@@ -459,9 +478,10 @@ test.describe('Passive Voice Detector Functionality', () => {
     await expect(page.locator('#total-sentences')).toHaveText('1');
     await expect(page.locator('#passive-count')).toHaveText('1');
     await expect(page.locator('#passive-clause-count')).toHaveText('2');
-    await expect(page.locator('.suggestion-item')).toHaveCount(2);
-    await expect(page.locator('.suggestion-item').nth(0).locator('.pattern-info')).toContainText('been + saved');
-    await expect(page.locator('.suggestion-item').nth(1).locator('.pattern-info')).toContainText('been + given');
+    await expect(page.locator('.suggestion-item')).toHaveCount(1);
+    await expect(page.locator('.suggestion-item .construction-review')).toHaveCount(2);
+    await expect(page.locator('.suggestion-item .pattern-info').nth(0)).toContainText('been + saved');
+    await expect(page.locator('.suggestion-item .pattern-info').nth(1)).toContainText('been + given');
     await expect(page.locator('.suggestion-item .apply-rewrite-btn')).toHaveCount(0);
   });
 

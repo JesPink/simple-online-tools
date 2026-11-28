@@ -55,7 +55,7 @@ export function render() {
             </div>
             
             <div id="suggestions-container" class="suggestions-container">
-              <h3 class="suggestions-title">Review each detected pattern</h3>
+              <h3 class="suggestions-title">Suggestions &amp; review</h3>
               <div id="suggestions-list" class="suggestions-list"></div>
             </div>
           </div>
@@ -135,6 +135,7 @@ export async function init() {
   const suggestionsList = document.getElementById('suggestions-list');
 
   let debounceTimer;
+  let highlightTimer;
   let previousTextBeforeRewrite = null;
 
   function escapeHtml(value) {
@@ -151,7 +152,7 @@ export async function init() {
       if (result.isPassive) {
         const confidenceClass = result.confidence >= 0.7 ? 'high-confidence' : 
                                 result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
-        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}</span> `;
+        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" tabindex="-1" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}</span> `;
       } else {
         highlightedHtml += `<span class="active-sentence">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}</span> `;
       }
@@ -160,39 +161,82 @@ export async function init() {
     return highlightedHtml;
   }
 
-  // Generate suggestions HTML
+  // Group detections by source sentence so repeated constructions share one
+  // context card while retaining their individual rewrite offsets.
   function generateSuggestionsHtml(results) {
-    const passiveResults = results.filter(result => result.isPassive)
-      .flatMap(result => [result, ...(result.additionalPatterns || [])]);
-    if (passiveResults.length === 0) {
+    const groups = results.map((result, sourceIndex) => ({
+      result,
+      sourceIndex,
+      constructions: result.isPassive
+        ? [result, ...(result.additionalPatterns || [])].map((construction, constructionIndex) => ({
+            ...construction,
+            sourceIndex,
+            originalSentence: result.sentence,
+            constructionIndex
+          }))
+        : []
+    })).filter(group => group.constructions.length);
+
+    if (groups.length === 0) {
       return '<p class="no-suggestions" role="status" aria-live="polite">No passive-voice patterns detected in this text. The checker found no matches among the patterns it recognizes.</p>';
     }
-    return passiveResults.map(result => {
-      const confidenceLabel = result.confidence >= 0.7 ? 'Strong pattern match' :
+
+    const allConstructions = groups.flatMap(group => group.constructions);
+    const actionableCount = allConstructions.filter(item => item.activeRewrite).length;
+    const reviewCount = allConstructions.length - actionableCount;
+    const constructionLabel = allConstructions.length === 1 ? 'construction detected' : 'constructions detected';
+    const rewriteLabel = actionableCount === 1 ? 'safe rewrite' : 'safe rewrites';
+    const reviewLabel = reviewCount === 1 ? 'detection needs' : 'detections need';
+
+    const renderConfidence = result => {
+      const label = result.confidence >= 0.7 ? 'Strong pattern match' :
         result.confidence >= 0.5 ? 'Possible pattern match' : 'Weak pattern match — review carefully';
-      const confidenceClass = result.confidence >= 0.7 ? 'high-confidence' :
+      const className = result.confidence >= 0.7 ? 'high-confidence' :
         result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
-      const rewriteHtml = result.activeRewrite ? `
-        <div class="rewrite-preview">
-          <strong>Suggested active version</strong>
-          <p>${escapeHtml(result.activeRewrite)}</p>
-          <button type="button" class="btn btn-secondary apply-rewrite-btn"
-            data-start="${result.start}"
-            data-original="${escapeHtml(result.sentence)}"
-            data-rewrite="${escapeHtml(result.activeRewrite)}">Apply rewrite</button>
-        </div>
-      ` : '';
+      return { label, className };
+    };
+
+    const renderConstruction = construction => {
+      const confidence = renderConfidence(construction);
+      const pattern = escapeHtml(construction.pattern || construction.passiveMatch || 'Possible passive pattern');
+      const suggestion = escapeHtml(construction.suggestion || 'Review this construction in context.');
+      const rewrite = construction.activeRewrite
+        ? `
+          <div class="rewrite-preview">
+            <strong>Suggested active version</strong>
+            <p>${escapeHtml(construction.activeRewrite)}</p>
+            <button type="button" class="btn btn-secondary apply-rewrite-btn"
+              data-start="${construction.start}"
+              data-original="${escapeHtml(construction.sentence || construction.originalSentence)}"
+              data-rewrite="${escapeHtml(construction.activeRewrite)}">Apply rewrite</button>
+          </div>`
+        : '';
       return `
-        <article class="suggestion-item ${confidenceClass}" data-confidence="${result.confidence}">
-          <div class="suggestion-header">
-            <span class="confidence-badge">${confidenceLabel}</span>
-            <code class="pattern-info">${escapeHtml(result.pattern || result.passiveMatch || 'Possible passive pattern')}</code>
+        <div class="construction-review ${confidence.className}">
+          <div class="construction-review-header">
+            <span class="confidence-badge">${confidence.label}</span>
+            <code class="pattern-info">${pattern}</code>
           </div>
-          <p class="suggestion-text">${escapeHtml(result.suggestion)}</p>
-          ${rewriteHtml}
-        </article>
+          <p class="suggestion-text">${suggestion}</p>
+          ${rewrite}
+        </div>
       `;
-    }).join('');
+    };
+
+    const summary = `<p class="suggestions-summary" role="status">${allConstructions.length} ${constructionLabel} · ${actionableCount} ${rewriteLabel} available · ${reviewCount} ${reviewLabel} manual review.</p>`;
+    const groupsHtml = groups.map(group => `
+      <article class="suggestion-item sentence-review-group">
+        <div class="sentence-review-heading">
+          <p class="original-sentence">${escapeHtml(group.result.sentence)}${escapeHtml(group.result.punctuation)}</p>
+          <button type="button" class="btn btn-secondary jump-to-sentence-btn" data-index="${group.sourceIndex}">Find in text</button>
+        </div>
+        <div class="sentence-constructions">
+          ${group.constructions.map(renderConstruction).join('')}
+        </div>
+      </article>
+    `).join('');
+
+    return summary + groupsHtml;
   }
 
   // Analyze text function
@@ -228,7 +272,7 @@ export async function init() {
       suggestionsList.innerHTML = generateSuggestionsHtml(results);
       
       // Always show a clear outcome after analysis, including when no patterns match.
-      suggestionsTitle.textContent = passiveCount > 0 ? 'Review Suggestions' : 'Result';
+      suggestionsTitle.textContent = passiveCount > 0 ? 'Suggestions & review' : 'Result';
       suggestionsContainer.style.display = 'block';
       
       console.log('Analysis completed:', { totalSentences, passiveCount, passivePercentage });
@@ -248,6 +292,22 @@ export async function init() {
     suggestionsList.innerHTML = '<p class="no-suggestions">Analysis suggestions will appear here after you enter text.</p>';
     suggestionsContainer.style.display = 'none';
   }
+
+  // Navigate from a grouped review card to its exact source sentence.
+  suggestionsList.addEventListener('click', (event) => {
+    const button = event.target.closest('.jump-to-sentence-btn');
+    if (!button) return;
+    const target = highlightedTextEl.querySelector(`.passive-sentence[data-index="${button.dataset.index}"]`);
+    if (!target) return;
+    highlightedTextEl.querySelectorAll('.sentence-targeted').forEach(element => element.classList.remove('sentence-targeted'));
+    target.classList.add('sentence-targeted');
+    const reduceMotion = typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+    target.focus({ preventScroll: true });
+    clearTimeout(highlightTimer);
+    highlightTimer = setTimeout(() => target.classList.remove('sentence-targeted'), 1600);
+  });
 
   // Apply only the exact rewrite shown to the user, then re-run the analysis.
   suggestionsList.addEventListener('click', (event) => {

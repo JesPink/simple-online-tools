@@ -328,6 +328,30 @@ function analyzeForPassiveVoice(sentence) {
   return filteredResult;
 }
 
+// Common adverbial modifiers that can separate auxiliaries from a
+// participle. The -ly rule covers productive adverb forms without adding
+// sentence-specific verb or phrase lists.
+const PASSIVE_AUXILIARY_MODIFIERS = new Set([
+  'not', 'never', 'already', 'still', 'recently', 'just', 'yet', 'ever',
+  'also', 'always', 'often', 'usually', 'sometimes', 'fully', 'well',
+  'completely', 'partly', 'partially', 'almost', 'nearly', 'entirely',
+  'finally', 'now', 'again', 'once', 'even', 'largely', 'mostly',
+  'carefully', 'quickly', 'slowly', 'easily', 'successfully',
+  'unexpectedly', 'accidentally', 'officially', 'properly',
+  'thoroughly', 'deliberately', 'widely', 'regularly',
+  'frequently', 'quietly', 'publicly', 'privately',
+  'directly', 'independently', 'closely'
+]);
+
+const PASSIVE_CLAUSE_BOUNDARIES = new Set([
+  'and', 'but', 'or', 'because', 'although', 'though', 'while',
+  'whereas', 'if', 'when', 'unless', 'until', 'since', 'after', 'before'
+]);
+
+function isPassiveAuxiliaryModifier(word) {
+  return PASSIVE_AUXILIARY_MODIFIERS.has(word);
+}
+
 // Pattern 1: BE + Past Participle (was written, is made, are being processed)
 function detectBePassive(words, originalSentence) {
   for (let i = 0; i < words.length - 1; i++) {
@@ -337,9 +361,12 @@ function detectBePassive(words, originalSentence) {
       // Look ahead for past participle (skip adverbs, articles)
       for (let j = i + 1; j < Math.min(i + 5, words.length); j++) {
         const potentialParticiple = words[j];
+        if (PASSIVE_CLAUSE_BOUNDARIES.has(potentialParticiple)) break;
         
-        // Skip common intervening words
-        if (['to', 'the', 'a', 'an', 'very', 'quite', 'rather', 'extremely', 'being'].includes(potentialParticiple)) {
+        // Allow short adverbial gaps and common inverted-question
+        // determiners, but do not scan arbitrarily far across a clause.
+        if (['to', 'the', 'a', 'an', 'very', 'quite', 'rather', 'extremely', 'being'].includes(potentialParticiple) ||
+            isPassiveAuxiliaryModifier(potentialParticiple)) {
           continue;
         }
         
@@ -421,25 +448,47 @@ function detectModalPassive(words, originalSentence) {
   return { isPassive: false, confidence: 0 };
 }
 
-// Pattern 4: HAVE/HAS/HAD + BEEN + Past Participle (has been completed, had been written)
+// Pattern 4: HAVE/HAS/HAD + optional modifiers + BEEN + optional modifiers + participle.
 function detectPerfectPassive(words, originalSentence) {
   for (let i = 0; i < words.length - 2; i++) {
     const auxiliary = words[i];
-    const been = words[i + 1];
-    const participle = words[i + 2];
-    
-    if (PASSIVE_VOICE_PATTERNS.auxiliaryVerbs.has(auxiliary) && 
-        been === 'been' && 
-        isPastParticiple(participle)) {
-      const confidence = calculatePerfectPassiveConfidence(auxiliary, participle, originalSentence);
-      return {
-        isPassive: true,
-        passiveMatch: `${auxiliary} been ${participle}`,
-        passiveType: 'perfect_passive',
-        confidence,
-        pattern: `${auxiliary} + been + ${participle}`
-      };
+    if (!PASSIVE_VOICE_PATTERNS.auxiliaryVerbs.has(auxiliary)) continue;
+
+    let beenIndex = i + 1;
+    let skipped = 0;
+    while (
+      beenIndex < words.length &&
+      skipped < 4 &&
+      isPassiveAuxiliaryModifier(words[beenIndex])
+    ) {
+      beenIndex++;
+      skipped++;
     }
+    if (words[beenIndex] !== 'been') continue;
+
+    let participleIndex = beenIndex + 1;
+    skipped = 0;
+    while (
+      participleIndex < words.length &&
+      skipped < 4 &&
+      isPassiveAuxiliaryModifier(words[participleIndex])
+    ) {
+      participleIndex++;
+      skipped++;
+    }
+
+    const participle = words[participleIndex];
+    if (!isPastParticiple(participle)) continue;
+
+    const confidence = calculatePerfectPassiveConfidence(auxiliary, participle, originalSentence);
+    const matchedWords = words.slice(i, participleIndex + 1);
+    return {
+      isPassive: true,
+      passiveMatch: matchedWords.join(' '),
+      passiveType: 'perfect_passive',
+      confidence,
+      pattern: matchedWords.join(' + ')
+    };
   }
   return { isPassive: false, confidence: 0 };
 }
