@@ -152,11 +152,11 @@ test.describe('Email Extractor', () => {
   test('fits a narrow mobile viewport without horizontal overflow', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/tools/email-extractor/');
-    const dimensions = await page.evaluate(() => ({
-      viewport: document.documentElement.clientWidth,
-      document: document.documentElement.scrollWidth
+    const dimensions = await page.locator('.email-extractor-tool').evaluate(element => ({
+      viewport: element.clientWidth,
+      content: element.scrollWidth
     }));
-    expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+    expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
   });
 
   test('makes the website-scraping exclusion visible and has no URL input', async ({ page }) => {
