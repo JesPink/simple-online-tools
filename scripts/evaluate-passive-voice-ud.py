@@ -145,6 +145,8 @@ def metrics(samples: list[dict], predictions: list[dict]) -> dict:
     outcomes_by_evidence = {}
     misses_by_structure = Counter()
     hits_by_structure = Counter()
+    misses_by_token_shape = Counter()
+    hits_by_token_shape = Counter()
     false_positive_patterns = Counter()
 
     for sample, prediction in zip(samples, predictions):
@@ -158,6 +160,7 @@ def metrics(samples: list[dict], predictions: list[dict]) -> dict:
             counts["true_positive"] += 1
             bucket["true_positive"] += 1
             hits_by_structure[sample["structure"]] += 1
+            hits_by_token_shape[sample["token_shape"]] += 1
         elif not gold and detected:
             counts["false_positive"] += 1
             bucket["false_positive"] += 1
@@ -171,6 +174,7 @@ def metrics(samples: list[dict], predictions: list[dict]) -> dict:
             counts["false_negative"] += 1
             bucket["false_negative"] += 1
             misses_by_structure[sample["structure"]] += 1
+            misses_by_token_shape[sample["token_shape"]] += 1
             bucket["misses_by_structure:" + sample["structure"]] += 1
 
     tp, fp, tn, fn = (counts[key] for key in (
@@ -202,6 +206,8 @@ def metrics(samples: list[dict], predictions: list[dict]) -> dict:
             },
             "false_negatives_by_ud_structure_bucket": dict(sorted(misses_by_structure.items())),
             "true_positives_by_ud_structure_bucket": dict(sorted(hits_by_structure.items())),
+            "false_negatives_by_ud_token_shape_bucket": dict(sorted(misses_by_token_shape.items())),
+            "true_positives_by_ud_token_shape_bucket": dict(sorted(hits_by_token_shape.items())),
             "false_positives_by_engine_pattern_family": dict(sorted(false_positive_patterns.items())),
         },
     }
