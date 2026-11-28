@@ -494,11 +494,65 @@ function injectGoogleAnalyticsIntoGeneratedPages() {
   const measurementId = 'G-69YB2G5L5P';
   const publicHostnames = ['simpleonlinetool.com', 'www.simpleonlinetool.com'];
   const analyticsMarkup = `<script>
-      if (${JSON.stringify(publicHostnames)}.includes(window.location.hostname)) {
+      const analyticsHostAllowlist = ${JSON.stringify(publicHostnames)};
+      if (analyticsHostAllowlist.includes(window.location.hostname)) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){window.dataLayer.push(arguments);}
+        window.gtag = gtag;
         gtag('js', new Date());
         gtag('config', '${measurementId}');
+
+        // Tool analytics sends tool identifiers and action types only.
+        // Never attach user-entered text, uploaded file contents, or generated output.
+        window.simpleOnlineToolAnalytics = (() => {
+          const startedTools = new Set();
+          const completedTools = new Set();
+          const allowedActions = new Set(['copy', 'download', 'print']);
+          const currentToolSlug = () => document.body?.dataset?.toolSlug || '';
+          const send = (eventName, actionType) => {
+            const toolSlug = currentToolSlug();
+            if (!toolSlug || typeof window.gtag !== 'function') return;
+            const parameters = { tool_slug: toolSlug };
+            if (actionType) parameters.action_type = actionType;
+            window.gtag('event', eventName, parameters);
+          };
+          return {
+            trackStart() {
+              const toolSlug = currentToolSlug();
+              if (!toolSlug || startedTools.has(toolSlug)) return;
+              startedTools.add(toolSlug);
+              send('tool_start');
+            },
+            trackComplete(actionType) {
+              const toolSlug = currentToolSlug();
+              if (!toolSlug || completedTools.has(toolSlug)) return;
+              completedTools.add(toolSlug);
+              send('tool_complete', actionType);
+            },
+            trackAction(actionType) {
+              if (!allowedActions.has(actionType)) return;
+              send('tool_action', actionType);
+            }
+          };
+        })();
+
+        const trackToolStartFromInteraction = (event) => {
+          const target = event.target;
+          if (!(target instanceof Element) || !target.closest('#tool-container .tool-interface')) return;
+          if (event.type === 'click') {
+            const button = target.closest('button, [role="button"], input[type="button"], input[type="submit"]');
+            if (!button) return;
+            const label = (button.getAttribute('aria-label') || button.textContent || button.value || '').toLowerCase();
+            if (/\\b(clear|reset|copy|download|print|cancel|undo|remove|zoom|pause|close)\\b/.test(label)) return;
+          }
+          if (event.type === 'input' && target instanceof HTMLInputElement && target.type === 'file' && !target.files?.length) return;
+          if (event.type === 'input' && 'value' in target && !String(target.value).trim()) return;
+          window.simpleOnlineToolAnalytics.trackStart();
+        };
+        document.addEventListener('input', trackToolStartFromInteraction, true);
+        document.addEventListener('change', trackToolStartFromInteraction, true);
+        document.addEventListener('click', trackToolStartFromInteraction, true);
+
         const analyticsScript = document.createElement('script');
         analyticsScript.async = true;
         analyticsScript.src = 'https://www.googletagmanager.com/gtag/js?id=${measurementId}';
@@ -537,7 +591,7 @@ function generateSitemap(toolRegistry) {
   // Dates reflect the last significant source changes, not the current build date.
   const staticPages = [
     { name: 'about', lastModified: '2026-11-26' },
-    { name: 'privacy', lastModified: '2026-11-24' },
+    { name: 'privacy', lastModified: '2026-11-28' },
     { name: 'terms', lastModified: '2026-11-24' },
     { name: 'contact', lastModified: '2026-11-24' }
   ];

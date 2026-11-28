@@ -175,6 +175,7 @@ export async function init() {
 
   function copyToClipboard(text, button) {
     navigator.clipboard.writeText(text).then(() => {
+      window.simpleOnlineToolAnalytics?.trackAction('copy');
       const originalText = button.textContent;
       button.textContent = 'Copied!';
       button.style.background = 'var(--success-color)';
@@ -217,6 +218,7 @@ export async function init() {
     resultsCounter.textContent = `(${propositions.length} variations)`;
     resultsActionsDiv.style.display = 'flex';
     refineBtn.disabled = false;
+    window.simpleOnlineToolAnalytics?.trackComplete('generate');
 
     // Add event listeners to copy buttons
     const copyButtons = resultsContainer.querySelectorAll('.copy-btn');

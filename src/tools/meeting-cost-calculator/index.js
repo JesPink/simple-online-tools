@@ -376,6 +376,7 @@ export async function init() {
     `;
 
     resultsContainer.innerHTML = resultsHtml;
+    if (elapsedTime > 0) window.simpleOnlineToolAnalytics?.trackComplete('calculate');
   }
 
   // Event listeners

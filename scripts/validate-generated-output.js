@@ -124,6 +124,18 @@ if (fs.existsSync(registryPath)) {
   }
 }
 const htmlFiles = walk(root).filter(file => file.endsWith('.html'));
+const toolRegistryForAnalytics = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+for (const tool of toolRegistryForAnalytics) {
+  const sourcePath = path.resolve(`src/tools/${tool.slug}/index.js`);
+  if (!fs.existsSync(sourcePath)) {
+    errors.push(`Missing source module for analytics validation: ${sourcePath}`);
+    continue;
+  }
+  const source = fs.readFileSync(sourcePath, 'utf8');
+  if (!source.includes('trackComplete(')) {
+    errors.push(`src/tools/${tool.slug}/index.js: missing successful tool-completion analytics event`);
+  }
+}
 // Every public page must contain exactly one GA4 loader and configuration. The 404 document is excluded.
 for (const file of htmlFiles) {
   const relative = path.relative(root, file).replace(/\\/g, '/');
@@ -136,6 +148,14 @@ for (const file of htmlFiles) {
   }
   if (!html.includes('["simpleonlinetool.com","www.simpleonlinetool.com"]')) {
     errors.push(`${relative}: GA4 must be restricted to the production hostname`);
+  }
+  for (const requiredEvent of ["tool_start", "tool_complete", "tool_action"]) {
+    if (!html.includes(`send('${requiredEvent}'`) && !html.includes(`send(\"${requiredEvent}\"`)) {
+      errors.push(`${relative}: missing GA4 ${requiredEvent} event support`);
+    }
+  }
+  if (!html.includes('window.simpleOnlineToolAnalytics')) {
+    errors.push(`${relative}: missing privacy-safe tool analytics API`);
   }
 }
 for (const file of htmlFiles) {
@@ -215,7 +235,7 @@ else {
   const categories = [...new Set(registry.map(tool => tool.primaryCategory))];
   const expectedLastModified = new Map([
     ['https://simpleonlinetool.com/about/', '2026-11-26'],
-    ['https://simpleonlinetool.com/privacy/', '2026-11-24'],
+    ['https://simpleonlinetool.com/privacy/', '2026-11-28'],
     ['https://simpleonlinetool.com/terms/', '2026-11-24'],
     ['https://simpleonlinetool.com/contact/', '2026-11-24'],
     ...categories.map(category => [`https://simpleonlinetool.com/category/${category}/`, getCategorySEO(category).lastModified]),

@@ -296,6 +296,7 @@ export async function init() {
     animateNumber(paragraphCountEl, paragraphs);
     animateNumber(uniqueWordsEl, uniqueWords);
     animateNumber(readingTimeEl, readingTime);
+      if (text.trim()) window.simpleOnlineToolAnalytics?.trackComplete('analyze');
   }
   
   // Debounced version for very large texts during typing
@@ -367,6 +368,7 @@ Reading Time: ${readingTime} minute${readingTime !== 1 ? 's' : ''}`;
     
     navigator.clipboard.writeText(stats).then(() => {
       // Show success feedback
+      window.simpleOnlineToolAnalytics?.trackAction('copy');
       const originalText = copyStatsBtn.textContent;
       copyStatsBtn.textContent = 'Copied!';
       copyStatsBtn.classList.add('success');

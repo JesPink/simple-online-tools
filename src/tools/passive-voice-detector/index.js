@@ -274,6 +274,7 @@ export async function init() {
       // Always show a clear outcome after analysis, including when no patterns match.
       suggestionsTitle.textContent = passiveCount > 0 ? 'Suggestions & review' : 'Result';
       suggestionsContainer.style.display = 'block';
+      window.simpleOnlineToolAnalytics?.trackComplete('analyze');
       
       console.log('Analysis completed:', { totalSentences, passiveCount, passivePercentage });
     } catch (error) {

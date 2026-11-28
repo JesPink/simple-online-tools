@@ -373,6 +373,7 @@ async function extractAndDisplayMetadata() {
       `;
 
       metadataDisplay.innerHTML = metadataHtml;
+      window.simpleOnlineToolAnalytics?.trackComplete('inspect_metadata');
       
       // Update results
       updateAnalysisResults();
@@ -601,6 +602,7 @@ async function extractAndDisplayMetadata() {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      window.simpleOnlineToolAnalytics?.trackAction('download');
       
       URL.revokeObjectURL(url);
       showSuccess('PDF downloaded successfully!');
