@@ -44,6 +44,8 @@ jobs:
                 direct: item.isDirect,
                 range: item.range,
                 fixAvailable: item.fixAvailable,
+                effects: item.effects || [],
+                nodes: item.nodes || [],
                 via
               }));
             }
@@ -62,6 +64,12 @@ jobs:
       - name: Run held-out external UD evaluation (research PR only)
         if: github.event_name == 'pull_request' && contains(github.head_ref, 'passivepy-spacy-validation')
         run: python3 scripts/evaluate-passive-voice-ud.py
+
+      - name: Set up Python for research parser (research PR only)
+        if: github.event_name == 'pull_request' && contains(github.head_ref, 'passivepy-spacy-validation')
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
       - name: Install spaCy reference parser and model (research PR only)
         if: github.event_name == 'pull_request' && contains(github.head_ref, 'passivepy-spacy-validation')
