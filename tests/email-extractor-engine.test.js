@@ -99,3 +99,10 @@ test('handles adversarial long input without excessive regex backtracking', () =
 test('does not join obfuscation tokens across line breaks', () => {
   assert.equal(extractEmails('name\n[at]\ndomain\n[dot]\ncom').length, 0);
 });
+
+
+test('allows local-part case-sensitive duplicate grouping when requested', () => {
+  const matches = extractEmails('Admin@example.com\nadmin@EXAMPLE.com');
+  assert.equal(groupEmailMatches(matches).length, 1);
+  assert.equal(groupEmailMatches(matches, { ignoreLocalCase: false }).length, 2);
+});
