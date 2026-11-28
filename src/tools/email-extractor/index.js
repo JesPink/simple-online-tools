@@ -193,7 +193,7 @@ export async function init() {
     }
   }
   function parseDomainList(value) {
-    return value.split(/[;,\\s]+/).map(domain => domain.trim().toLowerCase()).filter(Boolean);
+    return value.split(/[;,\s]+/).map(domain => domain.trim().toLowerCase()).filter(Boolean);
   }
   function domainMatches(domain, filter) {
     return domain === filter || domain.endsWith('.' + filter);
@@ -420,7 +420,7 @@ export async function init() {
   sortSelect.addEventListener('change', renderResults);
   showOccurrences.addEventListener('change', renderResults);
   copyButton.addEventListener('click', () => copyText(getUniqueEmails().join(getSeparator()), copyButton));
-  txtButton.addEventListener('click', () => downloadFile('extracted-emails.txt', getUniqueEmails().join(separatorSelect.value), 'text/plain;charset=utf-8'));
+  txtButton.addEventListener('click', () => downloadFile('extracted-emails.txt', getUniqueEmails().join(getSeparator()), 'text/plain;charset=utf-8'));
   csvButton.addEventListener('click', () => downloadFile('extracted-emails.csv', getCsv(), 'text/csv;charset=utf-8'));
   jsonButton.addEventListener('click', () => downloadFile('extracted-emails.json', getJson(), 'application/json;charset=utf-8'));
   cleanButton.addEventListener('click', () => {
