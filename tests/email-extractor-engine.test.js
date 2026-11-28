@@ -94,3 +94,8 @@ test('handles adversarial long input without excessive regex backtracking', () =
   for (const value of adversarial) assert.equal(extractEmails(value).length, 0);
   assert.ok(performance.now() - started < 1500, 'adversarial input should be scanned quickly');
 });
+
+
+test('does not join obfuscation tokens across line breaks', () => {
+  assert.equal(extractEmails('name\n[at]\ndomain\n[dot]\ncom').length, 0);
+});
