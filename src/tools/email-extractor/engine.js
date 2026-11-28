@@ -1,4 +1,6 @@
-const EMAIL_PATTERN = /(?<![A-Z0-9.!#$%&'*+/=?^_\x60{|}~-])([A-Z0-9.!#$%&'*+/=?^_\x60{|}~-]+)@((?:[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?\.)+[\p{L}]{2,63})(?![A-Z0-9.!#$%&'*+/=?^_\x60{|}~-])/giu;
+  let scannedTo = 0;
+  let lineNumber = 1;
+const EMAIL_PATTERN = /(?<![A-Z0-9.!#$%&'*+/=?^_\x60{|}~-])([A-Z0-9.!#$%&'*+/=?^_\x60{|}~-]+)@((?:[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?\.)+[\p{L}]{2,63})(?![A-Z0-9-]|\.[A-Z0-9])/giu;
 const FILE_LIKE_TLDS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'css', 'js', 'map', 'woff', 'woff2', 'ttf', 'eot']);
 
 function decodeEntities(value) {
@@ -37,7 +39,7 @@ export function prepareSourceText(value, fileName = '') {
 }
 
 function normalizeObfuscation(text) {
-  const tokenPattern = /\[\s*at\s*\]|\(\s*at\s*\)|\{\s*at\s*\}|\s+at\s+|\[\s*dot\s*\]|\(\s*dot\s*\)|\{\s*dot\s*\}|\s+dot\s+/gi;
+  const tokenPattern = /\[\s*at\s*\]|\(\s*at\s*\)|\{\s*at\s*\}|\[\s*dot\s*\]|\(\s*dot\s*\)|\{\s*dot\s*\}/gi;
   const output = [];
   const positions = [];
   let cursor = 0;
@@ -76,7 +78,6 @@ function getLineContext(text, start, end, lineNumber) {
   const nextBreak = text.indexOf('\n', end);
   const lineEnd = nextBreak === -1 ? text.length : nextBreak;
   const line = text.slice(lineStart, lineEnd);
-  const lineNumber = text.slice(0, start).split('\n').length;
   const column = start - lineStart + 1;
   let context = line.trim();
   if (context.length > 180) {
@@ -99,11 +100,13 @@ export function extractEmails(value, options = {}) {
   let match;
   while ((match = EMAIL_PATTERN.exec(normalized.text)) !== null) {
     const email = match[0];
-    if (!validateCandidate(email)) continue;
     const transformedStart = match.index;
     const transformedEnd = transformedStart + email.length - 1;
     const start = normalized.positions[transformedStart] ?? transformedStart;
     const end = (normalized.positions[transformedEnd] ?? transformedEnd) + 1;
+    lineNumber += (sourceText.slice(scannedTo, start).match(/\n/g) || []).length;
+    scannedTo = end;
+    if (!validateCandidate(email)) continue;
     const original = sourceText.slice(start, end);
     const context = getLineContext(sourceText, start, end);
     const before = sourceText.slice(Math.max(0, start - 9), start);
