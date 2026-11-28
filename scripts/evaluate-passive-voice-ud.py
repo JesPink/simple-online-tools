@@ -251,7 +251,9 @@ def main() -> int:
             assert set(result[0]["evidence"]) == expected_evidence, result[0]
 
         fallback = parse_conllu("1\tMaya\t_\tPROPN\t_\t_\t2\tnsubj\t_\t_\n2\twrote\t_\tVERB\t_\t_\t0\troot\t_\t_")
-        assert fallback == [{"text": "Maya wrote", "passive": False, "evidence": []}], fallback
+        assert len(fallback) == 1 and fallback[0]["text"] == "Maya wrote", fallback
+        assert fallback[0]["passive"] is False and fallback[0]["evidence"] == [], fallback
+        assert fallback[0]["structure"] == "other_or_unmapped", fallback
         test_predictions = [
             {"detected": True, "primaryTypes": ["be_passive"], "additionalCount": 0},
             {"detected": False, "primaryTypes": [], "additionalCount": 0},
