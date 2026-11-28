@@ -1,3 +1,4 @@
+import { performance } from 'node:perf_hooks';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
@@ -79,4 +80,17 @@ test('matches an address before sentence punctuation without consuming the perio
   const matches = extractEmails('Send it to jane@example.com. Thanks!');
   assert.equal(matches.length, 1);
   assert.equal(matches[0].email, 'jane@example.com');
+});
+
+
+test('handles adversarial long input without excessive regex backtracking', () => {
+  const adversarial = [
+    'a@'.repeat(100000),
+    '1.'.repeat(100000) + '@example.com',
+    'www.'.repeat(50000),
+    'a'.repeat(100000) + '@' + 'b'.repeat(100000)
+  ];
+  const started = performance.now();
+  for (const value of adversarial) assert.equal(extractEmails(value).length, 0);
+  assert.ok(performance.now() - started < 1500, 'adversarial input should be scanned quickly');
 });
