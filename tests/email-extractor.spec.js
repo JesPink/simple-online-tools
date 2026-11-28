@@ -83,6 +83,27 @@ test.describe('Email Extractor', () => {
     expect(analyticsRequests.join('\n')).not.toContain(secretSentinel);
   });
 
+  test('rejects unsupported document formats with a clear message', async ({ page }) => {
+    await page.goto('/tools/email-extractor/');
+    await page.locator('#email-files').setInputFiles({
+      name: 'document.pdf',
+      mimeType: 'application/pdf',
+      buffer: Buffer.from('%PDF-1.7')
+    });
+    await page.locator('#extract-emails-btn').click();
+    await expect(page.locator('#email-error')).toContainText('Unsupported file');
+  });
+
+  test('fits a narrow mobile viewport without horizontal overflow', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/tools/email-extractor/');
+    const dimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      document: document.documentElement.scrollWidth
+    }));
+    expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+  });
+
   test('makes the website-scraping exclusion visible and has no URL input', async ({ page }) => {
     await page.goto('/tools/email-extractor/');
     await expect(page.getByText(/does not scan websites or discover new contacts/i)).toBeVisible();
