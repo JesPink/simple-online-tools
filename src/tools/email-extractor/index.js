@@ -3,7 +3,7 @@ import { extractEmails, getEmailStats, groupEmailMatches, prepareSourceText, rem
 const MAX_TEXT_BYTES = 5 * 1024 * 1024;
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_TOTAL_FILE_BYTES = 20 * 1024 * 1024;
-const SUPPORTED_EXTENSIONS = new Set(['txt', 'md', 'csv', 'tsv', 'html', 'htm', 'json', 'xml', 'log', 'eml', 'yaml', 'yml']);
+const SUPPORTED_EXTENSIONS = new Set(['txt', 'md', 'csv', 'tsv', 'html', 'htm', 'json', 'xml', 'log', 'yaml', 'yml']);
 
 export function render() {
   return `
@@ -20,8 +20,8 @@ export function render() {
               </div>
               <div class="form-group email-file-group">
                 <label for="email-files">Or upload text files</label>
-                <input id="email-files" type="file" multiple accept=".txt,.md,.csv,.tsv,.html,.htm,.json,.xml,.log,.eml,.yaml,.yml,text/plain,text/csv,text/html,application/json,application/xml">
-                <p class="email-help">TXT, MD, CSV, TSV, HTML, JSON, XML, LOG, EML and YAML. Maximum 5 MB per file and 20 MB total.</p>
+                <input id="email-files" type="file" multiple accept=".txt,.md,.csv,.tsv,.html,.htm,.json,.xml,.log,,.yaml,.yml,text/plain,text/csv,text/html,application/json,application/xml">
+                <p class="email-help">TXT, MD, CSV, TSV, HTML, JSON, XML, LOG and YAML. Maximum 5 MB per file and 20 MB total.</p>
                 <ul id="email-file-list" class="email-file-list" aria-live="polite"></ul>
               </div>
               <fieldset class="email-options">
@@ -77,7 +77,7 @@ export function render() {
         <section class="content-section">
           <h2>How to use the email extractor</h2>
           <ol class="instruction-list">
-            <li><strong>Provide your content:</strong> Paste text or select supported TXT, Markdown, CSV, TSV, HTML, JSON, XML, LOG, EML, or YAML files.</li>
+            <li><strong>Provide your content:</strong> Paste text or select supported TXT, Markdown, CSV, TSV, HTML, JSON, XML, LOG, or YAML files.</li>
             <li><strong>Choose matching options:</strong> Decide whether to recognize common obfuscated forms such as name [at] domain [dot] com and whether to display duplicate occurrences separately.</li>
             <li><strong>Extract addresses:</strong> Review unique addresses, total matches, domains, source files, and line locations.</li>
             <li><strong>Filter and export:</strong> Search by address or domain, then copy the unique list or download TXT, CSV, or JSON results.</li>
@@ -97,7 +97,7 @@ export function render() {
         </section>
         <section class="content-section">
           <h2>Supported input formats and limits</h2>
-          <p>The first version reads pasted text and common text-based files: TXT, MD, CSV, TSV, HTML, HTM, JSON, XML, LOG, EML, YAML and YML. HTML tags and script or style blocks are excluded from the text view; mailto link targets are included. Each file is limited to 5 MB, with a combined file limit of 20 MB. Pasted text is limited to 5 MB to keep processing responsive.</p>
+          <p>The first version reads pasted text and common text-based files: TXT, MD, CSV, TSV, HTML, HTM, JSON, XML, LOG, YAML and YML. HTML tags and script or style blocks are excluded from the text view; mailto link targets are included. Each file is limited to 5 MB, with a combined file limit of 20 MB. Pasted text is limited to 5 MB to keep processing responsive.</p>
           <p>This version does not read PDF, DOCX, XLSX, image or scanned-document contents. A file containing only an image or embedded scan will not yield text matches.</p>
         </section>
         <section class="content-section">
@@ -110,7 +110,7 @@ export function render() {
           <h4>How do I extract email addresses from text?</h4>
           <p>Paste the text or upload a supported file, then select Extract email addresses. The tool lists detected addresses, groups duplicates by default, and lets you copy or export the results.</p>
           <h4>Can I extract emails from a text file?</h4>
-          <p>Yes. Upload supported TXT, CSV, TSV, HTML, JSON, XML, LOG, EML, Markdown or YAML files. Files are read locally and follow the displayed size limits.</p>
+          <p>Yes. Upload supported TXT, CSV, TSV, HTML, JSON, XML, LOG, Markdown or YAML files. Files are read locally and follow the displayed size limits.</p>
           <h4>Does this tool scrape websites or find emails from a domain?</h4>
           <p>No. It only extracts addresses already present in text or files you supply. It does not visit URLs, crawl websites, search domains, or discover new contacts.</p>
           <h4>Can I remove email addresses from text?</h4>
