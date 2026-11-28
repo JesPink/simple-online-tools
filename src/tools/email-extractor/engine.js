@@ -64,10 +64,6 @@ function validateCandidate(email) {
   if (byteLength(email) > 254) return false;
   if (!local || byteLength(local) > 64 || local.startsWith('.') || local.endsWith('.') || local.includes('..')) return false;
   if (!domain || byteLength(domain) > 253 || domain.startsWith('.') || domain.endsWith('.')) return false;
-  const parts = email.split('@');
-  if (parts.length !== 2) return false;
-  if (!local || local.length > 64 || local.startsWith('.') || local.endsWith('.') || local.includes('..')) return false;
-  if (!domain || domain.length > 253 || domain.startsWith('.') || domain.endsWith('.')) return false;
   const labels = domain.split('.');
   if (labels.length < 2 || labels.some(label => !label || byteLength(label) > 63 || label.startsWith('-') || label.endsWith('-'))) return false;
   if (FILE_LIKE_TLDS.has(labels[labels.length - 1].toLowerCase())) return false;
