@@ -26,6 +26,30 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Report npm dependency audit details (non-blocking)
+        shell: bash
+        run: |
+          npm audit --json > /tmp/npm-audit.json || true
+          node --input-type=commonjs -e '
+            const fs = require("node:fs");
+            const report = JSON.parse(fs.readFileSync("/tmp/npm-audit.json", "utf8"));
+            const vulnerabilities = report.vulnerabilities || {};
+            const counts = Object.fromEntries(["low", "moderate", "high", "critical"].map(level => [level, 0]));
+            for (const [name, item] of Object.entries(vulnerabilities)) {
+              counts[item.severity] = (counts[item.severity] || 0) + 1;
+              const via = (item.via || []).map(entry => typeof entry === "string" ? entry : entry.title || entry.name || "advisory");
+              console.log(JSON.stringify({
+                package: name,
+                severity: item.severity,
+                direct: item.isDirect,
+                range: item.range,
+                fixAvailable: item.fixAvailable,
+                via
+              }));
+            }
+            console.log("npm audit summary:", JSON.stringify({ total: Object.keys(vulnerabilities).length, ...counts }));
+          '
+
       - name: Build and validate generated SEO output
         run: npm run build
 
@@ -36,8 +60,18 @@ jobs:
         run: python3 scripts/evaluate-passive-voice-ud.py --self-test
 
       - name: Run held-out external UD evaluation (research PR only)
-        if: github.event_name == 'pull_request' && github.head_ref == 'research/ud-ewt-external-benchmark'
+        if: github.event_name == 'pull_request' && contains(github.head_ref, 'passivepy-spacy-validation')
         run: python3 scripts/evaluate-passive-voice-ud.py
+
+      - name: Install spaCy reference parser and model (research PR only)
+        if: github.event_name == 'pull_request' && contains(github.head_ref, 'passivepy-spacy-validation')
+        run: |
+          python3 -m pip install --disable-pip-version-check "spacy==3.8.18" \
+            "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl"
+
+      - name: Run PassivePy-style dependency reference benchmark (research PR only)
+        if: github.event_name == 'pull_request' && contains(github.head_ref, 'passivepy-spacy-validation')
+        run: python3 scripts/evaluate-passive-voice-passivepy.py
 
       - name: Install Chromium
         # GitHub-hosted Ubuntu runners include Chromium's system libraries; avoid refreshing third-party apt feeds.
