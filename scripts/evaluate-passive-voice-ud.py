@@ -41,24 +41,57 @@ def parse_conllu(source: str) -> list[dict]:
         if not text:
             text = " ".join(row[1] for row in rows if row[0].isdigit())
         evidence = set()
+        has_passive_subject = False
+        has_passive_auxiliary = False
+        has_agent_oblique = False
+        has_voice_feature = False
+        has_participle = False
+        has_reduced_participial_clause = False
         for row in rows:
-            feats = row[5]
-            deprel = row[7]
+            xpos, feats, deprel = row[4], row[5], row[7]
             if "Voice=Pass" in feats.split("|"):
                 evidence.add("Voice=Pass")
-            if deprel == "nsubj:pass" or deprel.startswith("nsubj:pass:"):
-                evidence.add("nsubj:pass")
-            if deprel == "csubj:pass" or deprel.startswith("csubj:pass:"):
-                evidence.add("csubj:pass")
+                has_voice_feature = True
+            if deprel in {"nsubj:pass", "csubj:pass"} or deprel.startswith(("nsubj:pass:", "csubj:pass:")):
+                evidence.add(deprel.split(":")[0] + ":pass")
+                has_passive_subject = True
             if deprel == "aux:pass" or deprel.startswith("aux:pass:"):
                 evidence.add("aux:pass")
+                has_passive_auxiliary = True
             if deprel == "obl:agent" or deprel.startswith("obl:agent:"):
                 evidence.add("obl:agent")
+                has_agent_oblique = True
+            if xpos == "VBN" or "VerbForm=Part" in feats.split("|"):
+                has_participle = True
+                if deprel in {"acl", "advcl"}:
+                    has_reduced_participial_clause = True
+
+        if has_passive_subject and has_passive_auxiliary:
+            structure = "passive_subject_and_auxiliary"
+        elif has_passive_subject:
+            structure = "passive_subject_without_passive_auxiliary"
+        elif has_passive_auxiliary:
+            structure = "passive_auxiliary_without_passive_subject"
+        elif has_agent_oblique:
+            structure = "agent_oblique_without_subject_or_auxiliary"
+        elif has_voice_feature:
+            structure = "voice_feature_without_passive_dependencies"
+        else:
+            structure = "other_or_unmapped"
+
+        token_shape = "+".join(name for name, present in (
+            ("participle", has_participle),
+            ("reduced_acl_or_advcl", has_reduced_participial_clause),
+            ("agent_oblique", has_agent_oblique),
+        ) if present) or "no_secondary_shape_signal"
+
         if text:
             samples.append({
                 "text": text,
                 "passive": bool(evidence),
                 "evidence": sorted(evidence),
+                "structure": structure,
+                "token_shape": token_shape,
             })
         comments.clear()
         rows.clear()
@@ -96,26 +129,49 @@ def run_detector(samples: list[dict]) -> list[bool]:
         check=True,
     )
     predictions = json.loads(completed.stdout)
-    if len(predictions) != len(samples) or not all(isinstance(value, bool) for value in predictions):
-        raise RuntimeError("Detector runner returned an invalid prediction list.")
+    if len(predictions) != len(samples) or not all(
+        isinstance(value, dict)
+        and isinstance(value.get("detected"), bool)
+        and isinstance(value.get("primaryTypes"), list)
+        and isinstance(value.get("additionalCount"), int)
+        for value in predictions
+    ):
+        raise RuntimeError("Detector runner returned invalid privacy-safe diagnostics.")
     return predictions
 
 
-def metrics(samples: list[dict], predictions: list[bool]) -> dict:
+def metrics(samples: list[dict], predictions: list[dict]) -> dict:
     counts = Counter()
-    evidence_counts = Counter()
-    for sample, predicted in zip(samples, predictions):
+    outcomes_by_evidence = {}
+    misses_by_structure = Counter()
+    hits_by_structure = Counter()
+    false_positive_patterns = Counter()
+
+    for sample, prediction in zip(samples, predictions):
         gold = sample["passive"]
-        if gold and predicted:
+        detected = prediction["detected"]
+        evidence_key = "+".join(sample["evidence"]) if sample["evidence"] else "no_passive_annotation"
+        bucket = outcomes_by_evidence.setdefault(evidence_key, Counter())
+        bucket["sentences"] += 1
+
+        if gold and detected:
             counts["true_positive"] += 1
-        elif not gold and predicted:
+            bucket["true_positive"] += 1
+            hits_by_structure[sample["structure"]] += 1
+        elif not gold and detected:
             counts["false_positive"] += 1
-        elif not gold and not predicted:
+            bucket["false_positive"] += 1
+            types = prediction["primaryTypes"]
+            pattern_key = "+".join(sorted(set(types))) if types else "additional_clause_only"
+            false_positive_patterns[pattern_key] += 1
+        elif not gold and not detected:
             counts["true_negative"] += 1
+            bucket["true_negative"] += 1
         else:
             counts["false_negative"] += 1
-        evidence_key = "+".join(sample["evidence"]) if sample["evidence"] else "no_passive_annotation"
-        evidence_counts[evidence_key] += 1
+            bucket["false_negative"] += 1
+            misses_by_structure[sample["structure"]] += 1
+            bucket["misses_by_structure:" + sample["structure"]] += 1
 
     tp, fp, tn, fn = (counts[key] for key in (
         "true_positive", "false_positive", "true_negative", "false_negative"
@@ -124,6 +180,9 @@ def metrics(samples: list[dict], predictions: list[bool]) -> dict:
     recall = tp / (tp + fn) if tp + fn else 0.0
     f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
     total = len(samples)
+
+    # Diagnostic groups are descriptive annotation/feature buckets, not
+    # causal explanations. A parser label or feature can itself be imperfect.
     return {
         "sentences": total,
         "gold_passive_sentences": tp + fn,
@@ -136,9 +195,16 @@ def metrics(samples: list[dict], predictions: list[bool]) -> dict:
         "recall": round(recall, 4),
         "f1": round(f1, 4),
         "accuracy": round((tp + tn) / total, 4) if total else None,
-        "gold_annotation_evidence": dict(sorted(evidence_counts.items())),
+        "diagnostics": {
+            "gold_annotation_evidence_outcomes": {
+                key: dict(sorted(value.items()))
+                for key, value in sorted(outcomes_by_evidence.items())
+            },
+            "false_negatives_by_ud_structure_bucket": dict(sorted(misses_by_structure.items())),
+            "true_positives_by_ud_structure_bucket": dict(sorted(hits_by_structure.items())),
+            "false_positives_by_engine_pattern_family": dict(sorted(false_positive_patterns.items())),
+        },
     }
-
 
 def main() -> int:
     if "--self-test" in sys.argv:
@@ -180,8 +246,15 @@ def main() -> int:
 
         fallback = parse_conllu("1\tMaya\t_\tPROPN\t_\t_\t2\tnsubj\t_\t_\n2\twrote\t_\tVERB\t_\t_\t0\troot\t_\t_")
         assert fallback == [{"text": "Maya wrote", "passive": False, "evidence": []}], fallback
-        assert metrics(parsed, [True, False])["true_positive"] == 1
-        assert metrics(parsed, [True, False])["true_negative"] == 1
+        test_predictions = [
+            {"detected": True, "primaryTypes": ["be_passive"], "additionalCount": 0},
+            {"detected": False, "primaryTypes": [], "additionalCount": 0},
+        ]
+        test_metrics = metrics(parsed, test_predictions)
+        assert test_metrics["true_positive"] == 1
+        assert test_metrics["true_negative"] == 1
+        assert test_metrics["diagnostics"]["false_negatives_by_ud_structure_bucket"] == {}
+        assert test_metrics["diagnostics"]["false_positives_by_engine_pattern_family"] == {}
         # Include an active opening clause followed by a passive coordinated clause.
         # Sentence-level evaluation must count the later passive as positive too.
         integration_samples = parsed + [{
@@ -190,7 +263,7 @@ def main() -> int:
             "evidence": ["integration-fixture"],
         }]
         predictions = run_detector(integration_samples)
-        assert predictions == [True, False, True], predictions
+        assert [prediction["detected"] for prediction in predictions] == [True, False, True], predictions
         print("Parser + Node detector integration self-test passed (passive, active, later-clause passive).")
         return 0
 
@@ -217,6 +290,7 @@ def main() -> int:
             "The corpus covers five web genres and its passive labels reflect UD annotation conventions.",
             "The treebank README says basic dependency annotations were hand-corrected, while many other features were automatically derived with limited hand correction.",
             "The detector and gold annotations may define edge cases differently; disagreements require linguistic review.",
+            "Diagnostic groups describe annotation and feature patterns; they are not proven causal explanations.",
             "Do not tune on this test split and then report it as an untouched evaluation set.",
         ],
     }
