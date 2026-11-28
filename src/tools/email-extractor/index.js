@@ -28,6 +28,7 @@ export function render() {
                 <legend>Extraction options</legend>
                 <label class="email-option"><input id="include-obfuscated" type="checkbox" checked> Recognize common obfuscations such as name [at] domain [dot] com</label>
                 <label class="email-option"><input id="show-occurrences" type="checkbox"> Show every occurrence instead of grouping duplicates</label>
+                <label class="email-option"><input id="ignore-local-case" type="checkbox" checked> Treat local-part case variants as duplicates (default)</label>
               </fieldset>
               <div class="email-actions">
                 <button id="extract-emails-btn" class="btn btn-primary" type="button">Extract email addresses</button>
@@ -118,7 +119,7 @@ export function render() {
         <section class="content-section">
           <h2>Privacy and extraction accuracy</h2>
           <p>Text and files are read and processed locally in your browser. Their contents, extracted addresses, filenames and context excerpts are not sent to our servers or included in analytics events. Nothing is uploaded, and the tool does not save your input to browser storage.</p>
-          <p>The extractor identifies address-shaped text; it does not confirm that an address exists, belongs to a particular person, accepts messages, or is safe to contact. Common obfuscated forms can be ambiguous, so review those matches. Internationalized Unicode local-parts and domain labels are supported, but quoted local-parts and mailbox deliverability are not validated. Duplicate grouping is case-insensitive for practical list cleanup and preserves the first spelling found.</p>
+          <p>The extractor identifies address-shaped text; it does not confirm that an address exists, belongs to a particular person, accepts messages, or is safe to contact. Common obfuscated forms can be ambiguous, so review those matches. Internationalized Unicode local-parts and domain labels are supported, but quoted local-parts and mailbox deliverability are not validated. By default, duplicate grouping ignores case and preserves the first spelling found. Turn off case-insensitive grouping if your mail system treats local-part case as significant.</p>
         </section>
         <section class="content-section">
           <h2>Frequently asked questions</h2>
@@ -133,7 +134,7 @@ export function render() {
           <h4>Can I remove email addresses from text?</h4>
           <p>Yes. Use the cleanup section to create a plain-text copy with detected addresses removed or replaced. Your original input and uploaded files remain unchanged.</p>
           <h4>Does the extractor remove duplicate email addresses?</h4>
-          <p>Duplicates are grouped by default and shown with an occurrence count. You can display every match separately, while Copy unique emails always copies one entry per grouped address.</p>
+          <p>Duplicates are grouped by default and shown with an occurrence count. You can choose whether local-part case differences count as duplicates, or display every occurrence separately.</p>
           <h4>Can it verify whether an email address is active?</h4>
           <p>No. It finds address-shaped text only. It does not contact mail servers, send messages, or confirm mailbox existence or deliverability.</p>
           <h4>Are my text and uploaded files private?</h4>
@@ -155,6 +156,7 @@ export async function init() {
   const error = el('email-error');
   const includeObfuscated = el('include-obfuscated');
   const showOccurrences = el('show-occurrences');
+  const ignoreLocalCase = el('ignore-local-case');
   const domainFilter = el('email-domain-filter');
   const includeDomains = el('email-include-domains');
   const excludeDomains = el('email-exclude-domains');
@@ -263,7 +265,7 @@ export async function init() {
     }
   }
   function updateStats() {
-    const stats = getEmailStats(allMatches);
+    const stats = getEmailStats(allMatches, { ignoreLocalCase: ignoreLocalCase.checked });
     uniqueCount.textContent = stats.unique.toLocaleString();
     occurrenceCount.textContent = stats.occurrences.toLocaleString();
     domainCount.textContent = stats.domains.toLocaleString();
@@ -372,7 +374,7 @@ export async function init() {
       }
       sources = nextSources;
       allMatches = nextMatches;
-      groupedMatches = groupEmailMatches(allMatches);
+      groupedMatches = groupEmailMatches(allMatches, { ignoreLocalCase: ignoreLocalCase.checked });
       hasResults = true;
       domainFilter.value = '';
       cleanOutput.value = '';
@@ -405,6 +407,7 @@ export async function init() {
     lowercaseOutput.checked = false;
     includeObfuscated.checked = true;
     showOccurrences.checked = false;
+    ignoreLocalCase.checked = true;
     cleanOutput.value = '';
     setError('');
     setStatus('Paste text or choose one or more supported files to begin.');
@@ -424,6 +427,10 @@ export async function init() {
   excludeDomains.addEventListener('input', renderResults);
   sortSelect.addEventListener('change', renderResults);
   showOccurrences.addEventListener('change', renderResults);
+  ignoreLocalCase.addEventListener('change', () => {
+    groupedMatches = groupEmailMatches(allMatches, { ignoreLocalCase: ignoreLocalCase.checked });
+    updateStats();
+  });
   copyButton.addEventListener('click', () => copyText(getUniqueEmails().join(getSeparator()), copyButton));
   txtButton.addEventListener('click', () => downloadFile('extracted-emails.txt', getUniqueEmails().join(getSeparator()), 'text/plain;charset=utf-8'));
   csvButton.addEventListener('click', () => downloadFile('extracted-emails.csv', getCsv(), 'text/csv;charset=utf-8'));
