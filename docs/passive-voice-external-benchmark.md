@@ -48,3 +48,31 @@ The result is an external benchmark against one corpus and one annotation conven
 ## Licensing and attribution
 
 The UD English-EWT annotations/database are licensed CC BY-SA 4.0. The underlying sentence texts may have separate rights. No corpus text is redistributed by this evaluator. If the corpus or annotation data is later shared, follow the license's attribution and ShareAlike requirements and obtain appropriate review of underlying text rights.
+
+## Diagnostic breakdown and reference baseline
+
+The evaluator emits aggregate-only diagnostics for false positives and false negatives:
+- Outcome counts grouped by the UD passive-annotation evidence combinations.
+- False negatives and true positives grouped by broad dependency-structure buckets (passive subject, passive auxiliary, agent oblique, and related signals).
+- Broad POS/feature shape buckets such as participial and reduced-clause evidence.
+- False positives grouped by generic detector family identifiers only.
+
+These are diagnostic slices, not proven linguistic root causes. The evaluator does not output or save corpus sentences, token forms, lemmas, matched spans, or lexicalized pattern strings.
+
+A second research-only benchmark, `scripts/evaluate-passive-voice-passivepy.py`, adapts the five generalized matcher patterns in [PassivePy](https://github.com/mitramir55/PassivePy) under its MIT license. It uses spaCy's `en_core_web_sm` parser, also MIT-licensed, and evaluates against the same pinned UD EWT test split. This is a reference-system comparison only; it does not change the website runtime or add Python, spaCy, or model assets to production.
+
+The reference is based on POS tags, dependency relations, and lemmas rather than sentence-specific templates. Its small English parser model is published at 12 MB, but spaCy itself is a Python NLP runtime and the model is not a drop-in browser JavaScript module. Its pipeline is useful for establishing whether syntactic parsing materially improves this detector before investigating an on-device runtime port. Do not copy PassivePy's published agreement percentages into this project's claims: its validation used different datasets and coding protocols.
+
+## Architecture decision guardrails
+
+1. Keep the production path browser-local unless a separately approved architecture changes the privacy model.
+2. Do not add a heavy parser/model to the initial page load. Any model-backed enhancement must be optional, lazy-loaded, cacheable, and benchmarked on mid-range mobile hardware.
+3. Use permissively licensed model weights and code; do not bundle UDPipe's commonly distributed non-commercial English models into a monetized product.
+4. Prefer dependency-aware analysis to a longer participle list. Keep lexical exceptions small, documented, and evidence-driven.
+5. Keep voice detection separate from active-voice rewriting. A parser-based detector does not by itself make a rewrite safe; actor recovery, tense, aspect, modality, negation, coordination, and meaning preservation require separate validation.
+6. Do not promote a reference model to production based on one corpus. Validate by genre and use a separate development set for tuning plus a new untouched final evaluation set.
+7. Treat confidence as a calibrated probability only after calibration on held-out human-labelled data. Until then, use qualitative labels or raw scores explicitly described as uncalibrated.
+
+## Dependency audit handling
+
+CI prints a compact, non-blocking `npm audit --json` report with package names, severity, affected range, advisory identifiers/titles, and available remediation status. Do not use `npm audit fix --force` or accept major dependency updates without checking compatibility and rerunning the full build/browser suite.
