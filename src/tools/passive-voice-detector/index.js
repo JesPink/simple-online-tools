@@ -55,7 +55,7 @@ export function render() {
             </div>
             
             <div id="suggestions-container" class="suggestions-container">
-              <h3 class="suggestions-title">Review each detected pattern</h3>
+              <h3 class="suggestions-title">Suggestions &amp; review</h3>
               <div id="suggestions-list" class="suggestions-list"></div>
             </div>
           </div>
@@ -160,39 +160,72 @@ export async function init() {
     return highlightedHtml;
   }
 
-  // Generate suggestions HTML
+  // Put safe, actionable rewrites first. Keep review-only detections available
+  // without letting a long list overwhelm the main result.
   function generateSuggestionsHtml(results) {
     const passiveResults = results.filter(result => result.isPassive)
       .flatMap(result => [result, ...(result.additionalPatterns || [])]);
     if (passiveResults.length === 0) {
       return '<p class="no-suggestions" role="status" aria-live="polite">No passive-voice patterns detected in this text. The checker found no matches among the patterns it recognizes.</p>';
     }
-    return passiveResults.map(result => {
-      const confidenceLabel = result.confidence >= 0.7 ? 'Strong pattern match' :
+
+    const actionable = passiveResults.filter(result => result.activeRewrite);
+    const reviewOnly = passiveResults.filter(result => !result.activeRewrite);
+    const constructionLabel = passiveResults.length === 1 ? 'construction detected' : 'constructions detected';
+    const rewriteLabel = actionable.length === 1 ? 'rewrite suggestion' : 'rewrite suggestions';
+    const reviewLabel = reviewOnly.length === 1 ? 'other detection' : 'other detections';
+
+    const renderConfidence = result => {
+      const label = result.confidence >= 0.7 ? 'Strong pattern match' :
         result.confidence >= 0.5 ? 'Possible pattern match' : 'Weak pattern match — review carefully';
-      const confidenceClass = result.confidence >= 0.7 ? 'high-confidence' :
+      const className = result.confidence >= 0.7 ? 'high-confidence' :
         result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
-      const rewriteHtml = result.activeRewrite ? `
-        <div class="rewrite-preview">
-          <strong>Suggested active version</strong>
-          <p>${escapeHtml(result.activeRewrite)}</p>
-          <button type="button" class="btn btn-secondary apply-rewrite-btn"
-            data-start="${result.start}"
-            data-original="${escapeHtml(result.sentence)}"
-            data-rewrite="${escapeHtml(result.activeRewrite)}">Apply rewrite</button>
-        </div>
-      ` : '';
+      return { label, className };
+    };
+
+    const renderActionable = result => {
+      const confidence = renderConfidence(result);
       return `
-        <article class="suggestion-item ${confidenceClass}" data-confidence="${result.confidence}">
+        <article class="suggestion-item actionable-suggestion ${confidence.className}" data-confidence="${result.confidence}">
           <div class="suggestion-header">
-            <span class="confidence-badge">${confidenceLabel}</span>
+            <span class="confidence-badge">${confidence.label}</span>
             <code class="pattern-info">${escapeHtml(result.pattern || result.passiveMatch || 'Possible passive pattern')}</code>
           </div>
           <p class="suggestion-text">${escapeHtml(result.suggestion)}</p>
-          ${rewriteHtml}
+          <div class="rewrite-preview">
+            <strong>Suggested active version</strong>
+            <p>${escapeHtml(result.activeRewrite)}</p>
+            <button type="button" class="btn btn-secondary apply-rewrite-btn"
+              data-start="${result.start}"
+              data-original="${escapeHtml(result.sentence)}"
+              data-rewrite="${escapeHtml(result.activeRewrite)}">Apply rewrite</button>
+          </div>
         </article>
       `;
-    }).join('');
+    };
+
+    const renderReviewOnly = result => {
+      const confidence = renderConfidence(result);
+      return `
+        <div class="review-only-item ${confidence.className}">
+          <code class="pattern-info">${escapeHtml(result.pattern || result.passiveMatch || 'Possible passive pattern')}</code>
+          <span>${escapeHtml(result.suggestion)}</span>
+        </div>
+      `;
+    };
+
+    const summary = `<p class="suggestions-summary" role="status">${passiveResults.length} ${constructionLabel}. ${actionable.length} ${rewriteLabel} available; ${reviewOnly.length} ${reviewLabel} ${reviewOnly.length === 1 ? 'for' : 'for'} manual review.</p>`;
+    const actionableHtml = actionable.length
+      ? actionable.map(renderActionable).join('')
+      : '<p class="no-rewrite-note">No safe automatic rewrites are available for these detections. Review the highlighted text and identify the actor only if it is known and relevant.</p>';
+    const reviewOnlyHtml = reviewOnly.length ? `
+      <details class="review-only-details">
+        <summary>Show ${reviewOnly.length} ${reviewLabel} that need manual review</summary>
+        <div class="review-only-list">${reviewOnly.map(renderReviewOnly).join('')}</div>
+      </details>
+    ` : '';
+
+    return summary + actionableHtml + reviewOnlyHtml;
   }
 
   // Analyze text function
@@ -228,7 +261,7 @@ export async function init() {
       suggestionsList.innerHTML = generateSuggestionsHtml(results);
       
       // Always show a clear outcome after analysis, including when no patterns match.
-      suggestionsTitle.textContent = passiveCount > 0 ? 'Review Suggestions' : 'Result';
+      suggestionsTitle.textContent = passiveCount > 0 ? 'Suggestions & review' : 'Result';
       suggestionsContainer.style.display = 'block';
       
       console.log('Analysis completed:', { totalSentences, passiveCount, passivePercentage });
