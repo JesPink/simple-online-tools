@@ -139,6 +139,10 @@ export async function init() {
   const includeObfuscated = el('include-obfuscated');
   const showOccurrences = el('show-occurrences');
   const domainFilter = el('email-domain-filter');
+  const includeDomains = el('email-include-domains');
+  const excludeDomains = el('email-exclude-domains');
+  const separatorSelect = el('email-separator');
+  const lowercaseOutput = el('lowercase-plain-list');
   const sortSelect = el('email-sort');
   const resultsList = el('email-results-list');
   const domainSummary = el('email-domain-summary');
@@ -174,9 +178,22 @@ export async function init() {
       fileList.append(makeElement('li', '', file.name + ' · ' + (file.size / 1024).toFixed(1) + ' KB'));
     }
   }
+  function parseDomainList(value) {
+    return value.split(/[;,\\s]+/).map(domain => domain.trim().toLowerCase()).filter(Boolean);
+  }
+  function domainMatches(domain, filter) {
+    return domain === filter || domain.endsWith('.' + filter);
+  }
   function visibleGroups() {
     const filter = domainFilter.value.trim().toLowerCase();
-    let groups = groupedMatches.filter(group => !filter || group.email.toLowerCase().includes(filter) || group.domain.includes(filter));
+    const included = parseDomainList(includeDomains.value);
+    const excluded = parseDomainList(excludeDomains.value);
+    let groups = groupedMatches.filter(group => {
+      const matchesSearch = !filter || group.email.toLowerCase().includes(filter) || group.domain.includes(filter);
+      const matchesInclude = !included.length || included.some(domain => domainMatches(group.domain, domain));
+      const matchesExclude = excluded.some(domain => domainMatches(group.domain, domain));
+      return matchesSearch && matchesInclude && !matchesExclude;
+    });
     if (sortSelect.value === 'alpha') groups.sort((a, b) => a.email.localeCompare(b.email));
     if (sortSelect.value === 'domain') groups.sort((a, b) => a.domain.localeCompare(b.domain) || a.email.localeCompare(b.email));
     if (sortSelect.value === 'source') groups.sort((a, b) => {
@@ -195,7 +212,7 @@ export async function init() {
       ? groups.flatMap(group => group.occurrences.map(match => ({ email: group.email, domain: group.domain, count: 1, occurrences: [match] })))
       : groups;
     if (!rows.length) resultsList.append(makeElement('p', 'email-empty', hasResults
-      ? (filter ? 'No addresses match this filter.' : 'No email addresses were found in the supplied content.')
+      ? (filter || includeDomains.value.trim() || excludeDomains.value.trim() ? 'No addresses match these filters.' : 'No email addresses were found in the supplied content.')
       : 'Your extracted addresses will appear here.'));
     for (const row of rows) {
       const occurrence = row.occurrences[0];
@@ -222,7 +239,7 @@ export async function init() {
     for (const [domain, count] of [...domains.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
       const chip = makeElement('button', 'email-domain-chip', domain + ' · ' + count);
       chip.type = 'button';
-      chip.addEventListener('click', () => { domainFilter.value = domain; renderResults(); });
+      chip.addEventListener('click', () => { includeDomains.value = domain; excludeDomains.value = ''; domainFilter.value = ''; renderResults(); });
       domainSummary.append(chip);
     }
   }
@@ -263,10 +280,13 @@ export async function init() {
       setError('Clipboard access was unavailable. Select the result text and copy it manually.');
     }
   }
-  function getUniqueEmails() { return groupedMatches.map(group => group.email); }
+  function getUniqueEmails() {
+    return visibleGroups().map(group => lowercaseOutput.checked ? group.email.toLowerCase() : group.email);
+  }
   function getCsv() {
+    const groups = visibleGroups();
     const rows = [['email', 'domain', 'occurrences', 'sources', 'line_numbers', 'match_types']];
-    for (const group of groupedMatches) rows.push([
+    for (const group of groups) rows.push([
       group.email, group.domain, group.count,
       [...new Set(group.occurrences.map(match => match.sourceName))].join('; '),
       group.occurrences.map(match => match.line).join('; '),
@@ -275,10 +295,11 @@ export async function init() {
     return rows.map(row => row.map(csvCell).join(',')).join('\r\n');
   }
   function getJson() {
+    const groups = visibleGroups();
     return JSON.stringify({
-      uniqueAddressCount: groupedMatches.length,
-      totalOccurrences: allMatches.length,
-      addresses: groupedMatches.map(group => ({
+      uniqueAddressCount: groups.length,
+      totalOccurrences: groups.reduce((total, group) => total + group.count, 0),
+      addresses: groups.map(group => ({
         email: group.email, domain: group.domain, occurrences: group.count,
         sources: group.occurrences.map(match => ({
           file: match.sourceName, line: match.line, column: match.column,
@@ -358,6 +379,12 @@ export async function init() {
     groupedMatches = [];
     hasResults = false;
     domainFilter.value = '';
+    includeDomains.value = '';
+    excludeDomains.value = '';
+    separatorSelect.value = '\\n';
+    lowercaseOutput.checked = false;
+    includeObfuscated.checked = true;
+    showOccurrences.checked = false;
     cleanOutput.value = '';
     setError('');
     setStatus('Paste text or choose one or more supported files to begin.');
@@ -373,10 +400,12 @@ export async function init() {
   extractButton.addEventListener('click', extract);
   clearButton.addEventListener('click', clearAll);
   domainFilter.addEventListener('input', renderResults);
+  includeDomains.addEventListener('input', renderResults);
+  excludeDomains.addEventListener('input', renderResults);
   sortSelect.addEventListener('change', renderResults);
   showOccurrences.addEventListener('change', renderResults);
-  copyButton.addEventListener('click', () => copyText(getUniqueEmails().join('\n'), copyButton));
-  txtButton.addEventListener('click', () => downloadFile('extracted-emails.txt', getUniqueEmails().join('\n'), 'text/plain;charset=utf-8'));
+  copyButton.addEventListener('click', () => copyText(getUniqueEmails().join(separatorSelect.value), copyButton));
+  txtButton.addEventListener('click', () => downloadFile('extracted-emails.txt', getUniqueEmails().join(separatorSelect.value), 'text/plain;charset=utf-8'));
   csvButton.addEventListener('click', () => downloadFile('extracted-emails.csv', getCsv(), 'text/csv;charset=utf-8'));
   jsonButton.addEventListener('click', () => downloadFile('extracted-emails.json', getJson(), 'application/json;charset=utf-8'));
   cleanButton.addEventListener('click', () => {
