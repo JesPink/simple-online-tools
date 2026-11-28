@@ -71,7 +71,7 @@ function validateCandidate(email) {
   return true;
 }
 
-function getLineContext(text, start, end) {
+function getLineContext(text, start, end, lineNumber) {
   const lineStart = text.lastIndexOf('\n', Math.max(0, start - 1)) + 1;
   const nextBreak = text.indexOf('\n', end);
   const lineEnd = nextBreak === -1 ? text.length : nextBreak;
