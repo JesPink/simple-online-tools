@@ -69,7 +69,8 @@ test('passive auxiliaries allow bounded adverb and negation gaps', () => {
   const activeExamples = [
     'The team has already completed the migration.',
     'The editors have recently reviewed the report.',
-    'The staff are quickly copying the files.'
+    'The staff are quickly copying the files.',
+    'The manager was friendly and offered help.'
   ];
 
   for (const text of activeExamples) {
