@@ -135,6 +135,7 @@ export async function init() {
   const suggestionsList = document.getElementById('suggestions-list');
 
   let debounceTimer;
+  let highlightTimer;
   let previousTextBeforeRewrite = null;
 
   function escapeHtml(value) {
@@ -300,9 +301,12 @@ export async function init() {
     if (!target) return;
     highlightedTextEl.querySelectorAll('.sentence-targeted').forEach(element => element.classList.remove('sentence-targeted'));
     target.classList.add('sentence-targeted');
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const reduceMotion = typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
     target.focus({ preventScroll: true });
-    setTimeout(() => target.classList.remove('sentence-targeted'), 1600);
+    clearTimeout(highlightTimer);
+    highlightTimer = setTimeout(() => target.classList.remove('sentence-targeted'), 1600);
   });
 
   // Apply only the exact rewrite shown to the user, then re-run the analysis.
