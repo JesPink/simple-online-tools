@@ -76,3 +76,41 @@ The reference is based on POS tags, dependency relations, and lemmas rather than
 ## Dependency audit handling
 
 CI prints a compact, non-blocking `npm audit --json` report with package names, severity, affected range, advisory identifiers/titles, and available remediation status. Do not use `npm audit fix --force` or accept major dependency updates without checking compatibility and rerunning the full build/browser suite.
+
+## Measured results on the pinned UD EWT test split
+
+The following values were produced by the research CI run using 2,077 identical sentences and the same sentence-level gold mapping. They are not universal accuracy claims.
+
+| Method | TP | FP | TN | FN | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Current browser-local JS detector | 113 | 41 | 1,804 | 119 | 73.38% | 48.71% | 58.55% |
+| PassivePy-style matcher + spaCy small parser | 106 | 9 | 1,836 | 126 | 92.17% | 45.69% | 61.10% |
+| Union: either detector flags | 123 | 45 | 1,800 | 109 | 73.21% | 53.02% | 61.50% |
+| Intersection: both detectors flag | 96 | 5 | 1,840 | 136 | 95.05% | 41.38% | 57.66% |
+
+The dependency-aware reference is more selective than the current detector but has lower recall. The union improves recall by 4.31 percentage points and F1 by 2.95 points, while adding four false positives; intersection sharply raises precision but loses too many passive cases. This supports investigating a parser as a complementary signal, not replacing the current detector.
+
+These ensemble values are retrospective comparisons on the same held-out split, not a newly validated hybrid model. Do not present them as a final product accuracy figure. The parser benchmark used spaCy's OntoNotes-derived dependency parser, not a parser trained on this UD EWT test set; parser/gold annotation scheme differences may explain some disagreement.
+
+## What the disagreement buckets suggest
+
+On the same UD test split, the current JS detector's 119 false negatives include:
+- 87 sentences whose mapped gold evidence is Voice=Pass without a corresponding passive dependency relation in the annotation.
+- 16 with an obl:agent relation but no passive-subject or passive-auxiliary relation.
+- 12 with passive subject plus passive auxiliary annotation.
+- 3 with passive subject but no passive auxiliary.
+- 1 with passive auxiliary but no passive subject.
+
+These are mutually exclusive summary buckets based on the mapping's priority, not a linguistic diagnosis. A separate token-shape view also shows reduced acl/advcl participial forms among missed cases; those groups overlap and must not be added together. Of 41 false positives, 38 came from the current engine's broad be_passive family. A rights-safe manual review should inspect examples from these strata before proposing code changes.
+
+## Decision after the comparison
+
+Do not replace the production detector with PassivePy/spaCy. The measured F1 lift is small, and the reference loses recall. Do not ship a two-parser union either: the reference runtime is Python, the benchmark's ensemble is retrospective, and a production browser implementation has not been validated.
+
+The recommended next research track is:
+1. Build a rights-cleared, manually adjudicated development set stratified by finite be/get passives, adjectival/stative participles, reduced participial clauses, agent phrases, coordination, and multi-clause sentences.
+2. Use a parser-assisted reference to identify useful syntactic features and train/calibrate a compact task-specific detector or evaluate an exportable small parser.
+3. Keep a separate untouched test set from another genre/source for final validation; report precision, recall, F1, per-class errors, confidence calibration, and mobile runtime/memory/transfer costs.
+4. Only then prototype an optional lazy-loaded on-device inference module. Keep the current fast browser-local baseline and all active rewrites unchanged until the candidate demonstrates a meaningful improvement without unacceptable regressions.
+
+No corpus sentences, tokens, lemmas, or matched spans are included in this document or the evaluator logs.
