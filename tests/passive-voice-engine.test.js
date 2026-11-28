@@ -52,6 +52,32 @@ test('labeled rewrite benchmark: generated active versions match reviewed output
   assert.deepEqual(failures, [], failures.join('\n'));
 });
 
+test('passive auxiliaries allow bounded adverb and negation gaps', () => {
+  const passiveExamples = [
+    'The report has recently been fully reviewed.',
+    'The documents have not yet been signed.',
+    'The application had already been carefully checked.',
+    'The files are being quickly copied.'
+  ];
+
+  for (const text of passiveExamples) {
+    const results = analyzePassiveText(text);
+    assert.equal(results.length, 1, text);
+    assert.equal(results[0].isPassive, true, text);
+  }
+
+  const activeExamples = [
+    'The team has already completed the migration.',
+    'The editors have recently reviewed the report.',
+    'The files are quickly copied by the staff every morning.'
+  ];
+
+  for (const text of activeExamples) {
+    const results = analyzePassiveText(text);
+    assert.equal(results.some(result => result.isPassive), false, text);
+  }
+});
+
 test('reported modal-perfect sentence contains exactly two passive constructions in one sentence', () => {
   const text = 'His life could have been saved if the right medicine had been given to him immediately after the accident.';
   const results = analyzePassiveText(text);
