@@ -95,6 +95,13 @@ test.describe('Email Extractor', () => {
     await page.locator('#extract-emails-btn').click();
     await page.waitForTimeout(500);
     expect(analyticsRequests.join('\n')).not.toContain(secretSentinel);
+    const scripts = await page.locator('script').allTextContents();
+    const analyticsScript = scripts.find(source => source.includes('window.simpleOnlineToolAnalytics'));
+    expect(analyticsScript).toBeTruthy();
+    expect(analyticsScript).toContain('const parameters = { tool_slug: toolSlug };');
+    expect(analyticsScript).toContain('if (actionType) parameters.action_type = actionType;');
+    expect(analyticsScript).not.toContain('email-input');
+    expect(analyticsScript).not.toContain('email-files');
   });
 
   test('rejects unsupported document formats with a clear message', async ({ page }) => {
