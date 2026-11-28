@@ -401,6 +401,7 @@ export async function init() {
     groupedMatches = [];
     hasResults = false;
     domainFilter.value = '';
+    sortSelect.value = 'source';
     includeDomains.value = '';
     excludeDomains.value = '';
     separatorSelect.value = 'newline';
@@ -409,6 +410,7 @@ export async function init() {
     showOccurrences.checked = false;
     ignoreLocalCase.checked = true;
     cleanOutput.value = '';
+    replacementInput.value = '';
     setError('');
     setStatus('Paste text or choose one or more supported files to begin.');
     uniqueCount.textContent = '0';
