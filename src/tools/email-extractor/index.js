@@ -103,7 +103,8 @@ export function render() {
           <ul>
             <li><strong>Duplicate grouping:</strong> Review one row per address with its occurrence count, or show every match separately.</li>
             <li><strong>Source context:</strong> See the source file, line and column for each match, with a short surrounding excerpt.</li>
-            <li><strong>Domain overview:</strong> See unique address counts by domain and filter to a particular domain.</li>
+            <li><strong>Domain controls:</strong> See unique address counts, include only selected domains and subdomains, or exclude domains you do not need.</li>
+          <li><strong>Flexible plain lists:</strong> Copy or download TXT output with new lines, commas, or semicolons; optionally lowercase plain-list output. CSV and JSON retain the first-seen spelling.</li>
             <li><strong>Obfuscated address support:</strong> Optionally recognize common written substitutions such as [at] and [dot]. Review these matches because obfuscation can be ambiguous.</li>
             <li><strong>Useful exports:</strong> Copy addresses or download structured TXT, CSV and JSON files.</li>
             <li><strong>Text cleanup:</strong> Remove detected addresses from a plain-text copy without changing the original input or files.</li>
@@ -127,6 +128,8 @@ export function render() {
           <p>Yes. Upload supported TXT, CSV, TSV, HTML, JSON, XML, LOG, Markdown or YAML files. Files are read locally and follow the displayed size limits.</p>
           <h4>Does this tool scrape websites or find emails from a domain?</h4>
           <p>No. It only extracts addresses already present in text or files you supply. It does not visit URLs, crawl websites, search domains, or discover new contacts.</p>
+          <h4>Can I include or exclude specific domains?</h4>
+          <p>Yes. Enter comma-, semicolon-, or space-separated domains in the include or exclude fields. A domain filter also applies to its subdomains and to copied or downloaded results.</p>
           <h4>Can I remove email addresses from text?</h4>
           <p>Yes. Use the cleanup section to create a plain-text copy with detected addresses removed or replaced. Your original input and uploaded files remain unchanged.</p>
           <h4>Does the extractor remove duplicate email addresses?</h4>
@@ -222,6 +225,8 @@ export async function init() {
     domainSummary.replaceChildren();
     const groups = visibleGroups();
     const filter = domainFilter.value.trim();
+    const exportEnabled = groups.length > 0;
+    for (const button of [copyButton, txtButton, csvButton, jsonButton]) button.disabled = !exportEnabled;
     const rows = showOccurrences.checked
       ? groups.flatMap(group => group.occurrences.map(match => ({ email: group.email, domain: group.domain, count: 1, occurrences: [match] })))
       : groups;
