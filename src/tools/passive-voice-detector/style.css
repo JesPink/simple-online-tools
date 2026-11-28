@@ -379,3 +379,65 @@
   font-size: var(--font-size-sm);
   line-height: var(--line-height-relaxed);
 }
+
+
+/* Sentence-level review cards keep repeated detections together and navigable. */
+.passive-voice-detector-tool .sentence-review-group {
+  margin-bottom: var(--space-4);
+}
+
+.passive-voice-detector-tool .sentence-review-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.passive-voice-detector-tool .sentence-review-heading .original-sentence {
+  flex: 1 1 18rem;
+  margin: 0;
+}
+
+.passive-voice-detector-tool .jump-to-sentence-btn {
+  flex: 0 0 auto;
+  min-height: 36px;
+  font-size: var(--font-size-xs);
+}
+
+.passive-voice-detector-tool .sentence-constructions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.passive-voice-detector-tool .construction-review {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-color);
+}
+
+.passive-voice-detector-tool .construction-review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.passive-voice-detector-tool .construction-review .suggestion-text {
+  margin: 0;
+}
+
+.passive-voice-detector-tool .passive-sentence.sentence-targeted {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--primary-color) 16%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .passive-voice-detector-tool .passive-sentence {
+    transition: none;
+  }
+}
