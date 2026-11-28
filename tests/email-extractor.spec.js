@@ -152,11 +152,23 @@ test.describe('Email Extractor', () => {
   test('fits a narrow mobile viewport without horizontal overflow', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/tools/email-extractor/');
-    const dimensions = await page.locator('.email-extractor-tool').evaluate(element => ({
-      viewport: element.clientWidth,
-      content: element.scrollWidth
-    }));
-    expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
+    const dimensions = await page.locator('.email-extractor-tool').evaluate(element => {
+      const offenders = [element, ...element.querySelectorAll('*')]
+        .map(child => ({
+          tag: child.tagName,
+          id: child.id,
+          className: typeof child.className === 'string' ? child.className : '',
+          width: child.clientWidth,
+          scrollWidth: child.scrollWidth,
+          minWidth: getComputedStyle(child).minWidth,
+          maxWidth: getComputedStyle(child).maxWidth
+        }))
+        .filter(child => child.scrollWidth > child.width + 1)
+        .sort((a, b) => b.scrollWidth - a.scrollWidth)
+        .slice(0, 8);
+      return { viewport: element.clientWidth, content: element.scrollWidth, offenders };
+    });
+    expect(dimensions.content, JSON.stringify(dimensions)).toBeLessThanOrEqual(dimensions.viewport);
   });
 
   test('makes the website-scraping exclusion visible and has no URL input', async ({ page }) => {
