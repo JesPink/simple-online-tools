@@ -20,7 +20,8 @@
     "relatedTools": [
       "case-converter",
       "passive-voice-detector",
-      "meta-description-generator"
+      "meta-description-generator",
+      "email-extractor"
     ],
     "seo": {
       "focusKeyword": "unique words counter",
@@ -371,6 +372,37 @@
         "operatingSystem": "Any",
         "isAccessibleForFree": true
       }
+    }
+  },
+  {
+    "slug": "email-extractor",
+    "title": "Email Extractor | Extract Emails from Text Online",
+    "description": "Extract email addresses from pasted text and supported files. Group duplicates, filter by domain, review source locations, and export results privately in your browser.",
+    "keywords": "extract emails from text, email extractor, email extract from text, extract emails from text online, extract email addresses from text, extract emails from text file, filter email addresses from text, parse emails from text",
+    "category": "text-tools",
+    "primaryCategory": "text-and-writing",
+    "tags": [
+      "extract",
+      "text",
+      "email",
+      "address",
+      "parse"
+    ],
+    "complexity": "simple",
+    "privacy": "client-side",
+    "type": "simple",
+    "jsPath": "/tools/email-extractor/index.js",
+    "relatedTools": [
+      "word-counter"
+    ],
+    "seo": {
+      "focusKeyword": "extract emails from text",
+      "metaTitle": "Email Extractor – Extract Emails from Text Online",
+      "metaDescription": "Extract email addresses from pasted text and supported files. Group duplicates, filter by domain, review source locations, and export results privately in your browser.",
+      "canonicalUrl": "/tools/email-extractor/",
+      "lastModified": "2026-11-28",
+      "author": "Simple Online Tools",
+      "articleType": "Tool"
     }
   }
 ]
