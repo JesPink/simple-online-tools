@@ -378,6 +378,7 @@ export async function init() {
       };
 
       displayScaledRecipe(currentScaledData);
+      window.simpleOnlineToolAnalytics?.trackComplete('scale');
       
     } catch (error) {
       console.error('Scaling failed:', error);
@@ -436,6 +437,7 @@ export async function init() {
     
     try {
       await navigator.clipboard.writeText(recipeText);
+      window.simpleOnlineToolAnalytics?.trackAction('copy');
       copyBtn.textContent = 'Copied!';
       setTimeout(() => {
         copyBtn.textContent = 'Copy Recipe';
@@ -503,6 +505,7 @@ export async function init() {
     const printWindow = window.open('', '_blank');
     printWindow.document.write(printContent);
     printWindow.document.close();
+    window.simpleOnlineToolAnalytics?.trackAction('print');
     printWindow.print();
   }
 
@@ -523,6 +526,7 @@ export async function init() {
     link.href = url;
     link.download = `${currentScaledData.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_scaled_recipe.json`;
     link.click();
+    window.simpleOnlineToolAnalytics?.trackAction('download');
     
     URL.revokeObjectURL(url);
   }
