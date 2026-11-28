@@ -58,6 +58,20 @@ test.describe('Email Extractor', () => {
     await expect(page.locator('#email-results-list')).toContainText('mailto link');
   });
 
+  test('combines multiple files and preserves each source for duplicate matches', async ({ page }) => {
+    await page.goto('/tools/email-extractor/');
+    await page.locator('#email-files').setInputFiles([
+      { name: 'first.txt', mimeType: 'text/plain', buffer: Buffer.from('Contact jane@example.com') },
+      { name: 'second.csv', mimeType: 'text/csv', buffer: Buffer.from('email\\njane@example.com\\nhelp@example.org') }
+    ]);
+    await page.locator('#extract-emails-btn').click();
+    await expect(page.locator('#email-unique-count')).toHaveText('2');
+    await expect(page.locator('#email-occurrence-count')).toHaveText('3');
+    await expect(page.locator('#email-results-list')).toContainText('first.txt');
+    await page.locator('#email-results-list').getByText('View all 2 occurrences').click();
+    await expect(page.locator('#email-results-list')).toContainText('second.csv');
+  });
+
   test('downloads a CSV with source-aware results', async ({ page }) => {
     await page.goto('/tools/email-extractor/');
     await page.locator('#email-input').fill('Contact jane@example.com');
