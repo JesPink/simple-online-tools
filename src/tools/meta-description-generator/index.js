@@ -164,6 +164,7 @@ export async function init() {
       generatedVariants = variants.slice(0, 3);
       currentMetaDescription = generatedVariants[0].text;
       displayResult(currentMetaDescription, generatedVariants, isExpandedView);
+      window.simpleOnlineToolAnalytics?.trackComplete('generate');
     } catch (error) {
       console.error('Generation failed:', error);
       showError('Failed to generate meta description. Please try again.');
@@ -275,6 +276,7 @@ export async function init() {
   async function copyToClipboard() {
     try {
       await navigator.clipboard.writeText(currentMetaDescription);
+      window.simpleOnlineToolAnalytics?.trackAction('copy');
       copyBtn.textContent = 'Copied!';
       setTimeout(() => {
         copyBtn.textContent = 'Copy to Clipboard';
@@ -287,6 +289,7 @@ export async function init() {
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand('copy');
+      window.simpleOnlineToolAnalytics?.trackAction('copy');
       document.body.removeChild(textArea);
       copyBtn.textContent = 'Copied!';
       setTimeout(() => {
