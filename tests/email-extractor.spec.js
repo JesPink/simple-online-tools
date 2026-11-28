@@ -68,7 +68,7 @@ test.describe('Email Extractor', () => {
     await page.goto('/tools/email-extractor/');
     await page.locator('#email-files').setInputFiles([
       { name: 'first.txt', mimeType: 'text/plain', buffer: Buffer.from('Contact jane@example.com') },
-      { name: 'second.csv', mimeType: 'text/csv', buffer: Buffer.from('email\\njane@example.com\\nhelp@example.org') }
+      { name: 'second.csv', mimeType: 'text/csv', buffer: Buffer.from('email\njane@example.com\nhelp@example.org') }
     ]);
     await page.locator('#extract-emails-btn').click();
     await expect(page.locator('#email-unique-count')).toHaveText('2');
@@ -81,7 +81,7 @@ test.describe('Email Extractor', () => {
   test('includes and excludes exact domains and their subdomains', async ({ page }) => {
     await page.goto('/tools/email-extractor/');
     await page.locator('#email-input').fill(
-      'jane@example.com\\nadmin@sub.example.com\\nblocked@blocked.com\\nother@company.org'
+      'jane@example.com\nadmin@sub.example.com\nblocked@blocked.com\nother@company.org'
     );
     await page.locator('#extract-emails-btn').click();
     await page.locator('#email-include-domains').fill('example.com');
@@ -94,7 +94,7 @@ test.describe('Email Extractor', () => {
 
   test('applies selected separators and optional lowercasing to plain-list downloads', async ({ page }) => {
     await page.goto('/tools/email-extractor/');
-    await page.locator('#email-input').fill('Jane.Doe@Example.com\\nHelp@Example.org');
+    await page.locator('#email-input').fill('Jane.Doe@Example.com\nHelp@Example.org');
     await page.locator('#extract-emails-btn').click();
     await page.locator('#email-separator').selectOption('semicolon');
     await page.locator('#lowercase-plain-list').check();
