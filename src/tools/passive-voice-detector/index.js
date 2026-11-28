@@ -151,7 +151,7 @@ export async function init() {
       if (result.isPassive) {
         const confidenceClass = result.confidence >= 0.7 ? 'high-confidence' : 
                                 result.confidence >= 0.5 ? 'medium-confidence' : 'low-confidence';
-        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}</span> `;
+        highlightedHtml += `<span class="passive-sentence ${confidenceClass}" data-index="${index}" tabindex="-1" data-confidence="${(result.confidence * 100).toFixed(0)}%" title="Possible passive-voice pattern (${(result.confidence * 100).toFixed(0)} heuristic score): ${escapeHtml(result.pattern || result.passiveMatch)}">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}</span> `;
       } else {
         highlightedHtml += `<span class="active-sentence">${escapeHtml(result.sentence)}${escapeHtml(result.punctuation)}</span> `;
       }
@@ -160,20 +160,32 @@ export async function init() {
     return highlightedHtml;
   }
 
-  // Put safe, actionable rewrites first. Keep review-only detections available
-  // without letting a long list overwhelm the main result.
+  // Group detections by source sentence so repeated constructions share one
+  // context card while retaining their individual rewrite offsets.
   function generateSuggestionsHtml(results) {
-    const passiveResults = results.filter(result => result.isPassive)
-      .flatMap(result => [result, ...(result.additionalPatterns || [])]);
-    if (passiveResults.length === 0) {
+    const groups = results.map((result, sourceIndex) => ({
+      result,
+      sourceIndex,
+      constructions: result.isPassive
+        ? [result, ...(result.additionalPatterns || [])].map((construction, constructionIndex) => ({
+            ...construction,
+            sourceIndex,
+            originalSentence: result.sentence,
+            constructionIndex
+          }))
+        : []
+    })).filter(group => group.constructions.length);
+
+    if (groups.length === 0) {
       return '<p class="no-suggestions" role="status" aria-live="polite">No passive-voice patterns detected in this text. The checker found no matches among the patterns it recognizes.</p>';
     }
 
-    const actionable = passiveResults.filter(result => result.activeRewrite);
-    const reviewOnly = passiveResults.filter(result => !result.activeRewrite);
-    const constructionLabel = passiveResults.length === 1 ? 'construction detected' : 'constructions detected';
-    const rewriteLabel = actionable.length === 1 ? 'rewrite suggestion' : 'rewrite suggestions';
-    const reviewLabel = reviewOnly.length === 1 ? 'other detection' : 'other detections';
+    const allConstructions = groups.flatMap(group => group.constructions);
+    const actionableCount = allConstructions.filter(item => item.activeRewrite).length;
+    const reviewCount = allConstructions.length - actionableCount;
+    const constructionLabel = allConstructions.length === 1 ? 'construction detected' : 'constructions detected';
+    const rewriteLabel = actionableCount === 1 ? 'safe rewrite' : 'safe rewrites';
+    const reviewLabel = reviewCount === 1 ? 'detection needs' : 'detections need';
 
     const renderConfidence = result => {
       const label = result.confidence >= 0.7 ? 'Strong pattern match' :
@@ -183,49 +195,47 @@ export async function init() {
       return { label, className };
     };
 
-    const renderActionable = result => {
-      const confidence = renderConfidence(result);
-      return `
-        <article class="suggestion-item actionable-suggestion ${confidence.className}" data-confidence="${result.confidence}">
-          <div class="suggestion-header">
-            <span class="confidence-badge">${confidence.label}</span>
-            <code class="pattern-info">${escapeHtml(result.pattern || result.passiveMatch || 'Possible passive pattern')}</code>
-          </div>
-          <p class="suggestion-text">${escapeHtml(result.suggestion)}</p>
+    const renderConstruction = construction => {
+      const confidence = renderConfidence(construction);
+      const pattern = escapeHtml(construction.pattern || construction.passiveMatch || 'Possible passive pattern');
+      const suggestion = escapeHtml(construction.suggestion || 'Review this construction in context.');
+      const rewrite = construction.activeRewrite
+        ? `
           <div class="rewrite-preview">
             <strong>Suggested active version</strong>
-            <p>${escapeHtml(result.activeRewrite)}</p>
+            <p>${escapeHtml(construction.activeRewrite)}</p>
             <button type="button" class="btn btn-secondary apply-rewrite-btn"
-              data-start="${result.start}"
-              data-original="${escapeHtml(result.sentence)}"
-              data-rewrite="${escapeHtml(result.activeRewrite)}">Apply rewrite</button>
-          </div>
-        </article>
-      `;
-    };
-
-    const renderReviewOnly = result => {
-      const confidence = renderConfidence(result);
+              data-start="${construction.start}"
+              data-original="${escapeHtml(construction.sentence || construction.originalSentence)}"
+              data-rewrite="${escapeHtml(construction.activeRewrite)}">Apply rewrite</button>
+          </div>`
+        : '';
       return `
-        <div class="review-only-item ${confidence.className}">
-          <code class="pattern-info">${escapeHtml(result.pattern || result.passiveMatch || 'Possible passive pattern')}</code>
-          <span>${escapeHtml(result.suggestion)}</span>
+        <div class="construction-review ${confidence.className}">
+          <div class="construction-review-header">
+            <span class="confidence-badge">${confidence.label}</span>
+            <code class="pattern-info">${pattern}</code>
+          </div>
+          <p class="suggestion-text">${suggestion}</p>
+          ${rewrite}
         </div>
       `;
     };
 
-    const summary = `<p class="suggestions-summary" role="status">${passiveResults.length} ${constructionLabel}. ${actionable.length} ${rewriteLabel} available; ${reviewOnly.length} ${reviewLabel} ${reviewOnly.length === 1 ? 'for' : 'for'} manual review.</p>`;
-    const actionableHtml = actionable.length
-      ? actionable.map(renderActionable).join('')
-      : '<p class="no-rewrite-note">No safe automatic rewrites are available for these detections. Review the highlighted text and identify the actor only if it is known and relevant.</p>';
-    const reviewOnlyHtml = reviewOnly.length ? `
-      <details class="review-only-details">
-        <summary>Show ${reviewOnly.length} ${reviewLabel} that need manual review</summary>
-        <div class="review-only-list">${reviewOnly.map(renderReviewOnly).join('')}</div>
-      </details>
-    ` : '';
+    const summary = `<p class="suggestions-summary" role="status">${allConstructions.length} ${constructionLabel} · ${actionableCount} ${rewriteLabel} available · ${reviewCount} ${reviewLabel} manual review.</p>`;
+    const groupsHtml = groups.map(group => `
+      <article class="suggestion-item sentence-review-group">
+        <div class="sentence-review-heading">
+          <p class="original-sentence">${escapeHtml(group.result.sentence)}${escapeHtml(group.result.punctuation)}</p>
+          <button type="button" class="btn btn-secondary jump-to-sentence-btn" data-index="${group.sourceIndex}">Find in text</button>
+        </div>
+        <div class="sentence-constructions">
+          ${group.constructions.map(renderConstruction).join('')}
+        </div>
+      </article>
+    `).join('');
 
-    return summary + actionableHtml + reviewOnlyHtml;
+    return summary + groupsHtml;
   }
 
   // Analyze text function
@@ -281,6 +291,19 @@ export async function init() {
     suggestionsList.innerHTML = '<p class="no-suggestions">Analysis suggestions will appear here after you enter text.</p>';
     suggestionsContainer.style.display = 'none';
   }
+
+  // Navigate from a grouped review card to its exact source sentence.
+  suggestionsList.addEventListener('click', (event) => {
+    const button = event.target.closest('.jump-to-sentence-btn');
+    if (!button) return;
+    const target = highlightedTextEl.querySelector(`.passive-sentence[data-index="${button.dataset.index}"]`);
+    if (!target) return;
+    highlightedTextEl.querySelectorAll('.sentence-targeted').forEach(element => element.classList.remove('sentence-targeted'));
+    target.classList.add('sentence-targeted');
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.focus({ preventScroll: true });
+    setTimeout(() => target.classList.remove('sentence-targeted'), 1600);
+  });
 
   // Apply only the exact rewrite shown to the user, then re-run the analysis.
   suggestionsList.addEventListener('click', (event) => {
