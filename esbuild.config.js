@@ -468,6 +468,9 @@ async function buildSite() {
     // Generate or update robots.txt
     generateRobotsTxt();
 
+    // Add GA4 to every public HTML page; the hostname guard excludes preview deployments.
+    injectGoogleAnalyticsIntoGeneratedPages();
+
     console.log('🎉 Build completed successfully with cache busting!');
     console.log('📁 Output directory: ./dist/');
     console.log('🔄 Cache busting assets generated:', assetHashes.size);
@@ -485,6 +488,48 @@ async function buildSite() {
     console.error('❌ Build failed:', error.message);
     process.exit(1);
   }
+}
+
+function injectGoogleAnalyticsIntoGeneratedPages() {
+  const measurementId = 'G-69YB2G5L5P';
+  const publicHostnames = ['simpleonlinetool.com', 'www.simpleonlinetool.com'];
+  const analyticsMarkup = `<script>
+      if (${JSON.stringify(publicHostnames)}.includes(window.location.hostname)) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){window.dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${measurementId}');
+        const analyticsScript = document.createElement('script');
+        analyticsScript.async = true;
+        analyticsScript.src = 'https://www.googletagmanager.com/gtag/js?id=${measurementId}';
+        document.head.appendChild(analyticsScript);
+      }
+    </script>`;
+
+  function collectHtmlFiles(directory) {
+    return fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+      const absolutePath = path.join(directory, entry.name);
+      return entry.isDirectory()
+        ? collectHtmlFiles(absolutePath)
+        : (entry.isFile() && entry.name.endsWith('.html') ? [absolutePath] : []);
+    });
+  }
+
+  const htmlFiles = collectHtmlFiles('dist');
+  let injectedCount = 0;
+  for (const filePath of htmlFiles) {
+    if (path.basename(filePath).toLowerCase() === '404.html') continue;
+    const html = fs.readFileSync(filePath, 'utf8');
+    if (html.includes('googletagmanager.com/gtag/js')) {
+      throw new Error(`GA4 is already present; refusing to inject a duplicate: ${filePath}`);
+    }
+    if (!html.includes('</head>')) {
+      throw new Error(`Cannot inject GA4 because the HTML page has no closing head tag: ${filePath}`);
+    }
+    fs.writeFileSync(filePath, html.replace('</head>', `${analyticsMarkup}\n</head>`));
+    injectedCount++;
+  }
+  console.log(`✅ Injected GA4 into ${injectedCount} public HTML pages (production hostname only)`);
 }
 
 function generateSitemap(toolRegistry) {

@@ -45,41 +45,9 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
-    <!-- Google Analytics (Production Only) -->
-    <!--GOOGLE_ANALYTICS_START-->
-    <!-- CLS FIX: Disabled late-loading analytics that might cause layout shifts -->
-    <!-- ORIGINAL ISSUE: Script loading after 3 seconds could inject DOM elements -->
-    <!--
-    <script defer>
-      // Load Google Analytics after page interaction or after 3 seconds
-      let gaLoaded = false;
-      function loadGA() {
-        if (gaLoaded) return;
-        gaLoaded = true;
-        
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-69YB2G5L5P';
-        document.head.appendChild(script);
-        
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-69YB2G5L5P');
-      }
-      
-      // Load on user interaction or after delay
-      ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'].forEach(function(event) {
-        document.addEventListener(event, loadGA, {once: true, passive: true});
-      });
-      
-      // Fallback: load after 3 seconds
-      setTimeout(loadGA, 3000);
-    </script>
-    -->
-    <!--GOOGLE_ANALYTICS_END-->
+    <!-- GA4 is injected into all generated public pages by the build. -->
     
-    <!-- CSS with LCP optimization -->
+<!-- CSS with LCP optimization -->
     <link rel="stylesheet" href="/styles/base.css" fetchpriority="high">
     <link rel="stylesheet" href="/styles/layout.css" fetchpriority="high">
     
