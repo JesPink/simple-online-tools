@@ -38,24 +38,47 @@ export function prepareSourceText(value, fileName = '') {
 
 function normalizeObfuscation(text) {
   const tokenPattern = /\s*\[\s*at\s*\]\s*|\s*\(\s*at\s*\)\s*|\s*\{\s*at\s*\}\s*|\s*\[\s*dot\s*\]\s*|\s*\(\s*dot\s*\)\s*|\s*\{\s*dot\s*\}\s*/gi;
-  const output = [];
-  const positions = [];
+  const parts = [];
+  const replacements = [];
   let cursor = 0;
+  let normalizedLength = 0;
+  let cumulativeDelta = 0;
   let match;
   while ((match = tokenPattern.exec(text)) !== null) {
-    for (let index = cursor; index < match.index; index += 1) {
-      output.push(text[index]);
-      positions.push(index);
-    }
-    output.push(/at/i.test(match[0]) ? '@' : '.');
-    positions.push(match.index);
+    const prefix = text.slice(cursor, match.index);
+    parts.push(prefix);
+    normalizedLength += prefix.length;
+    cumulativeDelta += match[0].length - 1;
+    replacements.push({
+      normalizedIndex: normalizedLength,
+      sourceStart: match.index,
+      cumulativeDeltaAfter: cumulativeDelta
+    });
+    parts.push(/at/i.test(match[0]) ? '@' : '.');
+    normalizedLength += 1;
     cursor = match.index + match[0].length;
   }
-  for (let index = cursor; index < text.length; index += 1) {
-    output.push(text[index]);
-    positions.push(index);
+  parts.push(text.slice(cursor));
+  return { text: parts.join(''), replacements };
+}
+
+function mapNormalizedOffset(offset, replacements) {
+  let low = 0;
+  let high = replacements.length - 1;
+  let previous = -1;
+  while (low <= high) {
+    const middle = (low + high) >> 1;
+    const replacement = replacements[middle];
+    if (replacement.normalizedIndex < offset) {
+      previous = middle;
+      low = middle + 1;
+    } else if (replacement.normalizedIndex === offset) {
+      return replacement.sourceStart;
+    } else {
+      high = middle - 1;
+    }
   }
-  return { text: output.join(''), positions };
+  return offset + (previous >= 0 ? replacements[previous].cumulativeDeltaAfter : 0);
 }
 
 function validateCandidate(email) {
@@ -88,7 +111,7 @@ function getLineContext(text, start, end, lineNumber) {
 export function extractEmails(value, options = {}) {
   const sourceText = String(value ?? '').replace(/\r\n?/g, '\n');
   const normalized = options.includeObfuscated === false
-    ? { text: sourceText, positions: Array.from({ length: sourceText.length }, (_, index) => index) }
+    ? { text: sourceText, replacements: [] }
     : normalizeObfuscation(sourceText);
   const matches = [];
   EMAIL_PATTERN.lastIndex = 0;
@@ -99,8 +122,8 @@ export function extractEmails(value, options = {}) {
     const email = match[0];
     const transformedStart = match.index;
     const transformedEnd = transformedStart + email.length - 1;
-    const start = normalized.positions[transformedStart] ?? transformedStart;
-    const end = (normalized.positions[transformedEnd] ?? transformedEnd) + 1;
+    const start = mapNormalizedOffset(transformedStart, normalized.replacements);
+    const end = mapNormalizedOffset(transformedEnd, normalized.replacements) + 1;
     lineNumber += (sourceText.slice(scannedTo, start).match(/\n/g) || []).length;
     scannedTo = end;
     if (!validateCandidate(email)) continue;
