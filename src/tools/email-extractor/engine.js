@@ -1,4 +1,4 @@
-const EMAIL_PATTERN = /(?<![A-Z0-9.!#$%&'*+/=?^_\x60{|}~-])([A-Z0-9.!#$%&'*+/=?^_\x60{|}~-]+)@((?:[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?\.)+[\p{L}]{2,63})(?![A-Z0-9-]|\.[A-Z0-9])/giu;
+const EMAIL_PATTERN = /(?<![\p{L}\p{N}.!#$%&'*+/=?^_\x60{|}~-])([\p{L}\p{N}.!#$%&'*+/=?^_\x60{|}~-]+)@((?:[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?\.)+[\p{L}]{2,63})(?![A-Z0-9-]|\.[A-Z0-9])/giu;
 const FILE_LIKE_TLDS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'css', 'js', 'map', 'woff', 'woff2', 'ttf', 'eot']);
 
 function decodeEntities(value) {
@@ -59,14 +59,17 @@ function normalizeObfuscation(text) {
 }
 
 function validateCandidate(email) {
-  if (email.length > 254) return false;
+  const [local, domain] = email.split('@');
+  const byteLength = value => new TextEncoder().encode(value).length;
+  if (byteLength(email) > 254) return false;
+  if (!local || byteLength(local) > 64 || local.startsWith('.') || local.endsWith('.') || local.includes('..')) return false;
+  if (!domain || byteLength(domain) > 253 || domain.startsWith('.') || domain.endsWith('.')) return false;
   const parts = email.split('@');
   if (parts.length !== 2) return false;
-  const [local, domain] = parts;
   if (!local || local.length > 64 || local.startsWith('.') || local.endsWith('.') || local.includes('..')) return false;
   if (!domain || domain.length > 253 || domain.startsWith('.') || domain.endsWith('.')) return false;
   const labels = domain.split('.');
-  if (labels.length < 2 || labels.some(label => !label || label.length > 63 || label.startsWith('-') || label.endsWith('-'))) return false;
+  if (labels.length < 2 || labels.some(label => !label || byteLength(label) > 63 || label.startsWith('-') || label.endsWith('-'))) return false;
   if (FILE_LIKE_TLDS.has(labels[labels.length - 1].toLowerCase())) return false;
   return true;
 }
