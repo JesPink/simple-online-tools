@@ -249,3 +249,43 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Constrain every layout boundary and intrinsic form control on narrow screens. */
+.email-extractor-tool,
+.email-extractor-tool .tool-container,
+.email-extractor-tool .tool-interface,
+.email-extractor-tool .tool-main,
+.email-extractor-tool .tool-results,
+.email-extractor-tool .form-section,
+.email-extractor-tool .email-results,
+.email-extractor-tool .seo-content,
+.email-extractor-tool .form-group {
+  min-width: 0;
+  max-width: 100%;
+}
+.email-extractor-tool .tool-container,
+.email-extractor-tool .tool-interface,
+.email-extractor-tool .tool-main,
+.email-extractor-tool .tool-results,
+.email-extractor-tool .form-section,
+.email-extractor-tool .email-results,
+.email-extractor-tool .seo-content {
+  width: 100%;
+}
+.email-extractor-tool input,
+.email-extractor-tool textarea,
+.email-extractor-tool select {
+  min-width: 0;
+  max-width: 100%;
+}
+.email-extractor-tool p,
+.email-extractor-tool li,
+.email-extractor-tool label,
+.email-extractor-tool small,
+.email-extractor-tool strong,
+.email-extractor-tool summary {
+  overflow-wrap: anywhere;
+}
+.email-extractor-tool .email-file-list li {
+  overflow-wrap: anywhere;
+}
