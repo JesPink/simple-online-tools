@@ -335,9 +335,7 @@ const PASSIVE_AUXILIARY_MODIFIERS = new Set([
   'not', 'never', 'already', 'still', 'recently', 'just', 'yet', 'ever',
   'also', 'always', 'often', 'usually', 'sometimes', 'fully', 'well',
   'completely', 'partly', 'partially', 'almost', 'nearly', 'entirely',
-  'finally', 'now', 'again', 'once', 'even', 'largely', 'mostly'
-]);
-
+  'finally', 'now', 'again', 'once', 'even', 'largely', 'mostly',
   'carefully', 'quickly', 'slowly', 'easily', 'successfully',
   'unexpectedly', 'accidentally', 'officially', 'properly',
   'thoroughly', 'deliberately', 'widely', 'regularly',
