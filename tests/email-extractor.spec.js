@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises';
 import { test, expect } from '@playwright/test';
 
 test.describe('Email Extractor', () => {
@@ -70,6 +71,34 @@ test.describe('Email Extractor', () => {
     await expect(page.locator('#email-results-list')).toContainText('first.txt');
     await page.locator('#email-results-list').getByText('View all 2 occurrences').click();
     await expect(page.locator('#email-results-list')).toContainText('second.csv');
+  });
+
+  test('includes and excludes exact domains and their subdomains', async ({ page }) => {
+    await page.goto('/tools/email-extractor/');
+    await page.locator('#email-input').fill(
+      'jane@example.com\\nadmin@sub.example.com\\nblocked@blocked.com\\nother@company.org'
+    );
+    await page.locator('#extract-emails-btn').click();
+    await page.locator('#email-include-domains').fill('example.com');
+    await page.locator('#email-exclude-domains').fill('blocked.com');
+    await expect(page.locator('#email-results-list')).toContainText('jane@example.com');
+    await expect(page.locator('#email-results-list')).toContainText('admin@sub.example.com');
+    await expect(page.locator('#email-results-list')).not.toContainText('blocked@blocked.com');
+    await expect(page.locator('#email-results-list')).not.toContainText('other@company.org');
+  });
+
+  test('applies selected separators and optional lowercasing to plain-list downloads', async ({ page }) => {
+    await page.goto('/tools/email-extractor/');
+    await page.locator('#email-input').fill('Jane.Doe@Example.com\\nHelp@Example.org');
+    await page.locator('#extract-emails-btn').click();
+    await page.locator('#email-separator').selectOption('semicolon');
+    await page.locator('#lowercase-plain-list').check();
+    const downloadPromise = page.waitForEvent('download');
+    await page.locator('#download-txt-btn').click();
+    const download = await downloadPromise;
+    const filePath = await download.path();
+    const contents = await readFile(filePath, 'utf8');
+    expect(contents).toBe('jane.doe@example.com; help@example.org');
   });
 
   test('downloads a CSV with source-aware results', async ({ page }) => {
