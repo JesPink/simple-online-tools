@@ -139,7 +139,7 @@ if (fs.existsSync(registryPath)) {
       const canonical = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i)?.[1] || '';
       if (title.length > 60 || !title.toLowerCase().includes('email extractor')) errors.push('Email Extractor title is missing or too long');
       if (description.length > 155 || !description.toLowerCase().includes('extract email addresses')) errors.push('Email Extractor meta description is missing, too long, or misaligned');
-      if (canonical !== 'https://simpleonlinetool.com/tools/email-extractor/') errors.push('Email Extractor canonical URL is incorrect');
+      if (canonical !== 'https://simpleonlinetool.com/tools/email-extractor/') errors.push('Email Extractor canonical URL is incorrect');\n      if (h1 !== 'Extract Emails from Text') errors.push('Email Extractor H1 must match the primary text-extraction intent');
       if (!html.includes('Extract email addresses from text online') || !html.includes('not an email scraper') || !html.includes('does not visit websites')) {
         errors.push('Email Extractor static SEO content must clearly describe text extraction and exclude website scraping intent');
       }
