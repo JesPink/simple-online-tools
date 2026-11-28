@@ -230,3 +230,22 @@
     flex: 1 1 100%;
   }
 }
+
+.email-extractor-tool .email-output-controls {
+  align-items: end;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  margin: var(--space-3) 0 var(--space-4);
+}
+.email-extractor-tool .email-output-controls .form-group {
+  margin-bottom: 0;
+}
+.email-extractor-tool .email-output-controls .email-help {
+  grid-column: 1 / -1;
+}
+@media (max-width: 640px) {
+  .email-extractor-tool .email-output-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
