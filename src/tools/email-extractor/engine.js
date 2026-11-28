@@ -149,10 +149,11 @@ export function extractEmails(value, options = {}) {
   return matches;
 }
 
-export function groupEmailMatches(matches) {
+export function groupEmailMatches(matches, options = {}) {
   const grouped = new Map();
   for (const match of matches) {
-    const key = match.normalizedEmail || match.email.toLowerCase();
+    const [local, domain] = match.email.split('@');
+    const key = options.ignoreLocalCase === false ? local + '@' + domain.toLowerCase() : (match.normalizedEmail || match.email.toLowerCase());
     if (!grouped.has(key)) {
       grouped.set(key, {
         email: match.email,
@@ -183,8 +184,8 @@ export function removeEmailMatches(text, matches, replacement = '') {
   return parts.join('');
 }
 
-export function getEmailStats(matches) {
-  const groups = groupEmailMatches(matches);
+export function getEmailStats(matches, options = {}) {
+  const groups = groupEmailMatches(matches, options);
   return {
     unique: groups.length,
     occurrences: matches.length,
