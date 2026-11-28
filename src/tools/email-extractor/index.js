@@ -20,7 +20,7 @@ export function render() {
               </div>
               <div class="form-group email-file-group">
                 <label for="email-files">Or upload text files</label>
-                <input id="email-files" type="file" multiple accept=".txt,.md,.csv,.tsv,.html,.htm,.json,.xml,.log,,.yaml,.yml,text/plain,text/csv,text/html,application/json,application/xml">
+                <input id="email-files" type="file" multiple accept=".txt,.md,.csv,.tsv,.html,.htm,.json,.xml,.log,.yaml,.yml,text/plain,text/csv,text/html,application/json,application/xml">
                 <p class="email-help">TXT, MD, CSV, TSV, HTML, JSON, XML, LOG and YAML. Maximum 5 MB per file and 20 MB total.</p>
                 <ul id="email-file-list" class="email-file-list" aria-live="polite"></ul>
               </div>
@@ -103,7 +103,7 @@ export function render() {
         <section class="content-section">
           <h2>Privacy and extraction accuracy</h2>
           <p>Text and files are read and processed locally in your browser. Their contents, extracted addresses, filenames and context excerpts are not sent to our servers or included in analytics events. Nothing is uploaded, and the tool does not save your input to browser storage.</p>
-          <p>The extractor identifies address-shaped text; it does not confirm that an address exists, belongs to a particular person, accepts messages, or is safe to contact. Common obfuscated forms can be ambiguous, so review those matches. Duplicate grouping is case-insensitive for practical list cleanup and preserves the first spelling found.</p>
+          <p>The extractor identifies address-shaped text; it does not confirm that an address exists, belongs to a particular person, accepts messages, or is safe to contact. Common obfuscated forms can be ambiguous, so review those matches. Internationalized Unicode local-parts and domain labels are supported, but quoted local-parts and mailbox deliverability are not validated. Duplicate grouping is case-insensitive for practical list cleanup and preserves the first spelling found.</p>
         </section>
         <section class="content-section">
           <h2>Frequently asked questions</h2>
