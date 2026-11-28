@@ -179,6 +179,7 @@ export async function init() {
     }
     
     const convertedText = caseConverters[currentCaseType](text);
+    window.simpleOnlineToolAnalytics?.trackComplete('convert');
     
     // Smart animations: only animate for small inputs
     if (animate && text.length < 1000) {
@@ -247,6 +248,7 @@ export async function init() {
     
     try {
       await navigator.clipboard.writeText(outputEl.value);
+      window.simpleOnlineToolAnalytics?.trackAction('copy');
       
       // Show success feedback
       const copyText = copyBtn.querySelector('.copy-text');
@@ -264,6 +266,7 @@ export async function init() {
       // Fallback for older browsers
       outputEl.select();
       document.execCommand('copy');
+      window.simpleOnlineToolAnalytics?.trackAction('copy');
     }
   });
   
