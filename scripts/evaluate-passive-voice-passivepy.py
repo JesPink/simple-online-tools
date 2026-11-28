@@ -160,8 +160,24 @@ def main() -> int:
 
     nlp = spacy.load(MODEL_NAME, disable=["ner"])
     matcher = build_matcher(nlp)
-    predictions = predict(nlp, matcher, [sample["text"] for sample in samples])
+    reference_predictions = predict(nlp, matcher, [sample["text"] for sample in samples])
+    current_metadata = evaluator.run_detector(samples)
+    current_predictions = [prediction["detected"] for prediction in current_metadata]
     gold = [sample["passive"] for sample in samples]
+
+    union_predictions = [current or reference for current, reference in zip(current_predictions, reference_predictions)]
+    intersection_predictions = [current and reference for current, reference in zip(current_predictions, reference_predictions)]
+
+    comparisons = {
+        "current_javascript_detector": summarize(gold, current_predictions),
+        "passivepy_style_spacy_reference": summarize(gold, reference_predictions),
+        "union_hybrid_either_detector_flags": summarize(gold, union_predictions),
+        "intersection_hybrid_both_detectors_flag": summarize(gold, intersection_predictions),
+    }
+
+    # Small deterministic check for ensemble metric wiring.
+    assert summarize([True, False], [True, True])["true_positive"] == 1
+    assert summarize([True, False], [True, True])["false_positive"] == 1
 
     report = {
         "reference": "PassivePy-style dependency matcher",
@@ -173,7 +189,8 @@ def main() -> int:
         "corpus": evaluator.CORPUS_VERSION,
         "corpus_commit": evaluator.CORPUS_COMMIT,
         "split": "test",
-        "metrics": summarize(gold, predictions),
+        "metrics": summarize(gold, reference_predictions),
+        "comparisons": comparisons,
         "text_handling": "Corpus text processed in memory only; aggregate metrics only.",
         "limitations": [
             "Reference implementation for evaluation; not a production integration.",
