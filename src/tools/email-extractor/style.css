@@ -296,3 +296,9 @@
 .email-extractor-tool .seo-content {
   max-width: 800px;
 }
+
+.email-extractor-tool .email-option input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 1rem;
+}
