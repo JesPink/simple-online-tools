@@ -289,3 +289,10 @@
 .email-extractor-tool .email-file-list li {
   overflow-wrap: anywhere;
 }
+
+.email-extractor-tool .tool-container {
+  max-width: 1200px;
+}
+.email-extractor-tool .seo-content {
+  max-width: 800px;
+}
