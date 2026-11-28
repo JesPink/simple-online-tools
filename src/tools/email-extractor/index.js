@@ -249,7 +249,7 @@ export async function init() {
     document.body.append(anchor);
     anchor.click();
     anchor.remove();
-    URL.revokeObjectURL(url);
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
     window.simpleOnlineToolAnalytics?.trackAction('download');
   }
   async function copyText(value, button) {
@@ -309,6 +309,11 @@ export async function init() {
     if (totalFileBytes > MAX_TOTAL_FILE_BYTES) { setError('Selected files exceed the 20 MB combined limit. Upload a smaller batch.'); return; }
     if (!pastedText.trim() && files.length === 0) { setError('Paste some text or choose at least one supported file first.'); return; }
 
+    hasResults = false;
+    sources = [];
+    allMatches = [];
+    groupedMatches = [];
+    updateStats();
     extractButton.disabled = true;
     extractButton.textContent = 'Extracting…';
     setStatus('Reading supplied content and finding email addresses…');
