@@ -377,7 +377,7 @@
   {
     "slug": "email-extractor",
     "title": "Email Extractor | Extract Emails from Text Online",
-    "description": "Extract email addresses from pasted text and supported files. Group duplicates, filter by domain, review source locations, and export results privately in your browser.",
+    "description": "Extract email addresses from text or files. Group duplicates, filter domains, review source matches, and export results privately in your browser.",
     "keywords": "extract emails from text, email extractor, email extract from text, extract emails from text online, extract email addresses from text, extract emails from text file, filter email addresses from text, parse emails from text",
     "category": "text-tools",
     "primaryCategory": "text-and-writing",
@@ -398,7 +398,7 @@
     "seo": {
       "focusKeyword": "extract emails from text",
       "metaTitle": "Email Extractor – Extract Emails from Text Online",
-      "metaDescription": "Extract email addresses from pasted text and supported files. Group duplicates, filter by domain, review source locations, and export results privately in your browser.",
+      "metaDescription": "Extract email addresses from text or files. Group duplicates, filter domains, review source matches, and export results privately in your browser.",
       "canonicalUrl": "/tools/email-extractor/",
       "lastModified": "2026-11-28",
       "author": "Simple Online Tools",
