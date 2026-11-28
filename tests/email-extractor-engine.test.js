@@ -67,3 +67,16 @@ test('reports the correct source line and column', () => {
   assert.equal(matches[0].line, 2);
   assert.equal(matches[0].column, 8);
 });
+
+
+test('extracts internationalized local parts and domains', () => {
+  const matches = extractEmails('Contact δοκιμή@παράδειγμα.δοκιμή for support.');
+  assert.equal(matches.length, 1);
+  assert.equal(matches[0].email, 'δοκιμή@παράδειγμα.δοκιμή');
+});
+
+test('matches an address before sentence punctuation without consuming the period', () => {
+  const matches = extractEmails('Send it to jane@example.com. Thanks!');
+  assert.equal(matches.length, 1);
+  assert.equal(matches[0].email, 'jane@example.com');
+});
