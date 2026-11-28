@@ -38,7 +38,7 @@ export function prepareSourceText(value, fileName = '') {
 }
 
 function normalizeObfuscation(text) {
-  const tokenPattern = /\s*\[\s*at\s*\]\s*|\s*\(\s*at\s*\)\s*|\s*\{\s*at\s*\}\s*|\s*\[\s*dot\s*\]\s*|\s*\(\s*dot\s*\)\s*|\s*\{\s*dot\s*\}\s*/gi;
+  const tokenPattern = /[ \\t]*\\[ *at *\\][ \\t]*|[ \\t]*\\( *at *\\)[ \\t]*|[ \\t]*\\{ *at *\\}[ \\t]*|[ \\t]*\\[ *dot *\\][ \\t]*|[ \\t]*\\( *dot *\\)[ \\t]*|[ \\t]*\\{ *dot *\\}[ \\t]*/gi;
   const parts = [];
   const replacements = [];
   let cursor = 0;
