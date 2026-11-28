@@ -1,5 +1,3 @@
-  let scannedTo = 0;
-  let lineNumber = 1;
 const EMAIL_PATTERN = /(?<![A-Z0-9.!#$%&'*+/=?^_\x60{|}~-])([A-Z0-9.!#$%&'*+/=?^_\x60{|}~-]+)@((?:[\p{L}\p{N}](?:[\p{L}\p{N}-]*[\p{L}\p{N}])?\.)+[\p{L}]{2,63})(?![A-Z0-9-]|\.[A-Z0-9])/giu;
 const FILE_LIKE_TLDS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'ico', 'css', 'js', 'map', 'woff', 'woff2', 'ttf', 'eot']);
 
@@ -90,14 +88,14 @@ function getLineContext(text, start, end, lineNumber) {
 
 export function extractEmails(value, options = {}) {
   const sourceText = String(value ?? '').replace(/\r\n?/g, '\n');
-  const includeObfuscated = options.includeObfuscated !== false;
-  const normalized = includeObfuscated ? normalizeObfuscation(sourceText) : {
-    text: sourceText,
-    positions: Array.from({ length: sourceText.length }, (_, index) => index)
-  };
+  const normalized = options.includeObfuscated === false
+    ? { text: sourceText, positions: Array.from({ length: sourceText.length }, (_, index) => index) }
+    : normalizeObfuscation(sourceText);
   const matches = [];
   EMAIL_PATTERN.lastIndex = 0;
   let match;
+  let scannedTo = 0;
+  let lineNumber = 1;
   while ((match = EMAIL_PATTERN.exec(normalized.text)) !== null) {
     const email = match[0];
     const transformedStart = match.index;
@@ -108,7 +106,7 @@ export function extractEmails(value, options = {}) {
     scannedTo = end;
     if (!validateCandidate(email)) continue;
     const original = sourceText.slice(start, end);
-    const context = getLineContext(sourceText, start, end);
+    const context = getLineContext(sourceText, start, end, lineNumber);
     const before = sourceText.slice(Math.max(0, start - 9), start);
     const matchType = !original.includes('@') ? 'Obfuscated' : (/mailto:\s*$/i.test(before) ? 'mailto link' : 'Text match');
     matches.push({
