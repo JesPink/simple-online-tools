@@ -797,6 +797,8 @@ export async function init() {
       // Save PDF
       const filename = `invoice-${invoiceNumber.value || 'draft'}.pdf`;
       doc.save(filename);
+      window.simpleOnlineToolAnalytics?.trackComplete('generate_pdf');
+      window.simpleOnlineToolAnalytics?.trackAction('download');
     } catch (error) {
       console.error('PDF generation failed:', error);
       alert('Failed to generate PDF. Please try again.');
